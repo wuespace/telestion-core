@@ -19,6 +19,8 @@ The project consists of multiple submodules.
   
 * [telestion-tcp-adapter](https://github.com/TelestionGroup/telestion/issues/5)
 
+* [telestion-widget-adapter](https://github.com/TelestionGroup/telestion/issues/14) Contains the bridge to the gui widgets
+
 ### Extensions
 
 * [telestion-mavlink-adapter](https://github.com/TelestionGroup/telestion/issues/8) Encodes and decodes MavLink-Messages.
