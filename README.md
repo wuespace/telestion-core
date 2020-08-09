@@ -27,6 +27,11 @@ The project consists of multiple submodules.
 
 * [telestion-lora-adapter]() Decodes LoRa-Messages.
 
+### REXUS - Extensions
+
+* [telestion-rx-wind-importer](https://github.com/TelestionGroup/telestion/issues/12) Imports wind data provided by SNSC.
+
+
 ### Connectors
 
 Connectors are small applications, which are executed on an edge computer. They provide connections to other programms or devices.
