@@ -17,26 +17,26 @@ The project consists of multiple submodules.
 
   The core classes like utils, factories, common messages, ...
 
-* telestion-launcher
+* [telestion-launcher](https://github.com/TelestionGroup/telestion/issues/3)
 
   The launcher of the telestion software.
 
-* telestion-updater
+* [telestion-updater](https://github.com/TelestionGroup/telestion/issues/4)
 
   The updater of the telestion software.
   
-* telection-tcp-adapter
+* [telection-tcp-adapter](https://github.com/TelestionGroup/telestion/issues/5)
 
 ### Connectors
 
 Connectors are small applications, which are executed on an edge computer. They provide connections to other programms or devices.
 The received data is forwarded via a TCP connection to the core application.
 
-* telestion-uart-connector
+* [telestion-uart-connector](https://github.com/TelestionGroup/telestion/issues/6)
 
   This connector reads and writes from/to a uart devices which is connected to the edge computer. The data is send to the core application via a tcp stream.
 
-* telestion-matlab-connector
+* [telestion-matlab-connector](https://github.com/TelestionGroup/telestion/issues/7)
 
   This connector reads and writes Matlab structs to the tcp connection of the core application.
 
