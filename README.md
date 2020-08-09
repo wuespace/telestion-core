@@ -9,11 +9,11 @@ The project consists of multiple submodules.
 
 ### Core
 
-* telestion-api
+* [telestion-api](https://github.com/TelestionGroup/telestion/issues/2)
 
   The public api which is visible to other partners.
 
-* telestion-core
+* [telestion-core](https://github.com/TelestionGroup/telestion/issues/1)
 
   The core classes like utils, factories, common messages, ...
 
