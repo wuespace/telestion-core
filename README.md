@@ -27,6 +27,8 @@ The project consists of multiple submodules.
 
 * [telestion-lora-adapter]() Decodes LoRa-Messages.
 
+* [telestion-message-dumper](https://github.com/TelestionGroup/telestion/issues/13) Writes messages of a certain kind to a file.
+
 ### Extensions - REXUS
 
 * [telestion-rx-wind-importer](https://github.com/TelestionGroup/telestion/issues/12) Imports wind data provided by SNSC.
