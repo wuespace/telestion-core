@@ -23,3 +23,7 @@ The launcher of the telestion software.
 
 The updater of the telestion software.
 
+### telestion-uart-connector
+
+### telestion-matlab-connector
+
