@@ -1,9 +1,15 @@
 # Telestion
 
 This repository contains the project files which belong to the Telestion Group.
-The project extensions are located in an own repository (eg. telestion-d2).
+The project extensions are in an own repository (eg. telestion-d2).
 
-## Structure
+## Contributing
+
+Always create a new branch and a pull request to implement a new feature. 
+Because of the free plan we can't protect the master branch for now.
+But we will revert all direct changes to the master branch.
+
+## Project Overview
 
 The project consists of multiple submodules.
 

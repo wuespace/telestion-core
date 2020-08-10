@@ -1,0 +1,12 @@
+rootProject.name = 'telestion'
+
+gradle.ext.vertxVersion = '3.9.2'
+
+include 'telestion-core'
+include 'telestion-launcher'
+include 'telestion-updater'
+include 'telestion-api'
+include 'telestion-application'
+include 'telestion-mavlink-adapter'
+include 'telestion-mavlink-dummy'
+include 'telestion-widget-bridge'

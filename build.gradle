@@ -1,0 +1,39 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+}
+
+subprojects {
+    version = '1.0-SNAPSHOT'
+    group 'org.telestion'
+
+
+    tasks.withType(JavaExec) {
+        systemProperties System.properties
+        systemProperties "hazelcast.logging.type":"slf4j"
+
+        //enable modules for hazelcast
+        jvmArgs += ["--add-modules", "java.se",
+                    "--add-exports", "java.base/jdk.internal.ref=ALL-UNNAMED",
+                    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens", "java.base/java.nio=ALL-UNNAMED",
+                    "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED",
+                    "--add-opens", "java.management/sun.management=ALL-UNNAMED",
+                    "--add-opens", "jdk.management/com.sun.management.internal=ALL-UNNAMED"]
+    }
+
+    //enable preview features
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += "--enable-preview"
+    }
+    tasks.withType(Test) {
+        jvmArgs += "--enable-preview"
+    }
+    tasks.withType(JavaExec) {
+        jvmArgs += '--enable-preview'
+    }
+}
+
+
