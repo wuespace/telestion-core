@@ -1,6 +1,6 @@
 # Telestion
 
-This repository contains the porject files which belong to the Telestion Group.
+This repository contains the project files which belong to the Telestion Group.
 The project extensions are located in an own repository (eg. telestion-d2).
 
 ## Structure
