@@ -1,6 +1,6 @@
 package org.telestion.widget;
 
-import org.telestion.core.HelloWorld;
+import org.telestion.core.verticle.HelloWorld;
 import org.telestion.launcher.Launcher;
 
 public class Main {
