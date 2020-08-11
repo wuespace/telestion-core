@@ -4,13 +4,34 @@ import io.vertx.core.eventbus.Message;
 import org.slf4j.MDC;
 import org.telestion.core.util.SafeCloseable;
 
+/**
+ * A MDC implementation for the Message object.
+ * @see MDC
+ */
 public final class MessageMDC {
 
+    /**
+     * Puts a message object to the MDC store and returns a closeable lik {@link MDC#putCloseable(String, String)}.
+     * See {@link MessageMDC#put(String, Message)} for the elements which are put to the store.
+     *
+     * @param key
+     * @param message
+     * @return
+     */
     public static SafeCloseable putCloseable(String key, Message<?> message){
         put(key, message);
         return () -> remove(key);
     }
 
+    /**
+     * Puts a message object to the MDC store like {@link MDC#put(String, String)}.
+     * The following objects are stored:
+     * address, replyAddress, headers, send, body.
+     * The is either the name of the objects, if the key is null or key.name.
+     *
+     * @param key
+     * @param message
+     */
     public static void put(String key, Message<?> message){
         String prefix = (key == null ? "" : key+".");
         MDC.put(prefix+"address", message.address());
@@ -20,10 +41,18 @@ public final class MessageMDC {
         MDC.put(prefix+"body", message.body() == null ? null : message.body().toString());
     }
 
+    /**
+     * Same as {@link MDC#clear()}.
+     */
     public static void clear(){
         MDC.clear();
     }
 
+    /**
+     * Removes the message object with the given key from the MDC store like {@link MDC#remove(String)}.
+     *
+     * @param key
+     */
     public static void remove(String key){
         String prefix = (key == null ? "" : key + ".");
         MDC.remove(prefix + "address");
