@@ -5,30 +5,35 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Arrays;
+
+import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 
 /**
- * A generic launcher class which deploys verticles.
+ * A generic launcher class which deploys {@link Verticle Verticles}.
+ * 
+ * @version 1.0
+ * @author Jan von Pichovsky, Cedric Boes
+ * @see Verticle
  */
 public final class Launcher {
 
     private static final Logger logger = LoggerFactory.getLogger(Launcher.class);
 
     /**
-     * Deploys the given verticles.
-     * If Vert.x fails to deploy a verticle, it will retry 5 secs later again.
+     * Simply calls {@link #start(String...)}.
      * 
-     * @param args the class names of the verticles which should be deployed.
+     * @param args the class names of the {@link Verticle Verticles} which should be deployed
      */
     public static void main(String[] args) {
         start(args);
     }
 
     /**
-     * Deploys the given verticles.
-     * If Vert.x fails to deploy a verticle, it will retry 5 secs later again.
+     * Deploys the given {@link Verticle Verticles}.</br>
+     * If Vert.x fails to deploy a {@link Verticle}, it will retry after 5 secs.
      *
-     * @param verticleNames the class names of the verticles which should be deployed.
+     * @param verticleNames the class names of the {@link Verticle Verticles} which should be deployed
      */
     public static void start(String... verticleNames){
         logger.info("Deploying {} verticles", verticleNames.length);

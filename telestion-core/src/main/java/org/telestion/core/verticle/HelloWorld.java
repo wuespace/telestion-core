@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
+/**
+ * Test-Class.</br>
+ * Will be removed by the first release.
+ */
 public final class HelloWorld extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
