@@ -10,7 +10,7 @@ import java.io.IOException;
  * This enables the try-close-pattern without catching of exceptions.
  * 
  * @version 1.0
- * @author Jan von Pichovsky, Cedric Boes
+ * @author Jan von Pichowski, Cedric Boes
  * @see Closeable
  */
 public interface SafeCloseable extends Closeable {
