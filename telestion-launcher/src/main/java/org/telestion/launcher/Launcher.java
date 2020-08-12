@@ -13,7 +13,7 @@ import io.vertx.core.Vertx;
  * A generic launcher class which deploys {@link Verticle Verticles}.
  * 
  * @version 1.0
- * @author Jan von Pichovsky, Cedric Boes
+ * @author Jan von Pichowski, Cedric Boes
  * @see Verticle
  */
 public final class Launcher {
