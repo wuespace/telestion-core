@@ -8,7 +8,7 @@ import org.telestion.launcher.Launcher;
  * Starts the Telestion-Project as a standalone Application.
  * 
  * @version 1.0
- * @author Jan von Pichovsky, Cedric Boes
+ * @author Jan von Pichowski, Cedric Boes
  *
  */
 public class Application {
