@@ -11,7 +11,7 @@ import io.vertx.core.Promise;
  * A verticle which logs the message traffic.
  * 
  * @version 1.0
- * @author Jan von Pichovsky, Cedric Boes
+ * @author Jan von Pichowski, Cedric Boes
  * @see AbstractVerticle
  */
 public final class MessageLogger extends AbstractVerticle {
