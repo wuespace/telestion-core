@@ -9,7 +9,7 @@ import io.vertx.core.eventbus.Message;
  * A MDC implementation for the {@link Message} object.
  * 
  * @version 1.0
- * @author Jan von Pichovsky, Cedric Boes
+ * @author Jan von Pichowski, Cedric Boes
  * @see MDC
  * @see Message
  */
