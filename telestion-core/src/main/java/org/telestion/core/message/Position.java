@@ -2,6 +2,9 @@ package org.telestion.core.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Data class which contains a position. Its json looks like this: {"x":5.3,"y":4.2,"z":7.1,"name":"Position"}
+ */
 public record Position(
         @JsonProperty double x,
         @JsonProperty double y,

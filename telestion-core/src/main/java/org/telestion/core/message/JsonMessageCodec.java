@@ -4,6 +4,10 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
 import io.vertx.core.spi.json.JsonCodec;
 
+/**
+ * The {@link MessageCodec} which encodes all {@link JsonMessage} through the {@link JsonCodec}.
+ * Append this to the Vert.x event bus to enable transmitting of {@link JsonMessage}.
+ */
 public final class JsonMessageCodec implements MessageCodec<JsonMessage, JsonMessage> {
 
     public static final JsonMessageCodec Instance = new JsonMessageCodec();
