@@ -6,7 +6,7 @@ import org.telestion.api.message.JsonMessage;
 import java.util.List;
 
 /**
- * A list message containing multiple positions.
+ * A list message containing multiple {@link Position}.
  */
 public record Positions(@JsonProperty List<Position> list) implements JsonMessage {
     private Positions(){
