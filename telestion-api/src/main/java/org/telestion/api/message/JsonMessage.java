@@ -1,9 +1,9 @@
-package org.telestion.core.message;
+package org.telestion.api.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The base class for all messages which are automatically encoded with the {@link JsonMessageCodec}.
+ * The base class for all messages which are automatically encoded with the JsonMessageCodec.
  * The subclasses have to be valid json classes.
  * This means that they could be encoded by {@link io.vertx.core.spi.json.JsonCodec} which is backed by
  * {@link io.vertx.core.json.jackson.JacksonCodec}.
