@@ -11,6 +11,7 @@ application {
     mainClassName = 'org.telestion.application.Application'
 }
 
+//TODO we should create a proper manifest like here. This needs some testing...
 /*task createJar(type: Jar) {
     archiveName = "GradleJarProject.jar"
     manifest {
@@ -21,15 +22,12 @@ application {
     baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
-
 }*/
 
 task publishApi(type: Copy) {
     from jar // shortcut for createJar.outputs.files
     into "../telestion-plugin-daedalus2/lib"
 }
-
-
 
 dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
