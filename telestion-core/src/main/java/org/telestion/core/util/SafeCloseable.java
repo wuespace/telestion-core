@@ -6,21 +6,26 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * A Closeable which does not throw IOExceptions.
+ * A {@link Closeable} which does not throw {@link IOException IOExceptions}.
  * This enables the try-close-pattern without catching of exceptions.
+ * 
+ * @version 1.0
+ * @author Jan von Pichowski, Cedric Boes
+ * @see Closeable
  */
 public interface SafeCloseable extends Closeable {
 
     /**
-     * Same as in Closeable but it is not allowed to throw an IOException
+     * Same as {@link Closeable#close()} but it is not allowed to throw an {@link IOException}
      */
     void close();
 
     /**
-     * Wrap the give closable by a safe one which logs and prints the stacktrace of the thrown IOException.
+     * Wraps the given {@link Closeable} into a {@link SafeCloseable} which logs and prints the <code>stacktrace</code>
+     * of the thrown {@link IOException}.
      *
-     * @param closeable
-     * @return
+     * @param closeable {@link Closeable} to be wrapped
+     * @return new {@link SafeCloseable} from the given {@link Closeable}
      */
     static SafeCloseable safe(Closeable closeable){
         return () -> {

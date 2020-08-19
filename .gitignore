@@ -292,3 +292,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+### Manual Additions ###
+# Eclipse files
+*.classpath
+*.project
+
