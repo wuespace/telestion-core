@@ -1,11 +1,10 @@
 package org.telestion.core.proto.db;
 
-import com.hazelcast.internal.json.Json;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.spi.json.JsonCodec;
 import org.telestion.core.message.Position;
-import org.telestion.core.message.PositionList;
+import org.telestion.core.message.Positions;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public final class ProtoDatabase extends AbstractVerticle {
                     .filter(vertx.sharedData().getLocalMap("position")::containsKey)
                     .map(i -> JsonCodec.INSTANCE.fromString((String)vertx.sharedData().getLocalMap("position").get(i), Position.class))
                     .filter(Objects::nonNull).collect(Collectors.toList());
-            msg.reply(JsonCodec.INSTANCE.toString(new PositionList(result)));
+            msg.reply(JsonCodec.INSTANCE.toString(new Positions(result)));
         });
         startPromise.complete();
     }

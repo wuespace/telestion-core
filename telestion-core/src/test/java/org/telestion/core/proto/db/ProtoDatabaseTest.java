@@ -1,9 +1,5 @@
 package org.telestion.core.proto.db;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import io.vertx.core.Vertx;
 import io.vertx.core.spi.json.JsonCodec;
 import io.vertx.junit5.VertxExtension;
@@ -11,16 +7,12 @@ import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.LoggerFactory;
-import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.JsonMessageCodec;
 import org.telestion.core.message.Position;
-import org.telestion.core.message.PositionList;
-import org.telestion.core.verticle.MessageLogger;
+import org.telestion.core.message.Positions;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -42,9 +34,9 @@ public class ProtoDatabaseTest {
             vertx.eventBus().publish("mavlink", expected);
             vertx.eventBus().request("request#position", null, positionResult -> {
                 Assertions.assertTrue(positionResult.succeeded());
-                var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), PositionList.class);
-                assertThat(positionList.positions().size(), equalTo(1));
-                var actual = positionList.positions().get(0);
+                var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), Positions.class);
+                assertThat(positionList.list().size(), equalTo(1));
+                var actual = positionList.list().get(0);
                 assertThat(actual, equalTo(expected));
                 testContext.completeNow();
             });
@@ -74,8 +66,8 @@ public class ProtoDatabaseTest {
 
         vertx.eventBus().request("request#position", null, positionResult -> {
             Assertions.assertTrue(positionResult.succeeded());
-            var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), PositionList.class);
-            var actual = positionList.positions();
+            var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), Positions.class);
+            var actual = positionList.list();
             assertThat(actual, equalTo(expected));
             testContext.completeNow();
         });
@@ -106,8 +98,8 @@ public class ProtoDatabaseTest {
 
         vertx.eventBus().request("request#position", null, positionResult -> {
             Assertions.assertTrue(positionResult.succeeded());
-            var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), PositionList.class);
-            var actual = positionList.positions();
+            var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), Positions.class);
+            var actual = positionList.list();
             System.out.println(actual);
             assertThat(actual, equalTo(exp));
             testContext.completeNow();
