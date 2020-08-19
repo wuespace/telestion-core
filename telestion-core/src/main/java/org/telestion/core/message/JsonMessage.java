@@ -1,2 +1,4 @@
-package org.telestion.core.message;public interface JsonMessage {
+package org.telestion.core.message;
+
+public interface JsonMessage {
 }

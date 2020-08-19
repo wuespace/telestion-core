@@ -1,4 +1,4 @@
-package org.telestion;
+package org.telestion.core.message;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
