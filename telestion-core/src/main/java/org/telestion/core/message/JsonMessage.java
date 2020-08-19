@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public interface JsonMessage {
 
     /**
-     *
      * @return the simple class name of the subclass
      */
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
