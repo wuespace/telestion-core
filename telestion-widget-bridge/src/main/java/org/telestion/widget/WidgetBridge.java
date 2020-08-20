@@ -33,13 +33,13 @@ public final class WidgetBridge extends AbstractVerticle {
         router.route().handler(staticHandler());
 
         vertx.eventBus().consumer("in", (msg) -> {
-            logger.info("Message from client: {}", msg);
+            logger.info("Message from client: {}", msg.body());
         });
 
         vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {
             var message = "Hello from server!";
             logger.info("Sending message to client: {}", message);
-            vertx.eventBus().publish("out", message.toString());
+            vertx.eventBus().publish("out", message);
         });
 
         HttpServer http = vertx.createHttpServer()
@@ -67,8 +67,14 @@ public final class WidgetBridge extends AbstractVerticle {
             if (event.type() == BridgeEventType.SEND) {
                 logger.info("Client sent message.");
             }
-
-            event.complete();
+            System.out.println(event.type());
+            //We have to complete with "true" for some reason.
+            //You can check it in io.vertx.ext.web.handler.sockjs.impl.EventBusBridgeImpl in line 166.
+            //I don't know what it means uf you complete with false or null.
+            //But in this way it works.
+            //Or you just use sockJSHandler.bridge(options) without the events.
+            // - jvpichowski
+            event.complete(true);
         });
     }
 
