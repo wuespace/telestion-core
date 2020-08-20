@@ -13,6 +13,11 @@ public final class JsonMessageCodec implements MessageCodec<JsonMessage, JsonMes
 
     public static final JsonMessageCodec Instance = new JsonMessageCodec();
 
+    @SuppressWarnings("unchecked")
+    public static <T extends JsonMessage> MessageCodec<T, T> Instance(Class<T> type){
+        return (MessageCodec<T, T>)Instance;
+    }
+
     private JsonMessageCodec(){}
 
     @Override
