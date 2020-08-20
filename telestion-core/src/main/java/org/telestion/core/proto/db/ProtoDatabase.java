@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 
 /**
  * A database which stores positions.
- * It stores {@link Position} which are send to "mavlink".
+ * It stores {@link Position} which are sent to "mavlink".
  * Upon request at "request#position" it answers with a {@link java.util.List}
  * of the last 100 received {@link Position}.
  */
