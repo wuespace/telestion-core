@@ -8,7 +8,7 @@ targetCompatibility = '14'
 
 application {
     // Define the main class for the application.
-    mainClassName = 'org.telestion.widget.Main'
+    mainClassName = 'org.telestion.widget.WidgetBridge'
 }
 
 
