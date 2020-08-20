@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 /**
  * A database which stores positions.
  * It stores {@link Position} which are send to "mavlink".
- * On a request at "request#position" it answers with a {@link java.util.List}
+ * Upon request at "request#position" it answers with a {@link java.util.List}
  * of the last 100 received {@link Position}.
  */
 public final class ProtoDatabase extends AbstractVerticle {
