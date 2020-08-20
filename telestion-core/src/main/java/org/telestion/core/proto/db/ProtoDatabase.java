@@ -3,6 +3,7 @@ package org.telestion.core.proto.db;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.spi.json.JsonCodec;
+import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Position;
 import org.telestion.core.message.Positions;
 
@@ -25,7 +26,7 @@ public final class ProtoDatabase extends AbstractVerticle {
         vertx.eventBus().consumer("mavlink", msg -> {
             if(msg.body() instanceof Position position){
                 var idx = (int)vertx.sharedData().getLocalMap("position").getOrDefault("next", 0);
-                vertx.sharedData().getLocalMap("position").put(idx, JsonCodec.INSTANCE.toString(position));
+                vertx.sharedData().getLocalMap("position").put(idx, position.json());
                 vertx.sharedData().getLocalMap("position").put("next", ((idx+1)%HistorySize));
             }
         });
@@ -35,9 +36,9 @@ public final class ProtoDatabase extends AbstractVerticle {
                     .map(i -> (HistorySize+idx-1-i)%HistorySize)
                     .boxed()
                     .filter(vertx.sharedData().getLocalMap("position")::containsKey)
-                    .map(i -> JsonCodec.INSTANCE.fromString((String)vertx.sharedData().getLocalMap("position").get(i), Position.class))
+                    .map(i -> JsonMessage.from(vertx.sharedData().getLocalMap("position").get(i), Position.class))
                     .filter(Objects::nonNull).collect(Collectors.toList());
-            msg.reply(JsonCodec.INSTANCE.toString(new Positions(result)));
+            msg.reply(new Positions(result).json());
         });
         startPromise.complete();
     }

@@ -37,4 +37,16 @@ public interface JsonMessage {
     static <T extends JsonMessage> T from(String json, Class<T> type){
         return JsonCodec.INSTANCE.fromString(json, type);
     }
+
+    /**
+     * Creates a message from the given json representation
+     *
+     * @param json the json source which must be a String
+     * @param type the type class of the message
+     * @param <T> the type of the message
+     * @return the message object
+     */
+    static <T extends JsonMessage> T from(Object json, Class<T> type){
+        return JsonCodec.INSTANCE.fromString((String)json, type);
+    }
 }
