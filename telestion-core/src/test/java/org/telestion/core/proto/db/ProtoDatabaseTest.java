@@ -7,6 +7,7 @@ import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.JsonMessageCodec;
 import org.telestion.core.message.Position;
 import org.telestion.core.message.Positions;
@@ -34,7 +35,7 @@ public class ProtoDatabaseTest {
             vertx.eventBus().publish("mavlink", expected);
             vertx.eventBus().request("request#position", null, positionResult -> {
                 Assertions.assertTrue(positionResult.succeeded());
-                var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), Positions.class);
+                var positionList = JsonMessage.from(positionResult.result().body(), Positions.class);
                 assertThat(positionList.list().size(), equalTo(1));
                 var actual = positionList.list().get(0);
                 assertThat(actual, equalTo(expected));
@@ -66,7 +67,7 @@ public class ProtoDatabaseTest {
 
         vertx.eventBus().request("request#position", null, positionResult -> {
             Assertions.assertTrue(positionResult.succeeded());
-            var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), Positions.class);
+            var positionList = JsonMessage.from(positionResult.result().body(), Positions.class);
             var actual = positionList.list();
             assertThat(actual, equalTo(expected));
             testContext.completeNow();
@@ -98,9 +99,8 @@ public class ProtoDatabaseTest {
 
         vertx.eventBus().request("request#position", null, positionResult -> {
             Assertions.assertTrue(positionResult.succeeded());
-            var positionList = JsonCodec.INSTANCE.fromString((String)positionResult.result().body(), Positions.class);
+            var positionList = JsonMessage.from(positionResult.result().body(), Positions.class);
             var actual = positionList.list();
-            System.out.println(actual);
             assertThat(actual, equalTo(exp));
             testContext.completeNow();
         });
