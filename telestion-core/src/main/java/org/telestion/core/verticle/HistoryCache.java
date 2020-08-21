@@ -45,7 +45,7 @@ public final class HistoryCache extends AbstractVerticle {
      * @param maxSize the maximum number of elements in the response. Only the number of elements in the history will be
      *                returned if this is higher than the number of elements in the history. At most, this is the number
      *                of elements are specified in the HistoryCache configuration.
-     * @param messageName the name of the messages which should be returned (eg. Position.class.getSimpleName()).
+     * @param messageName the name of the message which should be returned (e.g., <code>Position.class.getSimpleName()</code>).
      */
     public record Request(@JsonProperty String messageName, @JsonProperty int maxSize) implements JsonMessage {
         private Request(){
