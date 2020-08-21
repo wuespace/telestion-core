@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
  *  The last elements will be returned in a {@link Response} message.
  * </p>
  * <p>
- *  A simple example looks like this:
+ *  An example looks like this:
  * <pre>
  * {@code
  *   vertx.eventBus().request(HistoryCache.class.getSimpleName(), new Request(Position.class, 10), msgResult -> {
