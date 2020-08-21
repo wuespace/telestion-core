@@ -65,7 +65,7 @@ public final class HistoryCache extends AbstractVerticle {
     }
 
     /**
-     * The response containing a list of the last received messages.
+     * The response containing a list of the latest received messages.
      * @param history the history
      */
     public record Response(@JsonProperty List<? extends JsonMessage> history) implements JsonMessage {
