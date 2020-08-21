@@ -55,8 +55,8 @@ public final class HistoryCache extends AbstractVerticle {
         /**
          *
          * @param messageType the type of the requested message
-         * @param maxSize the maximum number of elements in the response. Only the number of elements in the history will be
-         *                returned if this is higher than the number of elements in the history. This are at most the number
+         * @param maxSize the maximum number of elements in the response. If the number of elements is higher than the number of elements in the history,
+         *                only the number of elements in the history will be returned. This is, at most, the number
          *                of elements specified in the HistoryCache configuration.
          */
         public Request(Class<? extends JsonMessage> messageType, int maxSize){
