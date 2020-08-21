@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bouncycastle.pqc.jcajce.provider.McEliece;
 import org.telestion.adapter.mavlink.annotation.MavComponentInfo;
 import org.telestion.adapter.mavlink.annotation.MavComponentType;
 import org.telestion.adapter.mavlink.exception.InvalidMavlinkMessageException;
