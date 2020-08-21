@@ -8,17 +8,79 @@ import org.telestion.api.message.JsonMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * HistoryCache is a verticle which stores the last received messages of a specified type.
+ * <p>
+ *  You have to configure the following options:
+ * <ul>
+ *  <li>messageName - is the name of the message type (eg. Position.class.getSimpleName()).</li>
+ *  <li>addressName - is the address to which the message is send.</li>
+ *  <li>historySize - is the maximum size of the history</li>
+ * </ul>
+ * </p>
+ * <p>
+ *  To fetch the last elements you have to send a {@link Request} to <code>HistoryCache.class.getSimpleName()</code>.
+ *  The last elements will be returned in a {@link Response} message.
+ * </p>
+ * <p>
+ *  A simple example looks like this:
+ * <pre>
+ * {@code
+ *   vertx.eventBus().request(HistoryCache.class.getSimpleName(), new Request(Position.class, 10), msgResult -> {
+ *       if(msgResult.failed()) return;
+ *       if(msgResult.result().body() instanceof Response response){
+ *           var list = response.as(Position.class);
+ *       }
+ *   });
+ * }
+ * </pre>
+ * </p>
+ */
 public final class HistoryCache extends AbstractVerticle {
 
-    record Request(@JsonProperty String messageName, @JsonProperty int maxSize) implements JsonMessage {
+    /**
+     * A request which asks for the last elements.
+     * @param maxSize the maximum number of elements in the response. Only the number of elements in the history will be
+     *                returned if this is higher than the number of elements in the history. This are at most the number
+     *                of elements specified in the HistoryCache configuration.
+     * @param messageName the name of the messages which should be returned (eg. Position.class.getSimpleName()).
+     */
+    public record Request(@JsonProperty String messageName, @JsonProperty int maxSize) implements JsonMessage {
         private Request(){
-            this(null, 0);
+            this((String)null, 0);
+        }
+
+        /**
+         *
+         * @param messageType the type of the requested message
+         * @param maxSize the maximum number of elements in the response. Only the number of elements in the history will be
+         *                returned if this is higher than the number of elements in the history. This are at most the number
+         *                of elements specified in the HistoryCache configuration.
+         */
+        public Request(Class<? extends JsonMessage> messageType, int maxSize){
+            this(messageType.getSimpleName(), maxSize);
         }
     }
 
-    record Response(@JsonProperty List<JsonMessage> history) implements JsonMessage {
+    /**
+     * The response containing a list of the last received messages.
+     * @param history the history
+     */
+    public record Response(@JsonProperty List<? extends JsonMessage> history) implements JsonMessage {
         private Response(){
             this(null);
+        }
+
+        /**
+         * Get a casted version of the response.
+         *
+         * @param type the wanted type class. This should be equal to the request.
+         * @param <T> the wanted type
+         * @return the casted list
+         */
+        @SuppressWarnings("unchecked")
+        public <T extends JsonMessage> List<T> as(Class<T> type){
+            return (List<T>) history();
         }
     }
 
