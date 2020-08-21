@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
  * </ul>
  * </p>
  * <p>
- *  To fetch the last elements you have to send a {@link Request} to <code>HistoryCache.class.getSimpleName()</code>.
+ *  To fetch the last elements, you have to send a {@link Request} to <code>HistoryCache.class.getSimpleName()</code>.
  *  The last elements will be returned in a {@link Response} message.
  * </p>
  * <p>
