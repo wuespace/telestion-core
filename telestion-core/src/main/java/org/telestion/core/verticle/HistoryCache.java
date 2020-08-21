@@ -15,9 +15,9 @@ import java.util.stream.IntStream;
  * <p>
  *  You have to configure the following options:
  * <ul>
- *  <li>messageName - is the name of the message type (eg. Position.class.getSimpleName()).</li>
- *  <li>addressName - is the address to which the message is send.</li>
- *  <li>historySize - is the maximum size of the history</li>
+ *  <li>messageName - the name of the message type (e.g., <code>Position.class.getSimpleName()</code>)</li>
+ *  <li>addressName - the address to which the message is send</li>
+ *  <li>historySize - the maximum size of the history</li>
  * </ul>
  * </p>
  * <p>
