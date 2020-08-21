@@ -5,8 +5,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.telestion.api.message.JsonMessage;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * HistoryCache is a verticle which stores the last received messages of a specified type.
@@ -85,23 +87,39 @@ public final class HistoryCache extends AbstractVerticle {
     }
 
     @Override
-    public void start(Promise<Void> startPromise) throws Exception {
-        var messageName = context.config().getString("messageName");
-        // every JsonMessage.nmae() has to be unique
-        // TODO put this as requirement which is asserted during runtime with an AssertionVerticle which observes the eventbus
-        var addressName = context.config().getString("addressName");
-        var historySize = context.config().getInteger("historySize");
+    public void start(Promise<Void> startPromise) {
+        var messageName = Objects.requireNonNull(context.config().getString("messageName"));
+        var addressName = Objects.requireNonNull(context.config().getString("addressName"));
+        var historySize = Objects.requireNonNull(context.config().getInteger("historySize"));
+
+        var history = new JsonMessage[historySize];
+        var idx = new int[]{0};
         vertx.eventBus().consumer(addressName, msg -> {
-           if(msg.body() instanceof JsonMessage jsonMessage && jsonMessage.name().equals(messageName)){
-               //TODO store data ...
+           if(msg.body() instanceof JsonMessage jsonMessage && messageName.equals(jsonMessage.name())){
+                vertx.sharedData().getLocalLock("historyLock", lockResult -> {
+                    if(lockResult.failed()){
+                        throw new RuntimeException();
+                    }
+                    history[idx[0]++] = jsonMessage;
+                    lockResult.result().release();
+                });
            }
         });
         vertx.eventBus().consumer(HistoryCache.class.getSimpleName(), msg -> {
-            if(msg.body() instanceof Request req && req.messageName().equals(messageName)){
-                var maxSze = req.maxSize();
-                var response = new ArrayList<JsonMessage>();
-                //TODO fill list ...
-                msg.reply(new Response(response));
+            if(msg.body() instanceof Request req && messageName.equals(req.messageName())){
+                var maxSize = req.maxSize();
+                var size = Math.min(maxSize, historySize);
+                vertx.sharedData().getLocalLock("historyLock", lockResult -> {
+                    if(lockResult.failed()){
+                        throw new RuntimeException();
+                    }
+                    var response = IntStream.range(0, size)
+                            .map(i -> (historySize+idx[0]-1-i)%historySize)
+                            .mapToObj(i -> history[i])
+                            .filter(Objects::nonNull).collect(Collectors.toList());
+                    lockResult.result().release();
+                    msg.reply(new Response(response));
+                });
             }
         });
         startPromise.complete();
