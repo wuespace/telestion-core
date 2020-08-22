@@ -9,19 +9,20 @@ import org.telestion.api.message.JsonMessage;
  * The {@link MessageCodec} which encodes all {@link org.telestion.api.message.JsonMessage} through the {@link JsonCodec}.
  * Append this to the Vert.x event bus to enable transmitting of {@link org.telestion.api.message.JsonMessage}.
  */
-public final class JsonMessageCodec implements MessageCodec<JsonMessage, JsonMessage> {
+public final class JsonMessageCodec<T extends JsonMessage> implements MessageCodec<T, T> {
 
-    public static final JsonMessageCodec Instance = new JsonMessageCodec();
-
-    @SuppressWarnings("unchecked")
     public static <T extends JsonMessage> MessageCodec<T, T> Instance(Class<T> type){
-        return (MessageCodec<T, T>)Instance;
+        return new JsonMessageCodec<>(type);
     }
 
-    private JsonMessageCodec(){}
+    private final String name;
+
+    private JsonMessageCodec(Class<T> messageClass){
+        name = messageClass.getName();
+    }
 
     @Override
-    public void encodeToWire(Buffer buffer, JsonMessage jsonMessage) {
+    public void encodeToWire(Buffer buffer, T jsonMessage) {
         var nameBuf = Buffer.buffer(jsonMessage.getClass().getName());
         buffer.appendInt(nameBuf.length());
         buffer.appendBuffer(nameBuf);
@@ -30,29 +31,29 @@ public final class JsonMessageCodec implements MessageCodec<JsonMessage, JsonMes
         buffer.appendBuffer(messageBuf);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public JsonMessage decodeFromWire(int pos, Buffer buffer) {
+    public T decodeFromWire(int pos, Buffer buffer) {
         var nameLen = buffer.getInt(pos);
         var name = buffer.getBuffer(pos+4, pos+4+nameLen).toString();
         var messageLen = buffer.getInt(pos+4+nameLen);
         var message = buffer.getBuffer(pos+4+nameLen+4, pos+4+nameLen+4+messageLen);
-
         try {
             var result = JsonCodec.INSTANCE.fromBuffer(message, Class.forName(name));
-            return (JsonMessage) result;
+            return (T) result;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public JsonMessage transform(JsonMessage jsonMessage) {
+    public T transform(T jsonMessage) {
         return jsonMessage;
     }
 
     @Override
     public String name() {
-        return JsonMessageCodec.class.getName();
+        return name;
     }
 
     @Override
