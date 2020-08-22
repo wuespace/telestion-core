@@ -11,7 +11,7 @@ import org.telestion.api.message.JsonMessage;
  */
 public final class JsonMessageCodec<T extends JsonMessage> implements MessageCodec<T, T> {
 
-    public static <T extends JsonMessage> MessageCodec<T, T> Instance(Class<T> type){
+    public static <T extends JsonMessage> MessageCodec<T, T> instance(Class<T> type){
         return new JsonMessageCodec<>(type);
     }
 

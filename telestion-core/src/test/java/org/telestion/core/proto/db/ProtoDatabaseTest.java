@@ -1,7 +1,6 @@
 package org.telestion.core.proto.db;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.spi.json.JsonCodec;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +25,7 @@ public class ProtoDatabaseTest {
 
     @Test void testPublish1(Vertx vertx, VertxTestContext testContext) throws Throwable {
 
-        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
+        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.instance(Position.class));
 
         //start test case
         vertx.deployVerticle(ProtoDatabase.class.getName(), event -> {
@@ -52,7 +51,7 @@ public class ProtoDatabaseTest {
 
     @Test void testPublish50(Vertx vertx, VertxTestContext testContext) throws Throwable {
 
-        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
+        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.instance(Position.class));
 
         var expected = IntStream.range(0, 50).mapToObj(i -> new Position(0, 1, i)).collect(Collectors.toList());
 
@@ -81,7 +80,7 @@ public class ProtoDatabaseTest {
 
     @Test void testPublish150(Vertx vertx, VertxTestContext testContext) throws Throwable {
 
-        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
+        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.instance(Position.class));
 
         var values = IntStream.range(0, 150).mapToObj(i -> new Position(0, 1, i)).collect(Collectors.toList());
 
