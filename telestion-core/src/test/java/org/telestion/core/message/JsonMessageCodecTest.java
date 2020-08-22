@@ -14,15 +14,15 @@ public class JsonMessageCodecTest {
     @Test void testEncodeDecode(){
         var expected = new Position(5.3, 4.2, 7.1);
         var buf = Buffer.buffer();
-        var codec = JsonMessageCodec.Instance(Position.class);
+        var codec = JsonMessageCodec.instance(Position.class);
         codec.encodeToWire(buf, expected);
         var actual = codec.decodeFromWire(0, buf);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test void testMultiRegister(Vertx vertx, VertxTestContext testContext) throws Throwable {
-        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
-        vertx.eventBus().registerDefaultCodec(Positions.class, JsonMessageCodec.Instance(Positions.class));
+        vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.instance(Position.class));
+        vertx.eventBus().registerDefaultCodec(Positions.class, JsonMessageCodec.instance(Positions.class));
         testContext.completeNow();
     }
 }
