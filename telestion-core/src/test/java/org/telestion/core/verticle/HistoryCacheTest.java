@@ -31,7 +31,7 @@ public class HistoryCacheTest {
         var apiAddr = HistoryCache.class.getSimpleName();
         var request = new HistoryCache.Request(Position.class, 5);
 
-        vertx.eventBus().registerDefaultCodec(JsonMessage.class, JsonMessageCodec.Instance);
+        vertx.eventBus().registerDefaultCodec(JsonMessage.class, JsonMessageCodec.instance(JsonMessage.class));
         //vertx.eventBus().registerDefaultCodec(HistoryCache.Response.class, JsonMessageCodec.Instance(HistoryCache.Response.class));
         DeploymentOptions options = new DeploymentOptions()
             .setConfig(new JsonObject()
