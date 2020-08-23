@@ -8,13 +8,12 @@ targetCompatibility = '14'
 
 application {
     // Define the main class for the application.
-    mainClassName = 'org.telestion.application.Application'
+    mainClassName = 'org.telestion.launcher.Launcher'
 }
 
 
 dependencies {
-    implementation project(':telestion-core')
-    implementation project(':telestion-launcher')
+    implementation project(':modules:telestion-core')
 
     implementation 'com.google.guava:guava:29.0-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
