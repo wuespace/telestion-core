@@ -7,7 +7,7 @@ import io.vertx.core.Verticle;
  * There are:<ul>
  * <li><strong>outgoing:</strong> {@link Verticle Verticles} publish there results on the eventbus on this address if
  * the result is not for a specific {@link Verticle} alone</li>
- * <li><strong>ingoing:</strong> {@link Verticle Verticles} listen on the eventbus for packages here</li></ul>
+ * <li><strong>incoming:</strong> {@link Verticle Verticles} listen on the eventbus for packages here</li></ul>
  * addresses.</br>
  * </br>
  * This class should only be used in static context.
@@ -66,7 +66,7 @@ public final class Address {
 	}
     
 	/**
-	 * Creates a new ingoing address from a {@link Verticle} and returns it as a {@link String}.
+	 * Creates a new incoming address from a {@link Verticle} and returns it as a {@link String}.
 	 * 
 	 * @param target {@link Verticle} to compose address from
 	 * @return composed {@link String address}
@@ -76,7 +76,7 @@ public final class Address {
     }
     
     /**
-     * Creates a new ingoing address from a method within a {@link Verticle} and returns it as a {@link String}.
+     * Creates a new incoming address from a method within a {@link Verticle} and returns it as a {@link String}.
      * 
      * @param target {@link Verticle} to compose address from
      * @param method Method which specifies the input address
@@ -86,7 +86,7 @@ public final class Address {
         return incoming(target)+"#"+method;
     }
 	/**
-	 * Creates a new ingoing address from a {@link Verticle} and returns it as a {@link String}.
+	 * Creates a new incoming address from a {@link Verticle} and returns it as a {@link String}.
 	 *
 	 * @param target {@link Verticle} to compose address from
 	 * @return composed {@link String address}
@@ -96,7 +96,7 @@ public final class Address {
 	}
 
 	/**
-	 * Creates a new ingoing address from a method within a {@link Verticle} and returns it as a {@link String}.
+	 * Creates a new incoming address from a method within a {@link Verticle} and returns it as a {@link String}.
 	 *
 	 * @param target {@link Verticle} to compose address from
 	 * @param method Method which specifies the input address
