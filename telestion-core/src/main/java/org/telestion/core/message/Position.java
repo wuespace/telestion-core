@@ -1,6 +1,7 @@
 package org.telestion.core.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.core.json.JsonObject;
 import org.telestion.api.message.JsonMessage;
 
 /**
@@ -14,5 +15,10 @@ public record Position(
 
     private Position(){
         this(0.0, 0.0, 0.0);
+    }
+
+    @Override
+    public String json() {
+        return JsonObject.mapFrom(this).toString();
     }
 }

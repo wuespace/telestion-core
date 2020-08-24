@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
+import org.telestion.core.message.JsonMessageCodec;
+import org.telestion.core.message.Position;
 
 /**
  * A generic launcher class which deploys {@link Verticle Verticles}.
@@ -38,6 +40,7 @@ public final class Launcher {
     public static void start(String... verticleNames){
         logger.info("Deploying {} verticles", verticleNames.length);
         var vertx = Vertx.vertx();
+        // vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
         Arrays.stream(verticleNames).forEach(verticleName -> {
             logger.info("Deploying verticle {}", verticleName);
             vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {

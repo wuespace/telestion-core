@@ -3,6 +3,7 @@ package org.telestion.widget;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -11,21 +12,15 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.core.message.Position;
-import org.telestion.launcher.Launcher;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public final class WidgetBridge extends AbstractVerticle {
 
     private final Logger logger = LoggerFactory.getLogger(WidgetBridge.class);
 
-    private Random r = new Random(55532);
-    List<Integer> p = r.ints(100).boxed().collect(Collectors.toList());
-    private List<Position> MockPos;
-    private int cnt = 0;
+    private Random r = new Random(555326456);
 
     @Override
     public void start(Promise<Void> startPromise) {
@@ -40,11 +35,8 @@ public final class WidgetBridge extends AbstractVerticle {
 
         logger.info("Server listening on http://localhost:{}/bridge", http.actualPort());
 
-        Position pos = new Position(2, 3, 5);
-        vertx.setPeriodic(Duration.ofSeconds(2).toMillis(), timerId -> {
-           logger.info("Sending current pos: { x: 2, y: 3, z: 5 } on {}", WidgetBridge.class.getName());
-           vertx.eventBus().publish(WidgetBridge.class.getName()+"/out"+"#MockPos",
-                   "{ x: 2, y: 3, z: 5 }");
+        vertx.setPeriodic(Duration.ofSeconds(3).toMillis(), timerId -> {
+           RandomPositionPublisher(r);
         });
 
         startPromise.complete();
@@ -63,6 +55,16 @@ public final class WidgetBridge extends AbstractVerticle {
     private StaticHandler staticHandler() {
         return StaticHandler.create()
                 .setCachingEnabled(false);
+    }
+
+    private void RandomPositionPublisher(Random r) {
+        Position pos = new Position(
+                r.nextDouble()*r.nextInt(10),
+                r.nextDouble()*r.nextInt(10),
+                r.nextDouble()*r.nextInt(10));
+        vertx.eventBus().publish(WidgetBridge.class.getName()+"/out"+"#MockPos",
+                JsonObject.mapFrom(pos));
+        logger.info("Sending current pos: {} on {}", pos, WidgetBridge.class.getName());
     }
 }
 
