@@ -53,7 +53,7 @@ public final class WidgetBridge extends AbstractVerticle {
     private Router bridgeHandler() {
         SockJSBridgeOptions options = new SockJSBridgeOptions()
                 .addInboundPermitted(new PermittedOptions().setAddress("Frontend/in#position"))
-                .addOutboundPermitted(new PermittedOptions().setAddress(WidgetBridge.class.getName()+"/out"+"#MockPos"))
+                .addOutboundPermitted(new PermittedOptions().setAddress(Address.outgoing(WidgetBridge.class, "MockPos")))
                 .addOutboundPermitted(new PermittedOptions().setAddress("current-position"));
 
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
@@ -67,9 +67,9 @@ public final class WidgetBridge extends AbstractVerticle {
 
     private void RandomPositionPublisher(Random r) {
         Position pos = new Position(
-                r.nextDouble()*r.nextInt(10),
-                r.nextDouble()*r.nextInt(10),
-                r.nextDouble()*r.nextInt(10));
+                r.nextDouble()+67.8915,
+                r.nextDouble()+21.0836,
+                r.nextDouble()*0);
         vertx.eventBus().publish(Address.outgoing(WidgetBridge.class, "MockPos"), pos.json());
         logger.info("Sending current pos: {} on {}", pos, WidgetBridge.class.getName());
     }
