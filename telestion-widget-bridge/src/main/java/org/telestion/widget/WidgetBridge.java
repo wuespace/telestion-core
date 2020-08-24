@@ -11,6 +11,8 @@ import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telestion.api.message.JsonMessage;
+import org.telestion.core.message.Address;
 import org.telestion.core.message.Position;
 
 import java.time.Duration;
@@ -39,6 +41,12 @@ public final class WidgetBridge extends AbstractVerticle {
            RandomPositionPublisher(r);
         });
 
+        vertx.eventBus().consumer(Address.outgoing(WidgetBridge.class, "MockPos"), msg -> {
+            JsonMessage.on(Position.class, msg, pos -> {
+                System.out.println(pos);
+            });
+        });
+
         startPromise.complete();
     }
 
@@ -62,8 +70,7 @@ public final class WidgetBridge extends AbstractVerticle {
                 r.nextDouble()*r.nextInt(10),
                 r.nextDouble()*r.nextInt(10),
                 r.nextDouble()*r.nextInt(10));
-        vertx.eventBus().publish(WidgetBridge.class.getName()+"/out"+"#MockPos",
-                JsonObject.mapFrom(pos));
+        vertx.eventBus().publish(Address.outgoing(WidgetBridge.class, "MockPos"), pos.json());
         logger.info("Sending current pos: {} on {}", pos, WidgetBridge.class.getName());
     }
 }

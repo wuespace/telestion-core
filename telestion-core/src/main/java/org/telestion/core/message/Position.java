@@ -16,9 +16,4 @@ public record Position(
     private Position(){
         this(0.0, 0.0, 0.0);
     }
-
-    @Override
-    public String json() {
-        return JsonObject.mapFrom(this).toString();
-    }
 }
