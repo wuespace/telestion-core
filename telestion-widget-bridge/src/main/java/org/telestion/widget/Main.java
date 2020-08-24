@@ -6,6 +6,6 @@ import org.telestion.launcher.Launcher;
 public class Main {
 
     public static void main(String[] args) {
-        Launcher.start(HelloWorld.class.getName());
+        Launcher.start(WidgetBridge.class.getName());
     }
 }
