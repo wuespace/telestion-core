@@ -6,7 +6,8 @@ import io.vertx.core.spi.json.JsonCodec;
 import org.telestion.api.message.JsonMessage;
 
 /**
- * The {@link MessageCodec} which encodes all {@link org.telestion.api.message.JsonMessage} through the {@link JsonCodec}.
+ * The {@link MessageCodec} which encodes all {@link org.telestion.api.message.JsonMessage} through the
+ * {@link JsonCodec}.</br>
  * Append this to the Vert.x event bus to enable transmitting of {@link org.telestion.api.message.JsonMessage}.
  */
 public final class JsonMessageCodec<T extends JsonMessage> implements MessageCodec<T, T> {
