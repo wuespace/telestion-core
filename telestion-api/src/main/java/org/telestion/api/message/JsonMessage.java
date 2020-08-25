@@ -1,6 +1,8 @@
 package org.telestion.api.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.spi.json.JsonCodec;
 
 /**
@@ -22,8 +24,27 @@ public interface JsonMessage {
     /**
      * @return the json representation of the message
      */
-    default String json() {
-       return JsonCodec.INSTANCE.toString(this);
+    default JsonObject json() {
+        return JsonObject.mapFrom(this);
+    }
+
+    /**
+     * This method decodes a JsonMessage from the event bus.
+     *
+     * @param clazz
+     * @param msgBody
+     * @param handler
+     * @param <T>
+     */
+    static <T extends JsonMessage> void on(Class<T> clazz, Object msgBody, Handler<T> handler){
+        if(msgBody instanceof JsonObject jsonObject) {
+            if (!jsonObject.containsKey("name")) {
+                return;
+            }
+            if (clazz.getSimpleName().equals(jsonObject.getString("name"))) {
+                handler.handle(jsonObject.mapTo(clazz));
+            }
+        }
     }
 
     /**
