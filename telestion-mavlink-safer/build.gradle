@@ -28,6 +28,9 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
 
     implementation "io.vertx:vertx-core:$gradle.vertxVersion"
+
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20200518'
 }
 
 test {
