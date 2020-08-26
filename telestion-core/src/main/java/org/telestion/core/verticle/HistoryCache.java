@@ -3,8 +3,14 @@ package org.telestion.core.verticle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.Verticle;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.Json;
 import org.telestion.api.message.JsonMessage;
+import org.telestion.core.message.Address;
+import org.telestion.core.message.Position;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,7 +34,7 @@ import java.util.stream.IntStream;
  *  An example looks like this:
  * <pre>
  * {@code
- *   vertx.eventBus().request(HistoryCache.class.getSimpleName(), new Request(Position.class, 10), msgResult -> {
+ *   vertx.eventBus().request(Address.incoming(HistoryCache.class), new Request(Position.class, 10), msgResult -> {
  *       if(msgResult.failed()) return;
  *       if(msgResult.result().body() instanceof Response response){
  *           var list = response.as(Position.class);
@@ -40,6 +46,46 @@ import java.util.stream.IntStream;
  */
 public final class HistoryCache extends AbstractVerticle {
 
+    private final String messageName;
+    private final String addressName;
+    private final int historySize;
+
+    /**
+     * This constructor supplies default options.
+     *
+     * @param messageName the name of the message type (e.g., <code>Position.class.getSimpleName()</code>)
+     * @param addressName the address to which the message is send
+     * @param historySize the maximum size of the history
+     */
+    public HistoryCache(String messageName, String addressName, int historySize) {
+        this.messageName = messageName;
+        this.addressName = addressName;
+        this.historySize = historySize;
+    }
+
+    /**
+     * This constructor supplies default options.
+     *
+     * @param messageClass the name of the message type (e.g., <code>Position.class.getSimpleName()</code>)
+     * @param source the address to which the message is send
+     * @param historySize the maximum size of the history
+     */
+    public HistoryCache(Class<? extends JsonMessage> messageClass, Class<? extends Verticle> source, int historySize) {
+        //TODO swap oder of arguments
+        //TODO think about an exposing static method? Which exposes public MessageTypes?
+        this.messageName = messageClass.getName();
+        this.addressName = Address.outgoing(source);
+        this.historySize = historySize;
+    }
+
+    /**
+     * No default options are supplied.
+     * This means they have to be specified as {@link io.vertx.core.DeploymentOptions}.
+     */
+    public HistoryCache(){
+        this((String)null, (String)null, 0);
+    }
+
     /**
      * A request which asks for the last elements.
      * @param maxSize the maximum number of elements in the response. Only the number of elements in the history will be
@@ -47,7 +93,7 @@ public final class HistoryCache extends AbstractVerticle {
      *                of elements are specified in the HistoryCache configuration.
      * @param messageName the name of the message which should be returned (e.g., <code>Position.class.getSimpleName()</code>).
      */
-    public record Request(@JsonProperty String messageName, @JsonProperty int maxSize) implements JsonMessage {
+    public static record Request(@JsonProperty String messageName, @JsonProperty int maxSize) implements JsonMessage {
         private Request(){
             this((String)null, 0);
         }
@@ -60,7 +106,7 @@ public final class HistoryCache extends AbstractVerticle {
          *                of elements specified in the HistoryCache configuration.
          */
         public Request(Class<? extends JsonMessage> messageType, int maxSize){
-            this(messageType.getSimpleName(), maxSize);
+            this(messageType.getName(), maxSize);
         }
     }
 
@@ -68,7 +114,7 @@ public final class HistoryCache extends AbstractVerticle {
      * The response containing a list of the latest received messages.
      * @param history the history
      */
-    public record Response(@JsonProperty List<? extends JsonMessage> history) implements JsonMessage {
+    public static record Response/*<T extends JsonMessage>*/(@JsonProperty List<Position> history) implements JsonMessage {
         private Response(){
             this(null);
         }
@@ -77,25 +123,25 @@ public final class HistoryCache extends AbstractVerticle {
          * Get a casted version of the response.
          *
          * @param type the wanted type class. This should be equal to the request.
-         * @param <T> the wanted type
          * @return the casted list
          */
-        @SuppressWarnings("unchecked")
-        public <T extends JsonMessage> List<T> as(Class<T> type){
-            return (List<T>) history();
-        }
+        //@SuppressWarnings("unchecked")
+        //public T[] as(Class<T> type){
+        //    return history();
+        //}
     }
 
     @Override
-    public void start(Promise<Void> startPromise) {
-        var messageName = Objects.requireNonNull(context.config().getString("messageName"));
-        var addressName = Objects.requireNonNull(context.config().getString("addressName"));
-        var historySize = Objects.requireNonNull(context.config().getInteger("historySize"));
+    public void start(Promise<Void> startPromise) throws ClassNotFoundException {
+        var messageName = Objects.requireNonNull(context.config().getString("messageName", this.messageName));
+        var messageClass = Class.forName(messageName);
+        var addressName = Objects.requireNonNull(context.config().getString("addressName", this.addressName));
+        var historySize = Objects.requireNonNull(context.config().getInteger("historySize", this.historySize));
 
         var history = new JsonMessage[historySize];
         var idx = new int[]{0};
         vertx.eventBus().consumer(addressName, msg -> {
-           if(msg.body() instanceof JsonMessage jsonMessage && messageName.equals(jsonMessage.name())){
+            JsonMessage.on((Class<? extends JsonMessage>)messageClass, msg, jsonMessage -> {
                 vertx.sharedData().getLocalLock("historyLock", lockResult -> {
                     if(lockResult.failed()){
                         throw new RuntimeException();
@@ -103,10 +149,10 @@ public final class HistoryCache extends AbstractVerticle {
                     history[idx[0]++] = jsonMessage;
                     lockResult.result().release();
                 });
-           }
+            });
         });
-        vertx.eventBus().consumer(HistoryCache.class.getSimpleName(), msg -> {
-            if(msg.body() instanceof Request req && messageName.equals(req.messageName())){
+        vertx.eventBus().consumer(Address.incoming(HistoryCache.class), msg -> {
+            JsonMessage.on(Request.class, msg, req -> {
                 var maxSize = req.maxSize();
                 var size = Math.min(maxSize, historySize);
                 vertx.sharedData().getLocalLock("historyLock", lockResult -> {
@@ -115,13 +161,37 @@ public final class HistoryCache extends AbstractVerticle {
                     }
                     var response = IntStream.range(0, size)
                             .map(i -> (historySize+idx[0]-1-i)%historySize)
-                            .mapToObj(i -> history[i])
+                            .mapToObj(i -> (Position)history[i])
                             .filter(Objects::nonNull).collect(Collectors.toList());
                     lockResult.result().release();
-                    msg.reply(new Response(response));
+                    msg.reply(new Response(response).json());
                 });
-            }
+            });
         });
         startPromise.complete();
+    }
+
+
+    /**
+     * TODO refactor out in example class
+     *
+     * A small self containing example
+     * It listens to a started {@link PositionPublisher} and keeps a history.
+     *
+     * @param args
+     */
+    @Deprecated
+    public static void main(String[] args) throws InterruptedException {
+        var vertx = Vertx.vertx();
+        var cache = new HistoryCache(Position.class, PositionPublisher.class, 50);
+        vertx.deployVerticle(cache);
+        vertx.deployVerticle(new PositionPublisher());
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
+        vertx.eventBus().request(Address.incoming(HistoryCache.class), new Request(Position.class, 3).json(), msgResult -> {
+            JsonMessage.on(Response.class, msgResult.result(), resp -> {
+                System.out.println(resp.history()); //should be 2 elements because publishing rate is once every two secs
+                vertx.close();
+            });
+        });
     }
 }

@@ -18,7 +18,7 @@ public final class PositionPublisher extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         vertx.setPeriodic(Duration.ofSeconds(2).toMillis(), timerId -> {
-            vertx.eventBus().publish(Address.outgoing(this), new Position(0.3, 7.2, 8.0));
+            vertx.eventBus().publish(Address.outgoing(this), new Position(0.3, 7.2, 8.0).json());
         });
         startPromise.complete();
     }
