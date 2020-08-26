@@ -1,4 +1,6 @@
-package org.telestion.adapter.mavlink.message;
+package org.telestion.adapter.mavlink.message.internal;
+
+import org.telestion.api.message.JsonMessage;
 
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
@@ -8,7 +10,7 @@ package org.telestion.adapter.mavlink.message;
  */
 @SuppressWarnings("preview")
 public final record RawPayload(
-		byte[] payload) implements MavlinkMessage {
+		byte[] payload) implements JsonMessage {
 	
 	@SuppressWarnings("unused")
 	private RawPayload() {

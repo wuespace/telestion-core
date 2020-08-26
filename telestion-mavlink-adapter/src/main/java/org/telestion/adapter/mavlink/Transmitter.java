@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
@@ -69,6 +70,18 @@ public final class Transmitter extends AbstractVerticle {
 				
 				addAll(build, raw1);
 				addAll(build, v2.payload().payload());
+				
+				vertx.eventBus().send(AddressAssociator.removeAddress, v2.getMavlinkId());
+				vertx.eventBus().consumer(AddressAssociator.outAddress, msg2 -> {
+					if (msg2.body() instanceof String s) {
+						byte[] bytes = new byte[build.size()];
+						int i = 0;
+						for (Byte b : build) {
+							bytes[i++] = b;
+						}
+						vertx.eventBus().send(outAddress, new MavConnection(bytes, s));
+					}
+				});
 			} else if (msg.body() instanceof RawMavlinkV1 v1) {
 				
 			} else if (msg.body() instanceof RawMavlink raw) {

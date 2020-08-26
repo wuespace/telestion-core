@@ -27,8 +27,9 @@ public final class X25Checksum {
 	 * @return
 	 */
 	public static int calculate(int data, int currentCrc) {
-		data = (byte) (data & 0xff) ^ (byte) (currentCrc & 0xff);
-		data ^= (data << 4) & 0xff;
+		data ^= (byte) (currentCrc & 0xff);
+		data ^= (data << 4);
+		data &= 0xff;
 		return ((currentCrc >> 8) ^ (data << 8) ^ (data << 3) ^ (data >> 4)) & 0xffff;
 	}
 	
@@ -37,11 +38,11 @@ public final class X25Checksum {
 	 * @param buffer
 	 * @return
 	 */
-	public static byte[] calculate(byte[] buffer) {
+	public static int calculate(byte[] buffer) {
 		int currentCrc = INIT_CRC;
 		for (byte b : buffer) {
 			currentCrc = calculate(b, currentCrc);
 		}
-		return new byte[] {(byte) (currentCrc >> 8 & 0xff), (byte) (currentCrc & 0xff)};
+		return currentCrc & 0xffff;
 	}
 }

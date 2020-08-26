@@ -1,7 +1,5 @@
 package org.telestion.adapter.mavlink.message.internal;
 
-import org.telestion.adapter.mavlink.message.RawPayload;
-
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
  * 

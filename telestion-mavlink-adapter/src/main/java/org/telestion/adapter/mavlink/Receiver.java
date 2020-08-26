@@ -4,12 +4,12 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.adapter.mavlink.message.RawPayload;
 import org.telestion.adapter.mavlink.message.internal.AddressMapping;
 import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
+import org.telestion.adapter.mavlink.message.internal.RawPayload;
 import org.telestion.core.message.Address;
 import org.telestion.core.message.JsonMessageCodec;
 
