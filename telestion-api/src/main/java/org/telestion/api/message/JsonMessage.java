@@ -2,6 +2,7 @@ package org.telestion.api.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.spi.json.JsonCodec;
 
@@ -38,6 +39,25 @@ public interface JsonMessage {
      */
     static <T extends JsonMessage> void on(Class<T> clazz, Object msgBody, Handler<T> handler){
         if(msgBody instanceof JsonObject jsonObject) {
+            if (!jsonObject.containsKey("name")) {
+                return;
+            }
+            if (clazz.getSimpleName().equals(jsonObject.getString("name"))) {
+                handler.handle(jsonObject.mapTo(clazz));
+            }
+        }
+    }
+
+    /**
+     * This method decodes a JsonMessage from the event bus.
+     *
+     * @param clazz
+     * @param msg
+     * @param handler
+     * @param <T>
+     */
+    static <T extends JsonMessage> void on(Class<T> clazz, Message<?> msg, Handler<T> handler){
+        if(msg.body() instanceof JsonObject jsonObject) {
             if (!jsonObject.containsKey("name")) {
                 return;
             }
