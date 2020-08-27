@@ -5,6 +5,9 @@ import org.telestion.adapter.mavlink.exception.AnnotationMissingException;
 import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
  * 
@@ -19,6 +22,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * @return {@link MavInfo} of this class if present
 	 * @throws AnnotationMissingException if {@link MavInfo} is not present
 	 */
+	@JsonProperty(access = Access.READ_ONLY)
 	default MavInfo checkAnnotation() {
 		if (!this.getClass().isAnnotationPresent(MavInfo.class))
 			throw new AnnotationMissingException("Required Annotation @MavInfo is missing!");
@@ -37,6 +41,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * 
 	 * @return CRC_EXTRA-Byte for the {@link MavlinkMessage}
 	 */
+	@JsonProperty(access = Access.READ_ONLY)
 	public default int getCrc() {
 		return checkAnnotation().crc();
 	}
@@ -50,6 +55,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * 
 	 * @return id of the {@link MavlinkMessage}
 	 */
+	@JsonProperty(access = Access.READ_ONLY)
 	public default int getId() {
 		return checkAnnotation().id();
 	}

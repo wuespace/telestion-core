@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version 1.0
  * @see MavlinkMessage
  */
-@MavInfo(id = 0, crc = 0x50)
+@MavInfo(id = 0, crc = 0x32)
 @SuppressWarnings("preview")
-public record Hearbeat(
+public record Heartbeat(
 		@MavField(nativeType = NativeType.UINT_8)
 		@JsonProperty int mavType,
 		@MavField(nativeType = NativeType.UINT_8)
@@ -29,4 +29,9 @@ public record Hearbeat(
 		@MavField(nativeType = NativeType.UINT_8)
 		@JsonProperty int mavVersion) implements MavlinkMessage {
 
+	static {
+		// Register
+		MessageIndex.put(0, Heartbeat.class);
+	}
+	
 }

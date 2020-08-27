@@ -40,9 +40,8 @@ public final class Receiver extends AbstractVerticle {
 			if (JsonMessage.on(MavConnection.class, msg, con -> {
 				byte[] bytes = con.bytes();
 				
-				// bytes[]-Length will not be checked. If invalid an exception will be thrown!
 				RawMavlink mav = switch(bytes[0]) {
-						case (byte) 0xFD -> (bytes.length > 10
+						case (byte) 0xFD -> (bytes.length > 11
 								? new RawMavlinkV2(
 									(short) bytes[1],
 									(short) bytes[2],
@@ -52,9 +51,9 @@ public final class Receiver extends AbstractVerticle {
 									(short) bytes[6],
 									(long) bytes[7] << 16 + (bytes[8] << 8) + bytes[9],
 									new RawPayload(Arrays.copyOfRange(bytes, 10, bytes[1] + 10)),
-									(int) (bytes[bytes[1] + 11] << 8) + bytes[bytes[1] + 12],
-									(bytes.length > bytes[1] + 13
-											? Arrays.copyOfRange(bytes, bytes[1] + 13, bytes[1] + 26)
+									(int) (bytes[bytes[1] + 10] << 8) + bytes[bytes[1] + 11],
+									(bytes.length > bytes[1] + 12
+											? Arrays.copyOfRange(bytes, bytes[1] + 12, bytes[1] + 25)
 											: null))
 								: null);
 						case (byte) 0xFE -> (bytes.length > 7
