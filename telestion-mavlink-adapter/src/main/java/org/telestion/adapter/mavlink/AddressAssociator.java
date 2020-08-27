@@ -5,8 +5,8 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.message.internal.AddressMapping;
+import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.JsonMessageCodec;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -45,13 +45,12 @@ public final class AddressAssociator extends AbstractVerticle {
 	@SuppressWarnings("preview")
 	@Override
 	public void start(Promise<Void> startPromise) {
-		
-		vertx.eventBus().registerDefaultCodec(AddressMapping.class, JsonMessageCodec.instance(AddressMapping.class));
-		
 		vertx.eventBus().consumer(putAddress, msg -> {
-			if (msg.body() instanceof AddressMapping map) {
+			if (JsonMessage.on(AddressMapping.class, msg, map -> {
 				mapping.put(map.mavAddress(), map.ip());
-			} else {
+				return;
+			}));
+			else {
 				logger.warn("Unsupported message received on {}!", msg.address());
 			}
 		});

@@ -10,6 +10,7 @@ import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
+import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
@@ -53,7 +54,7 @@ public final class Transmitter extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(inAddress, msg -> {
-			if (msg.body() instanceof RawMavlinkV2 v2) {
+			if (JsonMessage.on(RawMavlinkV2.class, msg, v2 -> {
 				List<Byte> build = new ArrayList<Byte>(v2.len() + 11);
 				byte[] raw1 = new byte[] {
 						(byte) 0xFD,
@@ -80,13 +81,19 @@ public final class Transmitter extends AbstractVerticle {
 							bytes[i++] = b;
 						}
 						vertx.eventBus().send(outAddress, new MavConnection(bytes, s));
+					} else {
+						logger.error("An unsupported datatype ({}) was sent to {}", msg.getClass().getName(),
+								msg.address());
 					}
 				});
-			} else if (msg.body() instanceof RawMavlinkV1 v1) {
+			}));
+			else if (JsonMessage.on(RawMavlinkV1.class, msg, v1 -> {
 				
-			} else if (msg.body() instanceof RawMavlink raw) {
+			}));
+			else if (JsonMessage.on(RawMavlink.class, msg, raw -> {
 				logger.warn("Unsupported RawMavlink {} sent to {}", raw.getMavlinkId(), msg.address());
-			} else {
+			}));
+			else {
 				logger.error("Unsupported type sent to {}", msg.address());
 			}
 		});

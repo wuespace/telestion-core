@@ -5,7 +5,6 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.message.internal.MavConnection;
-import org.telestion.core.message.JsonMessageCodec;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -63,14 +62,12 @@ public final class TcpAdapter extends AbstractVerticle {
 	}
 	
 	/**
-	 * Start the TCP-Server for MAVLink and register the {@link MavConnection MavConnection-Codec}.</br>
+	 * Start the TCP-Server for MAVLink.</br>
 	 * </br>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().registerDefaultCodec(MavConnection.class, JsonMessageCodec.instance(MavConnection.class));
-		
+	public void start(Promise<Void> startPromise) {		
 		logger.info("Starting TCP-Server for MAVLink");
 		server = vertx.createNetServer(configServer());
 		
@@ -85,7 +82,7 @@ public final class TcpAdapter extends AbstractVerticle {
 			
 			socket.handler(buffer -> {
 				vertx.eventBus().send(Receiver.inAddress,
-						new MavConnection(buffer.getBytes(), addr));
+						new MavConnection(buffer.getBytes(), addr).json());
 			});
 			
 			socket.closeHandler(handler -> {
@@ -110,6 +107,7 @@ public final class TcpAdapter extends AbstractVerticle {
 				logger.info("TCP-Server for MAVLink successfully started. Running on port {}", server.actualPort());
 			} else {
 				logger.error("Error while starting TCP-Server for MAVLink! Cause:\n{}", handler.cause());
+				startPromise.fail("Starting TCP-Server for MAVLink failed!");
 			}
 		});
 		
@@ -117,7 +115,7 @@ public final class TcpAdapter extends AbstractVerticle {
 	}
 	
 	/**
-	 * Stop the TCP-Server for MAVLink and unregister the {@link MavConnection MavConnection-Codec}.</br>
+	 * Stop the TCP-Server for MAVLink.</br>
 	 * </br>
 	 * {@inheritDoc}
 	 */
@@ -131,7 +129,6 @@ public final class TcpAdapter extends AbstractVerticle {
 			}
 		});
 		
-		vertx.eventBus().unregisterDefaultCodec(MavConnection.class);
 		stopPromise.complete();
 	}
 }

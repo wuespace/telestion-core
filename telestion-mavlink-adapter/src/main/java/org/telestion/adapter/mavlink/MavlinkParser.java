@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
+import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
@@ -26,17 +27,18 @@ public final class MavlinkParser extends AbstractVerticle {
 	public static final String toMavlinkInAddress = Address.incoming(MavlinkParser.class, "toMavlink");
 	public static final String toMavlinkOutAddress = Address.incoming(MavlinkParser.class, "toMavlink");
 	
-	@SuppressWarnings("preview")
 	@Override
 	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(toMavlinkInAddress, msg -> {
-			if (msg.body() instanceof RawMavlinkV2 v2) {
+			if (JsonMessage.on(RawMavlinkV2.class, msg, v2 -> {
 				System.out.println("Ich lebe v2");
-			} else if (msg.body() instanceof RawMavlinkV1 v1) {
+			}));
+			else if (JsonMessage.on(RawMavlinkV1.class, msg, v1 -> {
 				System.out.println("Ich lebe v1");
-			} else if (msg.body() instanceof RawMavlink raw) {
-				logger.warn("Unsupported RawMavlink {} sent to {}", raw.getMavlinkId(), msg.address());
-			} else {
+			}));
+			else if (JsonMessage.on(RawMavlink.class, msg, unsupported -> {
+				logger.warn("Unsupported RawMavlink-Package received on {}", msg.address());
+			})); else {
 				logger.error("Unsupported type sent to {}", msg.address());
 			}
 		});

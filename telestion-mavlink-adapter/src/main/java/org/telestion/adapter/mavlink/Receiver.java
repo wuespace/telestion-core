@@ -10,8 +10,8 @@ import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
 import org.telestion.adapter.mavlink.message.internal.RawPayload;
+import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.JsonMessageCodec;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -34,15 +34,10 @@ public final class Receiver extends AbstractVerticle {
 	 */
 	public static final String inAddress = Address.incoming(Receiver.class);
 	
-	@SuppressWarnings("preview")
 	@Override
 	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().registerDefaultCodec(RawPayload.class, JsonMessageCodec.instance(RawPayload.class));
-		vertx.eventBus().registerDefaultCodec(RawMavlinkV1.class, JsonMessageCodec.instance(RawMavlinkV1.class));
-		vertx.eventBus().registerDefaultCodec(RawMavlinkV2.class, JsonMessageCodec.instance(RawMavlinkV2.class));
-		
 		vertx.eventBus().consumer(inAddress, msg -> {
-			if (msg.body() instanceof MavConnection con) {
+			if (JsonMessage.on(MavConnection.class, msg, con -> {
 				byte[] bytes = con.bytes();
 				
 				// bytes[]-Length will not be checked. If invalid an exception will be thrown!
@@ -77,12 +72,13 @@ public final class Receiver extends AbstractVerticle {
 				
 				if (mav != null) {
 					vertx.eventBus().send(AddressAssociator.putAddress,
-							new AddressMapping(mav.getMavlinkId(), con.remoteAddress()));
-					vertx.eventBus().send(MavlinkParser.toMavlinkInAddress, mav);
+							new AddressMapping(mav.getMavlinkId(), con.remoteAddress()).json());
+					vertx.eventBus().send(MavlinkParser.toMavlinkInAddress, mav.json());
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");
 				}
-			} else {
+			}));
+			else {
 				// Might cause problems because sender does not get notified.
 				logger.error("Unsupported type sent to {}", msg.address());
 			}
@@ -93,10 +89,6 @@ public final class Receiver extends AbstractVerticle {
 	
 	@Override
 	public void stop(Promise<Void> stopPromise) {
-		vertx.eventBus().unregisterDefaultCodec(RawPayload.class);
-		vertx.eventBus().unregisterDefaultCodec(RawMavlinkV1.class);
-		vertx.eventBus().unregisterDefaultCodec(RawMavlinkV2.class);
-		
 		stopPromise.complete();
 	}
 }

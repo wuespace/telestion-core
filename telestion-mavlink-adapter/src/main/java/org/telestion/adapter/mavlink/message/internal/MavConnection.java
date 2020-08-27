@@ -2,6 +2,8 @@ package org.telestion.adapter.mavlink.message.internal;
 
 import org.telestion.api.message.JsonMessage;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
  *
@@ -10,7 +12,11 @@ import org.telestion.api.message.JsonMessage;
  */
 @SuppressWarnings("preview")
 public final record MavConnection(
-		byte[] bytes,
-		String remoteAddress) implements JsonMessage {
+		@JsonProperty byte[] bytes,
+		@JsonProperty String remoteAddress) implements JsonMessage {
 	
+	@SuppressWarnings("unused")
+	private MavConnection() {
+		this(null, null);
+	}
 }
