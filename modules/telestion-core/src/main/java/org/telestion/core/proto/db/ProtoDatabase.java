@@ -23,7 +23,7 @@ public final class ProtoDatabase extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
-        vertx.eventBus().consumer("mavlink", msg -> {
+        vertx.eventBus().consumer("current-position", msg -> {
             if(msg.body() instanceof Position position){
                 var idx = (int)vertx.sharedData().getLocalMap("position").getOrDefault("next", 0);
                 vertx.sharedData().getLocalMap("position").put(idx, position.json());
