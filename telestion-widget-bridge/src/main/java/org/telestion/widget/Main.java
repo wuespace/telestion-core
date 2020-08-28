@@ -10,11 +10,12 @@ import java.util.Collections;
 public class Main {
 
     public static void main(String[] args) {
-        Launcher.start(new WidgetBridge(
+        Launcher.start(
+                new RandomPositionPublisher(),
+                new WidgetBridge(
                 "localhost",
                 8080,
                 Collections.emptyList(),
                 Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))));
-        Launcher.start(RandomPositionPublisher.class.getName());
     }
 }

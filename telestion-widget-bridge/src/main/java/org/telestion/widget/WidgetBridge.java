@@ -61,6 +61,8 @@ import java.util.stream.Collectors;
  */
 public final class WidgetBridge extends AbstractVerticle {
 
+    //public static final class Config
+
     private final Logger logger = LoggerFactory.getLogger(WidgetBridge.class);
     private String host;
     private Integer port;
