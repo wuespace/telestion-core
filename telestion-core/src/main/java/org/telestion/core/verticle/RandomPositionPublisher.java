@@ -17,25 +17,23 @@ import java.util.Random;
  */
 public final class RandomPositionPublisher extends AbstractVerticle {
     private static final Logger logger = LoggerFactory.getLogger(RandomPositionPublisher.class);
-    private Random rand = new Random(555326456);
+    private final Random rand = new Random(555326456);
 
     @Override
     public void start(Promise<Void> startPromise) {
-        vertx.setPeriodic(Duration.ofSeconds(3).toMillis(), timerId -> {
-            PositionPublisher();
-        });
+        vertx.setPeriodic(Duration.ofSeconds(3).toMillis(), timerId -> publishPosition());
         startPromise.complete();
     }
 
     /**
      * Publishes random Position around Kiruna.
      */
-    private void PositionPublisher() {
+    private void publishPosition() {
         Position pos = new Position(
                 rand.nextDouble()+67.8915,
                 rand.nextDouble()+21.0836,
                 rand.nextDouble()*0);
         vertx.eventBus().publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos.json());
-        logger.info("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
+        logger.debug("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
     }
 }

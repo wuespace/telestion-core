@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.telestion.core.message.Address;
 import org.telestion.core.verticle.RandomPositionPublisher;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 /**
  * WidgetBridge is a verticle which uses SockJS-WebSockets to extend the
  * vertx.eventBus() to an HTTP-Server.
@@ -57,12 +61,10 @@ import org.telestion.core.verticle.RandomPositionPublisher;
 public final class WidgetBridge extends AbstractVerticle {
 
     private final Logger logger = LoggerFactory.getLogger(WidgetBridge.class);
-    private final HttpServerOptions httpOptions;
-    // TODO: think about the implementation of sockJSBridgeOptions with default
-    private final SockJSBridgeOptions sockJSBridgeOptions;
-    private final SockJSBridgeOptions defaultSockJSBridgeOptions = new SockJSBridgeOptions()
-            .addInboundPermitted(new PermittedOptions()
-                .setAddress(Address.outgoing(RandomPositionPublisher.class, "MockPos")));
+    private String host;
+    private Integer port;
+    private List<String> inboundPermitted;
+    private List<String> outboundPermitted;
 
     /**
      * This constructor supplies default options
@@ -70,45 +72,45 @@ public final class WidgetBridge extends AbstractVerticle {
      *
      * @param host the ip address of the host on which the HTTP-Server should run
      * @param port the port on which the HTTP-Server should listen
+     * @param inboundPermitted the permitted eventbus addresses for inbound connections
+     * @param outboundPermitted the permitted eventbus addresses for outbound connections
      */
-    public WidgetBridge(String host, int port) {
-        this.httpOptions = new HttpServerOptions()
+    public WidgetBridge(String host, int port, List<String> inboundPermitted, List<String> outboundPermitted) {
+        this.host = host;
+        this.port = port;
+        this.inboundPermitted = inboundPermitted;
+        this.outboundPermitted = outboundPermitted;
+    }
+
+    /**
+     * If this constructor is used all settings have to be specified in the config file
+     */
+    public WidgetBridge() { }
+
+    @Override
+    public void start(Promise<Void> startPromise) {
+        host = Objects.requireNonNull(context.config().getString("host", host));
+        port = Objects.requireNonNull(context.config().getInteger("port", port));
+        inboundPermitted = context.config().getJsonArray("inboundPermitted")
+                .stream().map(addr -> (String)addr).collect(Collectors.toList());
+        outboundPermitted = context.config().getJsonArray("outboundPermitted")
+                .stream().map(addr -> (String)addr).collect(Collectors.toList());
+        
+        HttpServerOptions httpOptions = new HttpServerOptions()
                 .setHost(host)
                 .setPort(port);
-        this.sockJSBridgeOptions = this.defaultSockJSBridgeOptions;
-    }
 
-    /**
-     * This constructor supplies default options
-     * and uses the defaultSockJSBridgeOptions for the applied rules.
-     *
-     * @param httpOptions the HttpServerOptions to create the HTTP-Server (e.g., <code>new HttpServerOptions().setHost("\<Host\>").setPort(\<Port\>)</code>)
-     */
-    public WidgetBridge(HttpServerOptions httpOptions) {
-        this.httpOptions = httpOptions;
-        this.sockJSBridgeOptions = this.defaultSockJSBridgeOptions;
-    }
+        Router router = Router.router(vertx);
 
-    /**
-     * This constructor supplies default options.
-     *
-     * @param httpOptions the HttpServerOptions to create the HTTP-Server (e.g., <code>new HttpServerOptions().setHost("\<Host\>").setPort(\<Port\>)</code>)
-     * @param sockJSBridgeOptions the SockJSBridgeOptions to handle rules for the EventBusBridge
-     */
-    public WidgetBridge(HttpServerOptions httpOptions,
-                        SockJSBridgeOptions sockJSBridgeOptions) {
-        this.httpOptions = httpOptions;
-        this.sockJSBridgeOptions = sockJSBridgeOptions;
-    }
+        router.mountSubRouter("/bridge", bridgeHandler());
+        router.route().handler(staticHandler());
 
-    /**
-     * Default constructor. Creates HttpServerOptions with localhost and port 8080
-     * and uses the defaultSockJSBridgeOptions for the applied rules.
-     * TODO: Other default host and port may be specified in a config file.
-     */
-    public WidgetBridge() {
-        this(new HttpServerOptions()
-            .setHost("localhost").setPort(8080));
+        vertx.createHttpServer(httpOptions)
+                .requestHandler(router)
+                .listen();
+
+        logger.info("Server listening on {}:{}/bridge", httpOptions.getHost(), httpOptions.getPort());
+        startPromise.complete();
     }
 
     /**
@@ -117,8 +119,14 @@ public final class WidgetBridge extends AbstractVerticle {
      * @return Router to be mounted on an existing Router bridging the eventBus with the defined sockJSBridgeOptions
      */
     private Router bridgeHandler() {
+        logger.info("Inbound permitted: "+inboundPermitted);
+        logger.info("Outbound permitted: "+outboundPermitted);
+        SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions();
+        inboundPermitted.forEach(addr -> sockJSBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
+        outboundPermitted.forEach(addr -> sockJSBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
+
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-        return sockJSHandler.bridge(this.sockJSBridgeOptions);
+        return sockJSHandler.bridge(sockJSBridgeOptions);
     }
 
     /**
@@ -131,20 +139,5 @@ public final class WidgetBridge extends AbstractVerticle {
     private StaticHandler staticHandler() {
         return StaticHandler.create()
                 .setCachingEnabled(false);
-    }
-
-    @Override
-    public void start(Promise<Void> startPromise) {
-        Router router = Router.router(vertx);
-
-        router.mountSubRouter("/bridge", bridgeHandler());
-        router.route().handler(staticHandler());
-
-        HttpServer http = vertx.createHttpServer(this.httpOptions)
-                .requestHandler(router)
-                .listen();
-
-        logger.info("Server listening on {}:{}/bridge", this.httpOptions.getHost(), this.httpOptions.getPort());
-        startPromise.complete();
     }
 }
