@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.telestion.core.message.Address;
 import org.telestion.core.verticle.RandomPositionPublisher;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -63,8 +64,8 @@ public final class WidgetBridge extends AbstractVerticle {
     private final Logger logger = LoggerFactory.getLogger(WidgetBridge.class);
     private String host;
     private Integer port;
-    private List<String> inboundPermitted;
-    private List<String> outboundPermitted;
+    private List<String> inboundPermitted = Collections.emptyList();
+    private List<String> outboundPermitted = Collections.emptyList();
 
     /**
      * This constructor supplies default options
@@ -91,10 +92,14 @@ public final class WidgetBridge extends AbstractVerticle {
     public void start(Promise<Void> startPromise) {
         host = Objects.requireNonNull(context.config().getString("host", host));
         port = Objects.requireNonNull(context.config().getInteger("port", port));
-        inboundPermitted = context.config().getJsonArray("inboundPermitted")
-                .stream().map(addr -> (String)addr).collect(Collectors.toList());
-        outboundPermitted = context.config().getJsonArray("outboundPermitted")
-                .stream().map(addr -> (String)addr).collect(Collectors.toList());
+        if(context.config().getJsonArray("inboundPermitted") != null){
+            inboundPermitted = context.config().getJsonArray("inboundPermitted")
+                    .stream().map(addr -> (String)addr).collect(Collectors.toList());
+        }
+        if(context.config().getJsonArray("outboundPermitted") != null) {
+            outboundPermitted = context.config().getJsonArray("outboundPermitted")
+                    .stream().map(addr -> (String) addr).collect(Collectors.toList());
+        }
         
         HttpServerOptions httpOptions = new HttpServerOptions()
                 .setHost(host)
