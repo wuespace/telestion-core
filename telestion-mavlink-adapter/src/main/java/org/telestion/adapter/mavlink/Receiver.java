@@ -1,7 +1,5 @@
 package org.telestion.adapter.mavlink;
 
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.message.internal.AddressMapping;
@@ -9,7 +7,6 @@ import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
-import org.telestion.adapter.mavlink.message.internal.RawPayload;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
 
@@ -42,29 +39,10 @@ public final class Receiver extends AbstractVerticle {
 				
 				RawMavlink mav = switch(bytes[0]) {
 						case (byte) 0xFD -> (bytes.length > 11
-								? new RawMavlinkV2(
-									(short) bytes[1],
-									(short) bytes[2],
-									(short) bytes[3],
-									(short) bytes[4],
-									(short) bytes[5],
-									(short) bytes[6],
-									(long) bytes[7] << 16 + (bytes[8] << 8) + bytes[9],
-									new RawPayload(Arrays.copyOfRange(bytes, 10, bytes[1] + 10)),
-									(int) (bytes[bytes[1] + 10] << 8) + bytes[bytes[1] + 11],
-									(bytes.length > bytes[1] + 12
-											? Arrays.copyOfRange(bytes, bytes[1] + 12, bytes[1] + 25)
-											: null))
+								? new RawMavlinkV2(bytes)
 								: null);
 						case (byte) 0xFE -> (bytes.length > 7
-								? new RawMavlinkV1(
-									(short) bytes[1],
-									(short) bytes[2],
-									(short) bytes[3],
-									(short) bytes[4],
-									(short) bytes[5],
-									new RawPayload(Arrays.copyOfRange(bytes, 6, bytes[1] + 6)),
-									(int) (bytes[bytes[1] + 6] << 8) + bytes[bytes[1] + 7])
+								? new RawMavlinkV1(bytes)
 								: null);
 						default -> null;
 				};

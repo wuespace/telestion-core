@@ -1,5 +1,7 @@
 package org.telestion.adapter.mavlink.message.internal;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -22,6 +24,16 @@ public record RawMavlinkV1(
 	@SuppressWarnings("unused")
 	private RawMavlinkV1() {
 		this((short) 0, (short) 0, (short) 0, (short) 0, (short) 0, null, 0);
+	}
+	
+	public RawMavlinkV1(byte[] bytes) {
+		this(	(short) bytes[1],
+				(short) bytes[2],
+				(short) bytes[3],
+				(short) bytes[4],
+				(short) bytes[5],
+				new RawPayload(Arrays.copyOfRange(bytes, 6, bytes[1] + 6)),
+				(int) (bytes[bytes[1] + 6] << 8) + bytes[bytes[1] + 7]);
 	}
 	
 	@Override
