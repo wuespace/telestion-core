@@ -31,13 +31,13 @@ public final class RandomPositionPublisher extends AbstractVerticle {
     private void publishPosition() {
         var x = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("x", 67.8915);
         var y = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("y", 21.0836);
-        var z = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("z", 0);
+        var z = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("z", 0.0);
 
         Position pos = new Position(x, y, z);
 
         x += rand.nextDouble()*0.02;
         y += rand.nextDouble()*0.02;
-        z += rand.nextDouble()*0.02;
+        //z += rand.nextDouble()*0.02;
         vertx.sharedData().getLocalMap("randPos").put("x", x);
         vertx.sharedData().getLocalMap("randPos").put("y", y);
         vertx.sharedData().getLocalMap("randPos").put("z", z);
