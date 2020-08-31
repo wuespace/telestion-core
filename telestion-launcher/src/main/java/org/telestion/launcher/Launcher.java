@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
+import org.telestion.core.message.JsonMessageCodec;
+import org.telestion.core.message.Position;
 
 /**
  * A generic launcher class which deploys {@link Verticle Verticles}.
@@ -38,7 +40,27 @@ public final class Launcher {
     public static void start(String... verticleNames){
         logger.info("Deploying {} verticles", verticleNames.length);
         var vertx = Vertx.vertx();
+        // vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
         Arrays.stream(verticleNames).forEach(verticleName -> {
+            logger.info("Deploying verticle {}", verticleName);
+            vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {
+                vertx.deployVerticle(verticleName, res -> {
+                    if(res.failed()){
+                        logger.error("Failed to deploy verticle {} retrying in 5s", verticleName, res.cause());
+                        return;
+                    }
+                    logger.info("Deployed verticle {} with id {}", verticleName, res.result());
+                    vertx.cancelTimer(timerId);
+                });
+            });
+        });
+    }
+
+    public static void start(Verticle... verticles){
+        logger.info("Deploying {} verticles", verticles.length);
+        var vertx = Vertx.vertx();
+        // vertx.eventBus().registerDefaultCodec(Position.class, JsonMessageCodec.Instance(Position.class));
+        Arrays.stream(verticles).forEach(verticleName -> {
             logger.info("Deploying verticle {}", verticleName);
             vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {
                 vertx.deployVerticle(verticleName, res -> {
