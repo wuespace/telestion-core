@@ -13,8 +13,9 @@ application {
 
 
 dependencies {
-    implementation project(':modules:telestion-core')
-    implementation project(':modules:telestion-launcher')
+    implementation project(':telestion-core')
+    implementation project(':telestion-launcher')
+    implementation project(':telestion-api')
 
     implementation 'com.google.guava:guava:29.0-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
@@ -25,7 +26,7 @@ dependencies {
 
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
     implementation "io.vertx:vertx-core:$gradle.vertxVersion"
     implementation "io.vertx:vertx-web:$gradle.vertxVersion"
