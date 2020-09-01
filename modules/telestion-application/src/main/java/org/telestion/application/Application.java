@@ -1,8 +1,12 @@
 package org.telestion.application;
 
-import org.telestion.core.verticle.HelloWorld;
+import org.telestion.core.message.Address;
 import org.telestion.core.verticle.MessageLogger;
+import org.telestion.core.verticle.RandomPositionPublisher;
 import org.telestion.launcher.Launcher;
+import org.telestion.widget.WidgetBridge;
+
+import java.util.Collections;
 
 /**
  * Starts the Telestion-Project as a standalone Application.
@@ -21,8 +25,11 @@ public class Application {
 	 */
     public static void main(String[] args) {
         Launcher.start(
-                MessageLogger.class.getName(),
-                HelloWorld.class.getName()
+                new MessageLogger(),
+				new RandomPositionPublisher(),
+				new WidgetBridge("localhost", 8080,
+						Collections.emptyList(),
+						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos")))
         );
     }
 
