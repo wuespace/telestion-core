@@ -3,6 +3,7 @@ package org.telestion.application;
 import org.telestion.core.message.Address;
 import org.telestion.core.verticle.MessageLogger;
 import org.telestion.core.verticle.RandomPositionPublisher;
+import org.telestion.core.verticle.WebServer;
 import org.telestion.launcher.Launcher;
 import org.telestion.widget.WidgetBridge;
 
@@ -27,9 +28,10 @@ public class Application {
         Launcher.start(
                 new MessageLogger(),
 				new RandomPositionPublisher(),
-				new WidgetBridge("localhost", 8080,
+				new WidgetBridge("localhost", 9000,
 						Collections.emptyList(),
-						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos")))
+						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
+				new WebServer(8080)
         );
     }
 
