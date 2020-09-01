@@ -1,10 +1,18 @@
 package org.telestion.adapter.mavlink;
 
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telestion.adapter.mavlink.annotation.MavInfo;
+import org.telestion.adapter.mavlink.exception.InvalidChecksumException;
+import org.telestion.adapter.mavlink.message.MavlinkMessage;
+import org.telestion.adapter.mavlink.message.MessageIndex;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
+import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
 
@@ -32,6 +40,26 @@ public final class MavlinkParser extends AbstractVerticle {
 		vertx.eventBus().consumer(toMavlinkInAddress, msg -> {
 			if (JsonMessage.on(RawMavlinkV2.class, msg, v2 -> {
 				System.out.println("Ich lebe v2");
+				
+				Class<? extends MavlinkMessage> mavlinkClass = MessageIndex.get(v2.msgId());
+				
+				// Check signature and checksum
+				if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
+					MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
+					int crcExtra = annotation.crc();
+					byte[] buildArray = Arrays.copyOfRange(v2.getRaw(), 1, v2.getRaw().length -
+												v2.incompatFlags() == 0x1 ? 12 : -1);
+					buildArray[buildArray.length-1] = (byte) crcExtra;
+
+					int crc = X25Checksum.calculate(buildArray);
+					
+					if (crc != v2.checksum()) {
+						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+						throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
+					}
+				}
+				
+				RecordComponent[] components = mavlinkClass.getRecordComponents();
 			}));
 			else if (JsonMessage.on(RawMavlinkV1.class, msg, v1 -> {
 				System.out.println("Ich lebe v1");
@@ -44,7 +72,12 @@ public final class MavlinkParser extends AbstractVerticle {
 		});
 		
 		vertx.eventBus().consumer(toRawInAddress, msg -> {
-			
+			if (JsonMessage.on(MavlinkMessage.class, msg, v2 -> {
+				
+			})) {
+			} else {
+				
+			}
 		});
 		startPromise.complete();
 	}

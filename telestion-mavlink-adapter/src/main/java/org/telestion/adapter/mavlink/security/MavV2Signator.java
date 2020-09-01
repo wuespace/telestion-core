@@ -5,10 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import org.bouncycastle.util.Arrays;
-
-import com.google.common.base.Charsets;
+import java.util.Arrays;
 
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
@@ -49,18 +46,18 @@ public class MavV2Signator {
 	 * @return
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public static byte[] rawSignature(String secretKey, byte[] header, byte[] payload, byte crcExtra, byte linkId,
+	public static byte[] rawSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId,
 			byte[] timestamp) throws NoSuchAlgorithmException {
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-		ByteBuffer buffer = ByteBuffer.allocate(secretKey.length() + header.length + payload.length + 2
+		ByteBuffer buffer = ByteBuffer.allocate(secretKey.length + header.length + payload.length + 3
 				+ timestamp.length);
 		
-		buffer.put(secretKey.getBytes(Charsets.US_ASCII));
+		buffer.put(secretKey);
 		buffer.put(header);
 		buffer.put(payload);
-		buffer.put(crcExtra);
-		buffer.put(linkId);
+		buffer.putChar((char) crcExtra);
+		buffer.put((byte) (linkId & 0xff));
 		buffer.put(timestamp);
 		
 		return Arrays.copyOfRange(digest.digest(buffer.array()), 0, 6);
@@ -72,13 +69,13 @@ public class MavV2Signator {
 	 * @return
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public static byte[] generateSignature(String secretKey, byte[] header, byte[] payload, byte crcExtra, byte linkId)
+	public static byte[] generateSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId)
 			throws NoSuchAlgorithmException {
 		byte[] timestamp = getTimestamp();
 		
 		ByteBuffer buffer = ByteBuffer.allocate(13);
 		
-		buffer.put(linkId);
+		buffer.put((byte) (linkId & 0xff));
 		buffer.put(timestamp);
 		buffer.put(rawSignature(secretKey, header, payload, crcExtra, linkId, timestamp));
 		return null;

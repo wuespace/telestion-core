@@ -1,9 +1,9 @@
 package org.telestion.adapter.mavlink.message.internal;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
@@ -37,9 +37,25 @@ public record RawMavlinkV1(
 	}
 	
 	@Override
-	@JsonProperty(access = Access.READ_ONLY)
 	public String getMavlinkId() {
 		return sysId + "-" + compId + "v1";
+	}
+	
+	@Override
+	public byte[] getRaw() {
+		ByteBuffer raw = ByteBuffer.allocate(8 + payload.payload().length);
+
+		raw.put((byte) 0xFE);
+		raw.put((byte) (len			&	0xff));
+		raw.put((byte) (seq			&	0xff));
+		raw.put((byte) (sysId		&	0xff));
+		raw.put((byte) (compId		&	0xff));
+		raw.put((byte) (msgId		&	0xff));
+		raw.put(payload.payload());
+		raw.put((byte) (checksum	>>	8 & 0xff));
+		raw.put((byte) (checksum	&	0xff));
+		
+		return raw.array();
 	}
 	
 }

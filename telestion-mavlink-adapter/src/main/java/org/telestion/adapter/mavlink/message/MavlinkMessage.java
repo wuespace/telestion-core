@@ -59,5 +59,4 @@ public interface MavlinkMessage extends JsonMessage {
 	public default int getId() {
 		return checkAnnotation().id();
 	}
-
 }
