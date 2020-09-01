@@ -6,18 +6,22 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
+/**
+ * A simple WebServer which publishes the index page.
+ *
+ * @author Jan von Pichowski
+ */
 public final class WebServer extends AbstractVerticle {
 
     private Integer port;
 
+    /**
+     *
+     * @param port the port to bind to
+     */
     public WebServer(int port) {
         this.port = port;
     }
