@@ -2,7 +2,6 @@ package org.telestion.adapter.mavlink;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.adapter.mavlink.message.internal.AddressMapping;
 import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
@@ -48,8 +47,7 @@ public final class Receiver extends AbstractVerticle {
 				};
 				
 				if (mav != null) {
-					vertx.eventBus().send(AddressAssociator.putAddress,
-							new AddressMapping(mav.getMavlinkId(), con.remoteAddress()).json());
+					AddressAssociator.put(mav.getMavlinkId(), con.remoteAddress());
 					vertx.eventBus().send(MavlinkParser.toMavlinkInAddress, mav.json());
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");

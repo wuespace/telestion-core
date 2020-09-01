@@ -108,16 +108,8 @@ public final class Transmitter extends AbstractVerticle {
 							buildArray[index++] = (byte) (v2.signature() >> (8 * i) & 0xff);
 					}
 					
-					vertx.eventBus().send(AddressAssociator.removeAddress, v2.getMavlinkId());
-					// Handle answer
-					vertx.eventBus().consumer(AddressAssociator.outAddress, msg2 -> {
-						if (msg2.body() instanceof String s) {
-							vertx.eventBus().send(outAddress, new MavConnection(buildArray, s));
-						} else {
-							logger.error("An unsupported datatype ({}) was sent to {}", msg.getClass().getName(),
-									msg.address());
-						}
-					});
+					vertx.eventBus().send(outAddress, new MavConnection(buildArray,
+							AddressAssociator.remove(v2.getMavlinkId())));
 				}));
 				else if (JsonMessage.on(RawMavlinkV1.class, msg, v1 -> {
 					/*
@@ -163,16 +155,8 @@ public final class Transmitter extends AbstractVerticle {
 					buildArray[index-1] = 	(byte) (crc >> 8 & 0xff);
 					buildArray[index++]	= 	(byte) (crc & 0xff);
 					
-					vertx.eventBus().send(AddressAssociator.removeAddress, v1.getMavlinkId());
-					// Handle answer
-					vertx.eventBus().consumer(AddressAssociator.outAddress, msg2 -> {
-						if (msg2.body() instanceof String s) {
-							vertx.eventBus().send(outAddress, new MavConnection(buildArray, s));
-						} else {
-							logger.error("An unsupported datatype ({}) was sent to {}", msg.getClass().getName(),
-									msg.address());
-						}
-					});
+					vertx.eventBus().send(outAddress, new MavConnection(buildArray,
+							AddressAssociator.remove(v1.getMavlinkId())));
 				}));
 				else
 					logger.warn("Unsupported RawMavlink {} sent to {}", mav.getMavlinkId(), msg.address());
