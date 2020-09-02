@@ -33,7 +33,7 @@ public final class Receiver extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(inAddress, msg -> {
-			if (JsonMessage.on(MavConnection.class, msg, con -> {
+			if (!JsonMessage.on(MavConnection.class, msg, con -> {
 				byte[] bytes = con.bytes();
 				
 				RawMavlink mav = switch(bytes[0]) {
@@ -52,8 +52,7 @@ public final class Receiver extends AbstractVerticle {
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");
 				}
-			}));
-			else {
+			})) {
 				// Might cause problems because sender does not get notified.
 				logger.error("Unsupported type sent to {}", msg.address());
 			}

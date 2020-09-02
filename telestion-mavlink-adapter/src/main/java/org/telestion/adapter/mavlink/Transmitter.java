@@ -52,7 +52,7 @@ public final class Transmitter extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(inAddress, msg -> {
-			if (JsonMessage.on(RawMavlink.class, msg, mav -> {
+			if (!JsonMessage.on(RawMavlink.class, msg, mav -> {
 				// Creating Array for CRC-Calc
 				byte[] raw = mav.getRaw();
 				byte[] buildArray = Arrays.copyOfRange(raw, 1, raw.length -
@@ -95,7 +95,6 @@ public final class Transmitter extends AbstractVerticle {
 				vertx.eventBus().send(outAddress, new MavConnection(buildArray,
 						AddressAssociator.remove(mav.getMavlinkId())));
 			})) {
-			} else {
 				logger.error("Unsupported type sent to {}", msg.address());
 			}
 		});
