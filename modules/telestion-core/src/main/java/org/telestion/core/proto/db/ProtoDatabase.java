@@ -1,15 +1,15 @@
 package org.telestion.core.proto.db;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.spi.json.JsonCodec;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Position;
 import org.telestion.core.message.Positions;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
 
 /**
  * A database which stores positions.
@@ -21,7 +21,8 @@ public final class ProtoDatabase extends AbstractVerticle {
 
     private static final int HistorySize = 100;
 
-    @Override
+    @SuppressWarnings("preview")
+	@Override
     public void start(Promise<Void> startPromise) throws Exception {
         vertx.eventBus().consumer("current-position", msg -> {
             if(msg.body() instanceof Position position){

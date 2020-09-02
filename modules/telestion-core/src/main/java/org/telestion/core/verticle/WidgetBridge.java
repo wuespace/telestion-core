@@ -1,4 +1,4 @@
-package org.telestion.widget;
+package org.telestion.core.verticle;
 
 import java.util.Collections;
 import java.util.List;

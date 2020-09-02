@@ -1,15 +1,13 @@
 package org.telestion.launcher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.Duration;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
-import org.telestion.core.message.JsonMessageCodec;
-import org.telestion.core.message.Position;
 
 /**
  * A generic launcher class which deploys {@link Verticle Verticles}.

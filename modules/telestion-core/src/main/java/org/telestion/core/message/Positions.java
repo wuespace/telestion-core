@@ -8,8 +8,10 @@ import java.util.List;
 /**
  * A list message containing multiple {@link Position}.
  */
+@SuppressWarnings("preview")
 public record Positions(@JsonProperty List<Position> list) implements JsonMessage {
-    private Positions(){
+    @SuppressWarnings("unused")
+	private Positions(){
         this(null);
     }
 }
