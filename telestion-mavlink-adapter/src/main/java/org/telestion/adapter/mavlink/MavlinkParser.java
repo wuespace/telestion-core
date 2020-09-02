@@ -5,9 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 import javax.management.ReflectionException;
 
@@ -18,6 +17,7 @@ import org.telestion.adapter.mavlink.annotation.MavField;
 import org.telestion.adapter.mavlink.annotation.MavInfo;
 import org.telestion.adapter.mavlink.exception.AnnotationMissingException;
 import org.telestion.adapter.mavlink.exception.InvalidChecksumException;
+import org.telestion.adapter.mavlink.exception.PacketException;
 import org.telestion.adapter.mavlink.exception.ParsingException;
 import org.telestion.adapter.mavlink.exception.WrongSignatureException;
 import org.telestion.adapter.mavlink.message.MavlinkMessage;
@@ -44,7 +44,8 @@ public final class MavlinkParser extends AbstractVerticle {
 	
 	private final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
 	
-	public static final String toRawInAddress = Address.incoming(MavlinkParser.class, "toRaw");
+	public static final String toRawInAddressV1 = Address.incoming(MavlinkParser.class, "toRaw1");
+	public static final String toRawInAddressV2 = Address.incoming(MavlinkParser.class, "toRaw2");
 	public static final String toRawOutAddress = Address.outgoing(MavlinkParser.class, "toRaw");
 	
 	public static final String toMavlinkInAddress = Address.incoming(MavlinkParser.class, "toMavlink");
@@ -52,49 +53,70 @@ public final class MavlinkParser extends AbstractVerticle {
 	
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
 		long l = 0;
+		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
 		switch(c.getAnnotation(MavField.class).nativeType().size) {
 		case 1:
-			l = Byte.toUnsignedInt(payload[index.incrementAndGet()]);
+			short s = payload[index.incrementAndGet()];
+			l = unsigned ? Short.toUnsignedInt(s) : s;
 			break;
 		case 2:
-			l = Short.toUnsignedInt((short) (payload[index.incrementAndGet()] << 8 +
-											 payload[index.incrementAndGet()]));
+			int i = payload[index.incrementAndGet()] << 8 +
+					payload[index.incrementAndGet()];
+			l = unsigned ? Integer.toUnsignedLong(i) : i;
 			break;
 		case 4:
-			l = Integer.toUnsignedLong(	payload[index.incrementAndGet()] << 24 +
-										payload[index.incrementAndGet()] << 16 +
-										payload[index.incrementAndGet()] << 8 +
-										payload[index.incrementAndGet()]);
+			i =	payload[index.incrementAndGet()] << 24 +
+				payload[index.incrementAndGet()] << 16 +
+				payload[index.incrementAndGet()] << 8 +
+				payload[index.incrementAndGet()];
+			l = unsigned ? Integer.toUnsignedLong(i) : i;
 			break;
 		case 8:
-			l =		payload[index.incrementAndGet()] << 56 +
-					payload[index.incrementAndGet()] << 48 +
-					payload[index.incrementAndGet()] << 40 +
-					payload[index.incrementAndGet()] << 32 +
-					payload[index.incrementAndGet()] << 24 +
-					payload[index.incrementAndGet()] << 16 +
-					payload[index.incrementAndGet()] << 8 +
-					payload[index.incrementAndGet()];
+			// There is no real support for unsigned longs, yet!
+			l =	payload[index.incrementAndGet()] << 56 +
+				payload[index.incrementAndGet()] << 48 +
+				payload[index.incrementAndGet()] << 40 +
+				payload[index.incrementAndGet()] << 32 +
+				payload[index.incrementAndGet()] << 24 +
+				payload[index.incrementAndGet()] << 16 +
+				payload[index.incrementAndGet()] << 8 +
+				payload[index.incrementAndGet()];
 			break;
 		default:
 			throw new ParsingException("Parsing failed due to invalid Payload-Type!");
 		}
-		return (Number) c.getType().cast(l);
+		return c.getType().cast(l);
 	}
 	
-	private Object[] parseArray(AtomicInteger index, byte[] payload, RecordComponent c, int length) {
-		List<Object> nums = Collections.emptyList();
-		for (int i = 0; i < length; i++) {
-			nums.add(parse(index, payload, c));
-		}
-		return nums.toArray(Object[]::new);
-	}
-	
+	@SuppressWarnings("preview")
 	@Override
 	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(toMavlinkInAddress, msg -> {
-			if (!(JsonMessage.on(RawMavlinkV2.class, msg, v2 -> {				
-				Class<? extends MavlinkMessage> mavlinkClass = MessageIndex.get(v2.msgId());
+			if (!(JsonMessage.on(RawMavlink.class, msg, raw -> {
+				Class<? extends MavlinkMessage> mavlinkClass = null;
+				
+				int subtract = -1;
+				int checksum = 0;
+				byte[] load = null;
+				
+				if (raw instanceof RawMavlinkV2 v2) {
+					mavlinkClass = MessageIndex.get(v2.msgId());
+					
+					if (v2.incompatFlags() == 0x1) {
+						subtract = 12;
+					}
+					
+					checksum = v2.checksum();
+					load = v2.payload().payload();
+				} else if (raw instanceof RawMavlinkV1 v1) {
+					mavlinkClass = MessageIndex.get(v1.msgId());
+					
+					checksum = v1.checksum();
+					load = v1.payload().payload();
+				} else {
+					logger.error("Unsupported MAVLink-Message received on {}!", msg.address());
+					throw new PacketException("Unsupported MAVLink-Message received!");
+				}
 				
 				/*
 				 * Check signature and checksum
@@ -102,28 +124,30 @@ public final class MavlinkParser extends AbstractVerticle {
 				if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
 					MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
 					int crcExtra = annotation.crc();
-					byte[] buildArray = Arrays.copyOfRange(v2.getRaw(), 1, v2.getRaw().length -
-												v2.incompatFlags() == 0x1 ? 12 : -1);
+					byte[] buildArray = Arrays.copyOfRange(raw.getRaw(), 1, raw.getRaw().length - subtract);
 					buildArray[buildArray.length-1] = (byte) crcExtra;
 
 					int crc = X25Checksum.calculate(buildArray);
 					
-					if (crc != v2.checksum()) {
+					if (crc != checksum) {
 						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
 						throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
 					}
 					
-					try {
-						if (MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
-								Arrays.copyOfRange(v2.getRaw(), 1, 11),
-								Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
-								crcExtra, v2.linkId()) == v2.signature()) {
+					if (raw instanceof RawMavlinkV2 v2) {
+						try {
+							if (MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
+									Arrays.copyOfRange(v2.getRaw(), 1, 11),
+									Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
+									crcExtra, v2.linkId()) == v2.signature()) {
+								// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+								throw new WrongSignatureException("Signature of received MAVLink-Package was"
+										+ "incorrect!");						}
+						} catch (NoSuchAlgorithmException e) {
 							// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-							throw new WrongSignatureException("Signature of received MAVLink-Package was incorrect!");						}
-					} catch (NoSuchAlgorithmException e) {
-						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-						throw new WrongSignatureException("An unexpected error occured while checking the signature "
-								+ "of the received MAVLink-Package ", e);
+							throw new WrongSignatureException("An unexpected error occured while checking the signature "
+									+ "of the received MAVLink-Package ", e);
+						}
 					}
 				} else {
 					throw new AnnotationMissingException("MavInfo-Annotation is missing!");
@@ -152,14 +176,16 @@ public final class MavlinkParser extends AbstractVerticle {
 							.toArray(Class[]::new);
 					
 					final AtomicInteger index = new AtomicInteger(-1);
-					final byte[] payload = v2.payload().payload();
+					final byte[] payload = load;
 					
 					Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
 					Object[] parameters = Arrays.stream(components)
 							.map(c -> {
 								return c.isAnnotationPresent(MavArray.class)
-										? parseArray(index, payload, c, c.getAnnotation(MavArray.class).length())
-												: parse(index, payload, c);
+										? IntStream.range(0, c.getAnnotation(MavArray.class).length())
+												.mapToObj(i -> parse(index, payload, c))
+												.toArray(Object[]::new)
+										: parse(index, payload, c);
 							}).toArray(Object[]::new);
 					
 					MavlinkMessage m = constructor.newInstance(parameters);
@@ -170,22 +196,25 @@ public final class MavlinkParser extends AbstractVerticle {
 					throw new ParsingException(new ReflectionException(e));
 				}
 				
-			}) || JsonMessage.on(RawMavlinkV1.class, msg, v1 -> {
-				System.out.println("Ich lebe v1");
 			}))) {
-				if (!JsonMessage.on(RawMavlink.class, msg, unsupported -> {
-					logger.warn("Unsupported RawMavlink-Package received on {}", msg.address());
-				})) {
-					logger.error("Unsupported type sent to {}", msg.address());
-				}
+				logger.error("Unsupported type sent to {}", msg.address());
+				throw new PacketException("Unsupported type sent to Mavlink-Parser!");
 			}
 		});
 		
-		vertx.eventBus().consumer(toRawInAddress, msg -> {
-			if (JsonMessage.on(MavlinkMessage.class, msg, v2 -> {
+		// TODO: Sending part!
+		vertx.eventBus().consumer(toRawInAddressV1, msg -> {
+			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
+
+			})) {
+				
+			}
+		});
+		
+		vertx.eventBus().consumer(toRawInAddressV2, msg -> {
+			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
 				
 			})) {
-			} else {
 				
 			}
 		});

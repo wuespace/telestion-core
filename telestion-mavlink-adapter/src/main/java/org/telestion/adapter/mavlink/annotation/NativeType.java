@@ -7,20 +7,22 @@ package org.telestion.adapter.mavlink.annotation;
  * @version 1.0
  */
 public enum NativeType {
-	INT_8(1),
-	UINT_8(1),
-	INT_16(2),
-	UINT_16(2),
-	INT_32(4),
-	UINT_32(4),
-	INT_64(8),
-	UINT_64(8),
-	FLOAT(4),
-	DOUBLE(8);
+	INT_8(1, false),
+	UINT_8(1, true),
+	INT_16(2, false),
+	UINT_16(2, true),
+	INT_32(4, false),
+	UINT_32(4, true),
+	INT_64(8, false),
+	UINT_64(8, true),
+	FLOAT(4, false),
+	DOUBLE(8, false);
 	
 	public final int size;
+	public final boolean unsigned;
 	
-	private NativeType(int size) {
+	private NativeType(int size, boolean unsigned) {
 		this.size = size;
+		this.unsigned = unsigned;
 	}
 }
