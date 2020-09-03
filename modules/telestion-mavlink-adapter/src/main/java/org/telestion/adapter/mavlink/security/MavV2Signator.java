@@ -56,7 +56,7 @@ public class MavV2Signator {
 		buffer.put(secretKey);
 		buffer.put(header);
 		buffer.put(payload);
-		buffer.putChar((char) crcExtra);
+		buffer.put((byte) crcExtra);
 		buffer.put((byte) (linkId & 0xff));
 		buffer.put(timestamp);
 		
