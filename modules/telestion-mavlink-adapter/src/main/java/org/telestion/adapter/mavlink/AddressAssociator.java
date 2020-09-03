@@ -13,14 +13,14 @@ public final class AddressAssociator {
 	/**
 	 * 
 	 */
-	private static final HashMap<String, String> mapping = new HashMap<>();
+	private static final HashMap<String, AddressPort> mapping = new HashMap<>();
 	
 	/**
 	 * 
 	 * @param mavlinkAddress
 	 * @param ip
 	 */
-	public static void put(String mavlinkAddress, String ip) {
+	public static void put(String mavlinkAddress, AddressPort ip) {
 		mapping.put(mavlinkAddress, ip);
 	}
 	
@@ -29,7 +29,7 @@ public final class AddressAssociator {
 	 * @param mavlinkAddress
 	 * @return
 	 */
-	public static String remove(String mavlinkAddress) {
+	public static AddressPort remove(String mavlinkAddress) {
 		return mapping.remove(mavlinkAddress);
 	}
 }

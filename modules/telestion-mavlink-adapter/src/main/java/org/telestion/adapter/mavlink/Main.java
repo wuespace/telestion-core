@@ -1,11 +1,15 @@
 package org.telestion.adapter.mavlink;
 
+import org.telestion.core.verticle.TcpAdapter;
 import org.telestion.launcher.Launcher;
 
 public class Main {
 
     public static void main(String[] args) {
-        Launcher.start(TcpAdapter.class.getName(), Receiver.class.getName(), MavlinkParser.class.getName());
+        Launcher.start(
+                new TcpAdapter(42024),
+                new Receiver(),
+                new MavlinkParser());
     }
     
 }

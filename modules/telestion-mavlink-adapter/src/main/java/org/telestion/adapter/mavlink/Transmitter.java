@@ -13,7 +13,6 @@ import org.telestion.adapter.mavlink.exception.AnnotationMissingException;
 import org.telestion.adapter.mavlink.exception.PacketException;
 import org.telestion.adapter.mavlink.message.MavlinkMessage;
 import org.telestion.adapter.mavlink.message.MessageIndex;
-import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
@@ -25,6 +24,7 @@ import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import org.telestion.core.message.TcpData;
 
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
@@ -86,14 +86,14 @@ public final class Transmitter extends AbstractVerticle {
 							MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
 									Arrays.copyOfRange(raw, 0, 9), v2.payload().payload(), crc, v2.linkId());
 						} catch (NoSuchAlgorithmException e) {
-							logger.error("Error while creating signature for MAVLink-Package! Cause:\n{}", e);
+							logger.error("Error while creating signature for MAVLink-Package!", e);
 							throw new PacketException(e);
 						}
 					}
 				}));
-				
-				vertx.eventBus().send(outAddress, new MavConnection(buildArray,
-						AddressAssociator.remove(mav.getMavlinkId())));
+
+				var addrPort = AddressAssociator.remove(mav.getMavlinkId());
+				vertx.eventBus().send(outAddress, new TcpData(addrPort.address(), addrPort.port(), buildArray));
 			})) {
 				logger.error("Unsupported type sent to {}", msg.address());
 			}
