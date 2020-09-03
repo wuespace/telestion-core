@@ -22,7 +22,7 @@ public record Heartbeat(
 		@JsonProperty int autopilot,
 		@MavField(nativeType = NativeType.UINT_8)
 		@JsonProperty int baseMode,
-		@MavField(nativeType = NativeType.UINT_8)
+		@MavField(nativeType = NativeType.UINT_32)
 		@JsonProperty long customMode,
 		@MavField(nativeType = NativeType.UINT_8)
 		@JsonProperty int systemStatus,

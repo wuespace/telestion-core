@@ -75,7 +75,7 @@ public final class Transmitter extends AbstractVerticle {
 				// Create new build Array
 				buildArray = Arrays.copyOf(raw, raw.length + 2);
 				
-				buildArray[buildArray.length-2] = (byte) (crc >> 8 & 0xff);
+				buildArray[buildArray.length-2] = (byte) ((crc >> 8) & 0xff);
 				buildArray[buildArray.length-1]	= (byte) (crc & 0xff);
 				
 				// Signature only applies for RawMavlinkV2

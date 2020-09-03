@@ -106,7 +106,7 @@ public final class TcpAdapter extends AbstractVerticle {
 			if (handler.succeeded()) {
 				logger.info("TCP-Server for MAVLink successfully started. Running on port {}", server.actualPort());
 			} else {
-				logger.error("Error while starting TCP-Server for MAVLink! Cause:\n{}", handler.cause());
+				logger.error("Error while starting TCP-Server for MAVLink!", handler.cause());
 				startPromise.fail("Starting TCP-Server for MAVLink failed!");
 			}
 		});

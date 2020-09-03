@@ -49,154 +49,173 @@ public final class MavlinkParser extends AbstractVerticle {
 	public static final String toRawOutAddress = Address.outgoing(MavlinkParser.class, "toRaw");
 	
 	public static final String toMavlinkInAddress = Address.incoming(MavlinkParser.class, "toMavlink");
-	public static final String toMavlinkOutAddress = Address.incoming(MavlinkParser.class, "toMavlink");
+	public static final String toMavlinkOutAddress = Address.outgoing(MavlinkParser.class, "toMavlink");
+	
+	private Object toRightNum(Object o, Class<? extends Number> clazz) {
+		return switch(clazz.getSimpleName()) {
+		case "Byte" -> Byte.class.cast(o);
+		case "Short" -> Short.class.cast(o);
+		case "Integer" -> Integer.class.cast(o);
+		case "Long" -> Long.class.cast(o);
+		case "Float" -> Float.class.cast(o);
+		case "Double" -> Double.class.cast(o);
+		default -> throw new ClassCastException("Unsupported Type " + clazz.getName());
+		};
+	}
 	
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
-		long l = 0;
 		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
 		switch(c.getAnnotation(MavField.class).nativeType().size) {
 		case 1:
 			short s = payload[index.incrementAndGet()];
-			l = unsigned ? Short.toUnsignedInt(s) : s;
-			break;
+			return unsigned ? toRightNum(s, Short.class) : toRightNum((byte) s, Byte.class);
 		case 2:
-			int i = payload[index.incrementAndGet()] << 8 +
+			int i = (payload[index.incrementAndGet()] << 8) +
 					payload[index.incrementAndGet()];
-			l = unsigned ? Integer.toUnsignedLong(i) : i;
-			break;
+			return unsigned ? toRightNum(i, Integer.class) : toRightNum((short) i, Short.class);
 		case 4:
-			i =	payload[index.incrementAndGet()] << 24 +
-				payload[index.incrementAndGet()] << 16 +
-				payload[index.incrementAndGet()] << 8 +
-				payload[index.incrementAndGet()];
-			l = unsigned ? Integer.toUnsignedLong(i) : i;
-			break;
+			long l =	(payload[index.incrementAndGet()]) << 24 +
+						(payload[index.incrementAndGet()]) << 16 +
+						(payload[index.incrementAndGet()]) << 8 +
+						payload[index.incrementAndGet()];
+			return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
 		case 8:
 			// There is no real support for unsigned longs, yet!
-			l =	payload[index.incrementAndGet()] << 56 +
-				payload[index.incrementAndGet()] << 48 +
-				payload[index.incrementAndGet()] << 40 +
-				payload[index.incrementAndGet()] << 32 +
-				payload[index.incrementAndGet()] << 24 +
-				payload[index.incrementAndGet()] << 16 +
-				payload[index.incrementAndGet()] << 8 +
+			l =	(payload[index.incrementAndGet()] << 56) +
+				(payload[index.incrementAndGet()] << 48) +
+				(payload[index.incrementAndGet()] << 40) +
+				(payload[index.incrementAndGet()] << 32) +
+				(payload[index.incrementAndGet()] << 24) +
+				(payload[index.incrementAndGet()] << 16) +
+				(payload[index.incrementAndGet()] << 8) +
 				payload[index.incrementAndGet()];
-			break;
+			return toRightNum(l, Long.class);
 		default:
 			throw new ParsingException("Parsing failed due to invalid Payload-Type!");
 		}
-		return c.getType().cast(l);
 	}
 	
+	/**
+	 * 
+	 * @param raw
+	 */
 	@SuppressWarnings("preview")
+	private void interpretMsg(RawMavlink raw) {
+
+		Class<? extends MavlinkMessage> mavlinkClass = null;
+		
+		int subtract = 1;
+		int checksum = 0;
+		byte[] load = null;
+		
+		if (raw instanceof RawMavlinkV2 v2) {
+			mavlinkClass = MessageIndex.get(v2.msgId());
+
+			System.out.println(mavlinkClass + " " + v2.msgId());
+			if (v2.incompatFlags() == 0x1) {
+				subtract = 14;
+			}
+			
+			checksum = v2.checksum();
+			load = v2.payload().payload();
+		} else if (raw instanceof RawMavlinkV1 v1) {
+			mavlinkClass = MessageIndex.get(v1.msgId());
+			
+			checksum = v1.checksum();
+			load = v1.payload().payload();
+		} else {
+			logger.error("Unsupported MAVLink-Message received on {}!", MavlinkParser.toMavlinkInAddress);
+			throw new PacketException("Unsupported MAVLink-Message received!");
+		}
+		
+		/*
+		 * Check signature and checksum
+		 */
+		if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
+			MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
+			int crcExtra = annotation.crc();
+			byte[] buildArray = Arrays.copyOfRange(raw.getRaw(), 1, raw.getRaw().length - subtract);
+			buildArray[buildArray.length-1] = (byte) crcExtra;
+
+			int crc = X25Checksum.calculate(buildArray);
+			
+			if (crc != checksum) {
+				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+				throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
+			}
+			
+			if (raw instanceof RawMavlinkV2 v2 && v2.incompatFlags() == 0x01) {
+				try {
+					if (MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
+							Arrays.copyOfRange(v2.getRaw(), 1, 11),
+							Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
+							crcExtra, v2.linkId()) == v2.signature()) {
+						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+						throw new WrongSignatureException("Signature of received MAVLink-Package was"
+								+ "incorrect!");						}
+				} catch (NoSuchAlgorithmException e) {
+					// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+					throw new WrongSignatureException("An unexpected error occured while checking the signature "
+							+ "of the received MAVLink-Package ", e);
+				}
+			}
+		} else {
+			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
+		}
+		
+		RecordComponent[] components = mavlinkClass.getRecordComponents();
+		// There may be undefined behavior if position is not defined in all cases but in some
+		if (Arrays.stream(components).filter(c -> c.isAnnotationPresent(MavField.class) &&
+				c.getAnnotation(MavField.class).position() != -1).findFirst().isPresent()) {
+			components = Arrays.stream(components)
+					.filter(c -> c.isAnnotationPresent(MavField.class) &&
+							c.getAnnotation(MavField.class).position() != -1)
+					.sorted((c1, c2) -> 
+						c1.getAnnotation(MavField.class).position() -
+						c2.getAnnotation(MavField.class).position())
+					.toArray(RecordComponent[]::new);
+		}
+		
+		/*
+		 * Start Reflection
+		 */
+		try {
+			@SuppressWarnings("rawtypes")
+			Class[] componentTypes = Arrays.stream(components)
+					.map(c -> c.getType())
+					.toArray(Class[]::new);
+			
+			final AtomicInteger index = new AtomicInteger(-1);
+			final byte[] payload = load;
+			
+			Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
+			Object[] parameters = Arrays.stream(components)
+					.map(c -> {
+						return c.isAnnotationPresent(MavArray.class)
+								? IntStream.range(0, c.getAnnotation(MavArray.class).length())
+										.mapToObj(i -> parse(index, payload, c))
+										.toArray(Object[]::new)
+								: parse(index, payload, c);
+					}).toArray(Object[]::new);
+			
+			MavlinkMessage m = constructor.newInstance(parameters);
+			
+			vertx.eventBus().publish(toMavlinkOutAddress, m.json());
+			System.out.println("Published");
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			throw new ParsingException(new ReflectionException(e));
+		}
+		
+	
+	}
+	
 	@Override
 	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(toMavlinkInAddress, msg -> {
-			if (!(JsonMessage.on(RawMavlink.class, msg, raw -> {
-				Class<? extends MavlinkMessage> mavlinkClass = null;
-				
-				int subtract = -1;
-				int checksum = 0;
-				byte[] load = null;
-				
-				if (raw instanceof RawMavlinkV2 v2) {
-					mavlinkClass = MessageIndex.get(v2.msgId());
-					
-					if (v2.incompatFlags() == 0x1) {
-						subtract = 12;
-					}
-					
-					checksum = v2.checksum();
-					load = v2.payload().payload();
-				} else if (raw instanceof RawMavlinkV1 v1) {
-					mavlinkClass = MessageIndex.get(v1.msgId());
-					
-					checksum = v1.checksum();
-					load = v1.payload().payload();
-				} else {
-					logger.error("Unsupported MAVLink-Message received on {}!", msg.address());
-					throw new PacketException("Unsupported MAVLink-Message received!");
-				}
-				
-				/*
-				 * Check signature and checksum
-				 */
-				if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
-					MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
-					int crcExtra = annotation.crc();
-					byte[] buildArray = Arrays.copyOfRange(raw.getRaw(), 1, raw.getRaw().length - subtract);
-					buildArray[buildArray.length-1] = (byte) crcExtra;
-
-					int crc = X25Checksum.calculate(buildArray);
-					
-					if (crc != checksum) {
-						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-						throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
-					}
-					
-					if (raw instanceof RawMavlinkV2 v2) {
-						try {
-							if (MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
-									Arrays.copyOfRange(v2.getRaw(), 1, 11),
-									Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
-									crcExtra, v2.linkId()) == v2.signature()) {
-								// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-								throw new WrongSignatureException("Signature of received MAVLink-Package was"
-										+ "incorrect!");						}
-						} catch (NoSuchAlgorithmException e) {
-							// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-							throw new WrongSignatureException("An unexpected error occured while checking the signature "
-									+ "of the received MAVLink-Package ", e);
-						}
-					}
-				} else {
-					throw new AnnotationMissingException("MavInfo-Annotation is missing!");
-				}
-				
-				RecordComponent[] components = mavlinkClass.getRecordComponents();
-				// There may be undefined behavior if position is not defined in all cases but in some
-				if (Arrays.stream(components).filter(c -> c.isAnnotationPresent(MavField.class) &&
-						c.getAnnotation(MavField.class).position() != -1).findFirst().isPresent()) {
-					components = Arrays.stream(components)
-							.filter(c -> c.isAnnotationPresent(MavField.class) &&
-									c.getAnnotation(MavField.class).position() != -1)
-							.sorted((c1, c2) -> 
-								c1.getAnnotation(MavField.class).position() -
-								c2.getAnnotation(MavField.class).position())
-							.toArray(RecordComponent[]::new);
-				}
-				
-				/*
-				 * Start Reflection
-				 */
-				try {
-					@SuppressWarnings("rawtypes")
-					Class[] componentTypes = Arrays.stream(components)
-							.map(c -> c.getType())
-							.toArray(Class[]::new);
-					
-					final AtomicInteger index = new AtomicInteger(-1);
-					final byte[] payload = load;
-					
-					Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
-					Object[] parameters = Arrays.stream(components)
-							.map(c -> {
-								return c.isAnnotationPresent(MavArray.class)
-										? IntStream.range(0, c.getAnnotation(MavArray.class).length())
-												.mapToObj(i -> parse(index, payload, c))
-												.toArray(Object[]::new)
-										: parse(index, payload, c);
-							}).toArray(Object[]::new);
-					
-					MavlinkMessage m = constructor.newInstance(parameters);
-					
-					vertx.eventBus().publish(toMavlinkOutAddress, m.json());
-				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-						| IllegalArgumentException | InvocationTargetException e) {
-					throw new ParsingException(new ReflectionException(e));
-				}
-				
-			}))) {
+			if (!(JsonMessage.on(RawMavlinkV1.class, msg, this::interpretMsg)
+					|| JsonMessage.on(RawMavlinkV2.class, msg, this::interpretMsg))) {
+				System.out.println(msg.body());
 				logger.error("Unsupported type sent to {}", msg.address());
 				throw new PacketException("Unsupported type sent to Mavlink-Parser!");
 			}
@@ -218,6 +237,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				
 			}
 		});
+		
 		startPromise.complete();
 	}
 

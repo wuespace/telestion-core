@@ -29,12 +29,12 @@ public class MavV2Signator {
 		long time = ((dt.toEpochSecond() - secondJan2015) * 1_000_000 + (int) dt.toInstant().getNano() / 1_000) / 10;
 		
 		byte[] timestamp = {
-				(byte) (time >>	40 	& 0xff),
-				(byte) (time >>	32 	& 0xff),
-				(byte) (time >>	24 	& 0xff),
-				(byte) (time >>	16 	& 0xff),
-				(byte) (time >>	8	& 0xff),
-				(byte) (time		& 0xff),
+				(byte) ((time >>	40)	& 0xff),
+				(byte) ((time >>	32)	& 0xff),
+				(byte) ((time >>	24)	& 0xff),
+				(byte) ((time >>	16)	& 0xff),
+				(byte) ((time >>	8)	& 0xff),
+				(byte) (time			& 0xff),
 		};
 		
 		return timestamp;

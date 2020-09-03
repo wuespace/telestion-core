@@ -46,14 +46,14 @@ public record RawMavlinkV1(
 		ByteBuffer raw = ByteBuffer.allocate(8 + payload.payload().length);
 
 		raw.put((byte) 0xFE);
-		raw.put((byte) (len			&	0xff));
-		raw.put((byte) (seq			&	0xff));
-		raw.put((byte) (sysId		&	0xff));
-		raw.put((byte) (compId		&	0xff));
-		raw.put((byte) (msgId		&	0xff));
+		raw.put((byte) (len				&	0xff));
+		raw.put((byte) (seq				&	0xff));
+		raw.put((byte) (sysId			&	0xff));
+		raw.put((byte) (compId			&	0xff));
+		raw.put((byte) (msgId			&	0xff));
 		raw.put(payload.payload());
-		raw.put((byte) (checksum	>>	8 & 0xff));
-		raw.put((byte) (checksum	&	0xff));
+		raw.put((byte) ((checksum >> 8)	&	0xff));
+		raw.put((byte) (checksum		&	0xff));
 		
 		return raw.array();
 	}

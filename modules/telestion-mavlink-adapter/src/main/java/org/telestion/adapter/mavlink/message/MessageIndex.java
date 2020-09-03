@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @author Cedric Boes
  * @version 1.0
  */
-public class MessageIndex {
+public final class MessageIndex {
 	/**
 	 * 
 	 */
