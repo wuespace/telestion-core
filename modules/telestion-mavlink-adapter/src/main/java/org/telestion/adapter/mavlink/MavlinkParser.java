@@ -111,7 +111,6 @@ public final class MavlinkParser extends AbstractVerticle {
 		if (raw instanceof RawMavlinkV2 v2) {
 			mavlinkClass = MessageIndex.get(v2.msgId());
 
-			System.out.println(mavlinkClass + " " + v2.msgId());
 			if (v2.incompatFlags() == 0x1) {
 				subtract = 14;
 			}
@@ -165,8 +164,8 @@ public final class MavlinkParser extends AbstractVerticle {
 		
 		RecordComponent[] components = mavlinkClass.getRecordComponents();
 		// There may be undefined behavior if position is not defined in all cases but in some
-		if (Arrays.stream(components).filter(c -> c.isAnnotationPresent(MavField.class) &&
-				c.getAnnotation(MavField.class).position() != -1).findFirst().isPresent()) {
+		if (Arrays.stream(components).anyMatch(c -> c.isAnnotationPresent(MavField.class) &&
+				c.getAnnotation(MavField.class).position() != -1)) {
 			components = Arrays.stream(components)
 					.filter(c -> c.isAnnotationPresent(MavField.class) &&
 							c.getAnnotation(MavField.class).position() != -1)
@@ -182,7 +181,7 @@ public final class MavlinkParser extends AbstractVerticle {
 		try {
 			@SuppressWarnings("rawtypes")
 			Class[] componentTypes = Arrays.stream(components)
-					.map(c -> c.getType())
+					.map(RecordComponent::getType)
 					.toArray(Class[]::new);
 			
 			final AtomicInteger index = new AtomicInteger(-1);
@@ -201,7 +200,6 @@ public final class MavlinkParser extends AbstractVerticle {
 			MavlinkMessage m = constructor.newInstance(parameters);
 			
 			vertx.eventBus().publish(toMavlinkOutAddress, m.json());
-			System.out.println("Published");
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 			throw new ParsingException(new ReflectionException(e));
@@ -215,7 +213,6 @@ public final class MavlinkParser extends AbstractVerticle {
 		vertx.eventBus().consumer(toMavlinkInAddress, msg -> {
 			if (!(JsonMessage.on(RawMavlinkV1.class, msg, this::interpretMsg)
 					|| JsonMessage.on(RawMavlinkV2.class, msg, this::interpretMsg))) {
-				System.out.println(msg.body());
 				logger.error("Unsupported type sent to {}", msg.address());
 				throw new PacketException("Unsupported type sent to Mavlink-Parser!");
 			}
