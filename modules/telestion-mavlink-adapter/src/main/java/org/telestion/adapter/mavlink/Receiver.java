@@ -2,7 +2,6 @@ package org.telestion.adapter.mavlink;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.adapter.mavlink.message.internal.MavConnection;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
@@ -11,6 +10,8 @@ import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import org.telestion.core.message.TcpData;
+import org.telestion.core.verticle.TcpAdapter;
 
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
@@ -32,10 +33,10 @@ public final class Receiver extends AbstractVerticle {
 	
 	@Override
 	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().consumer(inAddress, msg -> {
-			if (!JsonMessage.on(MavConnection.class, msg, con -> {
-				byte[] bytes = con.bytes();
-				
+		vertx.eventBus().consumer(TcpAdapter.outAddress, msg -> {
+			if (!JsonMessage.on(TcpData.class, msg, data -> {
+				byte[] bytes = data.data();
+
 				RawMavlink mav = switch(bytes[0]) {
 						case (byte) 0xFD -> (bytes.length > 11
 								? new RawMavlinkV2(bytes)
@@ -47,7 +48,7 @@ public final class Receiver extends AbstractVerticle {
 				};
 				
 				if (mav != null) {
-					AddressAssociator.put(mav.getMavlinkId(), con.remoteAddress());
+					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.address(), data.port()));
 					vertx.eventBus().send(MavlinkParser.toMavlinkInAddress, mav.json());
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");
