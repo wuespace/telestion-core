@@ -3,6 +3,7 @@ package org.telestion.adapter.mavlink;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
+import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,6 +26,7 @@ import org.telestion.adapter.mavlink.message.MessageIndex;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
+import org.telestion.adapter.mavlink.security.HeaderHelper;
 import org.telestion.adapter.mavlink.security.MavV2Signator;
 import org.telestion.adapter.mavlink.security.SecretKeySafe;
 import org.telestion.adapter.mavlink.security.X25Checksum;
@@ -42,6 +44,8 @@ import io.vertx.core.Promise;
  */
 public final class MavlinkParser extends AbstractVerticle {
 	
+	private HeaderHelper helper;
+	
 	private final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
 	
 	public static final String toRawInAddressV1 = Address.incoming(MavlinkParser.class, "toRaw1");
@@ -50,6 +54,14 @@ public final class MavlinkParser extends AbstractVerticle {
 	
 	public static final String toMavlinkInAddress = Address.incoming(MavlinkParser.class, "toMavlink");
 	public static final String toMavlinkOutAddress = Address.outgoing(MavlinkParser.class, "toMavlink");
+	
+	public MavlinkParser() {
+		helper = null;
+	}
+	
+	public MavlinkParser(HeaderHelper helper) {
+		this.helper = helper;
+	}
 	
 	private Object toRightNum(Object o, Class<? extends Number> clazz) {
 		return switch(clazz.getSimpleName()) {
@@ -111,7 +123,7 @@ public final class MavlinkParser extends AbstractVerticle {
 		if (raw instanceof RawMavlinkV2 v2) {
 			mavlinkClass = MessageIndex.get(v2.msgId());
 
-			if (v2.incompatFlags() == 0x1) {
+			if ((v2.incompatFlags()	& 0x1) == 0x1) {
 				subtract = 14;
 			}
 			
@@ -207,6 +219,10 @@ public final class MavlinkParser extends AbstractVerticle {
 		
 	
 	}
+
+	private byte[] getRaw(MavlinkMessage raw) {
+		return null;
+	}
 	
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -221,17 +237,79 @@ public final class MavlinkParser extends AbstractVerticle {
 		// TODO: Sending part!
 		vertx.eventBus().consumer(toRawInAddressV1, msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
-
-			})) {
+				byte[] payload = getRaw(raw);
 				
+				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 5);
+				buffer.put((byte) (payload.length			&	0xff));
+				buffer.put((byte) (helper.seq()				&	0xff));
+				buffer.put((byte) (helper.sysId()			&	0xff));
+				buffer.put((byte) (helper.compId()			&	0xff));
+				buffer.put((byte) (helper.getNewMessageId()	&	0xff));
+				buffer.put(payload);
+				
+				int checksum = X25Checksum.calculate(buffer.array());
+				
+				byte[] rawBytes = new byte[buffer.capacity() + 3];
+				rawBytes[0] = (byte) 0xFE;
+				int index = 1;
+				
+				for (byte b : buffer.array()) {
+					rawBytes[index++] = b;
+				}
+				
+				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
+				rawBytes[index++] = (byte) (checksum & 0xff);
+				
+				vertx.eventBus().send(Transmitter.inAddress, new RawMavlinkV1(rawBytes));
+			})) {
+				logger.warn("Invalid message sent to Mavlink2RawV1-Parser! (Message-Body: {})", msg.body());
 			}
 		});
 		
 		vertx.eventBus().consumer(toRawInAddressV2, msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
+				byte[] payload = getRaw(raw);
 				
+				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 9);
+				buffer.put((byte) (payload.length			&	0xff));
+				buffer.put((byte) (helper.incompFlags()		&	0xff));
+				buffer.put((byte) (helper.compFlags()		&	0xff));
+				buffer.put((byte) (helper.seq()				&	0xff));
+				buffer.put((byte) (helper.sysId()			&	0xff));
+				buffer.put((byte) (helper.compId()			&	0xff));
+				buffer.put((byte) ((helper.getNewMessageId() >> 16)		&	0xff));
+				buffer.put((byte) ((helper.getNewMessageId() >> 8)		&	0xff));
+				buffer.put((byte) (helper.getNewMessageId()				&	0xff));
+				buffer.put(payload);
+				
+				int checksum = X25Checksum.calculate(buffer.array());
+				byte[] signature = null;
+				try {
+					signature = MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
+									Arrays.copyOfRange(buffer.array(), 0, 9), payload, raw.getCrc(), (short) 2);
+				} catch (NoSuchAlgorithmException e) {
+					logger.error("Signating packet failed!", e);
+					throw new ParsingException("Parsing MAVLink-Message into byte[] failed due to signating!");
+				}
+				
+				byte[] rawBytes = new byte[buffer.capacity() + 16];
+				rawBytes[0] = (byte) 0xFD;
+				int index = 1;
+				
+				// Streaming of byte[] not possible :(
+				for (byte b : buffer.array()) {
+					rawBytes[index++] = b;
+				}
+				
+				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
+				rawBytes[index++] = (byte) (checksum & 0xff);
+				
+				for (byte b : signature) {
+					rawBytes[index++] = b;
+				}
+				vertx.eventBus().send(Transmitter.inAddress, new RawMavlinkV2(buffer.array()).json());
 			})) {
-				
+				logger.warn("Invalid message sent to Mavlink2RawV2-Parser! (Message-Body: {})", msg.body());
 			}
 		});
 		

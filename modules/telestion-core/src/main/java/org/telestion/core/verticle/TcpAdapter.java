@@ -13,6 +13,12 @@ import org.telestion.core.message.TcpData;
 
 import java.util.Objects;
 
+/**
+ * TODO: Add Java-Docs to make @pklaschka happy ;)
+ * 
+ * @author Cedric Boes, Jan von Pichowski
+ * @version 1.0
+ */
 public final class TcpAdapter extends AbstractVerticle {
 
     public static final String outAddress = Address.outgoing(TcpAdapter.class);
@@ -60,7 +66,6 @@ public final class TcpAdapter extends AbstractVerticle {
                 socket.write(Buffer.buffer(data.data()));
             }));
         });
-
 
         server.exceptionHandler(handler -> {
             logger.error("TCP-Server for MAVLink encountered an unexpected error", handler);

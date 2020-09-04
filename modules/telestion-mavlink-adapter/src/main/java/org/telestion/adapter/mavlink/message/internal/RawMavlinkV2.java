@@ -40,9 +40,9 @@ public record RawMavlinkV2(
 				(long) 	(bytes[7] << 16) + (bytes[8] << 8) + bytes[9],
 				new RawPayload(Arrays.copyOfRange(bytes, 10, bytes[1] + 10)),
 				(int)	(bytes[bytes[1] + 10] << 8) + bytes[bytes[1] + 11],
-				(short) bytes[2] == 0x1 ? bytes[bytes[1] + 12] : 0,
-				(long) 	bytes[2] == 0x1 ? Arrays.copyOfRange(bytes, 13, 25)
-								: null);
+				(short) (bytes[2] & 0x1) == 0x1 ? bytes[bytes[1] + 12] : 0,
+				(byte[])((bytes[2] & 0x1) == 0x1 ? Arrays.copyOfRange(bytes, 13, 25)
+								: new byte[] {}));
 	}
 	
 	@Override
