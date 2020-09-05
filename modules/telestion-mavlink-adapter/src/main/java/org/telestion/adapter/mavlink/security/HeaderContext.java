@@ -6,7 +6,7 @@ package org.telestion.adapter.mavlink.security;
  * @author Cedric Boes
  * @version 1.0
  */
-public final class HeaderHelper {
+public final class HeaderContext {
 	private volatile long packetId;
 	private final short incompFlags;
 	private final short compFlags;
@@ -14,7 +14,7 @@ public final class HeaderHelper {
 	private final short sysId;
 	private final short compId;
 	
-	public HeaderHelper(short incompFlags, short compFlags, short seq, short sysId, short compId) {
+	public HeaderContext(short incompFlags, short compFlags, short seq, short sysId, short compId) {
 		this.incompFlags = incompFlags;
 		this.compFlags = compFlags;
 		this.seq = seq;

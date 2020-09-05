@@ -26,7 +26,7 @@ import org.telestion.adapter.mavlink.message.MessageIndex;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
-import org.telestion.adapter.mavlink.security.HeaderHelper;
+import org.telestion.adapter.mavlink.security.HeaderContext;
 import org.telestion.adapter.mavlink.security.MavV2Signator;
 import org.telestion.adapter.mavlink.security.SecretKeySafe;
 import org.telestion.adapter.mavlink.security.X25Checksum;
@@ -44,7 +44,7 @@ import io.vertx.core.Promise;
  */
 public final class MavlinkParser extends AbstractVerticle {
 	
-	private HeaderHelper helper;
+	private HeaderContext helper;
 	
 	private final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
 	
@@ -59,7 +59,7 @@ public final class MavlinkParser extends AbstractVerticle {
 		helper = null;
 	}
 	
-	public MavlinkParser(HeaderHelper helper) {
+	public MavlinkParser(HeaderContext helper) {
 		this.helper = helper;
 	}
 	
