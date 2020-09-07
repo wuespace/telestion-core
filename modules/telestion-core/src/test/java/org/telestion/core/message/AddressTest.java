@@ -70,7 +70,7 @@ public class AddressTest {
         vertx.deployVerticle(consumer);
         vertx.deployVerticle(publisher);
 
-        Thread.sleep(Duration.ofMillis(20).toMillis());
+        Thread.sleep(Duration.ofMillis(50).toMillis());
 
         assertThat(consumer.publishedMsg, equalTo("Hello"));
 
