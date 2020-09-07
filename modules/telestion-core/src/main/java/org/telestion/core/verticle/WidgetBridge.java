@@ -1,4 +1,4 @@
-package org.telestion.widget;
+package org.telestion.core.verticle;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
