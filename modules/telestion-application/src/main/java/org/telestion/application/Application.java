@@ -4,8 +4,8 @@ import org.telestion.core.message.Address;
 import org.telestion.core.verticle.MessageLogger;
 import org.telestion.core.verticle.RandomPositionPublisher;
 import org.telestion.core.verticle.WebServer;
+import org.telestion.core.verticle.WidgetBridge;
 import org.telestion.launcher.Launcher;
-import org.telestion.widget.WidgetBridge;
 
 import java.util.Collections;
 
