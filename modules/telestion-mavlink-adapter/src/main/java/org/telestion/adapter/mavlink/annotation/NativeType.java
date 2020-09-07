@@ -16,7 +16,8 @@ public enum NativeType {
 	INT_64(8, false),
 	UINT_64(8, true),
 	FLOAT(4, false),
-	DOUBLE(8, false);
+	DOUBLE(8, false),
+	CHAR(1, false);
 	
 	public final int size;
 	public final boolean unsigned;
