@@ -9,7 +9,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v1
       - name: Build and Run Tests
-        run: chmod +x gradlew && ./gradlew
+        run: chmod +x gradlew && ./gradlew test
       - name: Publish Test Report
         uses: scacap/action-surefire-report@v1
         with:
