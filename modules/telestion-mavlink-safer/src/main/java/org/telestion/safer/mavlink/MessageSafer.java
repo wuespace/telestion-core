@@ -9,6 +9,7 @@ import org.telestion.core.message.Position;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import org.telestion.core.verticle.RandomPositionPublisher;
 
 /**
  * A class that listens to the {@link Vertx Vertx} eventBus connection with {@link org.telestion.core.verticle.PositionPublisher} and sends the json-encoded {@link Position} objects to {@link FileHandler} to continue with the backup process.
