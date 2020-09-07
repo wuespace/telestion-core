@@ -13,4 +13,4 @@ jobs:
         with:
           java-version: 14
       - name: Check with Gradle
-        run: ./gradlew check
+        run: chmod +x gradlew && ./gradlew check
