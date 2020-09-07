@@ -30,6 +30,7 @@ subprojects {
     }
     tasks.withType(Test) {
         jvmArgs += "--enable-preview"
+        ignoreFailures = true
         reports {
             junitXml.enabled = true
         }
