@@ -31,11 +31,14 @@ import java.util.stream.Collectors;
  *     <code>SockJSBridgeOptions</code> and mount them as a SubRouter to the Router.
  *
  *     You have to configure the following options:
- *     <ul>
- *         <li>httpServerOptions - the HttpServerOptions to configure the HTTP-Server</li>
- *         <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go through</li>
- *     </ul>
- *     To do that you have four constructors to initialize the HTTP-Server.
+ *  *     <ul>
+ *  *         <li>host - the host ip where the HTTP-Server should run</li>
+ *  *         <li>port - the port where the HTTP-Server should listen</li>
+ *  *         <li>inboundPermitted - incoming message addresses that should be allowed</li>
+ *  *         <li>outboundPermitted - outgoing message addresses that should be allowed</li>
+ *  *     </ul>
+ *  *     To do that you have two constructors to initialize the HTTP-Server. The default constructor can only be used,
+ *  *     if host, port, in- and outbound addresses are configured in a config file..
  * </p>
  * <p>
  *     To define rules for messages to be allowed through
