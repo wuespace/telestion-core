@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+sourceCompatibility = '14'
+targetCompatibility = '14'
+
+application {
+    // Define the main class for the application.
+    mainClassName = 'org.telestion.core.Main'
+}
+
+
+dependencies {
+    implementation project(':modules:telestion-api')
+
+    implementation 'com.google.guava:guava:29.0-jre'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.hamcrest:hamcrest-library:2.2'
+    testImplementation "org.mockito:mockito-core:2.+"
+
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
+
+    implementation "io.vertx:vertx-core:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-web:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-hazelcast:$gradle.vertxVersion"
+    // implementation "io.vertx:vertx-infinispan:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-health-check:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-http-service-factory:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-rx-java2:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-config:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-service-factory:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-mongo-client:$gradle.vertxVersion"
+    testImplementation "io.vertx:vertx-junit5:$gradle.vertxVersion"
+}
+
+test {
+    useJUnitPlatform()
+}
