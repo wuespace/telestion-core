@@ -2,7 +2,7 @@ name: mav_msg
 on: [push]
 
 jobs:
-  build:
+  mav_msg:
     name: Build and Run Tests
     runs-on: ubuntu-latest
     steps:
