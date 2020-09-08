@@ -138,7 +138,7 @@ def handle_args() -> Tuple[str, str, str]:
         print("This help is available with 'python mavlink_xml2record.py -h'")
         return "", "", ""
 
-    pos = {s: (i + 1) for i, s in enumerate(args) if s in ['-f', '-o']}
+    pos = {s: (i + 1) for i, s in enumerate(args) if s in ['-f', '-o', '-p']}
 
     return args[pos.get("-f")] if "-f" in pos else "", args[pos.get("-o")] if "-o" in pos else "", \
            args[pos.get("-p")] if "-p" in pos else ""
@@ -155,10 +155,13 @@ def get_messages(file: str) -> List[Message]:
 
 
 def to_record(msg: Message, output: str = "", package: str = "org.telestion.adapter.mavlink.message"):
+    if package == "":
+        package = "org.telestion.adapter.mavlink.message"
     if output == "":
         output = f"{package.replace('.', '/')}/"
     name = msg.get_name().lower().replace("_", " ").title().replace(" ", "")
     new_line = '\n'
+    print(package)
     template = f"""package {package};
 
 import org.telestion.adapter.mavlink.annotation.MavField;
@@ -236,6 +239,7 @@ def main():
     print("Starting MAVLink XML2Record-Tool")
 
     file, output, package = handle_args()
+    print(file, output, package)
     if file != "":
         print(f"Reading and interpreting MAVLink-File {file}...")
         messages = get_messages(file)
@@ -245,7 +249,7 @@ def main():
         for message in messages:
             print(f"Creating record for {message.get_name()} (id={message.get_msg_id()})... ", end='')
             try:
-                to_record(*[arg for arg in [message, output, package] if arg != ""])
+                to_record(message, output, package)
                 print("Success!")
             except Exception as e:
                 print("Failed!")
@@ -257,7 +261,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 
 if __name__ == '__main__':
     main()
