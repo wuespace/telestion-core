@@ -12,24 +12,28 @@ application {
 }
 
 sourceSets {
-    messages {
+    main {
         java {
+            srcDirs 'src/main/messages'
         }
     }
 }
 
 task createOfficialMavlinkRecords(type:Exec) {
+    outputs.upToDateWhen { false }
     workingDir 'src/tools'
-    commandLine 'python', 'mavlink_xml2record.py', '-f', '../../mavlink/message_definitions/v1.0/*.xml', '-o', '../messages/java/~', '-p', 'org.telestion.mavlink.messages.mavlink.*'
+    commandLine 'python', 'mavlink_xml2record.py', '-f', '../../mavlink/message_definitions/v1.0/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.mavlink.messages.mavlink.*'
 }
 
 task createTelestionMavlinkRecords(type:Exec) {
+    outputs.upToDateWhen { false }
     workingDir 'src/tools'
-    commandLine 'python', 'mavlink_xml2record.py', '-f', '../messages/xml/*.xml', '-o', '../messages/java/~', '-p', 'org.telestion.mavlink.messages.telestion.*'
+    commandLine 'python', 'mavlink_xml2record.py', '-f', '../messages/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.mavlink.messages.telestion.*'
 }
 
-assemble.dependsOn createTelestionMavlinkRecords
-assemble.dependsOn createOfficialMavlinkRecords
+classes.dependsOn createTelestionMavlinkRecords
+classes.dependsOn createOfficialMavlinkRecords
+
 
 dependencies {
     implementation project(':modules:telestion-core')
@@ -49,9 +53,9 @@ dependencies {
 
     implementation "io.vertx:vertx-core:$gradle.vertxVersion"
 
-    messagesImplementation sourceSets.main.output
-    messagesImplementation project(':modules:telestion-api')
-    messagesImplementation "io.vertx:vertx-core:$gradle.vertxVersion"
+    //messagesImplementation sourceSets.main.output
+    //messagesImplementation project(':modules:telestion-api')
+    //messagesImplementation "io.vertx:vertx-core:$gradle.vertxVersion"
 }
 
 test {
