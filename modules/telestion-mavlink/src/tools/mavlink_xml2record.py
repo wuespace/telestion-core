@@ -101,7 +101,7 @@ class Message:
     def calc_crc_extra(self) -> int:
         array = lambda x: str(chr(int(x[x.index('[') + 1:x.index(']')]))) if '[' in x else ''
         s = f"{self._name} " \
-            f"{''.join(x for x in [f'{Types.get_from_string(f.get_mav_type()).get_name()} {f.get_name()}{array(f.get_mav_type())}' for f in self._fields])}"
+            f"{''.join(x for x in [f'{Types.get_from_string(f.get_mav_type()).get_name()} {f.get_name()} {array(f.get_mav_type())}' for f in self._fields])}"
 
         current_crc = 0xffff
 
