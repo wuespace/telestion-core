@@ -24,7 +24,7 @@ public interface JsonMessage {
      * @return simple class name of subclass
      */
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    default String name() {
+    default String messageName() {
         return getClass().getSimpleName();
     }
 

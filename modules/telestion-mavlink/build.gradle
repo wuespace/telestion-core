@@ -11,6 +11,28 @@ application {
     mainClassName = 'org.telestion.adapter.mavlink.Main'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/messages'
+        }
+    }
+}
+
+task createOfficialMavlinkRecords(type:Exec) {
+    outputs.upToDateWhen { false }
+    workingDir 'src/tools'
+    commandLine 'python', 'mavlink_xml2record.py', '-f', '../../mavlink/message_definitions/v1.0/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.mavlink.messages.mavlink.*'
+}
+
+task createTelestionMavlinkRecords(type:Exec) {
+    outputs.upToDateWhen { false }
+    workingDir 'src/tools'
+    commandLine 'python', 'mavlink_xml2record.py', '-f', '../messages/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.mavlink.messages.telestion.*'
+}
+
+compileJava.dependsOn createTelestionMavlinkRecords
+compileJava.dependsOn createOfficialMavlinkRecords
 
 dependencies {
     implementation project(':modules:telestion-core')
