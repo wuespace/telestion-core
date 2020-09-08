@@ -1,3 +1,6 @@
 [submodule "modules/telestion-plugin-daedalus2"]
 	path = modules/telestion-plugin-daedalus2
 	url = git@github.com:TelestionGroup/telestion-plugin-daedalus2.git
+[submodule "modules/telestion-mavlink/mavlink"]
+	path = modules/telestion-mavlink/mavlink
+	url = https://github.com/mavlink/mavlink.git
