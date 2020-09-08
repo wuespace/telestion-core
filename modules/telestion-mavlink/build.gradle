@@ -31,9 +31,8 @@ task createTelestionMavlinkRecords(type:Exec) {
     commandLine 'python', 'mavlink_xml2record.py', '-f', '../messages/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.mavlink.messages.telestion.*'
 }
 
-classes.dependsOn createTelestionMavlinkRecords
-classes.dependsOn createOfficialMavlinkRecords
-
+compileJava.dependsOn createTelestionMavlinkRecords
+compileJava.dependsOn createOfficialMavlinkRecords
 
 dependencies {
     implementation project(':modules:telestion-core')
@@ -52,10 +51,6 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
     implementation "io.vertx:vertx-core:$gradle.vertxVersion"
-
-    //messagesImplementation sourceSets.main.output
-    //messagesImplementation project(':modules:telestion-api')
-    //messagesImplementation "io.vertx:vertx-core:$gradle.vertxVersion"
 }
 
 test {
