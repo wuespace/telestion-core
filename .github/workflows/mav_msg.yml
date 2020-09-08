@@ -12,5 +12,5 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 14
-      - name: Pull Mavlink Definitions
-        run: git pull git@github.com:mavlink/mavlink.git && ls
+      - name: Clone Mavlink Definitions
+        run: git clone git@github.com:mavlink/mavlink.git && ls
