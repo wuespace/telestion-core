@@ -17,7 +17,7 @@ _because they are interpreted as new arguments!_
 
 ##### Example:
 ```shell
-python mav_xml2record.py -f path/to/messages.xml
+python mavlink_xml2record.py -f path/to/messages.xml
 ```
 
 ## TODO
