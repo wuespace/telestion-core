@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# Code is only Python 3.8+ compatible
+
 import os
 import sys
 import traceback
@@ -123,18 +126,22 @@ class Message:
         return self._wip
 
 
-def handle_args() -> Tuple[str, str]:
+def handle_args() -> Tuple[str, str, str]:
     args = sys.argv[1:]
     if len(args) == 0:
-        return "", ""
+        return "", "", ""
     if args[0] in ['help', '-help', '-h']:
-        print("Usage: 'python mavlink_xml2record.py -f <INPUT_FILE> -o <OUTPUT_PACKAGE [Not required]>'")
+        print("Usage: 'python mavlink_xml2record.py -f <INPUT_FILE> -o <OUTPUT_PATH [Not required]>"
+              " -p <OUTPUT_JAVA_PACKAGE [Not required]>'")
+        print("If no output path is specified the specified java-package will be used. This is by default "
+              "'org.telestion.adapter.mavlink.message'.")
         print("This help is available with 'python mavlink_xml2record.py -h'")
-        return "", ""
+        return "", "", ""
 
     pos = {s: (i + 1) for i, s in enumerate(args) if s in ['-f', '-o']}
 
-    return args[pos.get("-f")] if "-f" in pos else "", args[pos.get("-o")] if "-o" in pos else ""
+    return args[pos.get("-f")] if "-f" in pos else "", args[pos.get("-o")] if "-o" in pos else "", \
+           args[pos.get("-p")] if "-p" in pos else ""
 
 
 def get_messages(file: str) -> List[Message]:
@@ -147,10 +154,12 @@ def get_messages(file: str) -> List[Message]:
             root.find('messages')]
 
 
-def to_record(msg: Message, out_package: str = "org.telestion.adapter.mavlink.message"):
+def to_record(msg: Message, output: str = "", package: str = "org.telestion.adapter.mavlink.message"):
+    if output == "":
+        output = f"{package.replace('.', '/')}/"
     name = msg.get_name().lower().replace("_", " ").title().replace(" ", "")
     new_line = '\n'
-    template = f"""package {out_package};
+    template = f"""package {package};
 
 import org.telestion.adapter.mavlink.annotation.MavField;
 import org.telestion.adapter.mavlink.annotation.MavInfo;
@@ -213,20 +222,21 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
     if no_array:
         template = template.replace(f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;', '')
 
-    path = f"{out_package.replace('.', '/')}/"
+    if output[-1] != '/':
+        output += '/'
 
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if not os.path.exists(output):
+        os.makedirs(output)
 
-    with open(file=path + f"{name}.java", mode='w') as f:
+    with open(file=output + f"{name}.java", mode='w') as f:
         f.write(template)
 
 
 def main():
     print("Starting MAVLink XML2Record-Tool")
 
-    file, output = handle_args()
-    if not (file == "" and output == ""):
+    file, output, package = handle_args()
+    if file != "":
         print(f"Reading and interpreting MAVLink-File {file}...")
         messages = get_messages(file)
         print(f"Reading and interpreting MAVLink-File finished [{len(messages)} valid messages found]")
@@ -235,10 +245,7 @@ def main():
         for message in messages:
             print(f"Creating record for {message.get_name()} (id={message.get_msg_id()})... ", end='')
             try:
-                if output != "":
-                    to_record(message, output)
-                else:
-                    to_record(message)
+                to_record(*[arg for arg in [message, output, package] if arg != ""])
                 print("Success!")
             except Exception as e:
                 print("Failed!")
@@ -250,7 +257,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 if __name__ == '__main__':
     main()
