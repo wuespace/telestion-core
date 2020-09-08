@@ -101,7 +101,7 @@ class Message:
     def calc_crc_extra(self) -> int:
         array = lambda x: str(chr(int(x[x.index('[') + 1:x.index(']')]))) if '[' in x else ''
         s = f"{self._name} " \
-            f"{''.join(x for x in [f'{Types.get_from_string(f.get_mav_type()).get_name()} {f.get_name()} {array(f.get_mav_type())}' for f in self._fields])}"
+            f"{''.join(x for x in [f'{Types.get_from_string(f.get_mav_type()).get_name()} {f.get_name()}{array(f.get_mav_type())}' for f in self._fields])}"
 
         current_crc = 0xffff
 
@@ -220,7 +220,8 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
         @MavField(nativeType = NativeType.{Types.get_from_string(field.get_mav_type()).get_java_repr()})
         @JsonProperty {data_type} {field.get_name()[:1].lower()}\
 {field.get_name().lower().replace('_', ' ').title()[1:].replace(' ', '')}, /*TEMPLATE_RECORD_TYPES*/""") \
-            .replace("/*TEMPLATE_CONSTRUCTOR_ARGS*/", f"{'null' if array_length > 0 else '0'}\
+            .replace("/*TEMPLATE_CONSTRUCTOR_ARGS*/", f"\
+{'null' if array_length > 0 else ('(char)' if Types.get_from_string(field.get_mav_type()) is Types.CHAR else '') + '0'}\
 , /*TEMPLATE_CONSTRUCTOR_ARGS*/")
     template = template.replace(", /*TEMPLATE_RECORD_TYPES*/", "").replace(", /*TEMPLATE_CONSTRUCTOR_ARGS*/", "")
     if no_array:
@@ -292,7 +293,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.3.3"
+VERSION = "1.3.4"
 
 if __name__ == '__main__':
     main()
