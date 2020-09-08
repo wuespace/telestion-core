@@ -161,13 +161,14 @@ def to_record(msg: Message, output: str = "", package: str = "org.telestion.adap
         output = f"{package.replace('.', '/')}/"
     name = msg.get_name().lower().replace("_", " ").title().replace(" ", "")
     new_line = '\n'
-    print(package)
     template = f"""package {package};
 
 import org.telestion.adapter.mavlink.annotation.MavField;
 import org.telestion.adapter.mavlink.annotation.MavInfo;
 import org.telestion.adapter.mavlink.annotation.NativeType;\
-{f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;'}
+{f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;'}\
+{f'{new_line}import org.telestion.adapter.mavlink.message.MavlinkMessage;'
+    if package != 'org.telestion.adapter.mavlink.message' else ''}
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -261,7 +262,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.1.1"
+VERSION = "1.1.2"
 
 if __name__ == '__main__':
     main()
