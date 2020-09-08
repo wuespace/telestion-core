@@ -158,7 +158,7 @@ def to_record(msg: Message, output: str = "", package: str = "org.telestion.adap
     if package == "":
         package = "org.telestion.adapter.mavlink.message"
     if output == "":
-        output = f"{package.replace('.', '/')}/"
+        output = package
     name = msg.get_name().lower().replace("_", " ").title().replace(" ", "")
     new_line = '\n'
     template = f"""package {package};
@@ -226,6 +226,12 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
     if no_array:
         template = template.replace(f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;', '')
 
+    if '~' in output:
+        output = output.replace('~', package)
+
+    if '.' in output:
+        output = output.replace('.', '/')
+
     if output[-1] != '/':
         output += '/'
 
@@ -236,24 +242,36 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
         f.write(template)
 
 
+def interpret_file(file, output, package):
+    print(f"Reading and interpreting MAVLink-File {file}...")
+    messages = get_messages(file)
+    print(f"Reading and interpreting MAVLink-File finished [{len(messages)} valid messages found]")
+
+    print("Outputting to Java-Records (preview jdk-14)...")
+    for message in messages:
+        print(f"Creating record for {message.get_name()} (id={message.get_msg_id()})... ", end='')
+        try:
+            to_record(message, output, package)
+            print("Success!")
+        except Exception as e:
+            print("Failed!")
+            traceback.print_exc()
+
+
 def main():
     print("Starting MAVLink XML2Record-Tool")
 
     file, output, package = handle_args()
     if file != "":
-        print(f"Reading and interpreting MAVLink-File {file}...")
-        messages = get_messages(file)
-        print(f"Reading and interpreting MAVLink-File finished [{len(messages)} valid messages found]")
+        if '*' in file:
+            print("Wildcard found!")
+            file = [f for f in os.listdir(file) if f.endswith('.xml')]
+        else:
+            file = [file, ]
 
-        print("Outputting to Java-Records (preview jdk-14)...")
-        for message in messages:
-            print(f"Creating record for {message.get_name()} (id={message.get_msg_id()})... ", end='')
-            try:
-                to_record(message, output, package)
-                print("Success!")
-            except Exception as e:
-                print("Failed!")
-                traceback.print_exc()
+        for f in file:
+            interpret_file(f, output.replace('*', f[:-4]), package.replace('*', f[:-4]))
+
         print("All done!")
     else:
         print("No input file specified")
@@ -261,7 +279,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.1.2"
+VERSION = "1.2.0"
 
 if __name__ == '__main__':
     main()
