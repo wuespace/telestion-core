@@ -227,7 +227,7 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
         template = template.replace(f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;', '')
 
     if '~' in output:
-        output = output.replace('~', package[package.rindex('/'):]).replace('//', '/')
+        output = output.replace('~', package)
 
     dot_start = False
     if output.startswith('..'):
@@ -292,7 +292,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.3.0"
+VERSION = "1.3.1"
 
 if __name__ == '__main__':
     main()
