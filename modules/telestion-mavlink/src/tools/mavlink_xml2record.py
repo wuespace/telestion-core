@@ -261,11 +261,11 @@ def interpret_file(file, output, package):
         total = len(messages)
         try:
             to_record(message, output, package)
-            print("Success!".ljust(20), f"[{str(count).ljust(len(str(total)))}/{total} "
-                                        f"({int(count/len(messages) * 100)}%)]", sep='')
+            print("Success!".ljust(20), f"[{str(count+1).ljust(len(str(total)))}/{total} "
+                                        f"({int((count+1)/len(messages) * 100)}%)]", sep='')
         except Exception as e:
             print("Failed!".ljust(20), f"[{str(count).ljust(len(str(total)))}/{total} "
-                                        f"({int(count/len(messages) * 100)}%)]", sep='')
+                                        f"({int((count+1)/len(messages) * 100)}%)]", sep='')
             traceback.print_exc()
 
 
@@ -282,7 +282,7 @@ def main():
             file = [file, ]
 
         for f in file:
-            interpret_file(f, output.replace('*', f[:-4]), package.replace('*', f[:-4]))
+            interpret_file(f, output.replace('*', f[:-4]), package.replace('*', f[f[:-4].rindex('/')+1:-4]))
             print()
 
         print("All done!")
@@ -292,7 +292,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.3.1"
+VERSION = "1.3.2"
 
 if __name__ == '__main__':
     main()
