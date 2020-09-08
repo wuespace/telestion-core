@@ -240,7 +240,6 @@ def main():
     print("Starting MAVLink XML2Record-Tool")
 
     file, output, package = handle_args()
-    print(file, output, package)
     if file != "":
         print(f"Reading and interpreting MAVLink-File {file}...")
         messages = get_messages(file)
