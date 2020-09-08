@@ -227,10 +227,18 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
         template = template.replace(f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;', '')
 
     if '~' in output:
-        output = output.replace('~', package)
+        output = output.replace('~', package[package.rindex('/'):]).replace('//', '/')
+
+    dot_start = False
+    if output.startswith('..'):
+        output = output[2:]
+        dot_start = True
 
     if '.' in output:
         output = output.replace('.', '/')
+
+    if dot_start:
+        output = '..' + output
 
     if output[-1] != '/':
         output += '/'
@@ -248,13 +256,16 @@ def interpret_file(file, output, package):
     print(f"Reading and interpreting MAVLink-File finished [{len(messages)} valid messages found]")
 
     print("Outputting to Java-Records (preview jdk-14)...")
-    for message in messages:
-        print(f"Creating record for {message.get_name()} (id={message.get_msg_id()})... ", end='')
+    for count, message in enumerate(messages):
+        print(f" Creating record for {message.get_name()} (id={message.get_msg_id()})... ".ljust(84), end='')
+        total = len(messages)
         try:
             to_record(message, output, package)
-            print("Success!")
+            print("Success!".ljust(20), f"[{str(count).ljust(len(str(total)))}/{total} "
+                                        f"({int(count/len(messages) * 100)}%)]", sep='')
         except Exception as e:
-            print("Failed!")
+            print("Failed!".ljust(20), f"[{str(count).ljust(len(str(total)))}/{total} "
+                                        f"({int(count/len(messages) * 100)}%)]", sep='')
             traceback.print_exc()
 
 
@@ -265,12 +276,14 @@ def main():
     if file != "":
         if '*' in file:
             print("Wildcard found!")
-            file = [f for f in os.listdir(file) if f.endswith('.xml')]
+            path = file[:file.index('*')]
+            file = [path + f for f in os.listdir(path) if f.endswith('.xml')]
         else:
             file = [file, ]
 
         for f in file:
             interpret_file(f, output.replace('*', f[:-4]), package.replace('*', f[:-4]))
+            print()
 
         print("All done!")
     else:
@@ -279,7 +292,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 if __name__ == '__main__':
     main()
