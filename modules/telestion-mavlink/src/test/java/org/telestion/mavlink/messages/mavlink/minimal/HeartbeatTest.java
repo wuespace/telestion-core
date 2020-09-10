@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class HeartbeatTest {
 
     @Test void testExist(){
-		assertDoesNotThrow(() -> Class.forName("org.telestion.mavlink.messages.mavlink.minimal.Heartbeat.class")
+		assertDoesNotThrow(() -> Class.forName("org.telestion.mavlink.messages.mavlink.minimal.Heartbeat")
 				.getConstructor(int.class, int.class, int.class, int.class, int.class, int.class)
 				.newInstance(0, 0, 0, 0, 0, 0));
     }

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class DebugFloatArrayTest {
 
     @Test void testExist(){
-		assertDoesNotThrow(() -> Class.forName("org.telestion.mavlink.messages.mavlink.common.DebugFloatArray.class")
+		assertDoesNotThrow(() -> Class.forName("org.telestion.mavlink.messages.mavlink.common.DebugFloatArray")
 				.getConstructor(long.class, int[].class, int.class, int[].class)
 				.newInstance(0, null, 0, null));
     }
