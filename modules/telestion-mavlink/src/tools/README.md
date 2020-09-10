@@ -3,7 +3,8 @@
 ## Description
 This tool allows you to convert the Mavlink-Messages defined like
 [this](https://github.com/mavlink/mavlink/tree/master/message_definitions/v1.0)
-into a more practical format for vert.x - the **Java-Preview-Record**.
+into a more practical format for vert.x - the **Java-Preview-Record**.<br>
+This tool uses **Python 3.8+**!
 
 ## Usage
 The program can be started like a normal python script but with several
@@ -14,6 +15,10 @@ _because they are interpreted as new arguments!_
 - **-p:** &rightarrow; specifies the output-package _(default: org.telestion.adapter.mavlink.message)_
 - **-o:** &rightarrow; defines the output-dir _(default: [package])_
 - **-h:** &rightarrow; prints a help message
+
+The tool also supports wildcards for different occasions:
+- * for the xml-file-name (can also be used as a placeholder for all files in a folder)
+- ~ to add the package to the output-folder
 
 ##### Example:
 ```shell
