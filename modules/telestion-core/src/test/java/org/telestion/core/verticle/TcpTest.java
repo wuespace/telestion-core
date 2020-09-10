@@ -35,13 +35,13 @@ public class TcpTest {
             });
             JsonMessage.on(TcpData.class, msg, data -> {
                 //test message
-                assertThat(data.data(), is(new byte[]{2, 4, 5, 3}));
+                assertThat(data.data(), is(bytes));
                 testContext.completeNow();
             });
         });
 
         vertx.deployVerticle(new TcpServer(56565));
-        vertx.deployVerticle(new TcpClient("127.0.0.1", 56565));
+        vertx.deployVerticle(new TcpClient("0.0.0.0", 56565));
 
         assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
         if (testContext.failed()) {

@@ -82,9 +82,8 @@ public final class TcpServer extends AbstractVerticle {
                 return;
             }
             logger.info("TCP-Server successfully started. Running on port {}", server.actualPort());
+            startPromise.complete();
         });
-
-        startPromise.complete();
     }
 
     @Override
