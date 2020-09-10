@@ -9,6 +9,7 @@ import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.TcpConnected;
 import org.telestion.core.message.TcpData;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,7 +42,8 @@ public class TcpTest {
         });
 
         vertx.deployVerticle(new TcpServer(56565));
-        vertx.deployVerticle(new TcpClient("0.0.0.0", 56565));
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
+        vertx.deployVerticle(new TcpClient("127.0.0.1", 56565));
 
         assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
         if (testContext.failed()) {
