@@ -19,21 +19,21 @@ import java.util.Objects;
  * @author Cedric Boes, Jan von Pichowski
  * @version 1.0
  */
-public final class TcpAdapter extends AbstractVerticle {
+public final class TcpServer extends AbstractVerticle {
 
-    public static final String outAddress = Address.outgoing(TcpAdapter.class);
-    public static final String inAddress = Address.incoming(TcpAdapter.class);
+    public static final String outAddress = Address.outgoing(TcpServer.class);
+    public static final String inAddress = Address.incoming(TcpServer.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(TcpAdapter.class);
+    private static final Logger logger = LoggerFactory.getLogger(TcpServer.class);
 
     private Integer port;
     private NetServer server;
 
-    public TcpAdapter(int port) {
+    public TcpServer(int port) {
         this.port = port;
     }
 
-    public TcpAdapter() {
+    public TcpServer() {
         this.port = null;
     }
 

@@ -4,7 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import org.telestion.adapter.mavlink.message.Heartbeat;
-import org.telestion.core.verticle.TcpAdapter;
+import org.telestion.core.verticle.TcpServer;
 import org.telestion.launcher.Launcher;
 
 import java.time.Duration;
@@ -38,7 +38,7 @@ public class Main {
     public static void main(String[] args) {
     	new Heartbeat(0, 0, 0, 0, 0, 0);
         Launcher.start(
-                new TcpAdapter(42024),
+                new TcpServer(42024),
                 new Receiver(),
                 new MavlinkParser(),
                 new Consumer(),

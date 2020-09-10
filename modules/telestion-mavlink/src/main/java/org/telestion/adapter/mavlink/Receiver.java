@@ -11,7 +11,7 @@ import org.telestion.core.message.Address;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.telestion.core.message.TcpData;
-import org.telestion.core.verticle.TcpAdapter;
+import org.telestion.core.verticle.TcpServer;
 
 /**
  * TODO: Java-Docs to make @pklaschka happy ;)
@@ -33,7 +33,7 @@ public final class Receiver extends AbstractVerticle {
 	
 	@Override
 	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().consumer(TcpAdapter.outAddress, msg -> {
+		vertx.eventBus().consumer(TcpServer.outAddress, msg -> {
 			if (!JsonMessage.on(TcpData.class, msg, data -> {
 				byte[] bytes = data.data();
 
