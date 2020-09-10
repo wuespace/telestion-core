@@ -48,8 +48,8 @@ public interface JsonMessage {
      * @return whether decoding was successful
      */
     static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler){
-        if(msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("name") &&
-        		clazz.getSimpleName().equals(jsonObject.getString("name"))) {
+        if(msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("messageName") &&
+        		clazz.getSimpleName().equals(jsonObject.getString("messageName"))) {
             handler.handle(jsonObject.mapTo(clazz));
             return true;
         } else {
@@ -68,8 +68,8 @@ public interface JsonMessage {
      * @return whether decoding was successful
      */
     static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler){
-        if(msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("name") &&
-        		clazz.getSimpleName().equals(jsonObject.getString("name"))) {
+        if(msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("messageName") &&
+        		clazz.getSimpleName().equals(jsonObject.getString("messageName"))) {
             handler.handle(jsonObject.mapTo(clazz));
             return true;
         } else {
