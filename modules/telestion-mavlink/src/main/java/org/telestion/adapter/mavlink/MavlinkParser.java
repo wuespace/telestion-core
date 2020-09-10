@@ -6,6 +6,8 @@ import java.lang.reflect.RecordComponent;
 import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.annotation.MavArray;
 import org.telestion.adapter.mavlink.annotation.MavField;
 import org.telestion.adapter.mavlink.annotation.MavInfo;
+import org.telestion.adapter.mavlink.annotation.NativeType;
 import org.telestion.adapter.mavlink.exception.AnnotationMissingException;
 import org.telestion.adapter.mavlink.exception.InvalidChecksumException;
 import org.telestion.adapter.mavlink.exception.PacketException;
@@ -107,6 +110,26 @@ public final class MavlinkParser extends AbstractVerticle {
 		}
 	}
 	
+	private static int compareRecordComponents(RecordComponent c1, RecordComponent c2) {
+		if (! (c1.isAnnotationPresent(MavField.class) && c2.isAnnotationPresent(MavField.class))) {
+			// breaks out of method
+			throw new AnnotationMissingException("MavField-Annotation is missing for at least one RecordComponent!");
+		}
+		
+		MavField mf1 = c1.getAnnotation(MavField.class);
+		MavField mf2 = c2.getAnnotation(MavField.class);
+		
+		if (! (mf1.position() == -1 || mf2.position() == -1)) {
+			return mf1.position() - mf2.position();
+		}
+		
+		if (mf1.extension() ^ mf2.extension()) {
+			return mf2.nativeType().size - mf1.nativeType().size;
+		} else {
+			return mf1.extension() ? 1 : 0;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param raw
@@ -174,18 +197,9 @@ public final class MavlinkParser extends AbstractVerticle {
 			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
 		}
 		
-		RecordComponent[] components = mavlinkClass.getRecordComponents();
-		// There may be undefined behavior if position is not defined in all cases but in some
-		if (Arrays.stream(components).anyMatch(c -> c.isAnnotationPresent(MavField.class) &&
-				c.getAnnotation(MavField.class).position() != -1)) {
-			components = Arrays.stream(components)
-					.filter(c -> c.isAnnotationPresent(MavField.class) &&
-							c.getAnnotation(MavField.class).position() != -1)
-					.sorted((c1, c2) -> 
-						c1.getAnnotation(MavField.class).position() -
-						c2.getAnnotation(MavField.class).position())
-					.toArray(RecordComponent[]::new);
-		}
+		RecordComponent[] components = Arrays.stream(mavlinkClass.getRecordComponents())
+				.sorted((c1, c2) -> compareRecordComponents(c1, c2))
+				.toArray(RecordComponent[]::new);
 		
 		/*
 		 * Start Reflection
@@ -220,8 +234,72 @@ public final class MavlinkParser extends AbstractVerticle {
 	
 	}
 
-	private byte[] getRaw(MavlinkMessage raw) {
-		return null;
+	private byte[] recordToRaw(RecordComponent c, Object o)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		MavField info = c.getAnnotation(MavField.class);
+		
+		NativeType natType = info.nativeType();
+		if (natType == NativeType.DOUBLE) {
+			o = (long) Double.doubleToLongBits((double) o);
+			natType = NativeType.INT_64;
+		} else if (natType == NativeType.FLOAT) {
+			o = (int ) Float.floatToIntBits((int) o);
+			natType = NativeType.INT_32;
+		}
+
+		return switch(natType) {
+			case CHAR -> new byte[] {(byte) (char) c.getAccessor().invoke(o)};
+			case INT_8, UINT_8 -> new byte[] {(byte) c.getAccessor().invoke(o)};
+			case INT_16, UINT_16 -> new byte[] {(byte) (((short) o >> 8) & 0xff), (byte) ((short) o & 0xff)};
+			case INT_32, UINT_32 -> new byte[] {(byte) (((int) o >> 24) & 0xff), (byte) (((int) o >> 16) & 0xff),
+												(byte) (((int) o >> 8)	& 0xff), (byte) ((int) o & 0xff)};
+			case INT_64, UINT_64 -> new byte[] {(byte) (((int) o >> 56)	& 0xff), (byte) (((int) o >> 48) & 0xff),
+												(byte) (((int) o >> 40)	& 0xff), (byte) (((int) o >> 32) & 0xff),
+												(byte) (((int) o >> 24) & 0xff), (byte) (((int) o >> 16) & 0xff),
+												(byte) (((int) o >> 8)	& 0xff), (byte) ((int) o & 0xff)};
+			default -> throw new ParsingException("Unknown datatype " + info.nativeType() + "!");
+			};
+	}
+	
+	private byte[] getRaw(MavlinkMessage mav) {
+		var components = Arrays.stream(mav.getClass().getRecordComponents())
+				.sorted((c1, c2) -> compareRecordComponents(c1, c2))
+				.toArray(RecordComponent[]::new);
+		
+		List<Byte> byteBuffer = Collections.emptyList();
+		try {
+			for (var c : components) {
+				var o = c.getAccessor().invoke(mav);
+				if (!c.isAnnotationPresent(MavField.class)) {
+					throw new AnnotationMissingException("MavField Annotation is missing!");
+				}
+				if (c.isAnnotationPresent(MavArray.class)) {
+					int count = c.getAnnotation(MavArray.class).length();
+					var os = (Object[]) o;
+					for (int i = 0; i < count; i++) {
+						byte[] bytes = recordToRaw(c, os[i]);
+						for (byte b : bytes) {
+							byteBuffer.add(b);
+						}
+					}
+				} else {
+					byte[] bytes = recordToRaw(c, o);
+					for (byte b : bytes) {
+						byteBuffer.add(b);
+					}
+				}
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new ParsingException(new ReflectionException(e));
+		}
+		
+		byte[] bytes = new byte[byteBuffer.size()];
+		int index = 0;
+		for (byte b : byteBuffer) {
+			bytes[index++] = b;
+		}
+		
+		return bytes;
 	}
 	
 	@Override
@@ -234,7 +312,6 @@ public final class MavlinkParser extends AbstractVerticle {
 			}
 		});
 		
-		// TODO: Sending part!
 		vertx.eventBus().consumer(toRawInAddressV1, msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
 				byte[] payload = getRaw(raw);
