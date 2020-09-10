@@ -41,9 +41,11 @@ public class TcpTest {
             });
         });
 
-        vertx.deployVerticle(new TcpServer(56565));
-        Thread.sleep(Duration.ofSeconds(5).toMillis());
-        vertx.deployVerticle(new TcpClient("127.0.0.1", 56565));
+        vertx.deployVerticle(new TcpServer(23654), result -> {
+            if(result.succeeded()){
+                vertx.deployVerticle(new TcpClient("127.0.0.1", 23654));
+            }
+        });
 
         assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
         if (testContext.failed()) {
