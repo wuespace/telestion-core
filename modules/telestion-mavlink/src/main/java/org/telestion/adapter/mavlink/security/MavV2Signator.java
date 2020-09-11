@@ -8,7 +8,17 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy ;)
+ * The {@link MavV2Signator} creates a "unique" 7 byte signature for MavlinkV2-Messages in according to the 
+ * specifications.</br>
+ * </br>
+ * A signature contains:
+ * <ul>
+ * <li>1 byte for the linkId</li>
+ * <li>6 bytes for the timestamp</li>
+ * <li>6 bytes for the actual signature (SHA256 hashed)</li>
+ * </ul>
+ * <br>
+ * <em>This class is designed to be used in a static-context!</em>
  * 
  * @author Cedric Boes
  * @version 1.0
@@ -16,13 +26,22 @@ import java.util.Arrays;
 public class MavV2Signator {
 	
 	/**
-	 * 
+	 * Epoch seconds of 2015/01/01-00:00:00 UTC-Time.
 	 */
 	private static final long secondJan2015 = OffsetDateTime.of(2015, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC).toEpochSecond();
 	
 	/**
+	 * There shall be no objects!
+	 */
+	private MavV2Signator() {
+		// There shall be no objects!
+	}
+	
+	/**
+	 * Returns a MAVLink-Timestamp (which is a custom timestamp using 10 microseconds since {@link #secondJan2015} as a 
+	 * step) of the current time.
 	 * 
-	 * @return
+	 * @return MAVLink timestamp of the current time
 	 */
 	public static byte[] getTimestamp() {
 		OffsetDateTime dt = OffsetDateTime.now(ZoneOffset.UTC);
@@ -41,9 +60,16 @@ public class MavV2Signator {
 	}
 	
 	/**
+	 * Creates the raw 6 byte signature (SHA-256 hashed) for the given arguments according to the 
+	 * MAVLink-specifications.
 	 * 
-	 * @param linkId
-	 * @return
+	 * @param secretKey key for the SHA-256 hash <em>(&rightarrow; must be exchanged on a secure channel)</em>
+	 * @param header of the MAVLink-Message
+	 * @param payload of the MAVLink-Message
+	 * @param crcExtra for the MAVLink-Message
+	 * @param linkId of the message
+	 * @param timestamp for the message
+	 * @return first 6 bytes of the SHA-256 hashed signature
 	 * @throws NoSuchAlgorithmException 
 	 */
 	public static byte[] rawSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId,
@@ -64,9 +90,15 @@ public class MavV2Signator {
 	}
 	
 	/**
+	 * Creates the full 13 bytes signature for MAVLinkV2-Messages with a unique timestamp, the hashed signature and the 
+	 * linkId.
 	 * 
-	 * @param linkId
-	 * @return
+	 * @param secretKey key for the SHA-256 hash <em>(&rightarrow; must be exchanged on a secure channel)</em>
+	 * @param header of the MAVLink-Message
+	 * @param payload of the MAVLink-Message
+	 * @param crcExtra for the MAVLink-Message
+	 * @param linkId of the message
+	 * @return full 13 MAVLink-Signature
 	 * @throws NoSuchAlgorithmException 
 	 */
 	public static byte[] generateSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId)
