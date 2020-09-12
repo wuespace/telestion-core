@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author Cedric Boes
  * @version 1.0
  */
-public class SecretKeySafe {
+public final class SecretKeySafe {
 	
 	/**
 	 * Is used to create uniqueIds. They are needed to identify each SecretKeySafe in the logger.
@@ -84,13 +84,22 @@ public class SecretKeySafe {
 	}
 	
 	/**
+	 * Returns if {@link #deleteKey()} has already been called on this object and secretKey has already been deleted.
+	 * 
+	 * @return if secretKey has already been deleted
+	 */
+	public boolean isDeleted() {
+		return secretKey == null;
+	}
+	
+	/**
 	 * Clears the password from memory and runs the {@link System#gc() Garbage-Collector}.</br>
 	 * This ensures security for passwords when deleting passwords.</br>
 	 * </br>
 	 * Will only work if the secretKey is not already <code>null</code>.
 	 */
 	public void deleteKey() {
-		if (secretKey != null) {
+		if (!isDeleted()) {
 			for (int i = 0; i < secretKey.length; i++) {
 				secretKey[i] = 0x0;
 			}

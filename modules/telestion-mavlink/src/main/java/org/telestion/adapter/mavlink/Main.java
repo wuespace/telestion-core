@@ -1,13 +1,14 @@
 package org.telestion.adapter.mavlink;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.buffer.Buffer;
+import java.time.Duration;
+
 import org.telestion.adapter.mavlink.message.Heartbeat;
 import org.telestion.core.verticle.TcpServer;
 import org.telestion.launcher.Launcher;
 
-import java.time.Duration;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+import io.vertx.core.buffer.Buffer;
 
 public class Main {
 

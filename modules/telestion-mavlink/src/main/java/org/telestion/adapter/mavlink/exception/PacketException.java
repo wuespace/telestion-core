@@ -1,7 +1,8 @@
 package org.telestion.adapter.mavlink.exception;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy
+ * A custom implementation of the {@link RuntimeException}.</br>
+ * Indicates that something went wrong with the MAVLink-Message-packet (e.g. wrong format).
  * 
  * @author Cedric Boes
  * @version 1.0
@@ -10,40 +11,43 @@ package org.telestion.adapter.mavlink.exception;
 public class PacketException extends RuntimeException {
 	
 	/**
-	 * 
+	 * SerialVersion UID for v1.0 of this {@link PacketException}.
 	 */
 	private static final long serialVersionUID = 2256065887188465994L;
 	
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
 	public PacketException() {
 		super();
 	}
 	
 	/**
-	 * 
-	 * @param s
+	 * {@inheritDoc}
 	 */
 	public PacketException(String s) {
 		super(s);
 	}
 	
 	/**
-	 * 
-	 * @param t
+	 * {@inheritDoc}
 	 */
 	public PacketException(Throwable t) {
 		super(t);
 	}
 	
 	/**
-	 * 
-	 * @param s
-	 * @param t
+	 * {@inheritDoc}
 	 */
 	public PacketException(String s, Throwable t) {
 		super(s, t);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 	
 }

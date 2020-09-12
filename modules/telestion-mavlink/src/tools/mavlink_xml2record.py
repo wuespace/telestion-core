@@ -203,8 +203,7 @@ public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
     private {name}() {{
         this(/*TEMPLATE_CONSTRUCTOR_ARGS*/);
     }}
-}}
-    """
+}}"""
     no_array = True
     for field in msg.get_fields():
         data_type = "int"
@@ -307,7 +306,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.3.6"
+VERSION = "1.3.7"
 
 if __name__ == '__main__':
     main()

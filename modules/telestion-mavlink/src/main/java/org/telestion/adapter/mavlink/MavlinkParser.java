@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -57,7 +58,7 @@ import io.vertx.core.Verticle;
  * </br>
  * A valid {@link HeaderContext} must be given to parse the messages to bytes. As the context is MAVLinkV1- and 
  * MAVLinkV2-compatible both output-versions are supported (for unsigned MAVLinkV2-Messages set the incompatible-Flag 
- * to 0x1).
+ * to 0x0 otherwise it must be 0x1).
  * 
  * @author Cedric Boes
  * @version 1.0
@@ -67,15 +68,17 @@ public final class MavlinkParser extends AbstractVerticle {
 	/**
 	 * {@link HeaderContext HeaderContexts} are required for parsing {@link MavlinkMessage messages} to bytes.
 	 */
-	private HeaderContext helper;
+	private HeaderContext context;
 	
 	/**
-	 * 
+	 * A {@link SecretKeySafe} containing the password bytes for the Signature-Hash.
 	 */
 	private SecretKeySafe keySafe;
 	
 	/**
-	 * 
+	 * Can be used to identify multiple {@link MavlinkParsers} for different {@link #context contexts} or 
+	 * {@link #keySafe key-safes}.</br>
+	 * It will be added as a suffix to the addresses.
 	 */
 	private final String addressIdentifier;
 	
@@ -85,61 +88,65 @@ public final class MavlinkParser extends AbstractVerticle {
 	private final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
 	
 	/**
-	 * Address which will be accepting {@link MavlinkMessage messages} and parse them into a {@link RawMavlinkV1} which 
-	 * already contains the header for the given payload and a unique messageId.
+	 * Base address which will be accepting {@link MavlinkMessage messages} and parse them into a {@link RawMavlinkV1} 
+	 * which already contains the header for the given payload and a unique messageId.
 	 */
 	public static final String toRawInAddressV1 = Address.incoming(MavlinkParser.class, "toRaw1");
 	/**
-	 * Address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2} which already contains the 
+	 * Base address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2} which already contains the 
 	 * header for the given payload, a unique messageId and a signature (if specified).
 	 */
 	public static final String toRawInAddressV2 = Address.incoming(MavlinkParser.class, "toRaw2");
-	/**
-	 * Parsed {@link RawMavlink RawMavlink-Messages} will be published on this address.
-	 */
-	public static final String toRawOutAddress = Address.outgoing(MavlinkParser.class, "toRaw");
 	
 	/**
-	 * 
+	 * Base address for parsing {@link RawMavlink RawMavlink-message} to a {@link MavlinkMessage}.
 	 */
 	public static final String toMavlinkInAddress = Address.incoming(MavlinkParser.class, "toMavlink");
+	/**
+	 * Output Address for parsed {@link RawMavlink RawMavlink-messages}.
+	 */
 	public static final String toMavlinkOutAddress = Address.outgoing(MavlinkParser.class, "toMavlink");
 	
 	/**
-	 * 
+	 * Default {@link MavlinkParser} which can only be used for receiving data.</br>
+	 * This can only be used for telemetry.
 	 */
 	public MavlinkParser() {
 		this(null, null);
 	}
 	
 	/**
+	 * {@link MavlinkParser} using the default {@link #addressIdentifier} and the given {@link HeaderContext} and 
+	 * {@link SecretKeySafe}.
 	 * 
-	 * @param helper
-	 * @param safe
+	 * @param context for parsing
+	 * @param safe containing the password for the signature
 	 */
-	public MavlinkParser(HeaderContext helper, SecretKeySafe safe) {
-		this(helper, safe, "");
+	public MavlinkParser(HeaderContext context, SecretKeySafe safe) {
+		this(context, safe, "");
 	}
 	
 	/**
+	 * Customizing the {@link MavlinkParser} to its full extend.
 	 * 
-	 * @param helper
-	 * @param safe
-	 * @param identifier
+	 * @param context setting the {@link #context}
+	 * @param safe setting the {@link #keySafe}
+	 * @param identifier setting the {@link #addressIdentifier}
 	 */
-	public MavlinkParser(HeaderContext helper, SecretKeySafe safe, String identifier) {
-		this.helper = helper;
+	public MavlinkParser(HeaderContext context, SecretKeySafe safe, String identifier) {
+		this.context = context;
 		this.keySafe = safe;
 		this.addressIdentifier = identifier;
 	}
 	
 	/**
+	 * Casting an Object to the right {@link Number number-object}.
 	 * 
-	 * @param o
-	 * @param clazz
+	 * @param o {@link Number} as {@link Object}
+	 * @param clazz {@link Class} to which the object should be casted
 	 * @return
 	 */
-	private Object toRightNum(Object o, Class<? extends Number> clazz) {
+	private Number toRightNum(Object o, Class<? extends Number> clazz) {
 		return switch(clazz.getSimpleName()) {
 		case "Byte" -> Byte.class.cast(o);
 		case "Short" -> Short.class.cast(o);
@@ -152,11 +159,12 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 	
 	/**
+	 * Parsing a part of the payload at the given index with the help of the given {@link RecordComponent}.
 	 * 
-	 * @param index
-	 * @param payload
-	 * @param c
-	 * @return
+	 * @param index at which the parsing starts happening
+	 * @param payload of the MAVLink-message
+	 * @param c {@link RecordComponent} which will be used for parsing
+	 * @return parsed Object
 	 */
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
 		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
@@ -191,10 +199,12 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 	
 	/**
+	 * {@link Comparator} for the {@link RecordComponent MAVLink-RecordComponents} to bring them into the right format 
+	 * for MAVLink.
 	 * 
-	 * @param c1
-	 * @param c2
-	 * @return
+	 * @param c1 {@link RecordComponent} #1
+	 * @param c2 {@link RecordComponent} #2
+	 * @return how the sorting algorithm should sort
 	 */
 	private static int compareRecordComponents(RecordComponent c1, RecordComponent c2) {
 		if (! (c1.isAnnotationPresent(MavField.class) && c2.isAnnotationPresent(MavField.class))) {
@@ -217,8 +227,10 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 	
 	/**
+	 * Parses a {@link RawMavlink RawMavlink-message} into a {@link MavlinkMessage} and publishing it on the 
+	 * {@link #toMavlinkOutAddress} on the vert.x-eventbus.
 	 * 
-	 * @param raw
+	 * @param raw message to parse
 	 */
 	@SuppressWarnings("preview")
 	private void interpretMsg(RawMavlink raw) {
@@ -232,8 +244,12 @@ public final class MavlinkParser extends AbstractVerticle {
 		if (raw instanceof RawMavlinkV2 v2) {
 			mavlinkClass = MessageIndex.get(v2.msgId());
 
-			if ((v2.incompatFlags()	& 0x1) == 0x1) {
+			// Handling according to specifications! Only 0x0 and 0x1 are supported, yet
+			if ((v2.incompatFlags()	& 0xff) == 0x1) {
 				subtract = 14;
+			} else if ((v2.incompatFlags() & 0xff) != 0x0) {
+				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+				throw new ParsingException("Invalid incompatible flag set! Must either be 0x0 or 0x1!");
 			}
 			
 			checksum = v2.checksum();
@@ -321,13 +337,15 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 
 	/**
+	 * Converts an Object to a raw byte[] array.
 	 * 
-	 * @param c
-	 * @param o
-	 * @return
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @param c RecordComponent of the Object to parse
+	 * @param o Object to covert
+	 * @return byte[] representation of the given object
+	 * @throws IllegalAccessException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws IllegalArgumentException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws InvocationTargetException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws ParsingException if the type of the {@link RecordComponent} is unknown
 	 */
 	private byte[] recordToRaw(RecordComponent c, Object o)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -338,28 +356,31 @@ public final class MavlinkParser extends AbstractVerticle {
 			o = (long) Double.doubleToLongBits((double) o);
 			natType = NativeType.INT_64;
 		} else if (natType == NativeType.FLOAT) {
-			o = (int ) Float.floatToIntBits((int) o);
+			o = (int ) Float.floatToIntBits((float) o);
 			natType = NativeType.INT_32;
 		}
 
 		return switch(natType) {
-			case CHAR -> new byte[] {(byte) (char) c.getAccessor().invoke(o)};
-			case INT_8, UINT_8 -> new byte[] {(byte) c.getAccessor().invoke(o)};
+			case CHAR 			 -> new byte[] {(byte) (char) o};
+			case INT_8, UINT_8 	 -> new byte[] {(byte) o};
 			case INT_16, UINT_16 -> new byte[] {(byte) (((short) o >> 8) & 0xff), (byte) ((short) o & 0xff)};
-			case INT_32, UINT_32 -> new byte[] {(byte) (((int) o >> 24) & 0xff), (byte) (((int) o >> 16) & 0xff),
-												(byte) (((int) o >> 8)	& 0xff), (byte) ((int) o & 0xff)};
-			case INT_64, UINT_64 -> new byte[] {(byte) (((int) o >> 56)	& 0xff), (byte) (((int) o >> 48) & 0xff),
-												(byte) (((int) o >> 40)	& 0xff), (byte) (((int) o >> 32) & 0xff),
-												(byte) (((int) o >> 24) & 0xff), (byte) (((int) o >> 16) & 0xff),
-												(byte) (((int) o >> 8)	& 0xff), (byte) ((int) o & 0xff)};
+			case INT_32, UINT_32 -> new byte[] {(byte) (((int) o >> 24)  & 0xff), (byte) (((int) o >> 16) 	& 0xff),
+												(byte) (((int) o >> 8)	 & 0xff), (byte) ((int) o 			& 0xff)};
+			case INT_64, UINT_64 -> new byte[] {(byte) (((long) o >> 56) & 0xff), (byte) (((long) o >> 48)  & 0xff),
+												(byte) (((long) o >> 40) & 0xff), (byte) (((long) o >> 32)  & 0xff),
+												(byte) (((long) o >> 24) & 0xff), (byte) (((long) o >> 16)  & 0xff),
+												(byte) (((long) o >> 8)	 & 0xff), (byte) ((long) o 			& 0xff)};
 			default -> throw new ParsingException("Unknown datatype " + info.nativeType() + "!");
 			};
 	}
 	
 	/**
+	 * Converts a {@link MavlinkMessage} to a raw byte[] array.
 	 * 
-	 * @param mav
-	 * @return
+	 * @param mav {@link MavlinkMessage} to convert
+	 * @return converted byte[] array
+	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
+	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
 		var components = Arrays.stream(mav.getClass().getRecordComponents())
@@ -402,24 +423,39 @@ public final class MavlinkParser extends AbstractVerticle {
 		return bytes;
 	}
 	
-	public void changeHeaderContext(HeaderContext helper) {
-		this.helper = helper;
+	/**
+	 * Changes the {@link #context} for this {@link MavlinkParser}
+	 * 
+	 * @param context with which {@link #context} will be replaced
+	 */
+	public void changeHeaderContext(HeaderContext context) {
+		this.context = context;
 	}
 	
+	/**
+	 * Changes the {@link #keySafe} for this {@link MavlinkParser}
+	 * 
+	 * @param safe with which {@link #keySafe} will be replaced
+	 */
 	public void changeKeySafe(SecretKeySafe safe) {
+		if (!this.keySafe.isDeleted()) {
+			this.keySafe.deleteKey();
+		}
 		this.keySafe = safe;
 	}
 	
+	/**
+	 * Returns this {@link MavlinkParser MavlinkParsers} {@link #addressIdentifier}.
+	 * 
+	 * @return {@link #addressIdentifier}
+	 */
 	public String getIdentifier() {
 		return addressIdentifier; 
 	}
 	
-	/**
-	 * 
-	 */
 	@Override
 	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().consumer(toMavlinkInAddress, msg -> {
+		vertx.eventBus().consumer(toMavlinkInAddress+addressIdentifier, msg -> {
 			if (!(JsonMessage.on(RawMavlinkV1.class, msg, this::interpretMsg)
 					|| JsonMessage.on(RawMavlinkV2.class, msg, this::interpretMsg))) {
 				logger.error("Unsupported type sent to {}", msg.address());
@@ -427,23 +463,23 @@ public final class MavlinkParser extends AbstractVerticle {
 			}
 		});
 		
-		vertx.eventBus().consumer(toRawInAddressV1, msg -> {
+		vertx.eventBus().consumer(toRawInAddressV1+addressIdentifier, msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
 				byte[] payload = getRaw(raw);
 				
-				var messageId = helper.getNewMessageId();
+				var seq = context.getNewPacketSeq();
 				
 				// If this happens more than once -> the message will no longer be really unique!
-				if ((byte) (messageId & 0xff) == 0) {
+				if ((byte) (seq & 0xff) == 0) {
 					logger.warn("MessageIds for MAVLinkV1 starting at 0 (again)!");
 				}
 				
 				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 5);
 				buffer.put((byte) (payload.length	&	0xff));
-				buffer.put((byte) (helper.seq()		&	0xff));
-				buffer.put((byte) (helper.sysId()	&	0xff));
-				buffer.put((byte) (helper.compId()	&	0xff));
-				buffer.put((byte) (messageId		&	0xff));
+				buffer.put((byte) (seq				&	0xff));
+				buffer.put((byte) (context.sysId()	&	0xff));
+				buffer.put((byte) (context.compId()	&	0xff));
+				buffer.put((byte) (raw.getId()		&	0xff));
 				buffer.put(payload);
 				
 				int checksum = X25Checksum.calculate(buffer.array());
@@ -465,24 +501,27 @@ public final class MavlinkParser extends AbstractVerticle {
 			}
 		});
 		
-		vertx.eventBus().consumer(toRawInAddressV2, msg -> {
+		vertx.eventBus().consumer(toRawInAddressV2+addressIdentifier, msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
 				byte[] payload = getRaw(raw);
 				
-				// As this is a 24 bit messageId-System message-IDs should be unique -> otherwise there will be a long
-				// "delay" between them!
-				var messageId = helper.getNewMessageId();
+				var seq = context.getNewPacketSeq();
+				
+				// If this happens more than once -> the message will no longer be really unique!
+				if ((byte) (seq & 0xff) == 0) {
+					logger.warn("MessageIds for MAVLinkV1 starting at 0 (again)!");
+				}
 				
 				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 9);
 				buffer.put((byte) (payload.length			&	0xff));
-				buffer.put((byte) (helper.incompFlags()		&	0xff));
-				buffer.put((byte) (helper.compFlags()		&	0xff));
-				buffer.put((byte) (helper.seq()				&	0xff));
-				buffer.put((byte) (helper.sysId()			&	0xff));
-				buffer.put((byte) (helper.compId()			&	0xff));
-				buffer.put((byte) ((messageId >> 16)		&	0xff));
-				buffer.put((byte) ((messageId >> 8)			&	0xff));
-				buffer.put((byte) (messageId				&	0xff));
+				buffer.put((byte) (context.incompFlags()	&	0xff));
+				buffer.put((byte) (context.compFlags()		&	0xff));
+				buffer.put((byte) (seq						&	0xff));
+				buffer.put((byte) (context.sysId()			&	0xff));
+				buffer.put((byte) (context.compId()			&	0xff));
+				buffer.put((byte) ((raw.getId() >> 16)		&	0xff));
+				buffer.put((byte) ((raw.getId() >> 8)		&	0xff));
+				buffer.put((byte) (raw.getId()				&	0xff));
 				buffer.put(payload);
 				
 				int checksum = X25Checksum.calculate(buffer.array());
@@ -519,12 +558,9 @@ public final class MavlinkParser extends AbstractVerticle {
 		startPromise.complete();
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public void stop(Promise<Void> stopPromise) {
-		keySafe.deleteKey();
+		changeKeySafe(null);
 		stopPromise.complete();
 	}
 }

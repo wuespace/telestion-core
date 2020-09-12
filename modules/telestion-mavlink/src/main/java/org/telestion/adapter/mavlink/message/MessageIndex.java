@@ -3,14 +3,17 @@ package org.telestion.adapter.mavlink.message;
 import java.util.HashMap;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy ;)
+ * Handling the linking processes of the MAVLink-message IDs to the right implementation.</br>
+ * Before being able to get the messages by id they must be registered here.</br>
+ * </br>
+ * <em>Note that this class should be used in a static context.</em>
  * 
  * @author Cedric Boes
  * @version 1.0
  */
 public final class MessageIndex {
 	/**
-	 * 
+	 * Actual Map for the linking.
 	 */
 	private static HashMap<Long, Class<? extends MavlinkMessage>> map = new HashMap<>();
 	
@@ -22,18 +25,31 @@ public final class MessageIndex {
 	}
 	
 	/**
+	 * Registers a new item by linking a new id to a class.</br>
+	 * Basically {@link HashMap#put(Object, Object)}.</br>
+	 * </br>
+	 * <em>Note that if an other {@link MavlinkMessage} has already been linked with the given id an will 
+	 * {@link IllegalArgumentException} be thrown.</em>
 	 * 
-	 * @param id
-	 * @param class1
+	 * @param id of the new {@link MavlinkMessage MavlinkMessage-implementation}
+	 * @param clazz Class of the {@link MavlinkMessage} which should be linked
+	 * @throws IllegalArgumentException if the given id is already in use
 	 */
-	public static void put(long id, Class<? extends MavlinkMessage> class1) {
-		map.put(id, class1);
+	public static void put(long id, Class<? extends MavlinkMessage> clazz) {
+		if (get(id) != null) {
+			throw new IllegalArgumentException("Given ID is already in use!");
+		}
+		map.put(id, clazz);
 	}
 	
 	/**
+	 * Returns the {@link MavlinkMessage MavlinkMessageClass} linked to the given id.</br>
+	 * Basically {@link HashMap#get(Object)}.</br>
+	 * </br>
+	 * <em>Note that if the given id is not registered <code>null</code> will be returned.</em>
 	 * 
-	 * @param id
-	 * @return
+	 * @param id of the {@link MavlinkMessage}
+	 * @return {@link Class} of the {@link MavlinkMessage} linked to the given id
 	 */
 	public static Class<? extends MavlinkMessage> get(long id) {
 		return map.get(id);

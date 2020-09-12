@@ -1,5 +1,6 @@
 package org.telestion.adapter.mavlink.annotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -8,7 +9,7 @@ import java.lang.annotation.Target;
 import org.telestion.adapter.mavlink.message.MavlinkMessage;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy ;)
+ * An {@link Annotation} providing more information about a MAVLink-Message.
  * 
  * @author Cedric Boes
  * @version 1.0
@@ -18,13 +19,15 @@ import org.telestion.adapter.mavlink.message.MavlinkMessage;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MavInfo {
 	/**
+	 * Equivalent to the message id of the MAVLink-Specifications.
 	 * 
-	 * @return
+	 * @return message id
 	 */
 	public int id();
 	/**
+	 * The calculated CRC_EXTRA byte for this message.
 	 * 
-	 * @return
+	 * @return CRC_EXTRA byte for this message
 	 */
 	public int crc();
 }

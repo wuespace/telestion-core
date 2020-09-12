@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy ;)
+ * Superclass for all MavliinkMessages.</br>
+ * Implementations will be created automatically by the xml2record-tool.
  * 
  * @author Cedric Boes
  * @version 1.0
@@ -21,6 +22,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * 
 	 * @return {@link MavInfo} of this class if present
 	 * @throws AnnotationMissingException if {@link MavInfo} is not present
+	 * @implNote Should not be overwritten!
 	 */
 	@JsonProperty(access = Access.READ_ONLY)
 	default MavInfo checkAnnotation() {
@@ -40,6 +42,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * https://mavlink.io/en/guide/serialization.html#crc_extra</a>
 	 * 
 	 * @return CRC_EXTRA-Byte for the {@link MavlinkMessage}
+	 * @implNote Should not be overwritten!
 	 */
 	@JsonProperty(access = Access.READ_ONLY)
 	public default int getCrc() {
@@ -54,6 +57,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * <a href="https://mavlink.io/en/guide/serialization.html">https://mavlink.io/en/guide/serialization.html</a>
 	 * 
 	 * @return id of the {@link MavlinkMessage}
+	 * @implNote Should not be overwritten!
 	 */
 	@JsonProperty(access = Access.READ_ONLY)
 	public default int getId() {

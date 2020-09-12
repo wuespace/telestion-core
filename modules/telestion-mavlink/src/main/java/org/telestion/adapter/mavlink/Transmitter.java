@@ -2,7 +2,6 @@ package org.telestion.adapter.mavlink;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import javax.management.ReflectionException;
@@ -16,40 +15,45 @@ import org.telestion.adapter.mavlink.message.MessageIndex;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
-import org.telestion.adapter.mavlink.security.MavV2Signator;
-import org.telestion.adapter.mavlink.security.SecretKeySafe;
 import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
+import org.telestion.core.message.TcpData;
+import org.telestion.core.verticle.TcpServer;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import org.telestion.core.message.TcpData;
+import io.vertx.core.Verticle;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy ;)
- * 
+ * {@link Verticle} which handles outgoing MAVLink-Messages (as {@link RawMavlink}).</br>
+ * Outgoing messages will be send to the {@link TcpServer}.
+ *  
  * @author Cedric Boes
  * @version 1.0
  */
 public final class Transmitter extends AbstractVerticle {
 	
 	/**
-	 * 
+	 * All logs of {@link Transmitter} will be using this {@link Logger}.
 	 */
 	private final Logger logger = LoggerFactory.getLogger(Transmitter.class);
 	
 	/**
-	 * 
+	 * Messages (as {@link TcpData}) will be published on this address.
 	 */
 	public static final String outAddress = Address.outgoing(Transmitter.class);
 	
 	/**
-	 * 
+	 * {@link RawMavlink RawMavlink-messages} will be send here.
 	 */
 	public static final String inAddress = Address.incoming(Transmitter.class);
 	
-	@SuppressWarnings("preview")
+	/**
+	 * Converts {@link RawMavlink RawMavlink-messages} to a {@link TcpData TcpData-objects}.
+	 * 
+	 * @param mav {@link MavlinkMessage} to convert
+	 */
 	private void interpretMsg(RawMavlink mav) {
 		// Creating Array for CRC-Calc
 		byte[] raw = mav.getRaw();
@@ -75,20 +79,6 @@ public final class Transmitter extends AbstractVerticle {
 		
 		buildArray[buildArray.length-2] = (byte) ((crc >> 8) & 0xff);
 		buildArray[buildArray.length-1]	= (byte) (crc & 0xff);
-		
-		// Signature only applies for RawMavlinkV2
-		if (mav instanceof RawMavlinkV2 v2) {
-			// Apply Signature if requested
-			if (v2.incompatFlags() == 0x1) {
-				try {
-					MavV2Signator.generateSignature(SecretKeySafe.getInstance().getSecretKey(),
-							Arrays.copyOfRange(raw, 0, 9), v2.payload().payload(), crc, v2.linkId());
-				} catch (NoSuchAlgorithmException e) {
-					logger.error("Error while creating signature for MAVLink-Package!", e);
-					throw new PacketException(e);
-				}
-			}
-		}
 
 		var addrPort = AddressAssociator.remove(mav.getMavlinkId());
 		vertx.eventBus().send(outAddress, new TcpData(addrPort.address(), addrPort.port(), buildArray));

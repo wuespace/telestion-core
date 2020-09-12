@@ -5,15 +5,22 @@ import org.telestion.api.message.JsonMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * TODO: Java-Docs to make @pklaschka happy ;)
+ * Wrapper for the payload of MAVLink-messages to easily use it in the {@link RawMavlink RawMavlinkV-messages}.
  * 
  * @author Cedric Boes
  * @version 1.0
  */
 @SuppressWarnings("preview")
 public final record RawPayload(
+		/**
+		 * Actual payload bytes of a MAVLink-message.
+		 */
 		@JsonProperty byte[] payload) implements JsonMessage {
 	
+	/**
+	 * There shall be no default constructor for normal people.</br>
+	 * This will only be used by the JSON-parser.
+	 */
 	@SuppressWarnings("unused")
 	private RawPayload() {
 		this(null);

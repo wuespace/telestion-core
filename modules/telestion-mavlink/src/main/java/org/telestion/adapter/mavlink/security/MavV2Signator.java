@@ -23,7 +23,7 @@ import java.util.Arrays;
  * @author Cedric Boes
  * @version 1.0
  */
-public class MavV2Signator {
+public final class MavV2Signator {
 	
 	/**
 	 * Epoch seconds of 2015/01/01-00:00:00 UTC-Time.
