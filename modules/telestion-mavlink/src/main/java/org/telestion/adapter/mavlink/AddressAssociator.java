@@ -31,7 +31,7 @@ public final class AddressAssociator {
 	 * Registers a new item by linking a new MAVLink-address to a {@link AddressPort}.</br>
 	 * Basically {@link HashMap#put(Object, Object)}.</br>
 	 * </br>
-	 * <em>Note that if an other {@link AddressPort} has already been linked with the given mavlinkAddress an will 
+	 * <em>Note that if another {@link AddressPort} has already been linked with the given mavlinkAddress an will 
 	 * {@link IllegalArgumentException} be thrown.</em>
 	 * 
 	 * @param mavlinkAddress of the new {@link AddressPort}
