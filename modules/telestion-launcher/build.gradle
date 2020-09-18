@@ -27,6 +27,7 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
 
     implementation "io.vertx:vertx-core:$gradle.vertxVersion"
+    compile "io.vertx:vertx-config:$gradle.vertxVersion"
 }
 
 test {
