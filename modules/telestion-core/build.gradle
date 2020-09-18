@@ -36,6 +36,8 @@ dependencies {
     implementation "io.vertx:vertx-config:$gradle.vertxVersion"
     implementation "io.vertx:vertx-service-factory:$gradle.vertxVersion"
     implementation "io.vertx:vertx-mongo-client:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-circuit-breaker:$gradle.vertxVersion"
+
     testImplementation "io.vertx:vertx-junit5:$gradle.vertxVersion"
 }
 

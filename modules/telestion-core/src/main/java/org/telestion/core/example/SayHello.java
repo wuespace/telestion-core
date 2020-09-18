@@ -1,4 +1,4 @@
-package org.telestion.application;
+package org.telestion.core.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
@@ -56,5 +56,6 @@ public final class SayHello extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
         var config = Config.get(forcedConfig, config(), Configuration.class);
         vertx.setPeriodic(Duration.ofSeconds(config.period()).toMillis(), timerId -> System.out.println(config.message()+" from "+uuid));
+        startPromise.complete();
     }
 }
