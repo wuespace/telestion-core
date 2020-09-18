@@ -1,6 +1,6 @@
 package org.telestion.adapter.mavlink;
 
-import org.telestion.core.verticle.HelloWorld;
+import org.telestion.example.HelloWorld;
 import org.telestion.launcher.Launcher;
 
 public class Main {

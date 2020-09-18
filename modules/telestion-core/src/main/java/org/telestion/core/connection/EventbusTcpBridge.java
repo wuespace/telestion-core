@@ -1,8 +1,7 @@
-package org.telestion.core.verticle;
+package org.telestion.core.connection;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
@@ -11,8 +10,6 @@ import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.core.message.Address;
-import org.telestion.core.verticle.RandomPositionPublisher;
 
 import java.util.Collections;
 import java.util.List;
@@ -59,11 +56,11 @@ import java.util.stream.Collectors;
  *
  * {@link ./README.md} for more information
  */
-public final class WidgetBridge extends AbstractVerticle {
+public final class EventbusTcpBridge extends AbstractVerticle {
 
     //public static final class Config
 
-    private final Logger logger = LoggerFactory.getLogger(WidgetBridge.class);
+    private final Logger logger = LoggerFactory.getLogger(EventbusTcpBridge.class);
     private String host;
     private Integer port;
     private List<String> inboundPermitted = Collections.emptyList();
@@ -78,7 +75,7 @@ public final class WidgetBridge extends AbstractVerticle {
      * @param inboundPermitted the permitted eventbus addresses for inbound connections
      * @param outboundPermitted the permitted eventbus addresses for outbound connections
      */
-    public WidgetBridge(String host, int port, List<String> inboundPermitted, List<String> outboundPermitted) {
+    public EventbusTcpBridge(String host, int port, List<String> inboundPermitted, List<String> outboundPermitted) {
         this.host = host;
         this.port = port;
         this.inboundPermitted = inboundPermitted;
@@ -88,7 +85,7 @@ public final class WidgetBridge extends AbstractVerticle {
     /**
      * If this constructor is used all settings have to be specified in the config file
      */
-    public WidgetBridge() { }
+    public EventbusTcpBridge() { }
 
     @Override
     public void start(Promise<Void> startPromise) {
