@@ -4,6 +4,16 @@ import io.vertx.core.json.JsonObject;
 
 public final class Config {
 
+    /**
+     *
+     * @param forcedConfig this config will be applied if it is not null
+     * @param config this is common config which represents the config class in json.
+     *               If fields are not available they will be set like the default values of the class when the default
+     *               constructor is called.
+     * @param type the type of the config.
+     * @param <T>
+     * @return
+     */
     public static <T> T get(T forcedConfig, JsonObject config, Class<T> type){
         return forcedConfig == null ? config.mapTo(type) : forcedConfig;
     }

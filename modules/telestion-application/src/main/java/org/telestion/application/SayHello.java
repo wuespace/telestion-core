@@ -10,21 +10,44 @@ import java.util.UUID;
 
 public final class SayHello extends AbstractVerticle {
 
+    /**
+     * Define a configuration record
+     */
     private static record Configuration(
             @JsonProperty long period,
             @JsonProperty String message) {
+
+        /**
+         * The default values will be set via the constructor
+         */
         private Configuration(){
-            this(0, null);
+            this(1, "Hello World");
         }
     }
 
+    /**
+     * A random uuid which defines this instance
+     */
     private final UUID uuid = UUID.randomUUID();
+    /**
+     * The forced configuration defined by the construtor
+     */
     private final Configuration forcedConfig;
 
+    /**
+     * No forced config is used. The config will be read from the config file or the default values will be used if the
+     * config file is not available.
+     */
     public SayHello(){
         this.forcedConfig = null;
     }
 
+    /**
+     * The given forced config is used.
+     *
+     * @param period
+     * @param message
+     */
     public SayHello(long period, String message){
         this.forcedConfig = new Configuration(period, message);
     }

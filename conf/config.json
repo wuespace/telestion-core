@@ -6,10 +6,7 @@
         "name": "Saying Hello",
         "verticle": "org.telestion.application.SayHello",
         "magnitude": 1,
-        "config": {
-          "period": 1,
-          "message": "Moin Moin"
-        }
+        "config": {}
       },
       {
         "name": "Saying Hello 2",
