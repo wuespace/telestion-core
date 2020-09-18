@@ -2,9 +2,13 @@ package org.telestion.core.config;
 
 import io.vertx.core.json.JsonObject;
 
+/**
+ * A utility class for the selection of configuration files
+ */
 public final class Config {
 
     /**
+     * Selects the right configuration file.
      *
      * @param forcedConfig this config will be applied if it is not null
      * @param config this is common config which represents the config class in json.

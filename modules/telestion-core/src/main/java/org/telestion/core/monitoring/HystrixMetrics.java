@@ -1,27 +1,49 @@
 package org.telestion.core.monitoring;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.circuitbreaker.HystrixMetricHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telestion.core.config.Config;
 
+/**
+ * A verticle which streams the hystrix-metrics to a given address.
+ * You could view it using the hystrix-dashboard (https://github.com/kennedyoliveira/standalone-hystrix-dashboard)
+ */
 public final class HystrixMetrics extends AbstractVerticle {
 
-    @Override
-    public void start(Promise<Void> startPromise) throws Exception {
-        // Create a Vert.x Web router
-        Router router = Router.router(vertx);
-        // Register the metric handler
-        router.get("/hystrix-metrics").handler(HystrixMetricHandler.create(vertx));
+    private static final Logger logger = LoggerFactory.getLogger(HystrixMetrics.class);
 
-        // Create the HTTP server using the router to dispatch the requests
-        vertx.createHttpServer()
-                .requestHandler(router)
-                .listen(8080);
+    private static record Configuration(
+            @JsonProperty int port,
+            @JsonProperty String path) {
+        private Configuration(){
+            this(8080, "/hystrix-metrics");
+        }
+    }
+
+    private final Configuration forcedConfig;
+
+    public HystrixMetrics() {
+        forcedConfig = null;
+    }
+
+    public HystrixMetrics(int port, String path) {
+        this.forcedConfig = new Configuration(port, path);
     }
 
     @Override
-    public void stop(Promise<Void> stopPromise) throws Exception {
-
+    public void start(Promise<Void> startPromise) throws Exception {
+        var config = Config.get(forcedConfig, config(), Configuration.class);
+        Router router = Router.router(vertx);
+        router.get(config.path).handler(HystrixMetricHandler.create(vertx));
+        vertx.createHttpServer()
+                .requestHandler(router)
+                .listen(config.port);
+        startPromise.complete();
+        logger.info("Started {} with config {}", HystrixMetrics.class.getSimpleName(), config);
     }
 }

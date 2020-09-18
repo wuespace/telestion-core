@@ -3,14 +3,20 @@
     "app_name": "Telestion",
     "verticles": [
       {
+        "name": "Hystrix Metrics",
+        "verticle": "org.telestion.core.monitoring.HystrixMetrics",
+        "magnitude": 1,
+        "config": {}
+      },
+      {
         "name": "Saying Hello",
-        "verticle": "org.telestion.application.SayHello",
+        "verticle": "org.telestion.example.SayHello",
         "magnitude": 1,
         "config": {}
       },
       {
         "name": "Saying Hello 2",
-        "verticle": "org.telestion.application.SayHello",
+        "verticle": "org.telestion.example.SayHello",
         "magnitude": 2,
         "config": {
           "period": 2,
