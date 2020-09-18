@@ -1,10 +1,10 @@
 package org.telestion.application;
 
 import org.telestion.core.message.Address;
-import org.telestion.core.verticle.MessageLogger;
-import org.telestion.core.verticle.RandomPositionPublisher;
-import org.telestion.core.verticle.WebServer;
-import org.telestion.core.verticle.WidgetBridge;
+import org.telestion.core.monitoring.MessageLogger;
+import org.telestion.example.RandomPositionPublisher;
+import org.telestion.core.web.WebServer;
+import org.telestion.core.connection.WidgetBridge;
 import org.telestion.launcher.Launcher;
 
 import java.util.Collections;

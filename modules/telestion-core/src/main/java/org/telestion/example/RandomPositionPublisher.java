@@ -1,11 +1,10 @@
-package org.telestion.core.verticle;
+package org.telestion.example;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.Position;
 
 import java.time.Duration;
 import java.util.Random;

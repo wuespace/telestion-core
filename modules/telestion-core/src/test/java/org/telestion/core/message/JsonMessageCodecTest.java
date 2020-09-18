@@ -7,6 +7,8 @@ import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.telestion.example.Position;
+import org.telestion.example.Positions;
 
 @ExtendWith(VertxExtension.class)
 public class JsonMessageCodecTest {

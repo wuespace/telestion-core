@@ -1,8 +1,7 @@
-package org.telestion.core.verticle;
+package org.telestion.core.connection;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
@@ -11,8 +10,6 @@ import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.core.message.Address;
-import org.telestion.core.verticle.RandomPositionPublisher;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,11 +1,10 @@
-package org.telestion.core.verticle;
+package org.telestion.example;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import org.telestion.core.message.Address;
 import org.telestion.core.message.JsonMessageCodec;
-import org.telestion.core.message.Position;
 
 import java.time.Duration;
 

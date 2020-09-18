@@ -8,8 +8,6 @@ import java.util.Arrays;
 
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
-import org.telestion.core.message.JsonMessageCodec;
-import org.telestion.core.message.Position;
 
 /**
  * A generic launcher class which deploys {@link Verticle Verticles}.
