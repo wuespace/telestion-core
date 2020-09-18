@@ -29,6 +29,7 @@ dependencies {
 
     implementation "io.vertx:vertx-core:$gradle.vertxVersion"
     implementation "io.vertx:vertx-circuit-breaker:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-config:$gradle.vertxVersion"
 
 }
 
