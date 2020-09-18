@@ -6,16 +6,9 @@ plugins {
 sourceCompatibility = '14'
 targetCompatibility = '14'
 
-repositories {
-    maven {
-        url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
-    }
-    jcenter()
-}
-
 application {
     // Define the main class for the application.
-    mainClassName = 'org.telestion.core.connection.Main'
+    mainClassName = 'org.telestion.adapter.mavlink.Main'
 }
 
 
@@ -35,9 +28,6 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
     implementation "io.vertx:vertx-core:3.9.2"
-
-    implementation 'org.ros.rosjava_core:rosjava:0.4'
-    implementation 'org.ros.rosjava_messages:geometry_msgs:1.13'
 }
 
 test {
