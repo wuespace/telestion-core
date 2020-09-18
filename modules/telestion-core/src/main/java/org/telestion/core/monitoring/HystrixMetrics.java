@@ -12,6 +12,8 @@ import org.telestion.core.config.Config;
 /**
  * A verticle which streams the hystrix-metrics to a given address.
  * You could view it using the hystrix-dashboard (https://github.com/kennedyoliveira/standalone-hystrix-dashboard)
+ *
+ * @author Jan von Pichowski
  */
 public final class HystrixMetrics extends AbstractVerticle {
 

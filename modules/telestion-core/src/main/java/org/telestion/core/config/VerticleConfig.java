@@ -6,6 +6,8 @@ import io.vertx.core.json.JsonObject;
 
 /**
  * The base configuration of verticles.
+ *
+ * @author Jan von Pichowski
  */
 @SuppressWarnings("preview")
 public record VerticleConfig(

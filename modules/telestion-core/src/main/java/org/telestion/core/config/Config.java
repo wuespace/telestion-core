@@ -3,7 +3,9 @@ package org.telestion.core.config;
 import io.vertx.core.json.JsonObject;
 
 /**
- * A utility class for the selection of configuration files
+ * A utility class for the selection of configuration files.
+ *
+ * @author Jan von Pichowski
  */
 public final class Config {
 

@@ -12,6 +12,8 @@ import java.util.UUID;
 
 /**
  * A class which says hello and shows the usage of configuration files.
+ *
+ * @author Jan von Pichowski
  */
 public final class SayHello extends AbstractVerticle {
 

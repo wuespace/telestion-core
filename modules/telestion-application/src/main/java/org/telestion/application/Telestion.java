@@ -13,6 +13,8 @@ import java.util.Collections;
 /**
  * This is going to be the Telestion application.
  * It launches the verticles which are specified in the configuration.
+ *
+ * @author Jan von Pichowski
  */
 public final class Telestion extends AbstractVerticle {
 

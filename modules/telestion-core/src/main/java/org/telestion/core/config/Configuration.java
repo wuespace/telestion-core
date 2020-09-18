@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The base application configuration object.
+ *
+ * @author Jan von Pichowski
  */
 @SuppressWarnings("preview")
 public record Configuration(
