@@ -4,7 +4,7 @@ import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.example.RandomPositionPublisher;
 import org.telestion.core.web.WebServer;
-import org.telestion.core.connection.WidgetBridge;
+import org.telestion.core.connection.EventbusTcpBridge;
 import org.telestion.launcher.Launcher;
 
 import java.util.Collections;
@@ -28,7 +28,7 @@ public class Application {
         Launcher.start(
                 new MessageLogger(),
 				new RandomPositionPublisher(),
-				new WidgetBridge("localhost", 9000,
+				new EventbusTcpBridge("localhost", 9000,
 						Collections.emptyList(),
 						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
 				new WebServer(8080)
