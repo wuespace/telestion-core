@@ -20,6 +20,11 @@ public final class Telestion extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(Telestion.class);
 
+    /**
+     * Deploys this Telestion verticle.
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(Telestion.class.getName());
