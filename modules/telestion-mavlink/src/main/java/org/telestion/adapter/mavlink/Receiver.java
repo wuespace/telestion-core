@@ -21,7 +21,7 @@ import org.telestion.core.verticle.TcpServer;
  * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).</br>
  * Incoming messages will be parsed into a {@link RawMavlink} and send to the {@link MavlinkParser}.
  * 
- * @author Cedric Boes
+ * @author Cedric Boes, Jan von Pichowski
  * @version 1.0
  */
 public final class Receiver extends AbstractVerticle {
@@ -47,6 +47,9 @@ public final class Receiver extends AbstractVerticle {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
+	/**
+	 * This configuration will be used if not null.
+	 */
 	private final Configuration forcedConfig;
 	
 	/**
