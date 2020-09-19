@@ -28,6 +28,8 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
     implementation "io.vertx:vertx-core:3.9.2"
+    implementation "io.vertx:vertx-circuit-breaker:3.9.2"
+    implementation "io.vertx:vertx-config:3.9.2"
 }
 
 test {
