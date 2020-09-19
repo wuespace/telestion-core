@@ -12,7 +12,6 @@ public class MessageSafer extends AbstractVerticle {
 
     String addr;
 
-    @SuppressWarnings({ "unused", "preview" })
 	@Override
     public void start(Promise<Void> startPromise) throws Exception {
         vertx.eventBus().consumer("addr1", msg -> {
