@@ -36,9 +36,13 @@ public class Main {
     };
 
     public static void main(String[] args) {
+        var tcpToReceiver = "tcpToReceiver";
+        var receiverToParser = "receiverToParser";
+
+
         Launcher.start(
                 new TcpServer(42024),
-                new Receiver(),
+                new Receiver(tcpToReceiver, receiverToParser),
                 new MavlinkParser(),
                 new Consumer(),
                 new Publisher(42024));
