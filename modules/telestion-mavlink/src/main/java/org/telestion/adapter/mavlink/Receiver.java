@@ -15,7 +15,6 @@ import io.vertx.core.Promise;
 import io.vertx.core.Verticle;
 
 import org.telestion.core.message.TcpData;
-import org.telestion.core.verticle.TcpServer;
 
 /**
  * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).</br>
@@ -29,11 +28,11 @@ public final class Receiver extends AbstractVerticle {
 	/**
 	 * The configuration of the receiver
 	 *
-	 * @param dataProviderAddress the address which provides the data which should be received
+	 * @param tcpDataSupplierAddress the address which provides the data which should be received
 	 * @param rawMavConsumerAddress the address which consumes the RawMavlink message
 	 */
 	private static record Configuration(
-			@JsonProperty String dataProviderAddress,
+			@JsonProperty String tcpDataSupplierAddress,
 			@JsonProperty String rawMavConsumerAddress){
 
 		@SuppressWarnings("unused")
@@ -76,7 +75,7 @@ public final class Receiver extends AbstractVerticle {
 	public void start(Promise<Void> startPromise) {
 		var config = Config.get(forcedConfig, config(), Configuration.class);
 
-		vertx.eventBus().consumer(config.dataProviderAddress(), msg -> {
+		vertx.eventBus().consumer(config.tcpDataSupplierAddress(), msg -> {
 			if (!JsonMessage.on(TcpData.class, msg, data -> {
 				byte[] bytes = data.data();
 
