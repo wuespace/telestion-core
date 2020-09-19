@@ -38,6 +38,8 @@ public class Main {
     public static void main(String[] args) {
         var tcpToReceiver = "tcpToReceiver";
         var receiverToParser = "receiverToParser";
+        var transmitterToTcp = "transmitterToTcp";
+        var parserToTransmitter = "parserToTransmitter";
 
 
         Launcher.start(
