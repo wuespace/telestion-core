@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.LoggerFactory;
+import org.telestion.core.monitoring.MessageLogger;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;

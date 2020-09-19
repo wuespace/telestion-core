@@ -1,7 +1,5 @@
 rootProject.name = 'telestion'
 
-gradle.ext.vertxVersion = '3.9.2'
-
 include ':modules:telestion-core'
 include ':modules:telestion-launcher'
 include ':modules:telestion-updater'
