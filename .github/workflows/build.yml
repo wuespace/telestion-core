@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Build and Run Tests
-        run: chmod +x gradlew && ./gradlew test --stacktrace
+        run: chmod +x gradlew && ./gradlew publishApi && ./gradlew test
       - name: Publish Test Report
         uses: scacap/action-surefire-report@v1
         with:

@@ -3,7 +3,7 @@ package org.telestion.safer.mavlink;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.spi.json.JsonCodec;
-import org.telestion.core.message.Position;
+import org.telestion.example.Position;
 
 /**
  * Entry point for Matei. Here you could start :)

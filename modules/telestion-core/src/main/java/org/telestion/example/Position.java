@@ -1,4 +1,4 @@
-package org.telestion.core.message;
+package org.telestion.example;
 
 import org.telestion.api.message.JsonMessage;
 
