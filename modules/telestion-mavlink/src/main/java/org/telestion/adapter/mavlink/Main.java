@@ -2,7 +2,6 @@ package org.telestion.adapter.mavlink;
 
 import java.time.Duration;
 
-import org.telestion.adapter.mavlink.message.Heartbeat;
 import org.telestion.core.verticle.TcpServer;
 import org.telestion.launcher.Launcher;
 
@@ -37,7 +36,6 @@ public class Main {
     };
 
     public static void main(String[] args) {
-    	new Heartbeat(0, 0, 0, 0, 0, 0);
         Launcher.start(
                 new TcpServer(42024),
                 new Receiver(),
