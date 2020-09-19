@@ -19,8 +19,8 @@ import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
 import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.config.Config;
+import org.telestion.core.connection.TcpConn;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.TcpData;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -129,6 +129,6 @@ public final class Transmitter extends AbstractVerticle {
 		buildArray[buildArray.length-1]	= (byte) (crc & 0xff);
 
 		var addrPort = AddressAssociator.remove(mav.getMavlinkId());
-		vertx.eventBus().send(outAddress, new TcpData(addrPort.address(), addrPort.port(), buildArray));
+		vertx.eventBus().send(outAddress, new TcpConn.Data(new TcpConn.Participant(addrPort.address(), addrPort.port()), buildArray));
 	}
 }

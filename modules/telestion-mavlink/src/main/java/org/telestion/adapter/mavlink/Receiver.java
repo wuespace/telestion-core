@@ -8,13 +8,12 @@ import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.config.Config;
+import org.telestion.core.connection.TcpConn;
 import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Verticle;
-
-import org.telestion.core.message.TcpData;
 
 /**
  * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).</br>
@@ -76,7 +75,7 @@ public final class Receiver extends AbstractVerticle {
 		var config = Config.get(forcedConfig, config(), Configuration.class);
 
 		vertx.eventBus().consumer(config.tcpDataSupplierAddress(), msg -> {
-			if (!JsonMessage.on(TcpData.class, msg, data -> {
+			if (!JsonMessage.on(TcpConn.Data.class, msg, data -> {
 				byte[] bytes = data.data();
 
 				RawMavlink mav = switch(bytes[0]) {
@@ -90,15 +89,14 @@ public final class Receiver extends AbstractVerticle {
 				};
 				
 				if (mav != null) {
-					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.address(), data.port()));
+					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.participant().host(), data.participant().port()));
 					vertx.eventBus().send(config.rawMavConsumerAddress(), mav.json());
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");
 				}
 			})) {
 				// Might cause problems because sender does not get notified.
-				// TODO forward to mavlink-safer
-				logger.error("Unsupported type sent to {}", msg.address());
+				logger.error("Unsupported event bus message sent to {}", msg.address());
 			}
 		});
 		

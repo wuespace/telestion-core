@@ -2,6 +2,7 @@ package org.telestion.adapter.mavlink;
 
 import java.time.Duration;
 
+import org.telestion.adapter.mavlink.message.MessageIndex;
 import org.telestion.core.connection.TcpConn;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.launcher.Launcher;
@@ -9,6 +10,7 @@ import org.telestion.launcher.Launcher;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
+import org.telestion.mavlink.messages.mavlink.minimal.Heartbeat;
 
 public class Main {
 
@@ -37,6 +39,8 @@ public class Main {
     };
 
     public static void main(String[] args) {
+        MessageIndex.put(new Heartbeat(0, 0, 0, 0L, 0, 0).getId(), Heartbeat.class);
+
         var tcpToReceiver = "tcpToReceiver";
         var receiverToParser = "receiverToParser";
         var parserOut = "parserOut";
