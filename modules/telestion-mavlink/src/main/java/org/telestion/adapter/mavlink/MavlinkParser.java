@@ -148,12 +148,12 @@ public final class MavlinkParser extends AbstractVerticle {
 	 */
 	private Number toRightNum(Object o, Class<? extends Number> clazz) {
 		return switch(clazz.getSimpleName()) {
-		case "Byte" -> Byte.class.cast(o);
-		case "Short" -> Short.class.cast(o);
-		case "Integer" -> Integer.class.cast(o);
-		case "Long" -> Long.class.cast(o);
-		case "Float" -> Float.class.cast(o);
-		case "Double" -> Double.class.cast(o);
+		case "Byte" -> (Byte) o;
+		case "Short" -> (Short) o;
+		case "Integer" -> (Integer) o;
+		case "Long" -> (Long) o;
+		case "Float" -> (Float) o;
+		case "Double" -> (Double) o;
 		default -> throw new ClassCastException("Unsupported Type " + clazz.getName());
 		};
 	}
@@ -300,7 +300,7 @@ public final class MavlinkParser extends AbstractVerticle {
 		}
 		
 		RecordComponent[] components = Arrays.stream(mavlinkClass.getRecordComponents())
-				.sorted((c1, c2) -> compareRecordComponents(c1, c2))
+				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
 		
 		/*
@@ -384,7 +384,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
 		var components = Arrays.stream(mav.getClass().getRecordComponents())
-				.sorted((c1, c2) -> compareRecordComponents(c1, c2))
+				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
 		
 		List<Byte> byteBuffer = Collections.emptyList();
