@@ -62,7 +62,7 @@ import io.vertx.core.Verticle;
  * MAVLinkV2-compatible both output-versions are supported (for unsigned MAVLinkV2-Messages set the incompatible-Flag 
  * to 0x0 otherwise it must be 0x1).
  * 
- * @author Cedric Boes
+ * @author Cedric Boes, Jan von Pichowski
  * @version 1.0
  */
 public final class MavlinkParser extends AbstractVerticle {

@@ -12,6 +12,9 @@ import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import org.telestion.mavlink.messages.mavlink.minimal.Heartbeat;
 
+/**
+ * @author Jan von Pichowski
+ */
 public class Main {
 
     private static final byte[] HEARTBEAT_MESSAGE = {
