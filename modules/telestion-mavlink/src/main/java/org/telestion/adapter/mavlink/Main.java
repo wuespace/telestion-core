@@ -2,7 +2,8 @@ package org.telestion.adapter.mavlink;
 
 import java.time.Duration;
 
-import org.telestion.core.verticle.TcpServer;
+import org.telestion.core.connection.TcpConn;
+import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.launcher.Launcher;
 
 import io.vertx.core.AbstractVerticle;
@@ -45,7 +46,8 @@ public class Main {
         var transmitterToTcp = "transmitterToTcp";
 
         Launcher.start(
-                new TcpServer(42024),
+                new MessageLogger(),
+                new TcpConn(null, 42024, tcpToReceiver, null, null),
                 new Receiver(tcpToReceiver, receiverToParser),
                 new MavlinkParser(new MavlinkParser.Configuration(
                         receiverToParser, parserOut,

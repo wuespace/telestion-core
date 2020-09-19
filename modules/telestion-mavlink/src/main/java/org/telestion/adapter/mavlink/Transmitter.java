@@ -21,7 +21,6 @@ import org.telestion.api.message.JsonMessage;
 import org.telestion.core.config.Config;
 import org.telestion.core.message.Address;
 import org.telestion.core.message.TcpData;
-import org.telestion.core.verticle.TcpServer;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
