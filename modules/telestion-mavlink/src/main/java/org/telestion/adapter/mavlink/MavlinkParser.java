@@ -138,291 +138,7 @@ public final class MavlinkParser extends AbstractVerticle {
 		this.keySafe = safe;
 		this.addressIdentifier = identifier;
 	}
-	
-	/**
-	 * Casting an Object to the right {@link Number number-object}.
-	 * 
-	 * @param o {@link Number} as {@link Object}
-	 * @param clazz {@link Class} to which the object should be casted
-	 * @return
-	 */
-	private Number toRightNum(Object o, Class<? extends Number> clazz) {
-		return switch(clazz.getSimpleName()) {
-		case "Byte" -> (Byte) o;
-		case "Short" -> (Short) o;
-		case "Integer" -> (Integer) o;
-		case "Long" -> (Long) o;
-		case "Float" -> (Float) o;
-		case "Double" -> (Double) o;
-		default -> throw new ClassCastException("Unsupported Type " + clazz.getName());
-		};
-	}
-	
-	/**
-	 * Parsing a part of the payload at the given index with the help of the given {@link RecordComponent}.
-	 * 
-	 * @param index at which the parsing starts happening
-	 * @param payload of the MAVLink-message
-	 * @param c {@link RecordComponent} which will be used for parsing
-	 * @return parsed Object
-	 */
-	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
-		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
-		switch(c.getAnnotation(MavField.class).nativeType().size) {
-		case 1:
-			short s = payload[index.incrementAndGet()];
-			return unsigned ? toRightNum(s, Short.class) : toRightNum((byte) s, Byte.class);
-		case 2:
-			int i = (payload[index.incrementAndGet()] << 8) +
-					payload[index.incrementAndGet()];
-			return unsigned ? toRightNum(i, Integer.class) : toRightNum((short) i, Short.class);
-		case 4:
-			long l =	(payload[index.incrementAndGet()]) << 24 +
-						(payload[index.incrementAndGet()]) << 16 +
-						(payload[index.incrementAndGet()]) << 8 +
-						payload[index.incrementAndGet()];
-			return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
-		case 8:
-			// There is no real support for unsigned longs, yet!
-			l =	(payload[index.incrementAndGet()] << 56) +
-				(payload[index.incrementAndGet()] << 48) +
-				(payload[index.incrementAndGet()] << 40) +
-				(payload[index.incrementAndGet()] << 32) +
-				(payload[index.incrementAndGet()] << 24) +
-				(payload[index.incrementAndGet()] << 16) +
-				(payload[index.incrementAndGet()] << 8) +
-				payload[index.incrementAndGet()];
-			return toRightNum(l, Long.class);
-		default:
-			throw new ParsingException("Parsing failed due to invalid Payload-Type!");
-		}
-	}
-	
-	/**
-	 * {@link Comparator} for the {@link RecordComponent MAVLink-RecordComponents} to bring them into the right format 
-	 * for MAVLink.
-	 * 
-	 * @param c1 {@link RecordComponent} #1
-	 * @param c2 {@link RecordComponent} #2
-	 * @return how the sorting algorithm should sort
-	 */
-	private static int compareRecordComponents(RecordComponent c1, RecordComponent c2) {
-		if (! (c1.isAnnotationPresent(MavField.class) && c2.isAnnotationPresent(MavField.class))) {
-			// breaks out of method
-			throw new AnnotationMissingException("MavField-Annotation is missing for at least one RecordComponent!");
-		}
-		
-		MavField mf1 = c1.getAnnotation(MavField.class);
-		MavField mf2 = c2.getAnnotation(MavField.class);
-		
-		if (! (mf1.position() == -1 || mf2.position() == -1)) {
-			return mf1.position() - mf2.position();
-		}
-		
-		if (mf1.extension() ^ mf2.extension()) {
-			return mf2.nativeType().size - mf1.nativeType().size;
-		} else {
-			return mf1.extension() ? 1 : -1;
-		}
-	}
-	
-	/**
-	 * Parses a {@link RawMavlink RawMavlink-message} into a {@link MavlinkMessage} and publishing it on the 
-	 * {@link #toMavlinkOutAddress} on the vert.x-eventbus.
-	 * 
-	 * @param raw message to parse
-	 */
-	@SuppressWarnings("preview")
-	private void interpretMsg(RawMavlink raw) {
 
-		Class<? extends MavlinkMessage> mavlinkClass = null;
-		
-		int subtract = 1;
-		int checksum = 0;
-		byte[] load = null;
-		
-		if (raw instanceof RawMavlinkV2 v2) {
-			mavlinkClass = MessageIndex.get(v2.msgId());
-
-			// Handling according to specifications! Only 0x0 and 0x1 are supported, yet
-			if ((v2.incompatFlags()	& 0xff) == 0x1) {
-				subtract = 14;
-			} else if ((v2.incompatFlags() & 0xff) != 0x0) {
-				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-				throw new ParsingException("Invalid incompatible flag set! Must either be 0x0 or 0x1!");
-			}
-			
-			checksum = v2.checksum();
-			load = v2.payload().payload();
-		} else if (raw instanceof RawMavlinkV1 v1) {
-			mavlinkClass = MessageIndex.get(v1.msgId());
-			
-			checksum = v1.checksum();
-			load = v1.payload().payload();
-		} else {
-			logger.error("Unsupported MAVLink-Message received on {}!", MavlinkParser.toMavlinkInAddress);
-			throw new PacketException("Unsupported MAVLink-Message received!");
-		}
-		
-		/*
-		 * Check signature and checksum
-		 */
-		if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
-			MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
-			int crcExtra = annotation.crc();
-			byte[] buildArray = Arrays.copyOfRange(raw.getRaw(), 1, raw.getRaw().length - subtract);
-			buildArray[buildArray.length-1] = (byte) crcExtra;
-
-			int crc = X25Checksum.calculate(buildArray);
-			
-			if (crc != checksum) {
-				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-				throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
-			}
-			
-			if (raw instanceof RawMavlinkV2 v2 && v2.incompatFlags() == 0x01) {
-				try {
-					if (MavV2Signator.generateSignature(keySafe.getSecretKey(),
-							Arrays.copyOfRange(v2.getRaw(), 1, 11),
-							Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
-							crcExtra, v2.linkId()) == v2.signature()) {
-						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-						throw new WrongSignatureException("Signature of received MAVLink-Package was"
-								+ "incorrect!");						}
-				} catch (NoSuchAlgorithmException e) {
-					// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
-					throw new WrongSignatureException("An unexpected error occured while checking the signature "
-							+ "of the received MAVLink-Package ", e);
-				}
-			}
-		} else {
-			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
-		}
-		
-		RecordComponent[] components = Arrays.stream(mavlinkClass.getRecordComponents())
-				.sorted(MavlinkParser::compareRecordComponents)
-				.toArray(RecordComponent[]::new);
-		
-		/*
-		 * Start Reflection
-		 */
-		try {
-			@SuppressWarnings("rawtypes")
-			Class[] componentTypes = Arrays.stream(components)
-					.map(RecordComponent::getType)
-					.toArray(Class[]::new);
-			
-			final AtomicInteger index = new AtomicInteger(-1);
-			final byte[] payload = load;
-			
-			Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
-			Object[] parameters = Arrays.stream(components)
-					.map(c -> {
-						return c.isAnnotationPresent(MavArray.class)
-								? IntStream.range(0, c.getAnnotation(MavArray.class).length())
-										.mapToObj(i -> parse(index, payload, c))
-										.toArray(Object[]::new)
-								: parse(index, payload, c);
-					}).toArray(Object[]::new);
-			
-			MavlinkMessage m = constructor.newInstance(parameters);
-			
-			vertx.eventBus().publish(toMavlinkOutAddress, m.json());
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			throw new ParsingException(new ReflectionException(e));
-		}
-		
-	
-	}
-
-	/**
-	 * Converts an Object to a raw byte[] array.
-	 * 
-	 * @param c RecordComponent of the Object to parse
-	 * @param o Object to covert
-	 * @return byte[] representation of the given object
-	 * @throws IllegalAccessException if the accessor of the for the {@link RecordComponent} cannot be invoked
-	 * @throws IllegalArgumentException if the accessor of the for the {@link RecordComponent} cannot be invoked
-	 * @throws InvocationTargetException if the accessor of the for the {@link RecordComponent} cannot be invoked
-	 * @throws ParsingException if the type of the {@link RecordComponent} is unknown
-	 */
-	private byte[] recordToRaw(RecordComponent c, Object o)
-			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		MavField info = c.getAnnotation(MavField.class);
-		
-		NativeType natType = info.nativeType();
-		if (natType == NativeType.DOUBLE) {
-			o = (long) Double.doubleToLongBits((double) o);
-			natType = NativeType.INT_64;
-		} else if (natType == NativeType.FLOAT) {
-			o = (int ) Float.floatToIntBits((float) o);
-			natType = NativeType.INT_32;
-		}
-
-		return switch(natType) {
-			case CHAR 			 -> new byte[] {(byte) (char) o};
-			case INT_8, UINT_8 	 -> new byte[] {(byte) o};
-			case INT_16, UINT_16 -> new byte[] {(byte) (((short) o >> 8) & 0xff), (byte) ((short) o & 0xff)};
-			case INT_32, UINT_32 -> new byte[] {(byte) (((int) o >> 24)  & 0xff), (byte) (((int) o >> 16) 	& 0xff),
-												(byte) (((int) o >> 8)	 & 0xff), (byte) ((int) o 			& 0xff)};
-			case INT_64, UINT_64 -> new byte[] {(byte) (((long) o >> 56) & 0xff), (byte) (((long) o >> 48)  & 0xff),
-												(byte) (((long) o >> 40) & 0xff), (byte) (((long) o >> 32)  & 0xff),
-												(byte) (((long) o >> 24) & 0xff), (byte) (((long) o >> 16)  & 0xff),
-												(byte) (((long) o >> 8)	 & 0xff), (byte) ((long) o 			& 0xff)};
-			default -> throw new ParsingException("Unknown datatype " + info.nativeType() + "!");
-			};
-	}
-	
-	/**
-	 * Converts a {@link MavlinkMessage} to a raw byte[] array.
-	 * 
-	 * @param mav {@link MavlinkMessage} to convert
-	 * @return converted byte[] array
-	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
-	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
-	 */
-	private byte[] getRaw(MavlinkMessage mav) {
-		var components = Arrays.stream(mav.getClass().getRecordComponents())
-				.sorted(MavlinkParser::compareRecordComponents)
-				.toArray(RecordComponent[]::new);
-		
-		List<Byte> byteBuffer = Collections.emptyList();
-		try {
-			for (var c : components) {
-				var o = c.getAccessor().invoke(mav);
-				if (!c.isAnnotationPresent(MavField.class)) {
-					throw new AnnotationMissingException("MavField Annotation is missing!");
-				}
-				if (c.isAnnotationPresent(MavArray.class)) {
-					int count = c.getAnnotation(MavArray.class).length();
-					var os = (Object[]) o;
-					for (int i = 0; i < count; i++) {
-						byte[] bytes = recordToRaw(c, os[i]);
-						for (byte b : bytes) {
-							byteBuffer.add(b);
-						}
-					}
-				} else {
-					byte[] bytes = recordToRaw(c, o);
-					for (byte b : bytes) {
-						byteBuffer.add(b);
-					}
-				}
-			}
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new ParsingException(new ReflectionException(e));
-		}
-		
-		byte[] bytes = new byte[byteBuffer.size()];
-		int index = 0;
-		for (byte b : byteBuffer) {
-			bytes[index++] = b;
-		}
-		
-		return bytes;
-	}
-	
 	/**
 	 * Changes the {@link #context} for this {@link MavlinkParser}
 	 * 
@@ -563,4 +279,288 @@ public final class MavlinkParser extends AbstractVerticle {
 		changeKeySafe(null);
 		stopPromise.complete();
 	}
+	/**
+	 * Casting an Object to the right {@link Number number-object}.
+	 *
+	 * @param o {@link Number} as {@link Object}
+	 * @param clazz {@link Class} to which the object should be casted
+	 * @return
+	 */
+	private Number toRightNum(Object o, Class<? extends Number> clazz) {
+		return switch(clazz.getSimpleName()) {
+			case "Byte" -> (Byte) o;
+			case "Short" -> (Short) o;
+			case "Integer" -> (Integer) o;
+			case "Long" -> (Long) o;
+			case "Float" -> (Float) o;
+			case "Double" -> (Double) o;
+			default -> throw new ClassCastException("Unsupported Type " + clazz.getName());
+		};
+	}
+
+	/**
+	 * Parsing a part of the payload at the given index with the help of the given {@link RecordComponent}.
+	 *
+	 * @param index at which the parsing starts happening
+	 * @param payload of the MAVLink-message
+	 * @param c {@link RecordComponent} which will be used for parsing
+	 * @return parsed Object
+	 */
+	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
+		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
+		switch(c.getAnnotation(MavField.class).nativeType().size) {
+			case 1:
+				short s = payload[index.incrementAndGet()];
+				return unsigned ? toRightNum(s, Short.class) : toRightNum((byte) s, Byte.class);
+			case 2:
+				int i = (payload[index.incrementAndGet()] << 8) +
+						payload[index.incrementAndGet()];
+				return unsigned ? toRightNum(i, Integer.class) : toRightNum((short) i, Short.class);
+			case 4:
+				long l =	(payload[index.incrementAndGet()]) << 24 +
+						(payload[index.incrementAndGet()]) << 16 +
+						(payload[index.incrementAndGet()]) << 8 +
+						payload[index.incrementAndGet()];
+				return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
+			case 8:
+				// There is no real support for unsigned longs, yet!
+				l =	(payload[index.incrementAndGet()] << 56) +
+						(payload[index.incrementAndGet()] << 48) +
+						(payload[index.incrementAndGet()] << 40) +
+						(payload[index.incrementAndGet()] << 32) +
+						(payload[index.incrementAndGet()] << 24) +
+						(payload[index.incrementAndGet()] << 16) +
+						(payload[index.incrementAndGet()] << 8) +
+						payload[index.incrementAndGet()];
+				return toRightNum(l, Long.class);
+			default:
+				throw new ParsingException("Parsing failed due to invalid Payload-Type!");
+		}
+	}
+
+	/**
+	 * {@link Comparator} for the {@link RecordComponent MAVLink-RecordComponents} to bring them into the right format
+	 * for MAVLink.
+	 *
+	 * @param c1 {@link RecordComponent} #1
+	 * @param c2 {@link RecordComponent} #2
+	 * @return how the sorting algorithm should sort
+	 */
+	private static int compareRecordComponents(RecordComponent c1, RecordComponent c2) {
+		if (! (c1.isAnnotationPresent(MavField.class) && c2.isAnnotationPresent(MavField.class))) {
+			// breaks out of method
+			throw new AnnotationMissingException("MavField-Annotation is missing for at least one RecordComponent!");
+		}
+
+		MavField mf1 = c1.getAnnotation(MavField.class);
+		MavField mf2 = c2.getAnnotation(MavField.class);
+
+		if (! (mf1.position() == -1 || mf2.position() == -1)) {
+			return mf1.position() - mf2.position();
+		}
+
+		if (mf1.extension() ^ mf2.extension()) {
+			return mf2.nativeType().size - mf1.nativeType().size;
+		} else {
+			return mf1.extension() ? 1 : -1;
+		}
+	}
+
+	/**
+	 * Parses a {@link RawMavlink RawMavlink-message} into a {@link MavlinkMessage} and publishing it on the
+	 * {@link #toMavlinkOutAddress} on the vert.x-eventbus.
+	 *
+	 * @param raw message to parse
+	 */
+	@SuppressWarnings("preview")
+	private void interpretMsg(RawMavlink raw) {
+
+		Class<? extends MavlinkMessage> mavlinkClass = null;
+
+		int subtract = 1;
+		int checksum = 0;
+		byte[] load = null;
+
+		if (raw instanceof RawMavlinkV2 v2) {
+			mavlinkClass = MessageIndex.get(v2.msgId());
+
+			// Handling according to specifications! Only 0x0 and 0x1 are supported, yet
+			if ((v2.incompatFlags()	& 0xff) == 0x1) {
+				subtract = 14;
+			} else if ((v2.incompatFlags() & 0xff) != 0x0) {
+				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+				throw new ParsingException("Invalid incompatible flag set! Must either be 0x0 or 0x1!");
+			}
+
+			checksum = v2.checksum();
+			load = v2.payload().payload();
+		} else if (raw instanceof RawMavlinkV1 v1) {
+			mavlinkClass = MessageIndex.get(v1.msgId());
+
+			checksum = v1.checksum();
+			load = v1.payload().payload();
+		} else {
+			logger.error("Unsupported MAVLink-Message received on {}!", MavlinkParser.toMavlinkInAddress);
+			throw new PacketException("Unsupported MAVLink-Message received!");
+		}
+
+		/*
+		 * Check signature and checksum
+		 */
+		if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
+			MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
+			int crcExtra = annotation.crc();
+			byte[] buildArray = Arrays.copyOfRange(raw.getRaw(), 1, raw.getRaw().length - subtract);
+			buildArray[buildArray.length-1] = (byte) crcExtra;
+
+			int crc = X25Checksum.calculate(buildArray);
+
+			if (crc != checksum) {
+				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+				throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
+			}
+
+			if (raw instanceof RawMavlinkV2 v2 && v2.incompatFlags() == 0x01) {
+				try {
+					if (MavV2Signator.generateSignature(keySafe.getSecretKey(),
+							Arrays.copyOfRange(v2.getRaw(), 1, 11),
+							Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
+							crcExtra, v2.linkId()) == v2.signature()) {
+						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+						throw new WrongSignatureException("Signature of received MAVLink-Package was"
+								+ "incorrect!");						}
+				} catch (NoSuchAlgorithmException e) {
+					// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
+					throw new WrongSignatureException("An unexpected error occured while checking the signature "
+							+ "of the received MAVLink-Package ", e);
+				}
+			}
+		} else {
+			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
+		}
+
+		RecordComponent[] components = Arrays.stream(mavlinkClass.getRecordComponents())
+				.sorted(MavlinkParser::compareRecordComponents)
+				.toArray(RecordComponent[]::new);
+
+		/*
+		 * Start Reflection
+		 */
+		try {
+			@SuppressWarnings("rawtypes")
+			Class[] componentTypes = Arrays.stream(components)
+					.map(RecordComponent::getType)
+					.toArray(Class[]::new);
+
+			final AtomicInteger index = new AtomicInteger(-1);
+			final byte[] payload = load;
+
+			Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
+			Object[] parameters = Arrays.stream(components)
+					.map(c -> {
+						return c.isAnnotationPresent(MavArray.class)
+								? IntStream.range(0, c.getAnnotation(MavArray.class).length())
+								.mapToObj(i -> parse(index, payload, c))
+								.toArray(Object[]::new)
+								: parse(index, payload, c);
+					}).toArray(Object[]::new);
+
+			MavlinkMessage m = constructor.newInstance(parameters);
+
+			vertx.eventBus().publish(toMavlinkOutAddress, m.json());
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			throw new ParsingException(new ReflectionException(e));
+		}
+
+
+	}
+
+	/**
+	 * Converts an Object to a raw byte[] array.
+	 *
+	 * @param c RecordComponent of the Object to parse
+	 * @param o Object to covert
+	 * @return byte[] representation of the given object
+	 * @throws IllegalAccessException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws IllegalArgumentException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws InvocationTargetException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws ParsingException if the type of the {@link RecordComponent} is unknown
+	 */
+	private byte[] recordToRaw(RecordComponent c, Object o)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		MavField info = c.getAnnotation(MavField.class);
+
+		NativeType natType = info.nativeType();
+		if (natType == NativeType.DOUBLE) {
+			o = (long) Double.doubleToLongBits((double) o);
+			natType = NativeType.INT_64;
+		} else if (natType == NativeType.FLOAT) {
+			o = (int ) Float.floatToIntBits((float) o);
+			natType = NativeType.INT_32;
+		}
+
+		return switch(natType) {
+			case CHAR 			 -> new byte[] {(byte) (char) o};
+			case INT_8, UINT_8 	 -> new byte[] {(byte) o};
+			case INT_16, UINT_16 -> new byte[] {(byte) (((short) o >> 8) & 0xff), (byte) ((short) o & 0xff)};
+			case INT_32, UINT_32 -> new byte[] {(byte) (((int) o >> 24)  & 0xff), (byte) (((int) o >> 16) 	& 0xff),
+					(byte) (((int) o >> 8)	 & 0xff), (byte) ((int) o 			& 0xff)};
+			case INT_64, UINT_64 -> new byte[] {(byte) (((long) o >> 56) & 0xff), (byte) (((long) o >> 48)  & 0xff),
+					(byte) (((long) o >> 40) & 0xff), (byte) (((long) o >> 32)  & 0xff),
+					(byte) (((long) o >> 24) & 0xff), (byte) (((long) o >> 16)  & 0xff),
+					(byte) (((long) o >> 8)	 & 0xff), (byte) ((long) o 			& 0xff)};
+			default -> throw new ParsingException("Unknown datatype " + info.nativeType() + "!");
+		};
+	}
+
+	/**
+	 * Converts a {@link MavlinkMessage} to a raw byte[] array.
+	 *
+	 * @param mav {@link MavlinkMessage} to convert
+	 * @return converted byte[] array
+	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
+	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 */
+	private byte[] getRaw(MavlinkMessage mav) {
+		var components = Arrays.stream(mav.getClass().getRecordComponents())
+				.sorted(MavlinkParser::compareRecordComponents)
+				.toArray(RecordComponent[]::new);
+
+		List<Byte> byteBuffer = Collections.emptyList();
+		try {
+			for (var c : components) {
+				var o = c.getAccessor().invoke(mav);
+				if (!c.isAnnotationPresent(MavField.class)) {
+					throw new AnnotationMissingException("MavField Annotation is missing!");
+				}
+				if (c.isAnnotationPresent(MavArray.class)) {
+					int count = c.getAnnotation(MavArray.class).length();
+					var os = (Object[]) o;
+					for (int i = 0; i < count; i++) {
+						byte[] bytes = recordToRaw(c, os[i]);
+						for (byte b : bytes) {
+							byteBuffer.add(b);
+						}
+					}
+				} else {
+					byte[] bytes = recordToRaw(c, o);
+					for (byte b : bytes) {
+						byteBuffer.add(b);
+					}
+				}
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new ParsingException(new ReflectionException(e));
+		}
+
+		byte[] bytes = new byte[byteBuffer.size()];
+		int index = 0;
+		for (byte b : byteBuffer) {
+			bytes[index++] = b;
+		}
+
+		return bytes;
+	}
+
 }
