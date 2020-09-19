@@ -38,14 +38,19 @@ public class Main {
     public static void main(String[] args) {
         var tcpToReceiver = "tcpToReceiver";
         var receiverToParser = "receiverToParser";
-        var transmitterToTcp = "transmitterToTcp";
+        var parserOut = "parserOut";
+        var v1ToRaw = "v1ToRaw";
+        var v2ToRaw = "v2ToRaw";
         var parserToTransmitter = "parserToTransmitter";
-
+        var transmitterToTcp = "transmitterToTcp";
 
         Launcher.start(
                 new TcpServer(42024),
                 new Receiver(tcpToReceiver, receiverToParser),
-                new MavlinkParser(),
+                new MavlinkParser(new MavlinkParser.Configuration(
+                        receiverToParser, parserOut,
+                        v1ToRaw, v2ToRaw, parserToTransmitter
+                )),
                 new Consumer(),
                 new Publisher(42024));
     }
@@ -53,7 +58,7 @@ public class Main {
     private static final class Consumer extends AbstractVerticle {
         @Override
         public void start(Promise<Void> startPromise) throws Exception {
-            vertx.eventBus().consumer(MavlinkParser.toMavlinkOutAddress , msg -> {
+            vertx.eventBus().consumer("parserOut", msg -> {
                 System.out.println(msg.body());
             });
             startPromise.complete();

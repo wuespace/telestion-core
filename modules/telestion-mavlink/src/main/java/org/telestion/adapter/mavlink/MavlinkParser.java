@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 
 import javax.management.ReflectionException;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.annotation.MavArray;
@@ -35,6 +36,7 @@ import org.telestion.adapter.mavlink.security.MavV2Signator;
 import org.telestion.adapter.mavlink.security.SecretKeySafe;
 import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
+import org.telestion.core.config.Config;
 import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
@@ -64,7 +66,42 @@ import io.vertx.core.Verticle;
  * @version 1.0
  */
 public final class MavlinkParser extends AbstractVerticle {
-	
+
+	/**
+	 * The parser configuration.
+	 *
+	 * @param rawMavSupplierAddr Address for parsing {@link RawMavlink RawMavlink-message} to a {@link MavlinkMessage}.
+	 * @param mavConsumerAddr 	Output Address for parsed {@link RawMavlink RawMavlink-messages}.
+	 * @param mavV1SupplierAddr Address which will be accepting {@link MavlinkMessage messages} and parse them into
+	 *                          a {@link RawMavlinkV1} which already contains the header for the given payload and a
+	 *                          unique messageId.
+	 * @param mavV2SupplierAddr Address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2}
+	 *                          which already contains the header for the given payload, a unique messageId and a
+	 *                          signature (if specified).
+	 * @param rawMavConsumerAddr Address which consumes the {@link RawMavlink RawMavlink-messages}.
+	 */
+	public static record Configuration(
+			@JsonProperty String rawMavSupplierAddr,
+			@JsonProperty String mavConsumerAddr,
+			@JsonProperty String mavV1SupplierAddr,
+			@JsonProperty String mavV2SupplierAddr,
+			@JsonProperty String rawMavConsumerAddr){
+
+		@SuppressWarnings("unused")
+		private Configuration(){
+			this(Address.incoming(MavlinkParser.class, "toMavlink"),
+					Address.outgoing(MavlinkParser.class, "toMavlink"),
+					Address.incoming(MavlinkParser.class, "toRaw1"),
+					Address.incoming(MavlinkParser.class, "toRaw2"),
+					Address.outgoing(MavlinkParser.class, "toRaw"));
+		}
+	}
+
+	/**
+	 * This configuration will be used if not null.
+	 */
+	private final Configuration forcedConfig;
+
 	/**
 	 * {@link HeaderContext HeaderContexts} are required for parsing {@link MavlinkMessage messages} to bytes.
 	 */
@@ -76,43 +113,27 @@ public final class MavlinkParser extends AbstractVerticle {
 	private SecretKeySafe keySafe;
 	
 	/**
-	 * Can be used to identify multiple {@link MavlinkParsers} for different {@link #context contexts} or 
-	 * {@link #keySafe key-safes}.</br>
-	 * It will be added as a suffix to the addresses.
-	 */
-	private final String addressIdentifier;
-	
-	/**
 	 * All logs of {@link MavlinkParser} will be using this {@link Logger}.
 	 */
-	private final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
-	
-	/**
-	 * Base address which will be accepting {@link MavlinkMessage messages} and parse them into a {@link RawMavlinkV1} 
-	 * which already contains the header for the given payload and a unique messageId.
-	 */
-	public static final String toRawInAddressV1 = Address.incoming(MavlinkParser.class, "toRaw1");
-	/**
-	 * Base address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2} which already contains the 
-	 * header for the given payload, a unique messageId and a signature (if specified).
-	 */
-	public static final String toRawInAddressV2 = Address.incoming(MavlinkParser.class, "toRaw2");
-	
-	/**
-	 * Base address for parsing {@link RawMavlink RawMavlink-message} to a {@link MavlinkMessage}.
-	 */
-	public static final String toMavlinkInAddress = Address.incoming(MavlinkParser.class, "toMavlink");
-	/**
-	 * Output Address for parsed {@link RawMavlink RawMavlink-messages}.
-	 */
-	public static final String toMavlinkOutAddress = Address.outgoing(MavlinkParser.class, "toMavlink");
-	
+	private static final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
+
 	/**
 	 * Default {@link MavlinkParser} which can only be used for receiving data.</br>
 	 * This can only be used for telemetry.
 	 */
 	public MavlinkParser() {
-		this(null, null);
+		this(null, null, null);
+	}
+
+
+	/**
+	 * Default {@link MavlinkParser} which can only be used for receiving data.</br>
+	 * This can only be used for telemetry.
+	 *
+	 * @param forcedConfig the forced configuration
+	 */
+	public MavlinkParser(Configuration forcedConfig) {
+		this(null, null, forcedConfig);
 	}
 	
 	/**
@@ -121,23 +142,14 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * 
 	 * @param context for parsing
 	 * @param safe containing the password for the signature
+	 * @param forcedConfig the forced configuration
 	 */
-	public MavlinkParser(HeaderContext context, SecretKeySafe safe) {
-		this(context, safe, "");
-	}
-	
-	/**
-	 * Customizing the {@link MavlinkParser} to its full extend.
-	 * 
-	 * @param context setting the {@link #context}
-	 * @param safe setting the {@link #keySafe}
-	 * @param identifier setting the {@link #addressIdentifier}
-	 */
-	public MavlinkParser(HeaderContext context, SecretKeySafe safe, String identifier) {
+	public MavlinkParser(HeaderContext context, SecretKeySafe safe, Configuration forcedConfig) {
 		this.context = context;
 		this.keySafe = safe;
-		this.addressIdentifier = identifier;
+		this.forcedConfig = forcedConfig;
 	}
+
 
 	/**
 	 * Changes the {@link #context} for this {@link MavlinkParser}
@@ -160,26 +172,19 @@ public final class MavlinkParser extends AbstractVerticle {
 		this.keySafe = safe;
 	}
 	
-	/**
-	 * Returns this {@link MavlinkParser MavlinkParsers} {@link #addressIdentifier}.
-	 * 
-	 * @return {@link #addressIdentifier}
-	 */
-	public String getIdentifier() {
-		return addressIdentifier; 
-	}
-	
 	@Override
 	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().consumer(toMavlinkInAddress+addressIdentifier, msg -> {
-			if (!(JsonMessage.on(RawMavlinkV1.class, msg, this::interpretMsg)
-					|| JsonMessage.on(RawMavlinkV2.class, msg, this::interpretMsg))) {
+		var config = Config.get(forcedConfig, config(), Configuration.class);
+
+		vertx.eventBus().consumer(config.rawMavSupplierAddr(), msg -> {
+			if (!(JsonMessage.on(RawMavlinkV1.class, msg, m -> interpretMsg(m, config))
+					|| JsonMessage.on(RawMavlinkV2.class, msg, m -> interpretMsg(m, config)))) {
 				logger.error("Unsupported type sent to {}", msg.address());
 				throw new PacketException("Unsupported type sent to Mavlink-Parser!");
 			}
 		});
 		
-		vertx.eventBus().consumer(toRawInAddressV1+addressIdentifier, msg -> {
+		vertx.eventBus().consumer(config.mavV1SupplierAddr(), msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
 				byte[] payload = getRaw(raw);
 				
@@ -211,13 +216,13 @@ public final class MavlinkParser extends AbstractVerticle {
 				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
 				rawBytes[index++] = (byte) (checksum & 0xff);
 				
-				vertx.eventBus().send(Transmitter.inAddress, new RawMavlinkV1(rawBytes));
+				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV1(rawBytes));
 			})) {
 				logger.warn("Invalid message sent to Mavlink2RawV1-Parser! (Message-Body: {})", msg.body());
 			}
 		});
 		
-		vertx.eventBus().consumer(toRawInAddressV2+addressIdentifier, msg -> {
+		vertx.eventBus().consumer(config.mavV2SupplierAddr(), msg -> {
 			if (!JsonMessage.on(MavlinkMessage.class, msg, raw -> {
 				byte[] payload = getRaw(raw);
 				
@@ -265,7 +270,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				for (byte b : signature) {
 					rawBytes[index++] = b;
 				}
-				vertx.eventBus().send(Transmitter.inAddress, new RawMavlinkV2(buffer.array()).json());
+				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV2(buffer.array()).json());
 			})) {
 				logger.warn("Invalid message sent to Mavlink2RawV2-Parser! (Message-Body: {})", msg.body());
 			}
@@ -373,7 +378,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @param raw message to parse
 	 */
 	@SuppressWarnings("preview")
-	private void interpretMsg(RawMavlink raw) {
+	private void interpretMsg(RawMavlink raw, Configuration config) {
 
 		Class<? extends MavlinkMessage> mavlinkClass = null;
 
@@ -400,7 +405,7 @@ public final class MavlinkParser extends AbstractVerticle {
 			checksum = v1.checksum();
 			load = v1.payload().payload();
 		} else {
-			logger.error("Unsupported MAVLink-Message received on {}!", MavlinkParser.toMavlinkInAddress);
+			logger.error("Unsupported MAVLink-Message received on {}!", config.rawMavSupplierAddr());
 			throw new PacketException("Unsupported MAVLink-Message received!");
 		}
 
@@ -467,7 +472,7 @@ public final class MavlinkParser extends AbstractVerticle {
 
 			MavlinkMessage m = constructor.newInstance(parameters);
 
-			vertx.eventBus().publish(toMavlinkOutAddress, m.json());
+			vertx.eventBus().publish(config.mavConsumerAddr(), m.json());
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 			throw new ParsingException(new ReflectionException(e));
