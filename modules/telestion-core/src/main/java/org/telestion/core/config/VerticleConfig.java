@@ -25,6 +25,7 @@ public record VerticleConfig(
     }
 
     /**
+     * The whole verticle configuration is stored in a JsonObject.
      *
      * @return the json representation of this record
      */
@@ -33,6 +34,7 @@ public record VerticleConfig(
     }
 
     /**
+     * The config is a JsonObject which is defined by the verticle.
      *
      * @return the json representation of the config node
      */
