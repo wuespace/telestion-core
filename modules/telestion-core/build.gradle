@@ -28,7 +28,7 @@ dependencies {
 
     implementation "io.vertx:vertx-web:3.9.3"
     implementation "io.vertx:vertx-core:3.9.3"
-    implementation "io.vertx:vertx-hazelcast:3.9.2"
+    implementation "io.vertx:vertx-hazelcast:3.9.3"
     // implementation "io.vertx:vertx-infinispan:3.9.2"
     implementation "io.vertx:vertx-health-check:3.9.3"
     implementation "io.vertx:vertx-http-service-factory:3.9.2"
