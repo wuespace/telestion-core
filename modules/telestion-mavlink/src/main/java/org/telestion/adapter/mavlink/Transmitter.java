@@ -56,7 +56,7 @@ public final class Transmitter extends AbstractVerticle {
 	private final Logger logger = LoggerFactory.getLogger(Transmitter.class);
 
 	/**
-	 * This configuration will be used if not null.
+	 * This configuration will be used if not <code>null</code>.
 	 */
 	private final Configuration forcedConfig;
 
