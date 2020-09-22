@@ -112,7 +112,7 @@ class Message:
         s = f"{self._name} " \
             + ''.join(x for x in
                       [f'{Types.get_from_string(f.get_mav_type()).get_name()} {f.get_name()} {array(f.get_mav_type())}'
-                       for f in self._fields])
+                       for f in self._fields if not f.is_extension()])
 
         current_crc = 0xffff
 
