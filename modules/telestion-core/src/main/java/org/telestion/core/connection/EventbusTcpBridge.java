@@ -96,7 +96,7 @@ public final class EventbusTcpBridge extends AbstractVerticle {
     }
 
     /**
-     * If this constructor is used all settings have to be specified in the config file
+     * If this constructor is used all, settings have to be specified in the config file
      */
     public EventbusTcpBridge() {
         this.forcedConfig = null;
