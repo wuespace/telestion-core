@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -80,6 +80,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 *                          signature (if specified).
 	 * @param rawMavConsumerAddr Address which consumes the {@link RawMavlink RawMavlink-messages}.
 	 */
+	@SuppressWarnings("preview")
 	public static record Configuration(
 			@JsonProperty String rawMavSupplierAddr,
 			@JsonProperty String mavConsumerAddr,
@@ -214,7 +215,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				}
 				
 				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
-				rawBytes[index++] = (byte) (checksum & 0xff);
+				rawBytes[index] = 	(byte) (checksum & 0xff);
 				
 				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV1(rawBytes));
 			})) {
@@ -270,7 +271,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				for (byte b : signature) {
 					rawBytes[index++] = b;
 				}
-				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV2(buffer.array()).json());
+				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV2(rawBytes).json());
 			})) {
 				logger.warn("Invalid message sent to Mavlink2RawV2-Parser! (Message-Body: {})", msg.body());
 			}
@@ -326,20 +327,20 @@ public final class MavlinkParser extends AbstractVerticle {
 						(payload[index.incrementAndGet()]) << 16 +
 						(payload[index.incrementAndGet()]) << 8 +
 						payload[index.incrementAndGet()];
-				return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
-			case 8:
-				// There is no real support for unsigned longs, yet!
-				l =	(payload[index.incrementAndGet()] << 56) +
-						(payload[index.incrementAndGet()] << 48) +
-						(payload[index.incrementAndGet()] << 40) +
-						(payload[index.incrementAndGet()] << 32) +
-						(payload[index.incrementAndGet()] << 24) +
-						(payload[index.incrementAndGet()] << 16) +
-						(payload[index.incrementAndGet()] << 8) +
-						payload[index.incrementAndGet()];
-				return toRightNum(l, Long.class);
-			default:
-				throw new ParsingException("Parsing failed due to invalid Payload-Type!");
+			return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
+		case 8:
+			// There is no real support for unsigned longs, yet!
+			l =	(((long) payload[index.incrementAndGet()]) << 56) +
+				(((long) payload[index.incrementAndGet()]) << 48) +
+				(((long) payload[index.incrementAndGet()]) << 40) +
+				(((long) payload[index.incrementAndGet()]) << 32) +
+				(payload[index.incrementAndGet()] << 24) +
+				(payload[index.incrementAndGet()] << 16) +
+				(payload[index.incrementAndGet()] << 8) +
+				payload[index.incrementAndGet()];
+			return toRightNum(l, Long.class);
+		default:
+			throw new ParsingException("Parsing failed due to invalid Payload-Type!");
 		}
 	}
 
@@ -364,7 +365,7 @@ public final class MavlinkParser extends AbstractVerticle {
 			return mf1.position() - mf2.position();
 		}
 
-		if (mf1.extension() ^ mf2.extension()) {
+		if (!(mf1.extension() ^ mf2.extension())) {
 			return mf2.nativeType().size - mf1.nativeType().size;
 		} else {
 			return mf1.extension() ? 1 : -1;
@@ -443,11 +444,11 @@ public final class MavlinkParser extends AbstractVerticle {
 		} else {
 			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
 		}
-
+		
 		RecordComponent[] components = Arrays.stream(mavlinkClass.getRecordComponents())
 				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
-
+		
 		/*
 		 * Start Reflection
 		 */
@@ -477,7 +478,6 @@ public final class MavlinkParser extends AbstractVerticle {
 				| IllegalArgumentException | InvocationTargetException e) {
 			throw new ParsingException(new ReflectionException(e));
 		}
-
 
 	}
 
@@ -531,8 +531,8 @@ public final class MavlinkParser extends AbstractVerticle {
 		var components = Arrays.stream(mav.getClass().getRecordComponents())
 				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
-
-		List<Byte> byteBuffer = Collections.emptyList();
+		
+		List<Byte> byteBuffer = new ArrayList<Byte>();
 		try {
 			for (var c : components) {
 				var o = c.getAccessor().invoke(mav);

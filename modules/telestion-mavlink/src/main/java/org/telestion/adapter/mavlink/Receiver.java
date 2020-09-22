@@ -30,6 +30,7 @@ public final class Receiver extends AbstractVerticle {
 	 * @param tcpDataSupplierAddress the address which provides the data which should be received
 	 * @param rawMavConsumerAddress the address which consumes the RawMavlink message
 	 */
+	@SuppressWarnings("preview")
 	private static record Configuration(
 			@JsonProperty String tcpDataSupplierAddress,
 			@JsonProperty String rawMavConsumerAddress){
@@ -89,7 +90,8 @@ public final class Receiver extends AbstractVerticle {
 				};
 				
 				if (mav != null) {
-					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.participant().host(), data.participant().port()));
+					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.participant().host(),
+							data.participant().port()));
 					vertx.eventBus().send(config.rawMavConsumerAddress(), mav.json());
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");

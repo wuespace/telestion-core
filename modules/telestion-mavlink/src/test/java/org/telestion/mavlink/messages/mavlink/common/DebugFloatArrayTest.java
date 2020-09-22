@@ -10,12 +10,12 @@ public class DebugFloatArrayTest {
 
     @Test void testExist(){
 		assertDoesNotThrow(() -> Class.forName("org.telestion.mavlink.messages.mavlink.common.DebugFloatArray")
-				.getConstructor(long.class, int[].class, int.class, int[].class)
+				.getConstructor(long.class, int.class, int[].class)
 				.newInstance(0, null, 0, null));
     }
 
     @Test void testCrc(){
-        var msg = new DebugFloatArray(0, null, 0, null);
+        var msg = new DebugFloatArray(0, 0, null);
         assertThat(msg.getCrc(), is(232));
     }
 

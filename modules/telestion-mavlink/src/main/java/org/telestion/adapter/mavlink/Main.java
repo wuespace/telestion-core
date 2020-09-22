@@ -6,11 +6,11 @@ import org.telestion.adapter.mavlink.message.MessageIndex;
 import org.telestion.core.connection.TcpConn;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.launcher.Launcher;
+import org.telestion.mavlink.messages.mavlink.minimal.Heartbeat;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
-import org.telestion.mavlink.messages.mavlink.minimal.Heartbeat;
 
 /**
  * @author Jan von Pichowski
@@ -42,7 +42,7 @@ public class Main {
     };
 
     public static void main(String[] args) {
-        MessageIndex.put(new Heartbeat(0, 0, 0, 0L, 0, 0).getId(), Heartbeat.class);
+        MessageIndex.put(new Heartbeat(0L, 0, 0, 0, 0, 0).getId(), Heartbeat.class);
 
         var tcpToReceiver = "tcpToReceiver";
         var receiverToParser = "receiverToParser";
@@ -50,7 +50,8 @@ public class Main {
         var v1ToRaw = "v1ToRaw";
         var v2ToRaw = "v2ToRaw";
         var parserToTransmitter = "parserToTransmitter";
-        var transmitterToTcp = "transmitterToTcp";
+        @SuppressWarnings("unused")
+		var transmitterToTcp = "transmitterToTcp";
 
         Launcher.start(
                 new MessageLogger(),

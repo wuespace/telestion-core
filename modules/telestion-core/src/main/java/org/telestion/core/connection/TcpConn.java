@@ -67,13 +67,15 @@ public final class TcpConn extends AbstractVerticle {
      * @param targetAddresses the list of addresses to which the incoming data should be send or null if no direct targets exist
      * @param consumingAddresses the list of addresses from which data will be consumed
      */
-    private static record Configuration(
+    @SuppressWarnings("preview")
+	private static record Configuration(
             @JsonProperty String host,
             @JsonProperty int port,
             @JsonProperty String broadcastAddress,
             @JsonProperty List<String> targetAddresses,
             @JsonProperty List<String> consumingAddresses){
-        private Configuration(){
+        @SuppressWarnings("unused")
+		private Configuration(){
             this(null, 7777,
                     Address.outgoing(TcpConn.class),
                     null,

@@ -19,7 +19,8 @@ public final class HystrixMetrics extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(HystrixMetrics.class);
 
-    private static record Configuration(
+    @SuppressWarnings({ "preview", "unused" })
+	private static record Configuration(
             @JsonProperty int port,
             @JsonProperty String path) {
         private Configuration(){

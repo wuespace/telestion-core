@@ -31,18 +31,27 @@ public final class AddressAssociator {
 	 * Registers a new item by linking a new MAVLink-address to a {@link AddressPort}.</br>
 	 * Basically {@link HashMap#put(Object, Object)}.</br>
 	 * </br>
-	 * <em>Note that if another {@link AddressPort} has already been linked with the given mavlinkAddress an 
-	 * {@link IllegalArgumentException} will be thrown.</em>
+	 * <em>Note that if another {@link AddressPort} has already been linked with the given mavlinkAddress nothing
+	 * happens.</em>
 	 * 
 	 * @param mavlinkAddress of the new {@link AddressPort}
 	 * @param ip which should be linked
-	 * @throws IllegalArgumentException if the given id is already in use
 	 */
 	public static void put(String mavlinkAddress, AddressPort ip) {
 		if (map.get(mavlinkAddress) != null) {
-			throw new IllegalArgumentException("Given ID is already in use!");
+			return;
 		}
 		map.put(mavlinkAddress, ip);
+	}
+	
+	/**
+	 * Returns whether a MAVLink-address is linked to a TCP-Connection.
+	 * 
+	 * @param mavlinkAddress to check
+	 * @return <code>true</code> if given MAVLink-address is registered otherwise <code>false</code>
+	 */
+	public static boolean isRegistered(String mavlinkAddress) {
+		return map.containsKey(mavlinkAddress);
 	}
 	
 	/**
