@@ -46,7 +46,7 @@ public final class Receiver extends AbstractVerticle {
 	private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
 	/**
-	 * This configuration will be used if not null.
+	 * This configuration will be used if not <code>null</code>.
 	 */
 	private final Configuration forcedConfig;
 	
