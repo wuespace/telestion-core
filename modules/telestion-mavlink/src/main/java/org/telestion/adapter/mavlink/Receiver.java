@@ -61,7 +61,7 @@ public final class Receiver extends AbstractVerticle {
 	}
 	
 	/**
-	 * Creates a {@link Receiver} which publishes it's data to the given addresses.
+	 * Creates a {@link Receiver} which publishes its data to the given addresses.
 	 *
 	 * @param dataProviderAddress the address which provides the data which should be received
 	 * @param rawMavConsumerAddress the address which consumes the {@link RawMavlink} message
