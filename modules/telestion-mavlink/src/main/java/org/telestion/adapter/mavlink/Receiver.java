@@ -53,7 +53,7 @@ public final class Receiver extends AbstractVerticle {
 	/**
 	 * Creates a default {@link Receiver} which publishes it's data to the specified addresses.
 	 * The addresses are either defined by the default configuration or in the config file.
-	 * The default configuration is tcpDataSupplierAddress=Address.incoming(Receiver.class) and
+	 * The default configuration is only has the {@link Receiver} as permitted input and 
 	 * output.
 	 */
 	public Receiver() {
