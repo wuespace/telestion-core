@@ -28,7 +28,7 @@ public class Application {
         Launcher.start(
                 new MessageLogger(),
 				new RandomPositionPublisher(),
-				new EventbusTcpBridge("localhost", 9000,
+				new EventbusTcpBridge("localhost", 9870,
 						Collections.emptyList(),
 						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
 				new WebServer(8080)
