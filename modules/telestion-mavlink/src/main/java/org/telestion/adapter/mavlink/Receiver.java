@@ -51,7 +51,7 @@ public final class Receiver extends AbstractVerticle {
 	private final Configuration forcedConfig;
 	
 	/**
-	 * Creates a default {@link Receiver} which publishes it's data to the specified addresses.
+	 * Creates a default {@link Receiver} which publishes its data to the specified addresses.
 	 * The addresses are either defined by the default configuration or in the config file.
 	 * The default configuration is only has the {@link Receiver} as permitted input and 
 	 * output.
