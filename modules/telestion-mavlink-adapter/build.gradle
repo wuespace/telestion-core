@@ -3,8 +3,8 @@ plugins {
     id 'application'
 }
 
-sourceCompatibility = '14'
-targetCompatibility = '14'
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
 
 application {
     // Define the main class for the application.

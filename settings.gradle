@@ -1,5 +1,8 @@
 rootProject.name = 'telestion'
 
+gradle.ext.sourceCompatibility = '14'
+gradle.ext.targetCompatibility = '14'
+
 include ':modules:telestion-core'
 include ':modules:telestion-launcher'
 include ':modules:telestion-updater'
