@@ -8,14 +8,13 @@ targetCompatibility = gradle.targetCompatibility
 
 application {
     // Define the main class for the application.
-    mainClassName = 'org.telestion.application.Application'
+    mainClassName = 'org.telestion.core.Main'
 }
 
 
 dependencies {
+    implementation project(':modules:telestion-api')
     implementation project(':modules:telestion-core')
-    implementation project(':modules:telestion-launcher')
-    implementation project(':modules:telestion-example')
 
     implementation 'com.google.guava:guava:29.0-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
@@ -28,7 +27,19 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
+    implementation "io.vertx:vertx-web:3.9.3"
     implementation "io.vertx:vertx-core:3.9.3"
+    implementation "io.vertx:vertx-hazelcast:3.9.3"
+    // implementation "io.vertx:vertx-infinispan:3.9.2"
+    implementation "io.vertx:vertx-health-check:3.9.3"
+    implementation "io.vertx:vertx-http-service-factory:3.9.2"
+    implementation "io.vertx:vertx-rx-java2:3.9.3"
+    implementation "io.vertx:vertx-config:3.9.3"
+    implementation "io.vertx:vertx-service-factory:3.9.2"
+    implementation "io.vertx:vertx-mongo-client:3.9.3"    
+    implementation "io.vertx:vertx-circuit-breaker:3.9.3"
+
+    testImplementation "io.vertx:vertx-junit5:3.9.3"
 }
 
 test {

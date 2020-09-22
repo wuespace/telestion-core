@@ -15,6 +15,7 @@ targetCompatibility = gradle.targetCompatibility
 dependencies {
     implementation project(':modules:telestion-core')
     implementation project(':modules:telestion-launcher')
+    implementation project(':modules:telestion-example')
 
     implementation 'com.google.guava:guava:29.0-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
