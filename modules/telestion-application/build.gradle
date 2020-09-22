@@ -3,13 +3,13 @@ plugins {
     id 'application'
 }
 
-sourceCompatibility = '14'
-targetCompatibility = '14'
-
 application {
     // Define the main class for the application.
     mainClassName = 'org.telestion.application.Application'
 }
+
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
 
 
 dependencies {
