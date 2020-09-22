@@ -5,7 +5,7 @@ import os
 import sys
 import traceback
 import xml.etree.ElementTree as ET
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 
 class Type:
@@ -93,7 +93,7 @@ class Message:
         self._name = name
         self._description = description
         self._wip = wip
-        self._fields = fields
+        self._fields = Message.sort_fields(fields)
 
     @staticmethod
     def _calc_crc(data: int, current_crc: int) -> int:
@@ -102,16 +102,17 @@ class Message:
         data &= 0xff
         return (current_crc >> 8) ^ (data << 8) ^ (data << 3) ^ (data >> 4) & 0xffff
 
-    def _sorted_fields(self) -> List[Field]:
-        return list(filter(lambda f: not f.is_extension(),
-                           sorted(self._fields, key=lambda k: -Types.get_from_string(k.get_mav_type()).get_size())))
+    @staticmethod
+    def sort_fields(fields: Union[Tuple[Field, ...], List[Field]]) -> List[Field]:
+        return list(sorted(fields, key=lambda k: -Types.get_from_string(k.get_mav_type()).get_size()
+                           if not k.is_extension() else 1))
 
     def calc_crc_extra(self) -> int:
         array = lambda x: str(chr(int(x[x.index('[') + 1:x.index(']')]))) if '[' in x else ''
         s = f"{self._name} " \
             + ''.join(x for x in
                       [f'{Types.get_from_string(f.get_mav_type()).get_name()} {f.get_name()} {array(f.get_mav_type())}'
-                       for f in self._sorted_fields()])
+                       for f in self._fields])
 
         current_crc = 0xffff
 
@@ -129,7 +130,7 @@ class Message:
     def get_description(self) -> str:
         return self._description
 
-    def get_fields(self) -> Tuple[Field]:
+    def get_fields(self) -> List[Field]:
         return self._fields
 
     def get_wip(self) -> bool:
@@ -141,11 +142,11 @@ def handle_args() -> Tuple[str, str, str]:
     if len(args) == 0:
         return "", "", ""
     if args[0] in ['help', '-help', '-h']:
-        print("Usage: 'python mavlink_xml2record.py -f <INPUT_FILE> -o <OUTPUT_PATH [Not required]>"
+        print("Usage: 'python record.py -f <INPUT_FILE> -o <OUTPUT_PATH [Not required]>"
               " -p <OUTPUT_JAVA_PACKAGE [Not required]>'")
         print("If no output path is specified the specified java-package will be used. This is by default "
               "'org.telestion.adapter.mavlink.message'.")
-        print("This help is available with 'python mavlink_xml2record.py -h'")
+        print("This help is available with 'python record.py -h'")
         return "", "", ""
 
     pos = {s: (i + 1) for i, s in enumerate(args) if s in ['-f', '-o', '-p']}
@@ -156,14 +157,10 @@ def handle_args() -> Tuple[str, str, str]:
 
 def get_messages(file: str) -> List[Message]:
     root = ET.parse(file).getroot()
-    extension = False
-    return [Message(msg.attrib['id'], msg.attrib['name'], msg.find('description').text,
-                    msg.find('wip') is not None, *[Field(f.attrib['type'], f.attrib['name'], f.text,
-                                                         extension)
-                                                   for f in msg
-                                                   if ((extension := (
-                    f.tag == 'extensions' or extension)) or True) and f.tag == 'field'])
-            for msg in root.find('messages') if (extension := False) or not extension]  # If to reset extension
+    return [Message(msg.attrib['id'], msg.attrib['name'], msg.find('description').text, msg.find('wip') is not None,
+                    *[Field(f.attrib['type'], f.attrib['name'], f.text, extension) for f in msg
+                      if ((extension := (f.tag == 'extensions' or extension)) or True) and f.tag == 'field'])
+            for msg in root.find('messages') if (extension := False) or True]  # If to reset extension
 
 
 def to_record(msg: Message, output: str = "", package: str = "org.telestion.adapter.mavlink.message"):
@@ -306,7 +303,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.3.7"
+VERSION = "1.3.9"
 
 if __name__ == '__main__':
     main()
