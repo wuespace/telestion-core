@@ -15,7 +15,7 @@ public class DebugFloatArrayTest {
     }
 
     @Test void testCrc(){
-        var msg = new DebugFloatArray(0, 0, null);
+        var msg = new DebugFloatArray(0, 0, null, null);
         assertThat(msg.getCrc(), is(232));
     }
 
