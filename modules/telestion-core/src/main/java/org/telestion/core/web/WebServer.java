@@ -1,10 +1,12 @@
 package org.telestion.core.web;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
+import org.telestion.core.config.Config;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -16,23 +18,37 @@ import java.util.Objects;
  */
 public final class WebServer extends AbstractVerticle {
 
-    private Integer port;
+    /**
+     * Web server configuration
+     *
+     * @param port the port to bind to
+     */
+    private static record Configuration(@JsonProperty int port){
+        private Configuration(){
+            this(8080);
+        }
+    }
+
+    private Configuration forcedConfig;
 
     /**
      *
      * @param port the port to bind to
      */
     public WebServer(int port) {
-        this.port = port;
+        forcedConfig = new Configuration(port);
     }
 
+    /**
+     * Web server with default port 8080
+     */
     public WebServer() {
-        this.port = null;
+        forcedConfig = null;
     }
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
-        port = Objects.requireNonNull(context.config().getInteger("port", port));
+        var config = Config.get(forcedConfig, config(), Configuration.class);
 
         var data = Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("index.html")).readAllBytes();
         var content = new String(data, StandardCharsets.UTF_8);
@@ -47,6 +63,6 @@ public final class WebServer extends AbstractVerticle {
             response.end(content);
         });
 
-        server.requestHandler(router).listen(port);
+        server.requestHandler(router).listen(config.port);
     }
 }

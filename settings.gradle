@@ -1,5 +1,8 @@
 rootProject.name = 'telestion'
 
+gradle.ext.sourceCompatibility = '14'
+gradle.ext.targetCompatibility = '14'
+
 include ':modules:telestion-core'
 include ':modules:telestion-launcher'
 include ':modules:telestion-updater'
@@ -10,3 +13,4 @@ include ':modules:telestion-mavlink-dummy'
 include ':modules:telestion-mavlink-safer'
 include ':modules:telestion-widget-bridge'
 include ':modules:telestion-plugin-daedalus2'
+include ':modules:telestion-example'

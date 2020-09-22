@@ -3,24 +3,34 @@
     "app_name": "Telestion",
     "verticles": [
       {
-        "name": "Hystrix Metrics",
-        "verticle": "org.telestion.core.monitoring.HystrixMetrics",
+        "name": "Message Logger",
+        "verticle": "org.telestion.core.monitoring.MessageLogger",
         "magnitude": 1,
         "config": {}
       },
       {
-        "name": "Saying Hello",
-        "verticle": "org.telestion.example.SayHello",
+        "name": "Random Position Publisher",
+        "verticle": "org.telestion.example.RandomPositionPublisher",
         "magnitude": 1,
         "config": {}
       },
       {
-        "name": "Saying Hello 2",
-        "verticle": "org.telestion.example.SayHello",
-        "magnitude": 2,
+        "name": "Eventbus Tcp Bridge",
+        "verticle": "org.telestion.core.connection.EventbusTcpBridge",
+        "magnitude": 1,
         "config": {
-          "period": 2,
-          "message": "Moinsen"
+          "host": "localhost",
+          "port": 9870,
+          "inboundPermitted": [],
+          "outboundPermitted": ["org.telestion.example.RandomPositionPublisher/out#MockPos"]
+        }
+      },
+      {
+        "name": "Web Server",
+        "verticle": "org.telestion.core.web.WebServer",
+        "magnitude": 1,
+        "config": {
+          "port": 8080
         }
       }
     ]

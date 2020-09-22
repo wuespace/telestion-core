@@ -3,8 +3,8 @@ plugins {
     id 'application'
 }
 
-sourceCompatibility = '14'
-targetCompatibility = '14'
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
 
 application {
     // Define the main class for the application.
@@ -26,7 +26,7 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
 
-    implementation "io.vertx:vertx-core:3.9.2"
+    implementation "io.vertx:vertx-core:3.9.3"
 }
 
 test {
