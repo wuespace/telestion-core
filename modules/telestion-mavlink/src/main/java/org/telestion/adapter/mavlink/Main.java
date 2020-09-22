@@ -2,13 +2,19 @@ package org.telestion.adapter.mavlink;
 
 import java.time.Duration;
 
-import org.telestion.core.verticle.TcpServer;
+import org.telestion.adapter.mavlink.message.MessageIndex;
+import org.telestion.core.connection.TcpConn;
+import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.launcher.Launcher;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
+import org.telestion.mavlink.messages.mavlink.minimal.Heartbeat;
 
+/**
+ * @author Jan von Pichowski
+ */
 public class Main {
 
     private static final byte[] HEARTBEAT_MESSAGE = {
@@ -36,10 +42,24 @@ public class Main {
     };
 
     public static void main(String[] args) {
+        MessageIndex.put(new Heartbeat(0, 0, 0, 0L, 0, 0).getId(), Heartbeat.class);
+
+        var tcpToReceiver = "tcpToReceiver";
+        var receiverToParser = "receiverToParser";
+        var parserOut = "parserOut";
+        var v1ToRaw = "v1ToRaw";
+        var v2ToRaw = "v2ToRaw";
+        var parserToTransmitter = "parserToTransmitter";
+        var transmitterToTcp = "transmitterToTcp";
+
         Launcher.start(
-                new TcpServer(42024),
-                new Receiver(),
-                new MavlinkParser(),
+                new MessageLogger(),
+                new TcpConn(null, 42024, tcpToReceiver, null, null),
+                new Receiver(tcpToReceiver, receiverToParser),
+                new MavlinkParser(new MavlinkParser.Configuration(
+                        receiverToParser, parserOut,
+                        v1ToRaw, v2ToRaw, parserToTransmitter
+                )),
                 new Consumer(),
                 new Publisher(42024));
     }
@@ -47,7 +67,7 @@ public class Main {
     private static final class Consumer extends AbstractVerticle {
         @Override
         public void start(Promise<Void> startPromise) throws Exception {
-            vertx.eventBus().consumer(MavlinkParser.toMavlinkOutAddress , msg -> {
+            vertx.eventBus().consumer("parserOut", msg -> {
                 System.out.println(msg.body());
             });
             startPromise.complete();

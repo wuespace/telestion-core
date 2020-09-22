@@ -1,67 +1,81 @@
 package org.telestion.adapter.mavlink;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
 import org.telestion.api.message.JsonMessage;
+import org.telestion.core.config.Config;
+import org.telestion.core.connection.TcpConn;
 import org.telestion.core.message.Address;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Verticle;
 
-import org.telestion.core.message.TcpData;
-import org.telestion.core.verticle.TcpServer;
-
 /**
  * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).</br>
  * Incoming messages will be parsed into a {@link RawMavlink} and send to the {@link MavlinkParser}.
  * 
- * @author Cedric Boes
+ * @author Cedric Boes, Jan von Pichowski
  * @version 1.0
  */
 public final class Receiver extends AbstractVerticle {
-	
+
+	/**
+	 * The configuration of the receiver
+	 *
+	 * @param tcpDataSupplierAddress the address which provides the data which should be received
+	 * @param rawMavConsumerAddress the address which consumes the RawMavlink message
+	 */
+	private static record Configuration(
+			@JsonProperty String tcpDataSupplierAddress,
+			@JsonProperty String rawMavConsumerAddress){
+
+		@SuppressWarnings("unused")
+		private Configuration() {
+			this(Address.incoming(Receiver.class), Address.outgoing(Receiver.class));
+		}
+	}
+
 	/**
 	 * All logs of {@link Receiver} will be using this {@link Logger}.
 	 */
-	private final Logger logger = LoggerFactory.getLogger(Receiver.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
+
 	/**
-	 * Default incoming address for the {@link Receiver}.
+	 * This configuration will be used if not <code>null</code>.
 	 */
-	public static final String inAddress = Address.incoming(Receiver.class);
+	private final Configuration forcedConfig;
 	
 	/**
-	 * Can be used to identify multiple {@link MavlinkParsers} for different {@link MavlinkParser}.</br>
-	 * It will be added as a suffix to the addresses.
-	 */
-	private final String addressIdentifier;
-	
-	/**
-	 * Creates a default {@link Receiver} which publishes it's data to the default {@link MavlinkParser}.
+	 * Creates a default {@link Receiver} which publishes its data to the specified addresses.
+	 * The addresses are either defined by the default configuration or in the config file.
+	 * The default configuration is only has the {@link Receiver} as permitted input and 
+	 * output.
 	 */
 	public Receiver() {
-		this("");
+		forcedConfig = null;
 	}
 	
 	/**
-	 * Creates a {@link Receiver} which publishes it's data to the {@link MavlinkParser} specified by 
-	 * {@link #addressIdentifier}.</br>
-	 * Incoming data must be send to the {@link #inAddress} with the suffix {@link #addressIdentifier}.
-	 * 
-	 * @param identifier specifying where to publish the data
+	 * Creates a {@link Receiver} which publishes its data to the given addresses.
+	 *
+	 * @param dataProviderAddress the address which provides the data which should be received
+	 * @param rawMavConsumerAddress the address which consumes the {@link RawMavlink} message
 	 */
-	public Receiver(String identifier) {
-		this.addressIdentifier = identifier;
+	public Receiver(String dataProviderAddress, String rawMavConsumerAddress) {
+		forcedConfig = new Configuration(dataProviderAddress, rawMavConsumerAddress);
 	}
 	
 	@Override
 	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().consumer(TcpServer.outAddress+addressIdentifier, msg -> {
-			if (!JsonMessage.on(TcpData.class, msg, data -> {
+		var config = Config.get(forcedConfig, config(), Configuration.class);
+
+		vertx.eventBus().consumer(config.tcpDataSupplierAddress(), msg -> {
+			if (!JsonMessage.on(TcpConn.Data.class, msg, data -> {
 				byte[] bytes = data.data();
 
 				RawMavlink mav = switch(bytes[0]) {
@@ -75,14 +89,14 @@ public final class Receiver extends AbstractVerticle {
 				};
 				
 				if (mav != null) {
-					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.address(), data.port()));
-					vertx.eventBus().send(MavlinkParser.toMavlinkInAddress+addressIdentifier, mav.json());
+					AddressAssociator.put(mav.getMavlinkId(), new AddressPort(data.participant().host(), data.participant().port()));
+					vertx.eventBus().send(config.rawMavConsumerAddress(), mav.json());
 				} else {
 					logger.warn("TCP-Package with unsupported format received.");
 				}
 			})) {
 				// Might cause problems because sender does not get notified.
-				logger.error("Unsupported type sent to {}", msg.address());
+				logger.error("Unsupported event bus message sent to {}", msg.address());
 			}
 		});
 		
