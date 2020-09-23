@@ -167,7 +167,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @param safe with which {@link #keySafe} will be replaced
 	 */
 	public void changeKeySafe(SecretKeySafe safe) {
-		if (!this.keySafe.isDeleted()) {
+		if (!(this.keySafe == null || this.keySafe.isDeleted())) {
 			this.keySafe.deleteKey();
 		}
 		this.keySafe = safe;
@@ -193,7 +193,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				
 				// If this happens more than once -> the message will no longer be really unique!
 				if ((byte) (seq & 0xff) == 0) {
-					logger.warn("MessageIds for MAVLinkV1 starting at 0 (again)!");
+					logger.warn("MessageIds starting at 0 (again)!");
 				}
 				
 				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 5);
@@ -231,7 +231,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				
 				// If this happens more than once -> the message will no longer be really unique!
 				if ((byte) (seq & 0xff) == 0) {
-					logger.warn("MessageIds for MAVLinkV1 starting at 0 (again)!");
+					logger.warn("MessageIds starting at 0 (again)!");
 				}
 				
 				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 9);
