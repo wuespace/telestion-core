@@ -35,7 +35,7 @@ public class MavlinkTest {
 
         MessageIndex.put(new Heartbeat(0L, 0, 0, 0, 0, 0).getId(), Heartbeat.class);
 
-        vertx.deployVerticle(new TcpConn(null, 42024, tcpToReceiver, null, null));
+        vertx.deployVerticle(new TcpConn(null, 42124, tcpToReceiver, null, null));
         vertx.deployVerticle(new Receiver(tcpToReceiver, receiverToParser));
         vertx.deployVerticle(new MavlinkParser(new MavlinkParser.Configuration(
                         receiverToParser, parserOut,
@@ -51,7 +51,8 @@ public class MavlinkTest {
             @Override
             public void start(Promise<Void> startPromise) throws Exception {
                 var client = vertx.createNetClient();
-                client.connect(42024, "127.0.0.1", netSocketResult -> {
+                client.connect(42124, "localhost", netSocketResult -> {
+                    assertThat(netSocketResult.succeeded(), is(true));
                     if(netSocketResult.failed()){
                         startPromise.fail(netSocketResult.cause());
                         return;
