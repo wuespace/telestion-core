@@ -1,6 +1,14 @@
 package org.telestion.core.connection;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telestion.core.config.Config;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServerOptions;
@@ -9,14 +17,6 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.telestion.core.config.Config;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * EventbusTcpBridge is a verticle which uses SockJS-WebSockets to extend the
@@ -32,7 +32,8 @@ import java.util.stream.Collectors;
  *     You have to configure the following options:
  *     <ul>
  *         <li>httpServerOptions - the HttpServerOptions to configure the HTTP-Server</li>
- *         <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go through</li>
+ *         <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go
+ *         through</li>
  *     </ul>
  *     To do that you have four constructors to initialize the HTTP-Server.
  * </p>
@@ -56,7 +57,7 @@ import java.util.stream.Collectors;
  * </pre>
  * </p>
  *
- * {@link ./README.md} for more information
+ * @see <a href="../../../../../../../README.md"</a> for more information
  */
 public final class EventbusTcpBridge extends AbstractVerticle {
 
@@ -68,6 +69,7 @@ public final class EventbusTcpBridge extends AbstractVerticle {
      * @param inboundPermitted the permitted eventbus addresses for inbound connections
      * @param outboundPermitted the permitted eventbus addresses for outbound connections
      */
+	@SuppressWarnings({ "preview", "unused" })
     private static record Configuration(
             @JsonProperty String host,
             @JsonProperty int port,
@@ -132,8 +134,10 @@ public final class EventbusTcpBridge extends AbstractVerticle {
         logger.info("Inbound permitted: "+inboundPermitted);
         logger.info("Outbound permitted: "+outboundPermitted);
         SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions();
-        inboundPermitted.forEach(addr -> sockJSBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
-        outboundPermitted.forEach(addr -> sockJSBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
+        inboundPermitted.forEach(addr -> sockJSBridgeOptions
+        		.addInboundPermitted(new PermittedOptions().setAddress(addr)));
+        outboundPermitted.forEach(addr -> sockJSBridgeOptions
+        		.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
 
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
         return sockJSHandler.bridge(sockJSBridgeOptions);
