@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.telestion.adapter.mavlink.message.MavlinkMessage;
 import org.telestion.adapter.mavlink.message.MessageIndex;
+import org.telestion.adapter.mavlink.message.RawPayload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,12 +30,6 @@ public final record RawMavlinkV1(
 		 */
 		@JsonProperty short seq,
 		/**
-		 * ID of system (vehicle) sending the message. Used to differentiate systems on network.</br>
-		 * </br>
-		 * <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source address.</em>
-		 */
-		@JsonProperty short sysId,
-		/**
 		 * ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a 
 		 * camera). Use appropriate values in MAV_COMPONENT.</br>
 		 * </br>
@@ -53,7 +48,7 @@ public final record RawMavlinkV1(
 		/**
 		 * The X.25 checksum for this message.
 		 */
-		@JsonProperty int checksum)implements RawMavlink {
+		@JsonProperty int checksum) implements RawMavlink {
 
 	/**
 	 * There shall be no default constructor for normal people.</br>
@@ -61,7 +56,7 @@ public final record RawMavlinkV1(
 	 */
 	@SuppressWarnings("unused")
 	private RawMavlinkV1() {
-		this((short) 0, (short) 0, (short) 0, (short) 0, (short) 0, null, 0);
+		this((short) 0, (short) 0, (short) 0, (short) 0, null, 0);
 	}
 	
 	/**
@@ -75,24 +70,22 @@ public final record RawMavlinkV1(
 				(short) bytes[2],
 				(short) bytes[3],
 				(short) bytes[4],
-				(short) bytes[5],
-				new RawPayload(Arrays.copyOfRange(bytes, 6, bytes[1] + 6)),
-				(int) (bytes[bytes[1] + 6] << 8) + bytes[bytes[1] + 7]);
+				new RawPayload(Arrays.copyOfRange(bytes, 5, bytes[1] + 5)),
+				(int) (bytes[bytes[1] + 5] << 8) + bytes[bytes[1] + 6]);
 	}
 	
 	@Override
 	public String getMavlinkId() {
-		return sysId + "-" + compId + "v1";
+		return compId + "v1";
 	}
 	
 	@Override
 	public byte[] getRaw() {
-		ByteBuffer raw = ByteBuffer.allocate(8 + payload.payload().length);
+		ByteBuffer raw = ByteBuffer.allocate(7 + payload.payload().length);
 
 		raw.put((byte) 0xFE);
 		raw.put((byte) (len				&	0xff));
 		raw.put((byte) (seq				&	0xff));
-		raw.put((byte) (sysId			&	0xff));
 		raw.put((byte) (compId			&	0xff));
 		raw.put((byte) (msgId			&	0xff));
 		raw.put(payload.payload());

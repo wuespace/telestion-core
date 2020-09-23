@@ -5,16 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import javax.management.ReflectionException;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.adapter.mavlink.annotation.MavArray;
@@ -38,6 +35,8 @@ import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.config.Config;
 import org.telestion.core.message.Address;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -196,28 +195,31 @@ public final class MavlinkParser extends AbstractVerticle {
 					logger.warn("MessageIds starting at 0 (again)!");
 				}
 				
-				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 5);
-				buffer.put((byte) (payload.length	&	0xff));
-				buffer.put((byte) (seq				&	0xff));
-				buffer.put((byte) (context.sysId()	&	0xff));
-				buffer.put((byte) (context.compId()	&	0xff));
-				buffer.put((byte) (raw.getId()		&	0xff));
-				buffer.put(payload);
+				var bytes = new byte[payload.length + 4];
+				bytes[0] = (byte) (payload.length	&	0xff);
+				bytes[1] = (byte) (seq				&	0xff);
+				bytes[2] = (byte) (context.compId()	&	0xff);
+				bytes[3] = (byte) (raw.getId()		&	0xff);
+								
+				var index = 4;
+				for (byte b : payload) {
+					bytes[index++] = b;
+				}
 				
-				int checksum = X25Checksum.calculate(buffer.array());
+				int checksum = X25Checksum.calculate(bytes);
 				
-				byte[] rawBytes = new byte[buffer.capacity() + 3];
+				byte[] rawBytes = new byte[bytes.length + 3];
 				rawBytes[0] = (byte) 0xFE;
-				int index = 1;
+				index = 1;
 				
-				for (byte b : buffer.array()) {
+				for (byte b : bytes) {
 					rawBytes[index++] = b;
 				}
 				
 				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
 				rawBytes[index] = 	(byte) (checksum & 0xff);
 				
-				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV1(rawBytes));
+				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV1(rawBytes).json());
 			})) {
 				logger.warn("Invalid message sent to Mavlink2RawV1-Parser! (Message-Body: {})", msg.body());
 			}
@@ -247,13 +249,15 @@ public final class MavlinkParser extends AbstractVerticle {
 				buffer.put(payload);
 				
 				int checksum = X25Checksum.calculate(buffer.array());
-				byte[] signature = null;
-				try {
-					signature = MavV2Signator.generateSignature(keySafe.getSecretKey(),
-									Arrays.copyOfRange(buffer.array(), 0, 9), payload, raw.getCrc(), (short) 2);
-				} catch (NoSuchAlgorithmException e) {
-					logger.error("Signating packet failed!", e);
-					throw new ParsingException("Parsing MAVLink-Message into byte[] failed due to signating!");
+				byte[] signature = new byte[0];
+				if (context.incompFlags() == 0x01) {
+					try {
+						signature = MavV2Signator.generateSignature(keySafe.getSecretKey(),
+										Arrays.copyOfRange(buffer.array(), 0, 9), payload, raw.getCrc(), (short) 2);
+					} catch (NoSuchAlgorithmException e) {
+						logger.error("Signating packet failed!", e);
+						throw new ParsingException("Parsing MAVLink-Message into byte[] failed due to signating!");
+					}
 				}
 				
 				byte[] rawBytes = new byte[buffer.capacity() + 16];
@@ -271,6 +275,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				for (byte b : signature) {
 					rawBytes[index++] = b;
 				}
+				
 				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV2(rawBytes).json());
 			})) {
 				logger.warn("Invalid message sent to Mavlink2RawV2-Parser! (Message-Body: {})", msg.body());
@@ -504,17 +509,24 @@ public final class MavlinkParser extends AbstractVerticle {
 			o = (int ) Float.floatToIntBits((float) o);
 			natType = NativeType.INT_32;
 		}
-
+		
+		Number n = (Number) o;
+		
 		return switch(natType) {
-			case CHAR 			 -> new byte[] {(byte) (char) o};
-			case INT_8, UINT_8 	 -> new byte[] {(byte) o};
-			case INT_16, UINT_16 -> new byte[] {(byte) (((short) o >> 8) & 0xff), (byte) ((short) o & 0xff)};
-			case INT_32, UINT_32 -> new byte[] {(byte) (((int) o >> 24)  & 0xff), (byte) (((int) o >> 16) 	& 0xff),
-					(byte) (((int) o >> 8)	 & 0xff), (byte) ((int) o 			& 0xff)};
-			case INT_64, UINT_64 -> new byte[] {(byte) (((long) o >> 56) & 0xff), (byte) (((long) o >> 48)  & 0xff),
-					(byte) (((long) o >> 40) & 0xff), (byte) (((long) o >> 32)  & 0xff),
-					(byte) (((long) o >> 24) & 0xff), (byte) (((long) o >> 16)  & 0xff),
-					(byte) (((long) o >> 8)	 & 0xff), (byte) ((long) o 			& 0xff)};
+			case CHAR ->
+				new byte[] {(byte) (char) o};
+			case INT_8, UINT_8 ->
+				new byte[] {(byte) n.byteValue()};
+			case UINT_16, INT_16 ->
+				new byte[] {(byte) (((short) n.shortValue() >> 8) & 0xff), (byte) ((short) n.shortValue() & 0xff)};
+			case UINT_32, INT_32 ->
+				new byte[] {(byte) (((int) n.intValue() >> 24)  & 0xff), (byte) (((int) n.intValue() >> 16) & 0xff),
+							(byte) (((int) n.intValue() >> 8)	& 0xff), (byte) ((int) n.intValue()			& 0xff)};
+			case INT_64, UINT_64 ->
+				new byte[] {(byte) (((long) n.intValue() >> 56) & 0xff), (byte) (((long) n.intValue() >> 48)	& 0xff),
+							(byte) (((long) n.intValue() >> 40) & 0xff), (byte) (((long) n.intValue() >> 32)	& 0xff),
+							(byte) (((long) n.intValue() >> 24) & 0xff), (byte) (((long) n.intValue() >> 16)	& 0xff),
+							(byte) (((long) n.intValue() >> 8)	 & 0xff), (byte) ((long) n.intValue() & 0xff)};
 			default -> throw new ParsingException("Unknown datatype " + info.nativeType() + "!");
 		};
 	}
@@ -532,7 +544,8 @@ public final class MavlinkParser extends AbstractVerticle {
 				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
 		
-		List<Byte> byteBuffer = new ArrayList<Byte>();
+		var buffer = new byte[mav.length()];
+		var index = 0;
 		try {
 			for (var c : components) {
 				var o = c.getAccessor().invoke(mav);
@@ -545,13 +558,13 @@ public final class MavlinkParser extends AbstractVerticle {
 					for (int i = 0; i < count; i++) {
 						byte[] bytes = recordToRaw(c, os[i]);
 						for (byte b : bytes) {
-							byteBuffer.add(b);
+							buffer[index++] = b;
 						}
 					}
 				} else {
 					byte[] bytes = recordToRaw(c, o);
 					for (byte b : bytes) {
-						byteBuffer.add(b);
+						buffer[index++] = b;
 					}
 				}
 			}
@@ -559,13 +572,7 @@ public final class MavlinkParser extends AbstractVerticle {
 			throw new ParsingException(new ReflectionException(e));
 		}
 
-		byte[] bytes = new byte[byteBuffer.size()];
-		int index = 0;
-		for (byte b : byteBuffer) {
-			bytes[index++] = b;
-		}
-
-		return bytes;
+		return buffer;
 	}
 
 }

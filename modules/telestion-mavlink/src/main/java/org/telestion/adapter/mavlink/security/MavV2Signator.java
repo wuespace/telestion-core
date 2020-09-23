@@ -110,7 +110,7 @@ public final class MavV2Signator {
 		buffer.put((byte) (linkId & 0xff));
 		buffer.put(timestamp);
 		buffer.put(rawSignature(secretKey, header, payload, crcExtra, linkId, timestamp));
-		return null;
+		return buffer.array();
 	}
 	
 }

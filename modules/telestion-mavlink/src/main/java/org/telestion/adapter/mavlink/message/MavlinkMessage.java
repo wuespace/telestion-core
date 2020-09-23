@@ -1,5 +1,12 @@
 package org.telestion.adapter.mavlink.message;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
+
+import org.telestion.adapter.mavlink.annotation.MavArray;
+import org.telestion.adapter.mavlink.annotation.MavField;
 import org.telestion.adapter.mavlink.annotation.MavInfo;
 import org.telestion.adapter.mavlink.exception.AnnotationMissingException;
 import org.telestion.adapter.mavlink.security.X25Checksum;
@@ -16,6 +23,28 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  * @version 1.0
  */
 public interface MavlinkMessage extends JsonMessage {
+	
+	/**
+	 * Returns the actual size of a message-object.
+	 * 
+	 * @return actual size
+	 */
+	@JsonProperty(access = Access.READ_ONLY)
+	public default int length() {
+		return Arrays.stream(this.getClass().getRecordComponents())
+				.filter(component -> component.isAnnotationPresent(MavField.class))
+				.filter(component -> {
+					try {
+						return component.getAccessor().invoke(this) != null;
+					} catch(InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+						return false;
+					}
+				})
+				.mapToInt(MavlinkMessage::calcRecordLength)
+				.sum();
+
+	}
+	
 	/**
 	 * Checks if the necessary {@link MavInfo MavInfo-Annotation} is present.</br>
 	 * If so a representing Object will be returned otherwise an {@link AnnotationMissingException} will be thrown.
@@ -63,4 +92,49 @@ public interface MavlinkMessage extends JsonMessage {
 	public default int getId() {
 		return checkAnnotation().id();
 	}
+	
+	/**
+	 * Returns the minimum length of this message with all extension excluded.</br>
+	 * </br>
+	 * <em>Note if {@link #minLength()} and {@link #maxLength()} are equal, there are no extensions!</em> 
+	 * 
+	 * @return minimum length of message
+	 */
+	@JsonProperty(access = Access.READ_ONLY)
+	public static int minLength() {
+		return Arrays.stream(MethodHandles.lookup().lookupClass().getRecordComponents())
+				.filter(component -> component.isAnnotationPresent(MavField.class))
+				.filter(component -> component.getAnnotation(MavField.class).extension() == false)
+				.mapToInt(MavlinkMessage::calcRecordLength)
+				.sum();
+	}
+	
+	/**
+	 * Returns the maximum length of this message with all extensions in use.</br>
+	 * </br>
+	 * <em>Note if {@link #minLength()} and {@link #maxLength()} are equal, there are no extensions!</em> 
+	 * 
+	 * @return maximum length of message
+	 */
+	@JsonProperty(access = Access.READ_ONLY)
+	public static int maxLength() {
+		return Arrays.stream(MethodHandles.lookup().lookupClass().getRecordComponents())
+					.filter(component -> component.isAnnotationPresent(MavField.class))
+					.mapToInt(MavlinkMessage::calcRecordLength)
+					.sum();
+	}
+	
+	/**
+	 * Calculates the length of a {@link RecordComponent} from a {@link MavlinkMessage}.</br>
+	 * If the component is an array the size will be calculated with respect to its length.
+	 * 
+	 * @param c RecordComponent for calculation
+	 * @return MAVLink-length of the RecordComponent
+	 */
+	@JsonProperty(access = Access.READ_ONLY)
+	private static int calcRecordLength(RecordComponent c) {
+		int multiplier = c.isAnnotationPresent(MavArray.class) ? c.getAnnotation(MavArray.class).length() : 1;
+		return multiplier * c.getAnnotation(MavField.class).nativeType().size;
+	}
+	
 }

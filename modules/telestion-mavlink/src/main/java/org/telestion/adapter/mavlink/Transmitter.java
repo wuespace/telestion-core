@@ -1,26 +1,17 @@
 package org.telestion.adapter.mavlink;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
-import javax.management.ReflectionException;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.adapter.mavlink.exception.AnnotationMissingException;
-import org.telestion.adapter.mavlink.exception.PacketException;
 import org.telestion.adapter.mavlink.message.MavlinkMessage;
-import org.telestion.adapter.mavlink.message.MessageIndex;
+import org.telestion.adapter.mavlink.message.RawPayload;
 import org.telestion.adapter.mavlink.message.internal.RawMavlink;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.adapter.mavlink.message.internal.RawMavlinkV2;
-import org.telestion.adapter.mavlink.security.X25Checksum;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.config.Config;
-import org.telestion.core.connection.TcpConn;
 import org.telestion.core.message.Address;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -104,32 +95,12 @@ public final class Transmitter extends AbstractVerticle {
 	 * @param mav {@link MavlinkMessage} to convert
 	 */
 	private void interpretMsg(RawMavlink mav, String outAddress) {
-		// Creating Array for CRC-Calc
-		byte[] raw = mav.getRaw();
-		byte[] buildArray = Arrays.copyOfRange(raw, 1, raw.length -
-				(mav instanceof RawMavlinkV2 && ((RawMavlinkV2) mav).incompatFlags() == 0x1 ? 12 : -1));
 
-		// Apply Checksum
-		Class<? extends MavlinkMessage> clazz = MessageIndex.get(mav instanceof RawMavlinkV2 ?
-				((RawMavlinkV2) mav).msgId() :
-				((RawMavlinkV1) mav).msgId());
-		try {
-			Method method = clazz.getMethod("getCrc", Void.class);
-			buildArray[buildArray.length-1] = (byte) method.invoke(null, Void.class);
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException | AnnotationMissingException e) {
-			logger.error("Getting CRC_EXTRA of {} failed! Cause:\n{}", clazz.getSimpleName(), e);
-			throw new PacketException(new ReflectionException(e));
-		}
-		int crc = X25Checksum.calculate(buildArray);
-
-		// Create new build Array
-		buildArray = Arrays.copyOf(raw, raw.length + 2);
-
-		buildArray[buildArray.length-2] = (byte) ((crc >> 8) & 0xff);
-		buildArray[buildArray.length-1]	= (byte) (crc & 0xff);
-
-		var addrPort = AddressAssociator.remove(mav.getMavlinkId());
-		vertx.eventBus().send(outAddress, new TcpConn.Data(new TcpConn.Participant(addrPort.address(), addrPort.port()), buildArray));
+//		var addrPort = AddressAssociator.remove(mav.getMavlinkId());
+//		System.out.println(addrPort + " " + Arrays.toString(buildArray));
+//		vertx.eventBus().send(outAddress,
+//				new TcpConn.Data(new TcpConn.Participant(addrPort.address(), addrPort.port()), buildArray).json());
+		
+		vertx.eventBus().send(outAddress, new RawPayload(mav.getRaw()).json());
 	}
 }

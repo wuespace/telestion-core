@@ -22,14 +22,16 @@ public final class SayHello extends AbstractVerticle {
     /**
      * Define a configuration record
      */
-    private static record Configuration(
+    @SuppressWarnings("preview")
+	private static record Configuration(
             @JsonProperty long period,
             @JsonProperty String message) {
 
         /**
          * The default values will be set via the constructor
          */
-        private Configuration(){
+        @SuppressWarnings("unused")
+		private Configuration(){
             this(1, "Hello World");
         }
     }

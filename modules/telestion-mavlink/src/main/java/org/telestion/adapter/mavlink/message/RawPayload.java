@@ -1,4 +1,4 @@
-package org.telestion.adapter.mavlink.message.internal;
+package org.telestion.adapter.mavlink.message;
 
 import org.telestion.api.message.JsonMessage;
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.telestion.adapter.mavlink.message.MavlinkMessage;
 import org.telestion.adapter.mavlink.message.MessageIndex;
+import org.telestion.adapter.mavlink.message.RawPayload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -112,7 +113,7 @@ public final record RawMavlinkV2(
 	
 	@Override
 	public byte[] getRaw() {
-		ByteBuffer raw = ByteBuffer.allocate(12 + payload.payload().length);
+		ByteBuffer raw = ByteBuffer.allocate(12 + payload.payload().length + (incompatFlags == 0x01 ? 13 : 0));
 		
 		raw.put((byte) 0xFD);
 		raw.put((byte) (len				&	0xff));
@@ -127,6 +128,10 @@ public final record RawMavlinkV2(
 		raw.put(payload.payload());
 		raw.put((byte) ((checksum >> 8)	&	0xff));
 		raw.put((byte) (checksum		&	0xff));
+		
+		if (incompatFlags == 0x01) {
+			raw.put(signature);
+		}
 		
 		return raw.array();
 	}

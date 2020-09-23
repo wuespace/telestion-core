@@ -43,6 +43,16 @@ public final class MessageIndex {
 	}
 	
 	/**
+	 * Returns if an id already has been linked to a {@link MavlinkMessage}.
+	 * 
+	 * @param id of the msg
+	 * @return whether an id is already associated with a {@link MavlinkMessage}
+	 */
+	public static boolean isRegistered(long id) {
+		return map.containsKey(id);
+	}
+	
+	/**
 	 * Returns the {@link MavlinkMessage MavlinkMessageClass} linked to the given id.</br>
 	 * Basically {@link HashMap#get(Object)}.</br>
 	 * </br>
