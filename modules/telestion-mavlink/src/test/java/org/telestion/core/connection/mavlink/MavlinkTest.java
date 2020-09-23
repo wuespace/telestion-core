@@ -59,8 +59,8 @@ public class MavlinkTest {
                     }
                     var socket = netSocketResult.result();
                     socket.write(Buffer.buffer(HEARTBEAT_MESSAGE));
+                    startPromise.complete();
                 });
-                startPromise.complete();
             }
         });
 
