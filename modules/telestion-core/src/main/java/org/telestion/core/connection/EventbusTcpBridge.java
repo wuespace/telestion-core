@@ -32,7 +32,8 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
  *     You have to configure the following options:
  *     <ul>
  *         <li>httpServerOptions - the HttpServerOptions to configure the HTTP-Server</li>
- *         <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go through</li>
+ *         <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go
+ *         through</li>
  *     </ul>
  *     To do that you have four constructors to initialize the HTTP-Server.
  * </p>
@@ -133,8 +134,10 @@ public final class EventbusTcpBridge extends AbstractVerticle {
         logger.info("Inbound permitted: "+inboundPermitted);
         logger.info("Outbound permitted: "+outboundPermitted);
         SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions();
-        inboundPermitted.forEach(addr -> sockJSBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
-        outboundPermitted.forEach(addr -> sockJSBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
+        inboundPermitted.forEach(addr -> sockJSBridgeOptions
+        		.addInboundPermitted(new PermittedOptions().setAddress(addr)));
+        outboundPermitted.forEach(addr -> sockJSBridgeOptions
+        		.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
 
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
         return sockJSHandler.bridge(sockJSBridgeOptions);
