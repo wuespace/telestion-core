@@ -1,57 +1,56 @@
 # Telestion
 
-This repository contains the project files which belong to the Telestion Group.
-The project extensions are in an own repository (eg. telestion-d2).
+Telestion is a modular distributed ground station software.
 
-## Contributing
+## Motivation
 
-Always create a new branch and a pull request to implement a new feature. 
-Because of the free plan we can't protect the master branch for now.
-But we will revert all direct changes to the master branch.
+Why are we doing this?
 
-## Project Overview
+## Build Status
 
-The project consists of multiple submodules.
+We love badges
 
-### Core
+## Screenshots
 
-* [telestion-api](https://github.com/TelestionGroup/telestion/issues/2) The public api which is visible to other partners.
+Screenshot of web frontend
 
-* [telestion-core](https://github.com/TelestionGroup/telestion/issues/1) The core classes like utils, factories, common messages, ...
+## Tech used
 
-* [telestion-launcher](https://github.com/TelestionGroup/telestion/issues/3) The launcher of the telestion software.
+Built with 
+ * Vert.x
+ 
+## Features
 
-* [telestion-updater](https://github.com/TelestionGroup/telestion/issues/4) The updater of the telestion software.
-  
-* [telestion-tcp-adapter](https://github.com/TelestionGroup/telestion/issues/5)
+What makes this project stand out?
 
-* [telestion-widget-adapter](https://github.com/TelestionGroup/telestion/issues/14) Contains the bridge to the gui widgets
+## Code Example
 
-### Extensions
+How do we integrate new projects
 
-* [telestion-mavlink-adapter](https://github.com/TelestionGroup/telestion/issues/8) Encodes and decodes MavLink-Messages.
+## Installation
 
-* [telestion-iridium-adapter](https://github.com/TelestionGroup/telestion/issues/9) Decodes Iridium-Messages.
+Step by step
 
-* [telestion-lora-adapter]() Decodes LoRa-Messages.
+## API Reference
 
-* [telestion-message-dumper](https://github.com/TelestionGroup/telestion/issues/13) Writes messages of a certain kind to a file.
+We have our docs here :)
 
-### Extensions - REXUS
+## Tests
 
-* [telestion-rx-wind-importer](https://github.com/TelestionGroup/telestion/issues/12) Imports wind data provided by SNSC.
+How should we run tests
 
+## How to use?
 
-### Connectors
+How to use this app.
 
-Connectors are small applications, which are executed on an edge computer. They provide connections to other programms or devices.
-The received data is forwarded via a TCP connection to the core application.
+## Contribute
 
-* [telestion-uart-connector](https://github.com/TelestionGroup/telestion/issues/6) This connector reads and writes from/to a uart devices which is connected to the edge computer. The data is send to the core application via a tcp stream.
+How do we contribute
 
-* [telestion-matlab-connector](https://github.com/TelestionGroup/telestion/issues/7) This connector reads and writes Matlab structs to the tcp connection of the core application.
+## Credits
 
-### Test-Dummies
+You know da crazy boys...
 
-* [telestion-mavlink-dummy](https://github.com/TelestionGroup/telestion/issues/10) A dummy providing MavLink-Packages to a TCP-Connection
-* [telestion-iridium-dummy](https://github.com/TelestionGroup/telestion/issues/11) A dummy providing Iridium-Packages to a TCP-Connection
+## License
+
+MIT
