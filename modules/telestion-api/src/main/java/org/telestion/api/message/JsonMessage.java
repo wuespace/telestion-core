@@ -24,8 +24,8 @@ public interface JsonMessage {
      * @return simple class name of subclass
      */
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    default String name() {
-        return getClass().getSimpleName();
+    default String className() {
+        return getClass().getName();
     }
 
     /**
@@ -48,10 +48,18 @@ public interface JsonMessage {
      * @return whether decoding was successful
      */
     static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler){
-        if(msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("name") &&
-        		clazz.getSimpleName().equals(jsonObject.getString("name"))) {
-            handler.handle(jsonObject.mapTo(clazz));
-            return true;
+        if(msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("className")){
+            try {
+                var msgClazz = Class.forName(jsonObject.getString("className"));
+                if(!clazz.isAssignableFrom(msgClazz)){
+                    return false;
+                }
+                handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
+                return true;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
         } else {
         	return false;
         }
@@ -68,12 +76,20 @@ public interface JsonMessage {
      * @return whether decoding was successful
      */
     static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler){
-        if(msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("name") &&
-        		clazz.getSimpleName().equals(jsonObject.getString("name"))) {
-            handler.handle(jsonObject.mapTo(clazz));
-            return true;
+        if(msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("className")){
+            try {
+                var msgClazz = Class.forName(jsonObject.getString("className"));
+                if(!clazz.isAssignableFrom(msgClazz)){
+                    return false;
+                }
+                handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
+                return true;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
         } else {
-        	return false;
+            return false;
         }
     }
 
