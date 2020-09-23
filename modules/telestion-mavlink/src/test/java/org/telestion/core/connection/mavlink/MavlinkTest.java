@@ -16,6 +16,7 @@ import org.telestion.api.message.JsonMessage;
 import org.telestion.core.connection.TcpConn;
 import org.telestion.mavlink.messages.mavlink.minimal.Heartbeat;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -58,7 +59,9 @@ public class MavlinkTest {
                         return;
                     }
                     var socket = netSocketResult.result();
-                    socket.write(Buffer.buffer(HEARTBEAT_MESSAGE));
+                    vertx.setTimer(Duration.ofSeconds(1).toMillis(), timerId -> {
+                        socket.write(Buffer.buffer(HEARTBEAT_MESSAGE));
+                    });
                     startPromise.complete();
                 });
             }
