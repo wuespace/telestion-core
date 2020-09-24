@@ -136,6 +136,9 @@ class Message:
     def get_wip(self) -> bool:
         return self._wip
 
+    def contains_array(self) -> bool:
+        return any(['[' in f.get_mav_type() for f in self._fields])
+
 
 def handle_args() -> Tuple[str, str, str]:
     args = sys.argv[1:]
@@ -172,12 +175,12 @@ def to_record(msg: Message, output: str = "", package: str = "org.telestion.adap
     new_line = '\n'
     template = f"""package {package};
 
-import org.telestion.adapter.mavlink.annotation.MavField;
-import org.telestion.adapter.mavlink.annotation.MavInfo;
-import org.telestion.adapter.mavlink.annotation.NativeType;\
-{f'{new_line}import org.telestion.adapter.mavlink.annotation.MavArray;'}\
-{f'{new_line}import org.telestion.adapter.mavlink.message.MavlinkMessage;'
-    if package != 'org.telestion.adapter.mavlink.message' else ''}
+import org.telestion.protocol.mavlink.annotation.MavField;
+import org.telestion.protocol.mavlink.annotation.MavInfo;
+import org.telestion.protocol.mavlink.annotation.NativeType;\
+{f'{new_line}import org.telestion.protocol.mavlink.annotation.MavArray;' if msg.contains_array() else ''}\
+{f'{new_line}import org.telestion.protocol.mavlink.message.MavlinkMessage;'
+    if package != 'org.telestion.protocol.mavlink.message' else ''}
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -303,7 +306,7 @@ def main():
     print("Exiting MAVLink XML2Record-Tool")
 
 
-VERSION = "1.3.9"
+VERSION = "1.3.10"
 
 if __name__ == '__main__':
     main()
