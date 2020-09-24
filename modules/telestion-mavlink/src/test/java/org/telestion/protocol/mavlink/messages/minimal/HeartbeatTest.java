@@ -1,4 +1,4 @@
-package org.telestion.mavlink.messages.mavlink.minimal;
+package org.telestion.protocol.mavlink.messages.minimal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

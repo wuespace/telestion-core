@@ -1,4 +1,4 @@
-package org.telestion.core.connection.mavlink;
+package org.telestion.protocol.mavlink;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
