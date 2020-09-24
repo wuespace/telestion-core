@@ -253,7 +253,8 @@ public final class MavlinkParser extends AbstractVerticle {
 				if (context.incompFlags() == 0x01) {
 					try {
 						signature = MavV2Signator.generateSignature(keySafe.getSecretKey(),
-										Arrays.copyOfRange(buffer.array(), 0, 9), payload, raw.getCrc(), (short) 2);
+										Arrays.copyOfRange(buffer.array(), 0, 9), payload, raw.getCrc(),
+										(short) context.linkId());
 					} catch (NoSuchAlgorithmException e) {
 						logger.error("Signating packet failed!", e);
 						throw new ParsingException("Parsing MAVLink-Message into byte[] failed due to signating!");

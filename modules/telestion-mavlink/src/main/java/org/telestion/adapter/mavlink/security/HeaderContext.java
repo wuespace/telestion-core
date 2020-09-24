@@ -13,7 +13,7 @@ import org.telestion.adapter.mavlink.message.internal.RawMavlink;
  * {@link RawMavlink RawMavlink-message} again.
  * 
  * @author Cedric Boes
- * @version 1.0
+ * @version 1.1
  */
 public final class HeaderContext {
 	/**
@@ -47,14 +47,22 @@ public final class HeaderContext {
 	private final short compId;
 	
 	/**
+	 * Defines the channel the packets should be designed for.</br>
+	 * </br>
+	 * <em>Only works with MAVLinkV2 and signing enabled</em>
+	 */
+	private final short linkId;
+	
+	/**
 	 * Creates a new {@link HeaderContext} with the given arguments and initializes the sequenceID with 0.
 	 */
-	public HeaderContext(short incompFlags, short compFlags, short sysId, short compId) {
+	public HeaderContext(short incompFlags, short compFlags, short sysId, short compId, short linkId) {
 		this.incompFlags = incompFlags;
 		this.compFlags = compFlags;
 		this.seq = 0;
 		this.sysId = sysId;
 		this.compId = compId;
+		this.linkId = linkId;
 	}
 
 	/**
@@ -100,6 +108,15 @@ public final class HeaderContext {
 	 */
 	public short compId() {
 		return compId;
+	}
+	
+	/**
+	 * Returns the {@link #linkId} for this {@link HeaderContext}.
+	 * 
+	 * @return {@link #linkId}
+	 */
+	public short linkId() {
+		return linkId;
 	}
 	
 }
