@@ -7,7 +7,6 @@ import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.telestion.protocol.mavlink.security.HeaderContext;
 
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
