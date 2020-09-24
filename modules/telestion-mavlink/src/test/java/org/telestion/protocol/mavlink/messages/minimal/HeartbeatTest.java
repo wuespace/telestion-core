@@ -10,7 +10,7 @@ import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
 public class HeartbeatTest {
 
     @Test void testExist(){
-		assertDoesNotThrow(() -> Class.forName("org.telestion.mavlink.messages.mavlink.minimal.Heartbeat")
+		assertDoesNotThrow(() -> Class.forName("org.telestion.protocol.mavlink.messages.minimal.Heartbeat")
 				.getConstructor(long.class, int.class, int.class, int.class, int.class, int.class)
 				.newInstance(0, 0, 0, 0, 0, 0));
     }
