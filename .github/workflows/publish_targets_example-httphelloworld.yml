@@ -9,6 +9,12 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Set up JDK 14
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+      - name: Build App
+        run: chmod +x gradlew && ./gradlew assembleDist
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
