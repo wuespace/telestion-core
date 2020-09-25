@@ -8,7 +8,7 @@ targetCompatibility = gradle.targetCompatibility
 
 application {
     // Define the main class for the application.
-    mainClassName = 'org.telestion.core.Main'
+    mainClassName = 'org.telestion.example.HttpHelloWorld'
 }
 
 
