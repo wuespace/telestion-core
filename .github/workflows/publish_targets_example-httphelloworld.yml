@@ -23,5 +23,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: telestiongroup/telestion/example-httphelloworld
-          tag_with_ref: true
+          tag_with_sha: true
 
