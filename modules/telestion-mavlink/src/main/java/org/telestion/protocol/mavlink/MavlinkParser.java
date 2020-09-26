@@ -319,6 +319,10 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @return parsed Object
 	 */
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
+		if (index.get() > payload.length) {
+			return null;
+		}
+		
 		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
 		switch(c.getAnnotation(MavField.class).nativeType().size) {
 			case 1:
@@ -330,9 +334,9 @@ public final class MavlinkParser extends AbstractVerticle {
 				return unsigned ? toRightNum(i, Integer.class) : toRightNum((short) i, Short.class);
 			case 4:
 				long l =	(payload[index.incrementAndGet()]) << 24 +
-						(payload[index.incrementAndGet()]) << 16 +
-						(payload[index.incrementAndGet()]) << 8 +
-						payload[index.incrementAndGet()];
+							(payload[index.incrementAndGet()]) << 16 +
+							(payload[index.incrementAndGet()]) << 8 +
+							payload[index.incrementAndGet()];
 			return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
 		case 8:
 			// There is no real support for unsigned longs, yet!
@@ -475,7 +479,9 @@ public final class MavlinkParser extends AbstractVerticle {
 								.mapToObj(i -> parse(index, payload, c))
 								.toArray(Object[]::new)
 								: parse(index, payload, c);
-					}).toArray(Object[]::new);
+					}).
+					filter(c -> c != null).
+					toArray(Object[]::new);
 
 			MavlinkMessage m = constructor.newInstance(parameters);
 
