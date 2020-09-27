@@ -25,6 +25,7 @@ import org.telestion.protocol.mavlink.exception.AnnotationMissingException;
 import org.telestion.protocol.mavlink.exception.InvalidChecksumException;
 import org.telestion.protocol.mavlink.exception.PacketException;
 import org.telestion.protocol.mavlink.exception.ParsingException;
+import org.telestion.protocol.mavlink.exception.StreamExceptionHandler;
 import org.telestion.protocol.mavlink.exception.WrongSignatureException;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
 import org.telestion.protocol.mavlink.message.MessageIndex;
@@ -319,11 +320,17 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @return parsed Object
 	 */
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
+		var annotation = c.getAnnotation(MavField.class);
+		
 		if (index.get() > payload.length) {
-			return null;
+			if (annotation.extension()) {
+				return null;
+			} else {
+				throw new PacketException("Missing bytes which are not an extension!");
+			}
 		}
 		
-		boolean unsigned = c.getAnnotation(MavField.class).nativeType().unsigned;
+		boolean unsigned = annotation.nativeType().unsigned;
 		switch(c.getAnnotation(MavField.class).nativeType().size) {
 			case 1:
 				short s = payload[index.incrementAndGet()];
@@ -350,7 +357,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				payload[index.incrementAndGet()];
 			return toRightNum(l, Long.class);
 		default:
-			throw new ParsingException("Parsing failed due to invalid Payload-Type!");
+			throw new ParsingException("Parsing failed due to unknown Payload-Type!");
 		}
 	}
 
@@ -455,9 +462,30 @@ public final class MavlinkParser extends AbstractVerticle {
 			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
 		}
 		
-		RecordComponent[] components = Arrays.stream(mavlinkClass.getRecordComponents())
-				.sorted(MavlinkParser::compareRecordComponents)
-				.toArray(RecordComponent[]::new);
+		RecordComponent[] components = null;
+		
+		{
+			var exceptions = new StreamExceptionHandler<AnnotationMissingException>();
+			
+			components = Arrays.stream(mavlinkClass.getRecordComponents())
+					.sorted((c1, c2) -> {
+						try {
+							return compareRecordComponents(c1, c2);
+						} catch(AnnotationMissingException e) {
+							exceptions.put(e);
+							return 0;
+						}
+					})
+					.toArray(RecordComponent[]::new);
+			
+			if (!exceptions.isEmpty()) {
+				logger.error("At least one exception was missing for {}", mavlinkClass.getSimpleName());
+				for (AnnotationMissingException e : exceptions.get()) {
+					logger.error("Annotation is missing!", e);
+				}
+				throw new AnnotationMissingException("At least one annotation was missing!");
+			}
+		}
 		
 		/*
 		 * Start Reflection
@@ -472,16 +500,38 @@ public final class MavlinkParser extends AbstractVerticle {
 			final byte[] payload = load;
 
 			Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
+			
+			var exceptions = new StreamExceptionHandler<Exception>();
+			
 			Object[] parameters = Arrays.stream(components)
 					.map(c -> {
-						return c.isAnnotationPresent(MavArray.class)
-								? IntStream.range(0, c.getAnnotation(MavArray.class).length())
-								.mapToObj(i -> parse(index, payload, c))
-								.toArray(Object[]::new)
-								: parse(index, payload, c);
+						try {
+							return c.isAnnotationPresent(MavArray.class)
+									? IntStream.range(0, c.getAnnotation(MavArray.class).length())
+									.mapToObj(i -> {
+										try {
+											return parse(index, payload, c);
+										} catch (PacketException | ClassCastException | ParsingException e) {
+											exceptions.put(e);
+											return null;
+										}
+									})
+									.toArray(Object[]::new)
+									: parse(index, payload, c);
+						} catch(PacketException | ClassCastException | ParsingException e) {
+							exceptions.put(e);
+							return null;
+						}
 					}).
-					filter(c -> c != null).
 					toArray(Object[]::new);
+			
+			if (!exceptions.isEmpty()) {
+				logger.error("At least one exception occured while parsing the MAVLink-Packet!");
+				for (var e : exceptions.get()) {
+					logger.error("Parsing-Error: ", e);
+				}
+				throw new ParsingException("Parsing failed!");
+			}
 
 			MavlinkMessage m = constructor.newInstance(parameters);
 
@@ -547,9 +597,25 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
+		var annotationExceptions = new StreamExceptionHandler<AnnotationMissingException>();
 		var components = Arrays.stream(mav.getClass().getRecordComponents())
-				.sorted(MavlinkParser::compareRecordComponents)
+				.sorted((c1, c2) -> {
+					try {
+						return compareRecordComponents(c1, c2);
+					} catch(AnnotationMissingException e) {
+						annotationExceptions.put(e);
+						return 0;
+					}
+				})
 				.toArray(RecordComponent[]::new);
+		
+		if (!annotationExceptions.isEmpty()) {
+			logger.error("At least one exception occured while converting message to raw again!");
+			for (AnnotationMissingException e : annotationExceptions.get()) {
+				logger.error("AnnotationException: ", e);
+			}
+			throw new ParsingException("Parsing to raw failed!");
+		}
 		
 		var buffer = new byte[mav.length()];
 		var index = 0;
