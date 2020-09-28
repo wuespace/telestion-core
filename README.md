@@ -7,7 +7,7 @@ The project extensions are in an own repository (eg. telestion-d2).
 
 ## Contributing
 
-Always create a new branch and a pull request to implement a new feature. 
+Always create a new branch and a pull request to implement a new feature.
 Because of the free plan we can't protect the master branch for now.
 But we will revert all direct changes to the master branch.
 
