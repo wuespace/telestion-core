@@ -382,7 +382,7 @@ public final class MavlinkParser extends AbstractVerticle {
 			return mf1.position() - mf2.position();
 		}
 
-		if (!(mf1.extension() ^ mf2.extension())) {
+		if (mf1.extension() == mf2.extension()) {
 			return mf2.nativeType().size - mf1.nativeType().size;
 		} else {
 			return mf1.extension() ? 1 : -1;
@@ -462,31 +462,10 @@ public final class MavlinkParser extends AbstractVerticle {
 			throw new AnnotationMissingException("MavInfo-Annotation is missing!");
 		}
 		
-		RecordComponent[] components = null;
-		
-		{
-			var exceptions = new StreamExceptionHandler<AnnotationMissingException>();
-			
-			components = Arrays.stream(mavlinkClass.getRecordComponents())
-					.sorted((c1, c2) -> {
-						try {
-							return compareRecordComponents(c1, c2);
-						} catch(AnnotationMissingException e) {
-							exceptions.put(e);
-							return 0;
-						}
-					})
+		RecordComponent[] components  = Arrays.stream(mavlinkClass.getRecordComponents())
+					.sorted(MavlinkParser::compareRecordComponents)
 					.toArray(RecordComponent[]::new);
-			
-			if (!exceptions.isEmpty()) {
-				logger.error("At least one exception was missing for {}", mavlinkClass.getSimpleName());
-				for (AnnotationMissingException e : exceptions.get()) {
-					logger.error("Annotation is missing!", e);
-				}
-				throw new AnnotationMissingException("At least one annotation was missing!");
-			}
-		}
-		
+
 		/*
 		 * Start Reflection
 		 */
@@ -501,44 +480,20 @@ public final class MavlinkParser extends AbstractVerticle {
 
 			Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
 			
-			var exceptions = new StreamExceptionHandler<Exception>();
-			
+
 			Object[] parameters = Arrays.stream(components)
-					.map(c -> {
-						try {
-							return c.isAnnotationPresent(MavArray.class)
-									? IntStream.range(0, c.getAnnotation(MavArray.class).length())
-									.mapToObj(i -> {
-										try {
-											return parse(index, payload, c);
-										} catch (PacketException | ClassCastException | ParsingException e) {
-											exceptions.put(e);
-											return null;
-										}
-									})
-									.toArray(Object[]::new)
-									: parse(index, payload, c);
-						} catch(PacketException | ClassCastException | ParsingException e) {
-							exceptions.put(e);
-							return null;
-						}
-					}).
+					.map(c -> c.isAnnotationPresent(MavArray.class)
+							? IntStream.range(0, c.getAnnotation(MavArray.class).length())
+								.mapToObj(i -> parse(index, payload, c))
+								.toArray(Object[]::new)//TODO Do you want a flatMap here? - jvpichowski
+							: parse(index, payload, c)).
 					toArray(Object[]::new);
-			
-			if (!exceptions.isEmpty()) {
-				logger.error("At least one exception occured while parsing the MAVLink-Packet!");
-				for (var e : exceptions.get()) {
-					logger.error("Parsing-Error: ", e);
-				}
-				throw new ParsingException("Parsing failed!");
-			}
 
 			MavlinkMessage m = constructor.newInstance(parameters);
 
 			vertx.eventBus().publish(config.mavConsumerAddr(), m.json());
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			throw new ParsingException(new ReflectionException(e));
+		} catch (Exception e) {
+			throw new ParsingException(e);
 		}
 
 	}
@@ -560,10 +515,10 @@ public final class MavlinkParser extends AbstractVerticle {
 
 		NativeType natType = info.nativeType();
 		if (natType == NativeType.DOUBLE) {
-			o = (long) Double.doubleToLongBits((double) o);
+			o = Double.doubleToLongBits((double) o);
 			natType = NativeType.INT_64;
 		} else if (natType == NativeType.FLOAT) {
-			o = (int ) Float.floatToIntBits((float) o);
+			o = Float.floatToIntBits((float) o);
 			natType = NativeType.INT_32;
 		}
 		
@@ -597,29 +552,13 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
-		var annotationExceptions = new StreamExceptionHandler<AnnotationMissingException>();
-		var components = Arrays.stream(mav.getClass().getRecordComponents())
-				.sorted((c1, c2) -> {
-					try {
-						return compareRecordComponents(c1, c2);
-					} catch(AnnotationMissingException e) {
-						annotationExceptions.put(e);
-						return 0;
-					}
-				})
-				.toArray(RecordComponent[]::new);
-		
-		if (!annotationExceptions.isEmpty()) {
-			logger.error("At least one exception occured while converting message to raw again!");
-			for (AnnotationMissingException e : annotationExceptions.get()) {
-				logger.error("AnnotationException: ", e);
-			}
-			throw new ParsingException("Parsing to raw failed!");
-		}
-		
-		var buffer = new byte[mav.length()];
-		var index = 0;
 		try {
+			var components = Arrays.stream(mav.getClass().getRecordComponents())
+					.sorted(MavlinkParser::compareRecordComponents)
+					.toArray(RecordComponent[]::new);
+		
+			var buffer = new byte[mav.length()];
+			var index = 0;
 			for (var c : components) {
 				var o = c.getAccessor().invoke(mav);
 				if (!c.isAnnotationPresent(MavField.class)) {
@@ -641,11 +580,12 @@ public final class MavlinkParser extends AbstractVerticle {
 					}
 				}
 			}
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new ParsingException(new ReflectionException(e));
+			return buffer;
+
+		} catch (Exception e){
+			throw new ParsingException("Parsing to raw failed!", e);
 		}
 
-		return buffer;
 	}
 
 }
