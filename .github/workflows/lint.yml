@@ -23,6 +23,6 @@ jobs:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Lint Results
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           path: ./
