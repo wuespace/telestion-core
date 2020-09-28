@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const contents = fs.readFileSync(
-	path.join(__dirname, 'super-linter.log')
+	path.join(__dirname, '../../super-linter.log')
 ).toString();
 
 const lines = contents.split('\n');
