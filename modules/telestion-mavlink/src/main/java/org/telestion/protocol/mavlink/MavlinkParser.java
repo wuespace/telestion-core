@@ -10,8 +10,6 @@ import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-import javax.management.ReflectionException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -25,7 +23,6 @@ import org.telestion.protocol.mavlink.exception.AnnotationMissingException;
 import org.telestion.protocol.mavlink.exception.InvalidChecksumException;
 import org.telestion.protocol.mavlink.exception.PacketException;
 import org.telestion.protocol.mavlink.exception.ParsingException;
-import org.telestion.protocol.mavlink.exception.StreamExceptionHandler;
 import org.telestion.protocol.mavlink.exception.WrongSignatureException;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
 import org.telestion.protocol.mavlink.message.MessageIndex;
@@ -178,10 +175,14 @@ public final class MavlinkParser extends AbstractVerticle {
 		var config = Config.get(forcedConfig, config(), Configuration.class);
 
 		vertx.eventBus().consumer(config.rawMavSupplierAddr(), msg -> {
-			if (!(JsonMessage.on(RawMavlinkV1.class, msg, m -> interpretMsg(m, config))
-					|| JsonMessage.on(RawMavlinkV2.class, msg, m -> interpretMsg(m, config)))) {
-				logger.error("Unsupported type sent to {}", msg.address());
-				throw new PacketException("Unsupported type sent to Mavlink-Parser!");
+			try {
+				if (!(JsonMessage.on(RawMavlink.class, msg, m -> interpretMsg(m, config)))) {
+					logger.error("Unsupported type sent to {}", msg.address());
+					throw new PacketException("Unsupported type sent to Mavlink-Parser!");
+				}
+			} catch(PacketException | ParsingException | InvalidChecksumException
+					| WrongSignatureException | AnnotationMissingException e) {
+				// @Matei log here
 			}
 		});
 		
@@ -411,7 +412,6 @@ public final class MavlinkParser extends AbstractVerticle {
 			if ((v2.incompatFlags()	& 0xff) == 0x1) {
 				subtract = 14;
 			} else if ((v2.incompatFlags() & 0xff) != 0x0) {
-				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
 				throw new ParsingException("Invalid incompatible flag set! Must either be 0x0 or 0x1!");
 			}
 
@@ -426,12 +426,25 @@ public final class MavlinkParser extends AbstractVerticle {
 			logger.error("Unsupported MAVLink-Message received on {}!", config.rawMavSupplierAddr());
 			throw new PacketException("Unsupported MAVLink-Message received!");
 		}
-
+		
+		try {
+			var minLength = (int) mavlinkClass.getMethod("minLength").invoke(null);
+			var maxLength = (int) mavlinkClass.getMethod("maxLength").invoke(null);
+			
+			if (load.length < minLength || load.length > maxLength) {
+				throw new PacketException("Payload length invalid!");
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+			throw new PacketException(e);
+		}
+		
 		/*
 		 * Check signature and checksum
 		 */
 		if (mavlinkClass.isAnnotationPresent(MavInfo.class)) {
 			MavInfo annotation = mavlinkClass.getAnnotation(MavInfo.class);
+			
 			int crcExtra = annotation.crc();
 			byte[] buildArray = Arrays.copyOfRange(raw.getRaw(), 1, raw.getRaw().length - subtract);
 			buildArray[buildArray.length-1] = (byte) crcExtra;
@@ -439,7 +452,6 @@ public final class MavlinkParser extends AbstractVerticle {
 			int crc = X25Checksum.calculate(buildArray);
 
 			if (crc != checksum) {
-				// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
 				throw new InvalidChecksumException("Checksum of received MAVLink-Package was invalid!");
 			}
 
@@ -449,11 +461,9 @@ public final class MavlinkParser extends AbstractVerticle {
 							Arrays.copyOfRange(v2.getRaw(), 1, 11),
 							Arrays.copyOfRange(v2.getRaw(), 12, 12 + v2.payload().payload().length),
 							crcExtra, v2.linkId()) == v2.signature()) {
-						// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
 						throw new WrongSignatureException("Signature of received MAVLink-Package was"
 								+ "incorrect!");						}
 				} catch (NoSuchAlgorithmException e) {
-					// TODO: Log those -> @Matei: You need to add a send for logging bad packet!
 					throw new WrongSignatureException("An unexpected error occured while checking the signature "
 							+ "of the received MAVLink-Package ", e);
 				}
@@ -479,7 +489,6 @@ public final class MavlinkParser extends AbstractVerticle {
 			final byte[] payload = load;
 
 			Constructor<? extends MavlinkMessage> constructor = mavlinkClass.getConstructor(componentTypes);
-			
 
 			Object[] parameters = Arrays.stream(components)
 					.map(c -> c.isAnnotationPresent(MavArray.class)
