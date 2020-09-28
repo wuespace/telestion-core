@@ -467,7 +467,7 @@ public final class MavlinkParser extends AbstractVerticle {
 					.toArray(RecordComponent[]::new);
 
 		/*
-		 * Start Reflection
+		 * Start interpretings
 		 */
 		try {
 			@SuppressWarnings("rawtypes")
@@ -484,8 +484,7 @@ public final class MavlinkParser extends AbstractVerticle {
 			Object[] parameters = Arrays.stream(components)
 					.map(c -> c.isAnnotationPresent(MavArray.class)
 							? IntStream.range(0, c.getAnnotation(MavArray.class).length())
-								.mapToObj(i -> parse(index, payload, c))
-								.toArray(Object[]::new)//TODO Do you want a flatMap here? - jvpichowski
+								.mapToObj(i -> parse(index, payload, c)).toArray(Object[]::new)
 							: parse(index, payload, c)).
 					toArray(Object[]::new);
 
@@ -493,6 +492,7 @@ public final class MavlinkParser extends AbstractVerticle {
 
 			vertx.eventBus().publish(config.mavConsumerAddr(), m.json());
 		} catch (Exception e) {
+			//TODO notify Matei here
 			throw new ParsingException(e);
 		}
 
@@ -504,13 +504,10 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @param c RecordComponent of the Object to parse
 	 * @param o Object to covert
 	 * @return byte[] representation of the given object
-	 * @throws IllegalAccessException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 * @throws IllegalArgumentException if the accessor of the for the {@link RecordComponent} cannot be invoked
-	 * @throws InvocationTargetException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 * @throws ParsingException if the type of the {@link RecordComponent} is unknown
 	 */
-	private byte[] recordToRaw(RecordComponent c, Object o)
-			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private byte[] recordToRaw(RecordComponent c, Object o) {
 		MavField info = c.getAnnotation(MavField.class);
 
 		NativeType natType = info.nativeType();
@@ -552,40 +549,40 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
-		try {
-			var components = Arrays.stream(mav.getClass().getRecordComponents())
-					.sorted(MavlinkParser::compareRecordComponents)
-					.toArray(RecordComponent[]::new);
-		
-			var buffer = new byte[mav.length()];
-			var index = 0;
-			for (var c : components) {
-				var o = c.getAccessor().invoke(mav);
-				if (!c.isAnnotationPresent(MavField.class)) {
-					throw new AnnotationMissingException("MavField Annotation is missing!");
-				}
-				if (c.isAnnotationPresent(MavArray.class)) {
-					int count = c.getAnnotation(MavArray.class).length();
-					var os = (Object[]) o;
-					for (int i = 0; i < count; i++) {
-						byte[] bytes = recordToRaw(c, os[i]);
-						for (byte b : bytes) {
-							buffer[index++] = b;
-						}
-					}
-				} else {
-					byte[] bytes = recordToRaw(c, o);
+
+		var components = Arrays.stream(mav.getClass().getRecordComponents())
+				.sorted(MavlinkParser::compareRecordComponents)
+				.toArray(RecordComponent[]::new);
+
+		var buffer = new byte[mav.length()];
+		var index = 0;
+		for (var c : components) {
+			Object o;
+			try {
+				o = c.getAccessor().invoke(mav);
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				throw new ParsingException(e);
+			}
+			if (!c.isAnnotationPresent(MavField.class)) {
+				throw new AnnotationMissingException("MavField Annotation is missing!");
+			}
+			if (c.isAnnotationPresent(MavArray.class)) {
+				int count = c.getAnnotation(MavArray.class).length();
+				var os = (Object[]) o;
+				for (int i = 0; i < count; i++) {
+					byte[] bytes = recordToRaw(c, os[i]);
 					for (byte b : bytes) {
 						buffer[index++] = b;
 					}
 				}
+			} else {
+				byte[] bytes = recordToRaw(c, o);
+				for (byte b : bytes) {
+					buffer[index++] = b;
+				}
 			}
-			return buffer;
-
-		} catch (Exception e){
-			throw new ParsingException("Parsing to raw failed!", e);
 		}
-
+		return buffer;
 	}
 
 }
