@@ -23,7 +23,9 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload Lint Results
-        uses: actions/upload-artifact@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
         with:
-          path: ./
+          node-version: '12.x'
+      - name: Upload Lint Annotations
+        run: node .github/workflows/parse-and-annotate-super-linter-log_js.js
