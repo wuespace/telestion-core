@@ -3,9 +3,11 @@
 This repository contains the project files which belong to the Telestion Group.
 The project extensions are in an own repository (eg. telestion-d2).
 
+[![GitHub Super-Linter](https://github.com/telestiongroup/telestion/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 ## Contributing
 
-Always create a new branch and a pull request to implement a new feature. 
+Always create a new branch and a pull request to implement a new feature.
 Because of the free plan we can't protect the master branch for now.
 But we will revert all direct changes to the master branch.
 
