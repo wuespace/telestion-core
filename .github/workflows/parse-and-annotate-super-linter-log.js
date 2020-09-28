@@ -5,7 +5,7 @@
  *
  * @author Pablo Klaschka <contact@pabloklaschka.de>
  */
-​
+
 const fs = require('fs');
 const path = require('path');
 ​
