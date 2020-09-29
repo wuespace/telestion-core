@@ -40,7 +40,7 @@ public final class Telestion extends AbstractVerticle {
 
         ConfigRetriever retriever = ConfigRetriever.create(vertx);
         retriever.getConfig(configRes -> {
-            if(configRes.failed()) {
+            if(configRes.failed()){
                 logger.error("Failed to load config", configRes.cause());
                 startPromise.fail(configRes.cause());
                 return;

@@ -24,13 +24,13 @@ public final class MessageLogger extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) {
         vertx.eventBus().addOutboundInterceptor(interceptor -> {
-            try(var c = MessageMDC.putCloseable(null, interceptor.message())) {
+            try(var c = MessageMDC.putCloseable(null, interceptor.message())){
                 logger.info("Outbound message to {}: {}", interceptor.message().address(), interceptor.body().toString());
             }
             interceptor.next();
         });
         vertx.eventBus().addInboundInterceptor(interceptor -> {
-            try(var c = MessageMDC.putCloseable(null, interceptor.message())) {
+            try(var c = MessageMDC.putCloseable(null, interceptor.message())){
                 logger.info("Inbound message to {}: {}", interceptor.message().address(), interceptor.body().toString());
             }
             interceptor.next();

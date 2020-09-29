@@ -18,7 +18,7 @@ public record Configuration(
      * Only for deserialization
      */
     @SuppressWarnings("unused")
-    private Configuration() {
+    private Configuration(){
         this(null, null);
     }
 }

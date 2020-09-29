@@ -29,7 +29,7 @@ public final class Address {
 	 * @param source {@link Verticle} to compose address from
 	 * @return composed {@link String address}
 	 */
-    public static String outgoing(Verticle source) {
+    public static String outgoing(Verticle source){
         return outgoing(source.getClass());
     }
 
@@ -39,7 +39,7 @@ public final class Address {
 	 * @param source {@link Verticle} to compose address from
 	 * @return composed {@link String address}
 	 */
-	public static String outgoing(Class<? extends Verticle> source) {
+	public static String outgoing(Class<? extends Verticle> source){
     	return source.getName()+"/out";
 	}
 
@@ -50,7 +50,7 @@ public final class Address {
      * @param method Method which specifies the output address
      * @return composed {@link String address}
      */
-    public static String outgoing(Verticle source, String method) {
+    public static String outgoing(Verticle source, String method){
         return outgoing(source.getClass(), method);
     }
 
@@ -61,7 +61,7 @@ public final class Address {
 	 * @param method Method which specifies the output address
 	 * @return composed {@link String address}
 	 */
-	public static String outgoing(Class<? extends Verticle> source, String method) {
+	public static String outgoing(Class<? extends Verticle> source, String method){
 		return outgoing(source)+"#"+method;
 	}
     
@@ -71,7 +71,7 @@ public final class Address {
 	 * @param target {@link Verticle} to compose address from
 	 * @return composed {@link String address}
 	 */
-    public static String incoming(Class<? extends Verticle> target) {
+    public static String incoming(Class<? extends Verticle> target){
         return target.getName()+"/in";
     }
     
@@ -82,7 +82,7 @@ public final class Address {
      * @param method Method which specifies the input address
      * @return composed {@link String address}
      */
-    public static String incoming(Class<? extends Verticle> target, String method) {
+    public static String incoming(Class<? extends Verticle> target, String method){
         return incoming(target)+"#"+method;
     }
 	/**
@@ -91,7 +91,7 @@ public final class Address {
 	 * @param target {@link Verticle} to compose address from
 	 * @return composed {@link String address}
 	 */
-	public static String incoming(Verticle target) {
+	public static String incoming(Verticle target){
 		return incoming(target.getClass());
 	}
 
@@ -102,7 +102,7 @@ public final class Address {
 	 * @param method Method which specifies the input address
 	 * @return composed {@link String address}
 	 */
-	public static String incoming(Verticle target, String method) {
+	public static String incoming(Verticle target, String method){
 		return incoming(target.getClass(), method);
 	}
 

@@ -25,7 +25,7 @@ public final class MessageMDC {
      * @param message {@link Message} to store
      * @return A {@link SafeCloseable} which can remove the key if {@link SafeCloseable#close() close()} is called
      */
-    public static SafeCloseable putCloseable(String key, Message<?> message) {
+    public static SafeCloseable putCloseable(String key, Message<?> message){
         put(key, message);
         return () -> remove(key);
     }
@@ -45,7 +45,7 @@ public final class MessageMDC {
      * @param key to identify the {@link Message} in the store
      * @param message {@link Message} to store
      */
-    public static void put(String key, Message<?> message) {
+    public static void put(String key, Message<?> message){
         String prefix = (key == null ? "" : key+".");
         MDC.put(prefix+"address", message.address());
         MDC.put(prefix+"replyAddress", message.replyAddress());
@@ -57,7 +57,7 @@ public final class MessageMDC {
     /**
      * Same as {@link MDC#clear()}.
      */
-    public static void clear() {
+    public static void clear(){
         MDC.clear();
     }
 
@@ -66,7 +66,7 @@ public final class MessageMDC {
      *
      * @param key identifies the {@link Message} to remove
      */
-    public static void remove(String key) {
+    public static void remove(String key){
         String prefix = (key == null ? "" : key + ".");
         MDC.remove(prefix + "address");
         MDC.remove(prefix + "replyAddress");

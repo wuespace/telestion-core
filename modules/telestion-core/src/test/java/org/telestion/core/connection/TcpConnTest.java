@@ -46,7 +46,7 @@ public class TcpConnTest {
         var client = new TcpConn("127.0.0.1", 23654, clientOutgoing, null , Collections.singletonList(clientIncoming));
 
         vertx.deployVerticle(server, result -> {
-            if(result.succeeded()) {
+            if(result.succeeded()){
                 vertx.deployVerticle(client);
             }
         });
