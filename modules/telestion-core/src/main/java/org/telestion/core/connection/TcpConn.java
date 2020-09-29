@@ -67,19 +67,15 @@ public final class TcpConn extends AbstractVerticle {
      * @param targetAddresses the list of addresses to which the incoming data should be send or null if no direct targets exist
      * @param consumingAddresses the list of addresses from which data will be consumed
      */
-    private static record Configuration(
+    @SuppressWarnings("preview")
+	private static record Configuration(
             @JsonProperty String host,
             @JsonProperty int port,
             @JsonProperty String broadcastAddress,
             @JsonProperty List<String> targetAddresses,
-<<<<<<< Updated upstream
-            @JsonProperty List<String> consumingAddresses){
-        private Configuration(){
-=======
             @JsonProperty List<String> consumingAddresses) {
         @SuppressWarnings("unused")
 		private Configuration() {
->>>>>>> Stashed changes
             this(null, 7777,
                     Address.outgoing(TcpConn.class),
                     null,
