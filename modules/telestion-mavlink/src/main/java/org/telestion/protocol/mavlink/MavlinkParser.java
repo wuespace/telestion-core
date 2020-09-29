@@ -25,6 +25,7 @@ import org.telestion.protocol.mavlink.exception.PacketException;
 import org.telestion.protocol.mavlink.exception.ParsingException;
 import org.telestion.protocol.mavlink.exception.WrongSignatureException;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
+import org.telestion.protocol.mavlink.message.MessageHelper;
 import org.telestion.protocol.mavlink.message.MessageIndex;
 import org.telestion.protocol.mavlink.message.internal.RawMavlink;
 import org.telestion.protocol.mavlink.message.internal.RawMavlinkV1;
@@ -41,8 +42,8 @@ import io.vertx.core.Promise;
 import io.vertx.core.Verticle;
 
 /**
- * A {@link Verticle} converting MAVLink-Message byte[] buffers to {@link MavlinkMessage MavlinkMessages} and vice
- * versa.<br>
+ * A {@link Verticle} converting MAVLink-Message <code>byte[]</code> buffers to {@link MavlinkMessage MavlinkMessages}
+ * and vice versa.<br>
  * This is done mostly via reflection.<br>
  * <br>
  * To convert the raw message bytes to a {@link MavlinkMessage} send {@link RawMavlink messages} to the
@@ -57,7 +58,7 @@ import io.vertx.core.Verticle;
  * <br>
  * A valid {@link HeaderContext} must be given to parse the messages to bytes. As the context is MAVLinkV1- and 
  * MAVLinkV2-compatible both output-versions are supported (for unsigned MAVLinkV2-Messages set the incompatible-Flag 
- * to 0x0 otherwise it must be 0x1).
+ * to <code>0x0</code> otherwise it must be <code>0x1</code>).
  * 
  * @author Cedric Boes, Jan von Pichowski
  * @version 1.0
@@ -182,7 +183,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				}
 			} catch(PacketException | ParsingException | InvalidChecksumException
 					| WrongSignatureException | AnnotationMissingException e) {
-				// @Matei log here
+				// TODO: @Matei log here
 			}
 		});
 		
@@ -428,14 +429,13 @@ public final class MavlinkParser extends AbstractVerticle {
 		}
 		
 		try {
-			var minLength = (int) mavlinkClass.getMethod("minLength").invoke(null);
-			var maxLength = (int) mavlinkClass.getMethod("maxLength").invoke(null);
+			var minLength = MessageHelper.minLength(mavlinkClass);
+			var maxLength = MessageHelper.maxLength(mavlinkClass);
 			
 			if (load.length < minLength || load.length > maxLength) {
 				throw new PacketException("Payload length invalid!");
 			}
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
+		} catch (IllegalArgumentException | SecurityException e) {
 			throw new PacketException(e);
 		}
 		
@@ -477,7 +477,7 @@ public final class MavlinkParser extends AbstractVerticle {
 					.toArray(RecordComponent[]::new);
 
 		/*
-		 * Start interpretings
+		 * Start interpreting
 		 */
 		try {
 			Class[] componentTypes = Arrays.stream(components)
@@ -506,7 +506,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 
 	/**
-	 * Converts an Object to a raw byte[] array.
+	 * Converts an Object to a raw <code>byte[]</code> array.
 	 *
 	 * @param c RecordComponent of the Object to parse
 	 * @param o Object to covert
@@ -548,21 +548,20 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 
 	/**
-	 * Converts a {@link MavlinkMessage} to a raw byte[] array.
+	 * Converts a {@link MavlinkMessage} to a raw <code>byte[]</code> array.
 	 *
 	 * @param mav {@link MavlinkMessage} to convert
 	 * @return converted byte[] array
 	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
 	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
-	@SuppressWarnings("rawtypes")
 	private byte[] getRaw(MavlinkMessage mav) {
 
 		var components = Arrays.stream(mav.getClass().getRecordComponents())
 				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
 
-		var buffer = new byte[mav.length()];
+		var buffer = new byte[MessageHelper.length(mav)];
 		var index = 0;
 		for (var c : components) {
 			Object o;

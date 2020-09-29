@@ -15,7 +15,6 @@ public final class MessageIndex {
 	/**
 	 * Actual Map for the linking.
 	 */
-	@SuppressWarnings("rawtypes")
 	private static HashMap<Long, Class<? extends MavlinkMessage>> map = new HashMap<>();
 	
 	/**
@@ -36,7 +35,6 @@ public final class MessageIndex {
 	 * @param clazz Class of the {@link MavlinkMessage} which should be linked
 	 * @throws IllegalArgumentException if the given id is already in use
 	 */
-	@SuppressWarnings("rawtypes")
 	public static void put(long id, Class<? extends MavlinkMessage> clazz) {
 		if (get(id) != null) {
 			throw new IllegalArgumentException("Given ID is already in use!");
@@ -63,7 +61,6 @@ public final class MessageIndex {
 	 * @param id of the {@link MavlinkMessage}
 	 * @return {@link Class} of the {@link MavlinkMessage} linked to the given id
 	 */
-	@SuppressWarnings("rawtypes")
 	public static Class<? extends MavlinkMessage> get(long id) {
 		return map.get(id);
 	}
