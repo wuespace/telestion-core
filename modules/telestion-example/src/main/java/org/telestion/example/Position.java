@@ -13,7 +13,12 @@ public record Position(
         @JsonProperty double y,
         @JsonProperty double z) implements JsonMessage {
 
+<<<<<<< Updated upstream
     private Position(){
+=======
+    @SuppressWarnings("unused")
+	private Position() {
+>>>>>>> Stashed changes
         this(0.0, 0.0, 0.0);
     }
 }

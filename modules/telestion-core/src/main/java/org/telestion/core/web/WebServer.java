@@ -23,8 +23,14 @@ public final class WebServer extends AbstractVerticle {
      *
      * @param port the port to bind to
      */
+<<<<<<< Updated upstream
     private static record Configuration(@JsonProperty int port){
         private Configuration(){
+=======
+	@SuppressWarnings({ "preview", "unused" })
+    private static record Configuration(@JsonProperty int port) {
+        private Configuration() {
+>>>>>>> Stashed changes
             this(8080);
         }
     }

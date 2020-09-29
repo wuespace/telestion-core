@@ -27,11 +27,11 @@ public interface SafeCloseable extends Closeable {
      * @param closeable {@link Closeable} to be wrapped
      * @return new {@link SafeCloseable} from the given {@link Closeable}
      */
-    static SafeCloseable safe(Closeable closeable){
+    static SafeCloseable safe(Closeable closeable) {
         return () -> {
             try {
                 closeable.close();
-            }catch (IOException ex){
+            } catch (IOException ex) {
                 LoggerFactory.getLogger(SafeCloseable.class).error(ex.getLocalizedMessage(), ex);
                 ex.printStackTrace();
             }

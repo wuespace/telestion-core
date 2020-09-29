@@ -73,7 +73,7 @@ public final class EventbusTcpBridge extends AbstractVerticle {
             @JsonProperty int port,
             @JsonProperty List<String> inboundPermitted,
             @JsonProperty List<String> outboundPermitted) {
-        private Configuration(){
+        private Configuration() {
             this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
         }
     }

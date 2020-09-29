@@ -22,7 +22,7 @@ public final class HystrixMetrics extends AbstractVerticle {
     private static record Configuration(
             @JsonProperty int port,
             @JsonProperty String path) {
-        private Configuration(){
+        private Configuration() {
             this(8080, "/hystrix-metrics");
         }
     }
