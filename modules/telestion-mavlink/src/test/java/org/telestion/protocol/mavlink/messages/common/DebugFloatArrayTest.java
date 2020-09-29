@@ -9,14 +9,14 @@ import org.telestion.protocol.mavlink.messages.official.common.DebugFloatArray;
 
 public class DebugFloatArrayTest {
 
-    @Test void testExist(){
+    @Test void testExist() {
 		assertDoesNotThrow(() -> Class.forName("org.telestion.protocol.mavlink.messages.official.common"
 				+ ".DebugFloatArray")
 				.getConstructor(long.class, int.class, int[].class, int[].class)
 				.newInstance(0, 0, null, null));
     }
 
-    @Test void testCrc(){
+    @Test void testCrc() {
         var msg = new DebugFloatArray(0, 0, null, null);
         assertThat(msg.getCrc(), is(232));
     }

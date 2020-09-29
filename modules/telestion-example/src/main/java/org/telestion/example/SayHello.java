@@ -31,7 +31,7 @@ public final class SayHello extends AbstractVerticle {
          * The default values will be set via the constructor
          */
         @SuppressWarnings("unused")
-		private Configuration(){
+		private Configuration() {
             this(1, "Hello World");
         }
     }
@@ -49,7 +49,7 @@ public final class SayHello extends AbstractVerticle {
      * No forced config is used. The config will be read from the config file or the default values will be used if the
      * config file is not available.
      */
-    public SayHello(){
+    public SayHello() {
         this.forcedConfig = null;
     }
 
@@ -59,7 +59,7 @@ public final class SayHello extends AbstractVerticle {
      * @param period
      * @param message
      */
-    public SayHello(long period, String message){
+    public SayHello(long period, String message) {
         this.forcedConfig = new Configuration(period, message);
     }
 

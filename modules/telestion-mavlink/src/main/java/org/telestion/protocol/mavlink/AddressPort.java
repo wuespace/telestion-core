@@ -24,7 +24,7 @@ public final record AddressPort(
 	 * This will only be used by the JSON-parser.
 	 */
     @SuppressWarnings("unused")
-    private AddressPort(){
+    private AddressPort() {
         this(null, 0);
     }
 }

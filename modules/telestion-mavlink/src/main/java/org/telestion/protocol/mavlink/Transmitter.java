@@ -37,7 +37,7 @@ public final class Transmitter extends AbstractVerticle {
 			@JsonProperty String rawMavSupplierAddr,
 			@JsonProperty String tcpDataConsumerAddr) {
 		@SuppressWarnings("unused")
-		private Configuration(){
+		private Configuration() {
 			this(Address.incoming(Transmitter.class), Address.outgoing(Transmitter.class));
 		}
 	}

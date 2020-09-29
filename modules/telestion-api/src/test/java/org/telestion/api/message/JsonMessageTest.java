@@ -8,13 +8,14 @@ import static org.hamcrest.Matchers.is;
 
 public class JsonMessageTest {
 
-    private static record TestMessage(@JsonProperty float param1) implements JsonMessage {
-        private TestMessage(){
+    @SuppressWarnings("preview")
+	private static record TestMessage(@JsonProperty float param1) implements JsonMessage {
+        private TestMessage() {
             this(0);
         }
     }
 
-    @Test void testOn(){
+    @Test void testOn() {
         TestMessage msg = new TestMessage();
         assertThat(JsonMessage.on(TestMessage.class, msg.json(), m -> {
             assertThat(m, is(msg));

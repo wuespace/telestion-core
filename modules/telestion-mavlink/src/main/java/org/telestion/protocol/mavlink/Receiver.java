@@ -33,7 +33,7 @@ public final class Receiver extends AbstractVerticle {
 	@SuppressWarnings("preview")
 	private static record Configuration(
 			@JsonProperty String tcpDataSupplierAddress,
-			@JsonProperty String rawMavConsumerAddress){
+			@JsonProperty String rawMavConsumerAddress) {
 
 		@SuppressWarnings("unused")
 		private Configuration() {

@@ -24,8 +24,8 @@ public final class WebServer extends AbstractVerticle {
      * @param port the port to bind to
      */
 	@SuppressWarnings({ "preview", "unused" })
-    private static record Configuration(@JsonProperty int port){
-        private Configuration(){
+    private static record Configuration(@JsonProperty int port) {
+        private Configuration() {
             this(8080);
         }
     }

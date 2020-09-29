@@ -47,11 +47,11 @@ public interface JsonMessage {
      * @param <T> Generic type for the {@link Handler}
      * @return whether decoding was successful
      */
-    static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler){
-        if(msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("className")){
+    static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler) {
+        if(msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
             try {
                 var msgClazz = Class.forName(jsonObject.getString("className"));
-                if(!clazz.isAssignableFrom(msgClazz)){
+                if(!clazz.isAssignableFrom(msgClazz)) {
                     return false;
                 }
                 handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
@@ -75,11 +75,11 @@ public interface JsonMessage {
      * @param <T> type of the {@link Message}
      * @return whether decoding was successful
      */
-    static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler){
-        if(msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("className")){
+    static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {
+        if(msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
             try {
                 var msgClazz = Class.forName(jsonObject.getString("className"));
-                if(!clazz.isAssignableFrom(msgClazz)){
+                if(!clazz.isAssignableFrom(msgClazz)) {
                     return false;
                 }
                 handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
@@ -101,7 +101,7 @@ public interface JsonMessage {
      * @param <T> type of the {@link Message}
      * @return decoded message object
      */
-    static <T extends JsonMessage> T from(String json, Class<T> type){
+    static <T extends JsonMessage> T from(String json, Class<T> type) {
         return JsonCodec.INSTANCE.fromString(json, type);
     }
 
@@ -113,7 +113,7 @@ public interface JsonMessage {
      * @param <T> type of the {@link Message}
      * @return decoded message object
      */
-    static <T extends JsonMessage> T from(Object json, Class<T> type){
+    static <T extends JsonMessage> T from(Object json, Class<T> type) {
         return JsonCodec.INSTANCE.fromString((String)json, type);
     }
 }

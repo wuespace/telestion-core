@@ -40,7 +40,7 @@ public final class TcpConn extends AbstractVerticle {
             @JsonProperty byte[] data) implements JsonMessage {
 
         @SuppressWarnings("unused")
-        private Data(){
+        private Data() {
             this(null, null);
         }
     }
@@ -55,7 +55,7 @@ public final class TcpConn extends AbstractVerticle {
     public static record Participant(@JsonProperty String host, @JsonProperty int port) implements JsonMessage {
         
         @SuppressWarnings("unused")
-        private Participant(){
+        private Participant() {
             this(null, 0);
         }
     }
@@ -73,9 +73,9 @@ public final class TcpConn extends AbstractVerticle {
             @JsonProperty int port,
             @JsonProperty String broadcastAddress,
             @JsonProperty List<String> targetAddresses,
-            @JsonProperty List<String> consumingAddresses){
+            @JsonProperty List<String> consumingAddresses) {
         @SuppressWarnings("unused")
-		private Configuration(){
+		private Configuration() {
             this(null, 7777,
                     Address.outgoing(TcpConn.class),
                     null,
@@ -93,7 +93,7 @@ public final class TcpConn extends AbstractVerticle {
     /**
      * Create a {@link TcpConn} either with file based or default configuration.
      */
-    public TcpConn(){
+    public TcpConn() {
         forcedConfig = null;
     }
 
@@ -107,7 +107,7 @@ public final class TcpConn extends AbstractVerticle {
      * @param consumingAddresses the list of addresses from which data will be consumed
      */
     public TcpConn(String host, int port,
-                   String broadcastAddress, List<String> targetAddresses, List<String> consumingAddresses){
+                   String broadcastAddress, List<String> targetAddresses, List<String> consumingAddresses) {
         forcedConfig = new Configuration(host, port, broadcastAddress, targetAddresses, consumingAddresses);
     }
 
@@ -115,7 +115,7 @@ public final class TcpConn extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
         config = Config.get(forcedConfig, config(), Configuration.class);
 
-        if(config.host == null){
+        if(config.host == null) {
             server = vertx.createNetServer(new NetServerOptions().setPort(config.port));
             server.connectHandler(this::onConnected);
             server.exceptionHandler(handler -> logger.error("TCP-Server encountered an unexpected error", handler));
@@ -129,11 +129,11 @@ public final class TcpConn extends AbstractVerticle {
 
     @Override
     public void stop(Promise<Void> stopPromise) throws Exception {
-        if(server != null){
+        if(server != null) {
             server.close(stopPromise);
             return;
         }
-        if(client != null){
+        if(client != null) {
             client.close();
             stopPromise.complete();
             return;
@@ -147,7 +147,7 @@ public final class TcpConn extends AbstractVerticle {
      *
      * @param socket the newly connected socket
      */
-    private void onConnected(NetSocket socket){
+    private void onConnected(NetSocket socket) {
         var remoteHost = socket.remoteAddress().host();
         var remotePort = socket.remoteAddress().port();
         var participant = new Participant(remoteHost, remotePort);
@@ -157,10 +157,10 @@ public final class TcpConn extends AbstractVerticle {
         socket.closeHandler(handler -> logger.info("Connection closed ({})", socket.remoteAddress()));
 
         consume(msg -> JsonMessage.on(Data.class, msg, data -> {
-            if(!participant.equals(data.participant())){
+            if(!participant.equals(data.participant())) {
                 return;
             }
-            if(socket.writeQueueFull()){
+            if(socket.writeQueueFull()) {
                 logger.error("Write queue of socket is full addr={}, port={}", remoteHost, remotePort);
                 return;
             }
@@ -176,8 +176,8 @@ public final class TcpConn extends AbstractVerticle {
      * @param handler the actual handler
      * @param <T> the type of the handled object
      */
-    private <T> void consume(Handler<Message<T>> handler){
-        if(config.consumingAddresses() != null){
+    private <T> void consume(Handler<Message<T>> handler) {
+        if(config.consumingAddresses() != null) {
             config.consumingAddresses().forEach(addr -> {
                 vertx.eventBus().consumer(addr, handler);
             });
@@ -189,11 +189,11 @@ public final class TcpConn extends AbstractVerticle {
      *
      * @param data the actual data
      */
-    private void out(Object data){
+    private void out(Object data) {
         if(config.broadcastAddress() != null) {
             vertx.eventBus().publish(config.broadcastAddress(), data);
         }
-        if(config.targetAddresses() != null){
+        if(config.targetAddresses() != null) {
             config.targetAddresses().forEach(addr -> vertx.eventBus().send(addr, data));
         }
     }
@@ -207,8 +207,8 @@ public final class TcpConn extends AbstractVerticle {
      * @param handler the handler which will be executed on a successful result
      * @param <T> the type of the result
      */
-    private static <T> void complete(AsyncResult<T> result, Promise<?> promise, Handler<T> handler){
-        if(result.failed()){
+    private static <T> void complete(AsyncResult<T> result, Promise<?> promise, Handler<T> handler) {
+        if(result.failed()) {
             promise.fail(result.cause());
             return;
         }

@@ -20,7 +20,7 @@ public final class Config {
      * @param <T> defines the class type of the configuration
      * @return the selected configuration
      */
-    public static <T> T get(T forcedConfig, JsonObject config, Class<T> type){
+    public static <T> T get(T forcedConfig, JsonObject config, Class<T> type) {
         return forcedConfig == null ? config.mapTo(type) : forcedConfig;
     }
 }

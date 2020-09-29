@@ -87,7 +87,7 @@ public class Main {
         public void start(Promise<Void> startPromise) throws Exception {
             var client = vertx.createNetClient();
             client.connect(port, "localhost", netSocketResult -> {
-                if(netSocketResult.failed()){
+                if(netSocketResult.failed()) {
                     startPromise.fail(netSocketResult.cause());
                     return;
                 }

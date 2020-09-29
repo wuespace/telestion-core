@@ -9,13 +9,13 @@ import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
 
 public class HeartbeatTest {
 
-    @Test void testExist(){
+    @Test void testExist() {
 		assertDoesNotThrow(() -> Class.forName("org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat")
 				.getConstructor(long.class, int.class, int.class, int.class, int.class, int.class)
 				.newInstance(0, 0, 0, 0, 0, 0));
     }
 
-    @Test void testCrc(){
+    @Test void testCrc() {
         var msg = new Heartbeat(0, 0, 0, 0, 0, 0);
         assertThat(msg.getCrc(), is(50));
     }

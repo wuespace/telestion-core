@@ -15,7 +15,7 @@ public record Position(
         @JsonProperty double z) implements JsonMessage {
 
     @SuppressWarnings("unused")
-	private Position(){
+	private Position() {
         this(0.0, 0.0, 0.0);
     }
 }

@@ -84,10 +84,10 @@ public final class MavlinkParser extends AbstractVerticle {
 			@JsonProperty String mavConsumerAddr,
 			@JsonProperty String mavV1SupplierAddr,
 			@JsonProperty String mavV2SupplierAddr,
-			@JsonProperty String rawMavConsumerAddr){
+			@JsonProperty String rawMavConsumerAddr) {
 
 		@SuppressWarnings("unused")
-		private Configuration(){
+		private Configuration() {
 			this(Address.incoming(MavlinkParser.class, "toMavlink"),
 					Address.outgoing(MavlinkParser.class, "toMavlink"),
 					Address.incoming(MavlinkParser.class, "toRaw1"),

@@ -65,7 +65,7 @@ public class MavlinkTest {
                 var client = vertx.createNetClient();
                 client.connect(42124, "localhost", netSocketResult -> {
                     assertThat(netSocketResult.succeeded(), is(true));
-                    if(netSocketResult.failed()){
+                    if(netSocketResult.failed()) {
                         startPromise.fail(netSocketResult.cause());
                         return;
                     }
