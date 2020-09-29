@@ -18,7 +18,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.Verticle;
 
 /**
- * {@link Verticle} which handles outgoing MAVLink-Messages (as {@link RawMavlink}).</br>
+ * {@link Verticle} which handles outgoing MAVLink-Messages (as {@link RawMavlink}).<br>
  * Outgoing messages will be send to the {@link TcpServer}.
  *  
  * @author Cedric Boes, Jan von Pichowski

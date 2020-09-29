@@ -42,19 +42,19 @@ import io.vertx.core.Verticle;
 
 /**
  * A {@link Verticle} converting MAVLink-Message byte[] buffers to {@link MavlinkMessage MavlinkMessages} and vice
- * versa.</br>
- * This is done mostly via reflection.</br>
- * </br>
+ * versa.<br>
+ * This is done mostly via reflection.<br>
+ * <br>
  * To convert the raw message bytes to a {@link MavlinkMessage} send {@link RawMavlink messages} to the
- * {@link #toMavlinkInAddress}. The result will be published on {@link #toMavlinkOutAddress}.</br>
+ * {@link #toMavlinkInAddress}. The result will be published on {@link #toMavlinkOutAddress}.<br>
  * For getting the raw-message from a {@link MavlinkMessage} simply send it as json-message to
  * {@link #toRawInAddressV1} or {@link #toRawInAddressV2} depending on the MAVLink version you want to address. Results 
- * will be published on the {@value #toRawOutAddress}.</br>
- * </br>
+ * will be published on the {@value #toRawOutAddress}.<br>
+ * <br>
  * Supported {@link MavlinkMessage messages} must be registered in the {@link MessageIndex} as the index cannot be
  * recognized otherwise. In addition to that they also must meet the requirements in general (e.g. must be records and 
- * be annotated in the correct way).</br>
- * </br>
+ * be annotated in the correct way).<br>
+ * <br>
  * A valid {@link HeaderContext} must be given to parse the messages to bytes. As the context is MAVLinkV1- and 
  * MAVLinkV2-compatible both output-versions are supported (for unsigned MAVLinkV2-Messages set the incompatible-Flag 
  * to 0x0 otherwise it must be 0x1).
@@ -116,7 +116,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	private static final Logger logger = LoggerFactory.getLogger(MavlinkParser.class);
 
 	/**
-	 * Default {@link MavlinkParser} which can only be used for receiving data.</br>
+	 * Default {@link MavlinkParser} which can only be used for receiving data.<br>
 	 * This can only be used for telemetry.
 	 */
 	public MavlinkParser() {
@@ -125,7 +125,7 @@ public final class MavlinkParser extends AbstractVerticle {
 
 
 	/**
-	 * Default {@link MavlinkParser} which can only be used for receiving data.</br>
+	 * Default {@link MavlinkParser} which can only be used for receiving data.<br>
 	 * This can only be used for telemetry.
 	 *
 	 * @param forcedConfig the forced configuration
@@ -396,7 +396,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 *
 	 * @param raw message to parse
 	 */
-	@SuppressWarnings("preview")
+	@SuppressWarnings({ "preview", "rawtypes" })
 	private void interpretMsg(RawMavlink raw, Configuration config) {
 
 		Class<? extends MavlinkMessage> mavlinkClass = null;
@@ -480,7 +480,6 @@ public final class MavlinkParser extends AbstractVerticle {
 		 * Start interpretings
 		 */
 		try {
-			@SuppressWarnings("rawtypes")
 			Class[] componentTypes = Arrays.stream(components)
 					.map(RecordComponent::getType)
 					.toArray(Class[]::new);
@@ -501,7 +500,6 @@ public final class MavlinkParser extends AbstractVerticle {
 
 			vertx.eventBus().publish(config.mavConsumerAddr(), m.json());
 		} catch (Exception e) {
-			//TODO notify Matei here
 			throw new ParsingException(e);
 		}
 
@@ -557,6 +555,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
 	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
+	@SuppressWarnings("rawtypes")
 	private byte[] getRaw(MavlinkMessage mav) {
 
 		var components = Arrays.stream(mav.getClass().getRecordComponents())

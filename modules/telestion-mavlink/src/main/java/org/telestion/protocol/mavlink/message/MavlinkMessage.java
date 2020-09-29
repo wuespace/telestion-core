@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
- * Superclass for all MavliinkMessages.</br>
+ * Superclass for all MavliinkMessages.<br>
  * Implementations will be created automatically by the xml2record-tool.
  * 
  * @author Cedric Boes
  * @version 1.0
  */
-public interface MavlinkMessage extends JsonMessage {
+public interface MavlinkMessage<T> extends JsonMessage {
 	
 	/**
 	 * Returns the actual size of a message-object.
@@ -46,7 +46,7 @@ public interface MavlinkMessage extends JsonMessage {
 	}
 	
 	/**
-	 * Checks if the necessary {@link MavInfo MavInfo-Annotation} is present.</br>
+	 * Checks if the necessary {@link MavInfo MavInfo-Annotation} is present.<br>
 	 * If so a representing Object will be returned otherwise an {@link AnnotationMissingException} will be thrown.
 	 * 
 	 * @return {@link MavInfo} of this class if present
@@ -62,11 +62,11 @@ public interface MavlinkMessage extends JsonMessage {
 	}
 	
 	/**
-	 * Returns the CRC_EXTRA-Byte for the {@link MavlinkMessage} declared in the {@link MavInfo}.</br>
+	 * Returns the CRC_EXTRA-Byte for the {@link MavlinkMessage} declared in the {@link MavInfo}.<br>
 	 * It is used for the checksum-calculation based on the {@link X25Checksum} algorithm (also know as
-	 * <code>CRC-16-CCITT</code>).</br>
-	 * </br>
-	 * For more information see:</br>
+	 * <code>CRC-16-CCITT</code>).<br>
+	 * <br>
+	 * For more information see:<br>
 	 * <a href="https://mavlink.io/en/guide/serialization.html#crc_extra">
 	 * https://mavlink.io/en/guide/serialization.html#crc_extra</a>
 	 * 
@@ -79,10 +79,10 @@ public interface MavlinkMessage extends JsonMessage {
 	}
 	
 	/**
-	 * Returns the id of the {@link MavlinkMessage} declared in the {@link MavInfo}.</br>
-	 * it is used to identify the message which was sent to cast the payload.</br>
-	 * </br>
-	 * For more information see:</br>
+	 * Returns the id of the {@link MavlinkMessage} declared in the {@link MavInfo}.<br>
+	 * it is used to identify the message which was sent to cast the payload.<br>
+	 * <br>
+	 * For more information see:<br>
 	 * <a href="https://mavlink.io/en/guide/serialization.html">https://mavlink.io/en/guide/serialization.html</a>
 	 * 
 	 * @return id of the {@link MavlinkMessage}
@@ -94,8 +94,8 @@ public interface MavlinkMessage extends JsonMessage {
 	}
 	
 	/**
-	 * Returns the minimum length of this message with all extension excluded.</br>
-	 * </br>
+	 * Returns the minimum length of this message with all extension excluded.<br>
+	 * <br>
 	 * <em>Note if {@link #minLength()} and {@link #maxLength()} are equal, there are no extensions!</em> 
 	 * 
 	 * @return minimum length of message
@@ -110,8 +110,8 @@ public interface MavlinkMessage extends JsonMessage {
 	}
 	
 	/**
-	 * Returns the maximum length of this message with all extensions in use.</br>
-	 * </br>
+	 * Returns the maximum length of this message with all extensions in use.<br>
+	 * <br>
 	 * <em>Note if {@link #minLength()} and {@link #maxLength()} are equal, there are no extensions!</em> 
 	 * 
 	 * @return maximum length of message
@@ -125,7 +125,7 @@ public interface MavlinkMessage extends JsonMessage {
 	}
 	
 	/**
-	 * Calculates the length of a {@link RecordComponent} from a {@link MavlinkMessage}.</br>
+	 * Calculates the length of a {@link RecordComponent} from a {@link MavlinkMessage}.<br>
 	 * If the component is an array the size will be calculated with respect to its length.
 	 * 
 	 * @param c RecordComponent for calculation

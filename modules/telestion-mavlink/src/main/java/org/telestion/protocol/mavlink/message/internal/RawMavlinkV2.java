@@ -25,8 +25,8 @@ public final record RawMavlinkV2(
 		 */
 		@JsonProperty short len,
 		/**
-		 * Represents the incompatible-flags for the MAVLinkV2-packets.</br>
-		 * </br>
+		 * Represents the incompatible-flags for the MAVLinkV2-packets.<br>
+		 * <br>
 		 * <em>Note that implementation discards packet if it does not understand flag.</em>
 		 */
 		@JsonProperty short incompatFlags,
@@ -36,26 +36,26 @@ public final record RawMavlinkV2(
 		 */
 		@JsonProperty short compatFlags,
 		/**
-		 * A "unique" id for packages to identify packet loss. Will be incremented for each packet.</br>
+		 * A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
 		 * The parser later must identify if there has occurred any packet loss.
 		 */
 		@JsonProperty short seq,
 		/**
-		 * ID of system (vehicle) sending the message. Used to differentiate systems on network.</br>
-		 * </br>
+		 * ID of system (vehicle) sending the message. Used to differentiate systems on network.<br>
+		 * <br>
 		 * <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source address.</em>
 		 */
 		@JsonProperty short sysId,
 		/**
 		 * ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a 
-		 * camera). Use appropriate values in MAV_COMPONENT.</br>
-		 * </br>
+		 * camera). Use appropriate values in MAV_COMPONENT.<br>
+		 * <br>
 		 * <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid source 
 		 * address.</em>
 		 */
 		@JsonProperty short compId,
 		/**
-		 * Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.</br>
+		 * Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.<br>
 		 * Compared to MAVLinkV1 this allows for 3 (unsigned) bytes of message id.
 		 */
 		@JsonProperty long msgId,
@@ -77,7 +77,7 @@ public final record RawMavlinkV2(
 		@JsonProperty byte[] signature) implements RawMavlink {
 	
 	/**
-	 * There shall be no default constructor for normal people.</br>
+	 * There shall be no default constructor for normal people.<br>
 	 * This will only be used by the JSON-parser.
 	 */
 	@SuppressWarnings("unused")
@@ -86,8 +86,8 @@ public final record RawMavlinkV2(
 	}
 	
 	/**
-	 * Creates a new {@link RawMavlinkV2 object} from a byte representation.</br>
-	 * To successfully read this, the starting byte (0xFD) must still be included.
+	 * Creates a new {@link RawMavlinkV2 object} from a byte representation.<br>
+	 * To successfully read this, the starting byte <code>(0xFD)</code> must still be included.
 	 * 
 	 * @param bytes raw MAVLink-message
 	 */

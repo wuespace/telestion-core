@@ -25,14 +25,14 @@ public final record RawMavlinkV1(
 		 */
 		@JsonProperty short len,
 		/**
-		 * A "unique" id for packages to identify packet loss. Will be incremented for each packet.</br>
+		 * A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
 		 * The parser later must identify if there has occurred any packet loss.
 		 */
 		@JsonProperty short seq,
 		/**
 		 * ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a 
-		 * camera). Use appropriate values in MAV_COMPONENT.</br>
-		 * </br>
+		 * camera). Use appropriate values in MAV_COMPONENT.<br>
+		 * <br>
 		 * <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid source 
 		 * address.</em>
 		 */
@@ -51,7 +51,7 @@ public final record RawMavlinkV1(
 		@JsonProperty int checksum) implements RawMavlink {
 
 	/**
-	 * There shall be no default constructor for normal people.</br>
+	 * There shall be no default constructor for normal people.<br>
 	 * This will only be used by the JSON-parser.
 	 */
 	@SuppressWarnings("unused")
@@ -60,7 +60,7 @@ public final record RawMavlinkV1(
 	}
 	
 	/**
-	 * Creates a new {@link RawMavlinkV1 object} from a byte representation.</br>
+	 * Creates a new {@link RawMavlinkV1 object} from a byte representation.<br>
 	 * To successfully read this, the starting byte (0xFE) must still be included.
 	 * 
 	 * @param bytes raw MAVLink-message

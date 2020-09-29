@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 /**
  * The {@link MavV2Signator} creates a "unique" 7 byte signature for MavlinkV2-Messages in according to the 
- * specifications.</br>
- * </br>
+ * specifications.<br>
+ * <br>
  * A signature contains:
  * <ul>
  * <li>1 byte for the linkId</li>
