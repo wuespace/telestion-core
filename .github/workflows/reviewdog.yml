@@ -1,0 +1,22 @@
+name: reviewdog
+on: [pull_request]
+jobs:
+  checkstyle:
+    name: Checkstyle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '15'
+          java-package: jre
+          architecture: x64
+      - uses: actions/checkout@v2
+      - uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+      - name: Download checkstyle
+        run: wget -O - -q https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.36.2/checkstyle-8.36.2-all.jar > checkstyle.jar
+      - name: Run checkstyle
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: java -jar checkstyle.jar . -c .github/workflows/checkstyle.xml -f xml | reviewdog -f=checkstyle -fail-on-error=false -level=warning -reporter=github-pr-review -filter-mode=added
