@@ -47,7 +47,7 @@ public final class MessageHelper {
 	public static int minLength(Class<? extends MavlinkMessage> msg) {
 		return Arrays.stream(msg.getRecordComponents())
 				.filter(component -> component.isAnnotationPresent(MavField.class))
-				.filter(component -> component.getAnnotation(MavField.class).extension() == false)
+				.filter(component -> !component.getAnnotation(MavField.class).extension())
 				.mapToInt(MessageHelper::calcRecordLength)
 				.sum();
 	}
