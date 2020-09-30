@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import io.vertx.core.eventbus.Message;
+import io.vertx.junit5.Checkpoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -88,6 +89,8 @@ public class MavlinkTest {
     
     @Test
     void testTransmitter(Vertx vertx, VertxTestContext testContext) throws Throwable {
+        var checkpoint = testContext.checkpoint(3);
+
         var receiverToParser = "receiverToParser";
         var parserOut = "parserOut";
         var v1ToRaw = "v1ToRaw";
@@ -108,16 +111,16 @@ public class MavlinkTest {
         vertx.deployVerticle(parser);
         vertx.deployVerticle(new MessageLogger());
 
-        vertx.eventBus().consumer(transmitterConsumer, msg -> verifyResult(msg, testContext));
+        vertx.eventBus().consumer(transmitterConsumer, msg -> verifyResult(msg, testContext, checkpoint));
         
         logger.info("Testing MAVLinkV1");
         vertx.eventBus().publish(v1ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
-        assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
+        Thread.sleep(Duration.ofSeconds(1).toMillis());
 
         logger.info("Testing MAVLinkV2 (without signing)");
         vertx.eventBus().publish(v2ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
-        assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
-        
+        Thread.sleep(Duration.ofSeconds(1).toMillis());
+
         parser.changeHeaderContext(new HeaderContext((short) 0x01, (short) 0x0, (short) 0x0, (short) 0x0, (short) 0x2));
         logger.info("Testing MAVLinkV2 (with signing)");
         vertx.eventBus().publish(v2ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
@@ -128,7 +131,7 @@ public class MavlinkTest {
         }
     }
 
-    private static void verifyResult(Message<?> msg, VertxTestContext testContext){
+    private static void verifyResult(Message<?> msg, VertxTestContext testContext, Checkpoint checkpoint){
         // Test RawMavlinkV1
         JsonMessage.on(RawPayload.class, msg, handler -> {
 
@@ -178,7 +181,7 @@ public class MavlinkTest {
                 }
 
                 assertThat(handler.payload(), is(message));
-                testContext.completeNow();
+                checkpoint.flag();
             } catch (AssertionError | NoSuchAlgorithmException e) {
                 testContext.failNow(e);
             }
