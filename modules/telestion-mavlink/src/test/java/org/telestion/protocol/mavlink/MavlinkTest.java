@@ -104,7 +104,7 @@ public class MavlinkTest {
 
         MavlinkParser parser = new MavlinkParser(
         		new HeaderContext((short) 0x0, (short) 0x0, (short) 0x1, (short) 0x1, (short) 0x2),
-        		new SecretKeySafe(secretKey),
+        		new SecretKeySafe(SECRET_KEY),
         		new MavlinkParser.Configuration(receiverToParser, parserOut, v1ToRaw, v2ToRaw, parserToTransmitter));
         
         vertx.deployVerticle(new Transmitter(parserToTransmitter, transmitterConsumer));
@@ -155,7 +155,7 @@ public class MavlinkTest {
                         System.out.println(Arrays.toString(message));
 
                         var timestamp = Arrays.copyOfRange(payload, payload[1] + 11, payload[1] + 17);
-                        var signature = MavV2Signator.rawSignature(secretKey, Arrays.copyOfRange(message, 1, 10),
+                        var signature = MavV2Signator.rawSignature(SECRET_KEY, Arrays.copyOfRange(message, 1, 10),
                                 Arrays.copyOfRange(message, 10, 10 + message[1]), 0x32, (short) 0x2,
                                 timestamp);
                         var buildMsg = new byte[message.length + 13];
@@ -233,5 +233,5 @@ public class MavlinkTest {
     
     private static final int HEARTBEAT_ID = 0;
 
-    private static final byte[] secretKey = new byte[] {(byte) 0x97, (byte) 0x98, (byte) 0x99, (byte) 0xA0};
+    private static final byte[] SECRET_KEY = new byte[] {(byte) 0x97, (byte) 0x98, (byte) 0x99, (byte) 0xA0};
 }
