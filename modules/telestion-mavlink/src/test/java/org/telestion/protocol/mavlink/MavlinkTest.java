@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import io.vertx.core.eventbus.Message;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -106,7 +107,7 @@ public class MavlinkTest {
         vertx.deployVerticle(new Transmitter(parserToTransmitter, transmitterConsumer));
         vertx.deployVerticle(parser);
         vertx.deployVerticle(new MessageLogger());
-        
+
         vertx.eventBus().consumer(transmitterConsumer, msg -> verifyResult(msg, testContext));
         
         logger.info("Testing MAVLinkV1");
@@ -127,7 +128,7 @@ public class MavlinkTest {
         }
     }
 
-    private static void verifyResult(Object msg, VertxTestContext testContext){
+    private static void verifyResult(Message<?> msg, VertxTestContext testContext){
         // Test RawMavlinkV1
         JsonMessage.on(RawPayload.class, msg, handler -> {
 
