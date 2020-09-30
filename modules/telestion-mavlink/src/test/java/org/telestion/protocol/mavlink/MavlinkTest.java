@@ -97,8 +97,7 @@ public class MavlinkTest {
         if (!MessageIndex.isRegistered(HEARTBEAT_ID)) {
         	MessageIndex.put(HEARTBEAT_ID, Heartbeat.class);
         }
-        
-        byte[] secretKey = new byte[] {(byte) 0x97, (byte) 0x98, (byte) 0x99, (byte) 0xA0};
+
         MavlinkParser parser = new MavlinkParser(
         		new HeaderContext((short) 0x0, (short) 0x0, (short) 0x1, (short) 0x1, (short) 0x2),
         		new SecretKeySafe(secretKey),
@@ -108,62 +107,7 @@ public class MavlinkTest {
         vertx.deployVerticle(parser);
         vertx.deployVerticle(new MessageLogger());
         
-        vertx.eventBus().consumer(transmitterConsumer, msg -> {
-            // Test RawMavlinkV1
-        	JsonMessage.on(RawPayload.class, msg, handler -> {
-        		
-        		try {
-        			byte[] payload = handler.payload();
-        			
-        			var message = new byte[0];
-        			if (payload[0] == (byte) 0xFE) {
-            			message = HEARTBEAT_MESSAGE_V1;
-            			message[2] = payload[2];		// Message-Index is unimportant
-        			} else if (payload[0] == (byte) 0xFD) {
-        				message = HEARTBEAT_MESSAGE_V2;
-        				message[4] = payload[4];		// Message-Index is unimportant
-        				
-        				if (payload[2] == 0x1) {
-        					System.out.println(Arrays.toString(payload));
-        					System.out.println(Arrays.toString(message));
-        					
-        					message[2] = (byte) 0x1;
-        					
-        					System.out.println(Arrays.toString(message));
-        					
-        					var timestamp = Arrays.copyOfRange(payload, payload[1] + 11, payload[1] + 17);
-        					var signature = MavV2Signator.rawSignature(secretKey, Arrays.copyOfRange(message, 1, 10),
-				        							Arrays.copyOfRange(message, 10, 10 + message[1]), 0x32, (short) 0x2,
-				        							timestamp);
-        					var buildMsg = new byte[message.length + 13];
-        					var index = 0;
-        					for (byte b : message) {
-        						buildMsg[index++] = b;
-        					}
-        					
-        					buildMsg[index++] = (byte) 0x2;
-        					
-        					for (byte b : timestamp) {
-        						buildMsg[index++] = b;
-        					}
-        					
-        					for (byte b : signature) {
-        						buildMsg[index++] = b;
-        					}
-        					
-        					message = buildMsg;
-        				}
-        			} else {
-        				testContext.failNow(new PacketException("First byte of payload has to be [0xFE, 0xFD]"));
-        			}
-        			
-		    		assertThat(handler.payload(), is(message));
-		    		testContext.completeNow();
-        		} catch (AssertionError | NoSuchAlgorithmException e) {
-        			testContext.failNow(e);
-        		}
-        	});
-        });
+        vertx.eventBus().consumer(transmitterConsumer, msg -> verifyResult(msg, testContext));
         
         logger.info("Testing MAVLinkV1");
         vertx.eventBus().publish(v1ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
@@ -181,6 +125,63 @@ public class MavlinkTest {
         if (testContext.failed()) {
         	throw testContext.causeOfFailure();
         }
+    }
+
+    private static void verifyResult(Object msg, VertxTestContext testContext){
+        // Test RawMavlinkV1
+        JsonMessage.on(RawPayload.class, msg, handler -> {
+
+            try {
+                byte[] payload = handler.payload();
+
+                var message = new byte[0];
+                if (payload[0] == (byte) 0xFE) {
+                    message = HEARTBEAT_MESSAGE_V1;
+                    message[2] = payload[2];		// Message-Index is unimportant
+                } else if (payload[0] == (byte) 0xFD) {
+                    message = HEARTBEAT_MESSAGE_V2;
+                    message[4] = payload[4];		// Message-Index is unimportant
+
+                    if (payload[2] == 0x1) {
+                        System.out.println(Arrays.toString(payload));
+                        System.out.println(Arrays.toString(message));
+
+                        message[2] = (byte) 0x1;
+
+                        System.out.println(Arrays.toString(message));
+
+                        var timestamp = Arrays.copyOfRange(payload, payload[1] + 11, payload[1] + 17);
+                        var signature = MavV2Signator.rawSignature(secretKey, Arrays.copyOfRange(message, 1, 10),
+                                Arrays.copyOfRange(message, 10, 10 + message[1]), 0x32, (short) 0x2,
+                                timestamp);
+                        var buildMsg = new byte[message.length + 13];
+                        var index = 0;
+                        for (byte b : message) {
+                            buildMsg[index++] = b;
+                        }
+
+                        buildMsg[index++] = (byte) 0x2;
+
+                        for (byte b : timestamp) {
+                            buildMsg[index++] = b;
+                        }
+
+                        for (byte b : signature) {
+                            buildMsg[index++] = b;
+                        }
+
+                        message = buildMsg;
+                    }
+                } else {
+                    testContext.failNow(new PacketException("First byte of payload has to be [0xFE, 0xFD]"));
+                }
+
+                assertThat(handler.payload(), is(message));
+                testContext.completeNow();
+            } catch (AssertionError | NoSuchAlgorithmException e) {
+                testContext.failNow(e);
+            }
+        });
     }
     
     private static final byte[] HEARTBEAT_MESSAGE_V1 = {
@@ -227,4 +228,6 @@ public class MavlinkTest {
     };
     
     private static final int HEARTBEAT_ID = 0;
+
+    private static final byte[] secretKey = new byte[] {(byte) 0x97, (byte) 0x98, (byte) 0x99, (byte) 0xA0};
 }
