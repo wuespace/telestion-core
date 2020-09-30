@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -46,7 +47,7 @@ public class MavlinkTest {
         if (!MessageIndex.isRegistered(HEARTBEAT_ID)) {
         	MessageIndex.put(HEARTBEAT_ID, Heartbeat.class);
         }
-        
+
         vertx.deployVerticle(new TcpConn(null, 42124, tcpToReceiver, null, null));
         vertx.deployVerticle(new Receiver(tcpToReceiver, receiverToParser));
         vertx.deployVerticle(new MavlinkParser(new MavlinkParser.Configuration(
@@ -58,6 +59,8 @@ public class MavlinkTest {
                 testContext.completeNow();
             });
         });
+
+        Thread.sleep(Duration.ofSeconds(1).toMillis());
 
         vertx.deployVerticle(new AbstractVerticle() {
             @Override

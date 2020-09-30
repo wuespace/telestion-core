@@ -1,9 +1,9 @@
 package org.telestion.protocol.mavlink.message;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
 
+import org.telestion.core.util.UnsafePredicate;
 import org.telestion.protocol.mavlink.annotation.MavArray;
 import org.telestion.protocol.mavlink.annotation.MavField;
 
@@ -31,13 +31,7 @@ public final class MessageHelper {
 	public static int length(MavlinkMessage msg) {
 		return Arrays.stream(msg.getClass().getRecordComponents())
 				.filter(component -> component.isAnnotationPresent(MavField.class))
-				.filter(component -> {
-					try {
-						return component.getAccessor().invoke(msg) != null;
-					} catch(InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
-						return false;
-					}
-				})
+				.filter(UnsafePredicate.safe(component -> component.getAccessor().invoke(msg) != null))
 				.mapToInt(MessageHelper::calcRecordLength)
 				.sum();
 
