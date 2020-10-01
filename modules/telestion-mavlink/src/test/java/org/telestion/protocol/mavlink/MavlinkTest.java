@@ -127,6 +127,7 @@ public class MavlinkTest {
         vertx.eventBus().publish(v2ToRaw, new Heartbeat(150_995_456L, 0, 0, 0, 4, 20).json());
         
 //        assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
+        Thread.sleep(Duration.ofSeconds(2).toMillis());
         if (testContext.failed()) {
         	throw testContext.causeOfFailure();
         }
