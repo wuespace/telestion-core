@@ -117,13 +117,14 @@ public class MavlinkTest {
         vertx.eventBus().publish(v1ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
         Thread.sleep(Duration.ofSeconds(1).toMillis());
 
+        parser.changeHeaderContext(new HeaderContext((short) 0x0, (short) 0x0, (short) 0x1, (short) 0x1, (short) 0x2));
         logger.info("Testing MAVLinkV2 (without signing)");
-        vertx.eventBus().publish(v2ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
+        vertx.eventBus().publish(v2ToRaw, new Heartbeat(150_995_456L, 0, 0, 0, 4, 20).json());
         Thread.sleep(Duration.ofSeconds(1).toMillis());
 
-        parser.changeHeaderContext(new HeaderContext((short) 0x01, (short) 0x0, (short) 0x0, (short) 0x0, (short) 0x2));
+        parser.changeHeaderContext(new HeaderContext((short) 0x01, (short) 0x0, (short) 0x1, (short) 0x1, (short) 0x2));
         logger.info("Testing MAVLinkV2 (with signing)");
-        vertx.eventBus().publish(v2ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
+        vertx.eventBus().publish(v2ToRaw, new Heartbeat(150_995_456L, 0, 0, 0, 4, 20).json());
         
         assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
         if (testContext.failed()) {
@@ -147,17 +148,17 @@ public class MavlinkTest {
                     message[4] = payload[4];		// Message-Index is unimportant
 
                     if (payload[2] == 0x1) {
-                        System.out.println(Arrays.toString(payload));
-                        System.out.println(Arrays.toString(message));
+                    	message[2] = 0x1;
 
-                        message[2] = (byte) 0x1;
+                        var len = message.length;
+                        message[len-2] = (byte) 0xAB;
+                        message[len-1] = (byte) 0xCF;
 
-                        System.out.println(Arrays.toString(message));
-
-                        var timestamp = Arrays.copyOfRange(payload, payload[1] + 11, payload[1] + 17);
+                        var timestamp = Arrays.copyOfRange(payload, payload[1] + 13, payload[1] + 19);
                         var signature = MavV2Signator.rawSignature(SECRET_KEY, Arrays.copyOfRange(message, 1, 10),
                                 Arrays.copyOfRange(message, 10, 10 + message[1]), 0x32, (short) 0x2,
                                 timestamp);
+
                         var buildMsg = new byte[message.length + 13];
                         var index = 0;
                         for (byte b : message) {
@@ -169,7 +170,7 @@ public class MavlinkTest {
                         for (byte b : timestamp) {
                             buildMsg[index++] = b;
                         }
-
+                        
                         for (byte b : signature) {
                             buildMsg[index++] = b;
                         }
@@ -203,8 +204,8 @@ public class MavlinkTest {
     		(byte) 0x04,	// d
     		(byte) 0x05,	// V
     		(byte) 0x06,	// 1
-    		(byte) 0x01,	// checksum #1
-    		(byte) 0xC1,	// checksum #2
+    		(byte) 0xC5,	// checksum #1
+    		(byte) 0x16,	// checksum #2
     };
     
     private static final byte[] HEARTBEAT_MESSAGE_V2 = {

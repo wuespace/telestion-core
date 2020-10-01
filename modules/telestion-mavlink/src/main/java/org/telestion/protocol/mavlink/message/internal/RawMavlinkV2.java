@@ -102,7 +102,7 @@ public final record RawMavlinkV2(
 				new RawPayload(Arrays.copyOfRange(bytes, 10, bytes[1] + 10)),
 				(int)	(bytes[bytes[1] + 10] << 8) + bytes[bytes[1] + 11],
 				(short) (bytes[2] & 0x1) == 0x1 ? bytes[bytes[1] + 12] : 0,
-				(byte[])((bytes[2] & 0x1) == 0x1 ? Arrays.copyOfRange(bytes, 13, 25)
+				(byte[])((bytes[2] & 0x1) == 0x1 ? Arrays.copyOfRange(bytes, bytes[1] + 12, bytes[1] + 25)
 								: new byte[] {}));
 	}
 	

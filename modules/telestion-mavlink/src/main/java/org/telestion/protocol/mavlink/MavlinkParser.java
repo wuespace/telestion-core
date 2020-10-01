@@ -198,20 +198,22 @@ public final class MavlinkParser extends AbstractVerticle {
 					logger.warn("MessageIds starting at 0 (again)!");
 				}
 				
-				var bytes = new byte[payload.length + 4];
+				var bytes = new byte[payload.length + 5];
 				bytes[0] = (byte) (payload.length	&	0xff);
 				bytes[1] = (byte) (seq				&	0xff);
 				bytes[2] = (byte) (context.compId()	&	0xff);
 				bytes[3] = (byte) (raw.getId()		&	0xff);
-								
+				
 				var index = 4;
 				for (byte b : payload) {
 					bytes[index++] = b;
 				}
 				
+				bytes[bytes.length-1] = (byte) raw.getCrc();
+				
 				int checksum = X25Checksum.calculate(bytes);
 				
-				byte[] rawBytes = new byte[bytes.length + 3];
+				byte[] rawBytes = new byte[bytes.length + 2];
 				rawBytes[0] = (byte) 0xFE;
 				index = 1;
 				
@@ -219,7 +221,7 @@ public final class MavlinkParser extends AbstractVerticle {
 					rawBytes[index++] = b;
 				}
 				
-				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
+				rawBytes[index-1] = (byte) (checksum >> 8 & 0xff);
 				rawBytes[index] = 	(byte) (checksum & 0xff);
 				
 				vertx.eventBus().send(config.rawMavConsumerAddr(), new RawMavlinkV1(rawBytes).json());
@@ -239,7 +241,7 @@ public final class MavlinkParser extends AbstractVerticle {
 					logger.warn("MessageIds starting at 0 (again)!");
 				}
 				
-				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 9);
+				ByteBuffer buffer = ByteBuffer.allocate(payload.length + 10);
 				buffer.put((byte) (payload.length			&	0xff));
 				buffer.put((byte) (context.incompFlags()	&	0xff));
 				buffer.put((byte) (context.compFlags()		&	0xff));
@@ -250,6 +252,7 @@ public final class MavlinkParser extends AbstractVerticle {
 				buffer.put((byte) ((raw.getId() >> 8)		&	0xff));
 				buffer.put((byte) (raw.getId()				&	0xff));
 				buffer.put(payload);
+				buffer.put((byte) (raw.getCrc()				&	0xff));
 				
 				int checksum = X25Checksum.calculate(buffer.array());
 				byte[] signature = new byte[0];
@@ -264,7 +267,7 @@ public final class MavlinkParser extends AbstractVerticle {
 					}
 				}
 				
-				byte[] rawBytes = new byte[buffer.capacity() + 16];
+				byte[] rawBytes = new byte[buffer.capacity() + 15];
 				rawBytes[0] = (byte) 0xFD;
 				int index = 1;
 				
@@ -273,8 +276,8 @@ public final class MavlinkParser extends AbstractVerticle {
 					rawBytes[index++] = b;
 				}
 				
-				rawBytes[index++] = (byte) (checksum >> 8 & 0xff);
-				rawBytes[index++] = (byte) (checksum & 0xff);
+				rawBytes[index-1] 	= (byte) (checksum >> 8 & 0xff);
+				rawBytes[index++] 	= (byte) (checksum & 0xff);
 				
 				for (byte b : signature) {
 					rawBytes[index++] = b;
