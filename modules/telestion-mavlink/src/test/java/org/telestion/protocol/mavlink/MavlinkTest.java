@@ -1,13 +1,15 @@
 package org.telestion.protocol.mavlink;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.Message;
-import io.vertx.junit5.Checkpoint;
-import io.vertx.junit5.VertxExtension;
-import io.vertx.junit5.VertxTestContext;
+
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -22,13 +24,14 @@ import org.telestion.protocol.mavlink.security.HeaderContext;
 import org.telestion.protocol.mavlink.security.MavV2Signator;
 import org.telestion.protocol.mavlink.security.SecretKeySafe;
 
-import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.Message;
+import io.vertx.junit5.Checkpoint;
+import io.vertx.junit5.VertxExtension;
+import io.vertx.junit5.VertxTestContext;
 
 @ExtendWith(VertxExtension.class)
 public class MavlinkTest {
@@ -72,6 +75,7 @@ public class MavlinkTest {
 			(byte) 0x54, // checksum #1
 			(byte) 0x28 // checksum #2
 	};
+	
 	private static final int HEARTBEAT_ID = 0;
 	private static final byte[] SECRET_KEY = new byte[] { (byte) 0x97, (byte) 0x98, (byte) 0x99, (byte) 0xA0 };
 	private static Logger logger = org.slf4j.LoggerFactory.getLogger(MavlinkTest.class);
@@ -98,10 +102,6 @@ public class MavlinkTest {
 						message[len - 2] = (byte) 0xAB;
 						message[len - 1] = (byte) 0xCF;
 
-						var timestamp = Arrays.copyOfRange(payload, payload[1] + 13, payload[1] + 19);
-						var signature = MavV2Signator.rawSignature(SECRET_KEY, Arrays.copyOfRange(message, 1, 10),
-								Arrays.copyOfRange(message, 10, 10 + message[1]), 0x32, (short) 0x2, timestamp);
-
 						var buildMsg = new byte[message.length + 13];
 						var index = 0;
 						for (byte b : message) {
@@ -110,10 +110,15 @@ public class MavlinkTest {
 
 						buildMsg[index++] = (byte) 0x2;
 
+						var timestamp = Arrays.copyOfRange(payload, payload[1] + 13, payload[1] + 19);
+						
 						for (byte b : timestamp) {
 							buildMsg[index++] = b;
 						}
 
+						var signature = MavV2Signator.rawSignature(SECRET_KEY, Arrays.copyOfRange(message, 1, 10),
+								Arrays.copyOfRange(message, 10, 10 + message[1]), 0x32, (short) 0x2, timestamp);
+						
 						for (byte b : signature) {
 							buildMsg[index++] = b;
 						}
@@ -134,12 +139,12 @@ public class MavlinkTest {
 
 	@Test
 	void testReceiver(Vertx vertx, VertxTestContext testContext) throws Throwable {
-		var tcpToReceiver = "tcpToReceiver";
-		var receiverToParser = "receiverToParser";
-		var parserOut = "parserOut";
-		var v1ToRaw = "v1ToRaw";
-		var v2ToRaw = "v2ToRaw";
-		var parserToTransmitter = "parserToTransmitter";
+		final var tcpToReceiver = "tcpToReceiver";
+		final var receiverToParser = "receiverToParser";
+		final var parserOut = "parserOut";
+		final var v1ToRaw = "v1ToRaw";
+		final var v2ToRaw = "v2ToRaw";
+		final var parserToTransmitter = "parserToTransmitter";
 
 		if (!MessageIndex.isRegistered(HEARTBEAT_ID)) {
 			MessageIndex.put(HEARTBEAT_ID, Heartbeat.class);
@@ -183,14 +188,14 @@ public class MavlinkTest {
 
 	@Test
 	void testTransmitter(Vertx vertx, VertxTestContext testContext) throws Throwable {
-		var checkpoint = testContext.checkpoint(3);
+		final var checkpoint = testContext.checkpoint(3);
 
-		var receiverToParser = "receiverToParser";
-		var parserOut = "parserOut";
-		var v1ToRaw = "v1ToRaw";
-		var v2ToRaw = "v2ToRaw";
-		var parserToTransmitter = "parserToTransmitter";
-		var transmitterConsumer = "transmitterConsumer";
+		final var receiverToParser = "receiverToParser";
+		final var parserOut = "parserOut";
+		final var v1ToRaw = "v1ToRaw";
+		final var v2ToRaw = "v2ToRaw";
+		final var parserToTransmitter = "parserToTransmitter";
+		final var transmitterConsumer = "transmitterConsumer";
 
 		if (!MessageIndex.isRegistered(HEARTBEAT_ID)) {
 			MessageIndex.put(HEARTBEAT_ID, Heartbeat.class);
