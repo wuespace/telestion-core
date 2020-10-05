@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A {@link SecretKeySafe} for the MAVLink-Signature-Keys. To ensure security the key will be stored in a final byte
- * array which can be overwritten. It can only be accessed by {@link #getSecretKey()}.</br>
- * </br>
- * It's key must be deleted manually after using with {@link #deleteKey()}!</br>
- * </br>
+ * array which can be overwritten. It can only be accessed by {@link #getSecretKey()}.<br>
+ * <br>
+ * It's key must be deleted manually after using with {@link #deleteKey()}!<br>
+ * <br>
  * Each {@link SecretKeySafe} has a unique ID to identify it in the logs.
  *
  * @author Cedric Boes
@@ -39,8 +39,8 @@ public final class SecretKeySafe {
 	private byte[] secretKey;
 
 	/**
-	 * Creates a new {@link SecretKeySafe} with a new {@link #secretKey}.</br>
-	 * </br>
+	 * Creates a new {@link SecretKeySafe} with a new {@link #secretKey}.<br>
+	 * <br>
 	 * <em>Keys are final and cannot be changed. This however means after calling {@link #deleteKey()} this
 	 * {@link SecretKeySafe} is no longer usable which is a security feature.</em>
 	 *
@@ -62,8 +62,8 @@ public final class SecretKeySafe {
 	}
 
 	/**
-	 * Returns the secretKey saved in this {@link SecretKeySafe}.</br>
-	 * </br>
+	 * Returns the secretKey saved in this {@link SecretKeySafe}.<br>
+	 * <br>
 	 * Will return null after {@link #deleteKey()} has been called.
 	 *
 	 * @return
@@ -91,9 +91,9 @@ public final class SecretKeySafe {
 	}
 
 	/**
-	 * Clears the password from memory and runs the {@link System#gc() Garbage-Collector}.</br>
-	 * This ensures security for passwords when deleting passwords.</br>
-	 * </br>
+	 * Clears the password from memory and runs the {@link System#gc() Garbage-Collector}.<br>
+	 * This ensures security for passwords when deleting passwords.<br>
+	 * <br>
 	 * Will only work if the secretKey is not already <code>null</code>.
 	 */
 	public void deleteKey() {

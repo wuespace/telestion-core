@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 
 /**
- * Test-Class.</br>
+ * Test-Class.<br>
  * Will be removed by the first release.
  */
 public final class HelloWorld extends AbstractVerticle {

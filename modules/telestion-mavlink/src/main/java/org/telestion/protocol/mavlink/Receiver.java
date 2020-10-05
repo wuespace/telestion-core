@@ -15,7 +15,7 @@ import org.telestion.protocol.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.protocol.mavlink.message.internal.RawMavlinkV2;
 
 /**
- * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).</br>
+ * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).<br>
  * Incoming messages will be parsed into a {@link RawMavlink} and send to the {@link MavlinkParser}.
  *
  * @author Cedric Boes, Jan von Pichowski

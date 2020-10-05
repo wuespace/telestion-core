@@ -3,11 +3,11 @@ package org.telestion.protocol.mavlink;
 import java.util.HashMap;
 
 /**
- * Handling the linking processes between the MAVLink-addresses and the ip-address of the {@link AddressPort}.</br>
- * Before being able to get the messages by id they must be registered here.</br>
- * </br>
- * <em>Note that this class should be used in a static context.</em></br>
- * </br>
+ * Handling the linking processes between the MAVLink-addresses and the ip-address of the {@link AddressPort}.<br>
+ * Before being able to get the messages by id they must be registered here.<br>
+ * <br>
+ * <em>Note that this class should be used in a static context.</em><br>
+ * <br>
  * THIS IS ONLY READY FOR TCP-CONNECTIONS, YET! (I know I am yelling @jvpichowski :D)
  *
  * @author Cedric Boes
@@ -28,9 +28,9 @@ public final class AddressAssociator {
 	}
 
 	/**
-	 * Registers a new item by linking a new MAVLink-address to a {@link AddressPort}.</br>
-	 * Basically {@link HashMap#put(Object, Object)}.</br>
-	 * </br>
+	 * Registers a new item by linking a new MAVLink-address to a {@link AddressPort}.<br>
+	 * Basically {@link HashMap#put(Object, Object)}.<br>
+	 * <br>
 	 * <em>Note that if another {@link AddressPort} has already been linked with the given mavlinkAddress nothing
 	 * happens.</em>
 	 *
@@ -55,9 +55,9 @@ public final class AddressAssociator {
 	}
 
 	/**
-	 * Returns the {@link AddressPort} linked to the given mavlinkAddress and removes it from the {@link #map}.</br>
-	 * Basically {@link HashMap#get(Object)}.</br>
-	 * </br>
+	 * Returns the {@link AddressPort} linked to the given mavlinkAddress and removes it from the {@link #map}.<br>
+	 * Basically {@link HashMap#get(Object)}.<br>
+	 * <br>
 	 * <em>Note that if the given id is not registered <code>null</code> will be returned.</em>
 	 *
 	 * @param mavlinkAddress of the new {@link AddressPort}

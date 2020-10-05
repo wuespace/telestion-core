@@ -1,10 +1,10 @@
 package org.telestion.protocol.mavlink.security;
 
 /**
- * This class is handling the creation of the X.25 (CRC-16-CCITT) custom checksum for MAVLink.</br>
+ * This class is handling the creation of the X.25 (CRC-16-CCITT) custom checksum for MAVLink.<br>
  * Apart from only hashing the message itself a CRC_EXTRA byte must be added which is unique for each message. Only 2
- * bytes <em>(last 2 bytes)</em> of the final hash will then be used.</br>
- * </br>
+ * bytes <em>(last 2 bytes)</em> of the final hash will then be used.<br>
+ * <br>
  * Implementation is based on the <a href=https://github.com/mavlink/c_library_v2/blob/master/checksum.h>official c
  * implementation</a> for MAVLink.
  *
@@ -14,7 +14,7 @@ package org.telestion.protocol.mavlink.security;
 public final class X25Checksum {
 
 	/**
-	 * Initial value for the CRC-Calculation.</br>
+	 * Initial value for the CRC-Calculation.<br>
 	 * This is needed because for each byte of the message the current-checksum gets "reused".
 	 */
 	public static final int INIT_CRC = 0xffff;
@@ -40,7 +40,7 @@ public final class X25Checksum {
 	}
 
 	/**
-	 * Calculates the CRC X.25-checksum for a whole byte[] array.</br>
+	 * Calculates the CRC X.25-checksum for a whole byte[] array.<br>
 	 * <em>Must contain the CRC_EXTRA byte which must be added for each message.</em>
 	 *
 	 * @param buffer of data to calculate a checksum for

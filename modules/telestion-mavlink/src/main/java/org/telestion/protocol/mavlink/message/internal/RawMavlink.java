@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import org.telestion.api.message.JsonMessage;
 
 /**
- * Superclass for all raw MAVLink-Messages.</br>
+ * Superclass for all raw MAVLink-Messages.<br>
  * Each version of MAVLink gets its dedicated RawMavlinkV[version] class which apart from the raw payload already
  * contains the header parsed into a usable format.
  *
@@ -16,8 +16,8 @@ import org.telestion.api.message.JsonMessage;
  */
 public interface RawMavlink extends JsonMessage {
 	/**
-	 * Returns a MAVLink-ID which creation is "unique" to each version of MAVLink.</br>
-	 * </br>
+	 * Returns a MAVLink-ID which creation is "unique" to each version of MAVLink.<br>
+	 * <br>
 	 * <em>To ensure it can be sent over the vert.x bus in a JSON-format the {@link JsonProperty annotation} is
 	 * required.</em>
 	 *
@@ -27,10 +27,10 @@ public interface RawMavlink extends JsonMessage {
 	public String getMavlinkId();
 
 	/**
-	 * Returns a the raw payload for each version of MAVLink.</br>
-	 * </br>
+	 * Returns a the raw payload for each version of MAVLink.<br>
+	 * <br>
 	 * <em>To ensure it can be sent over the vert.x bus in a JSON-format the {@link JsonProperty annotation} is
-	 * required.</br>
+	 * required.<br>
 	 * This is usually the same but as records cannot be extended it must be overwritten in the classes directly.</em>
 	 *
 	 * @return

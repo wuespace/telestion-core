@@ -16,8 +16,8 @@ public final class MessageMDC {
 
 	/**
 	 * Puts a message object to the MDC store and returns a {@link SafeCloseable} almost like
-	 * {@link MDC#putCloseable(String, String)}.</br>
-	 * </br>
+	 * {@link MDC#putCloseable(String, String)}.<br>
+	 * <br>
 	 * <i>See {@link MessageMDC#put(String, Message)} for the elements which are put to the store.</i>
 	 *
 	 * @param key to identify the {@link Message} in the store
@@ -30,9 +30,9 @@ public final class MessageMDC {
 	}
 
 	/**
-	 * Puts a message object to the MDC store like {@link MDC#put(String, String)}.</br>
-	 * </br>
-	 * Following objects are stored:</br>
+	 * Puts a message object to the MDC store like {@link MDC#put(String, String)}.<br>
+	 * <br>
+	 * Following objects are stored:<br>
 	 * <ul>
 	 * <li>address</li>
 	 * <li>replyAddress</li>
@@ -40,7 +40,7 @@ public final class MessageMDC {
 	 * <li>send</li>
 	 * <li>body</li>
 	 * </ul>
-	 * </br>
+	 * <br>
 	 * The key is either the name of the objects, if the key is <code>null</code> or <code>key.name</code>.
 	 *
 	 * @param key to identify the {@link Message} in the store

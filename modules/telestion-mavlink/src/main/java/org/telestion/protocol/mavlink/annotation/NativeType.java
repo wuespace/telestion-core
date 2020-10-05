@@ -48,7 +48,7 @@ public enum NativeType {
 	 */
 	DOUBLE(8, false),
 	/**
-	 * Representation of the char type for MAVLink.</br>
+	 * Representation of the char type for MAVLink.<br>
 	 * Basically {@link #UINT_8} but a parser can use this type to create Strings more conveniently.
 	 */
 	CHAR(1, true);
@@ -63,7 +63,7 @@ public enum NativeType {
 	public final boolean unsigned;
 
 	/**
-	 * Creating a new {@link NativeType}.</br>
+	 * Creating a new {@link NativeType}.<br>
 	 * This can only be created by the enum-fields.
 	 *
 	 * @param size in memory of the new {@link NativeType}

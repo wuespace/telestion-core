@@ -20,7 +20,7 @@ public final record AddressPort(
 		@JsonProperty int port) {
 
 	/**
-	 * There shall be no default constructor for normal people.</br>
+	 * There shall be no default constructor for normal people.<br>
 	 * This will only be used by the JSON-parser.
 	 */
 	@SuppressWarnings("unused")

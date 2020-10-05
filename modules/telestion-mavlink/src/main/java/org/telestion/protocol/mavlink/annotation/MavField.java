@@ -23,7 +23,7 @@ public @interface MavField {
 
 	/**
 	 * Returns the position of a MAVLink-Field in the raw array if the raw packet is not arranged according to the
-	 * specifications.</br>
+	 * specifications.<br>
 	 * The default value of <code>-1</code> means that the default-position is used.
 	 *
 	 * @return position of the field in the raw array

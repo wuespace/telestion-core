@@ -29,7 +29,7 @@ public final class Launcher {
 	}
 
 	/**
-	 * Deploys the given {@link Verticle Verticles}.</br>
+	 * Deploys the given {@link Verticle Verticles}.<br>
 	 * If Vert.x fails to deploy a {@link Verticle}, it will retry after 5 secs.
 	 *
 	 * @param verticleNames the class names of the {@link Verticle Verticles} which should be deployed

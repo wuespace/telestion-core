@@ -1,7 +1,7 @@
 package org.telestion.protocol.mavlink.exception;
 
 /**
- * A custom implementation of the {@link RuntimeException}.</br>
+ * A custom implementation of the {@link RuntimeException}.<br>
  * Indicates that something went wrong with the MAVLink-Message-packet (e.g. wrong format).
  *
  * @author Cedric Boes

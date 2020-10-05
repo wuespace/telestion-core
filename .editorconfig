@@ -2,5 +2,8 @@
 # It's saved automatically as you type.
 # You can find docs at http://editorconfig.org
 
+root = true
+
 [*.java]
+indent_style = space
 tab_width = 4

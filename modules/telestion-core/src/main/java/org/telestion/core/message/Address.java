@@ -3,15 +3,15 @@ package org.telestion.core.message;
 import io.vertx.core.Verticle;
 
 /**
- * Class for composing Addresses for the {@link Verticle Verticles}.</br>
+ * Class for composing Addresses for the {@link Verticle Verticles}.<br>
  * There are:
  * <ul>
  * <li><strong>outgoing:</strong> {@link Verticle Verticles} publish there results on the eventbus on this address if
  * the result is not for a specific {@link Verticle} alone</li>
  * <li><strong>incoming:</strong> {@link Verticle Verticles} listen on the eventbus for packages here</li>
  * </ul>
- * addresses.</br>
- * </br>
+ * addresses.<br>
+ * <br>
  * This class should only be used in static context.
  *
  * @author Jan von Pichowsky, Cedric Boes

@@ -3,7 +3,7 @@ package org.telestion.protocol.mavlink.exception;
 import java.lang.annotation.Annotation;
 
 /**
- * A custom implementation of the {@link RuntimeException}.</br>
+ * A custom implementation of the {@link RuntimeException}.<br>
  * Indicates that a necessary {@link Annotation} is missing for the parsing-process of MAVLink-Messages.
  *
  * @author Cedric Boes

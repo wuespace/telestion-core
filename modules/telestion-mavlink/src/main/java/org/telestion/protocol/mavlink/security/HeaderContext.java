@@ -5,10 +5,10 @@ import org.telestion.protocol.mavlink.message.MavlinkMessage;
 import org.telestion.protocol.mavlink.message.internal.RawMavlink;
 
 /**
- * Containing all relevant header-information for the {@link MavlinkParser}.</br>
+ * Containing all relevant header-information for the {@link MavlinkParser}.<br>
  * The {@link HeaderContext} is MAVLinkV1- and MAVLinkV2-compatible which means that both formats can put out using
- * this.</br>
- * </br>
+ * this.<br>
+ * <br>
  * {@link HeaderContext HeaderContexts} are used to parse a {@link MavlinkMessage} into a {@link RawMavlink
  * RawMavlink-message} again.
  *
@@ -17,8 +17,8 @@ import org.telestion.protocol.mavlink.message.internal.RawMavlink;
  */
 public final class HeaderContext {
 	/**
-	 * Represents the incompatible-flags for the MAVLinkV2-packets.</br>
-	 * </br>
+	 * Represents the incompatible-flags for the MAVLinkV2-packets.<br>
+	 * <br>
 	 * <em>Note that implementation discards packet if it does not understand flag.</em>
 	 */
 	private final short incompFlags;
@@ -27,22 +27,22 @@ public final class HeaderContext {
 	 */
 	private final short compFlags;
 	/**
-	 * ID of system (vehicle) sending the message. Used to differentiate systems on network.</br>
-	 * </br>
+	 * ID of system (vehicle) sending the message. Used to differentiate systems on network.<br>
+	 * <br>
 	 * <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source address.</em>
 	 */
 	private final short sysId;
 	/**
 	 * ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a camera).
-	 * Use appropriate values in MAV_COMPONENT.</br>
-	 * </br>
+	 * Use appropriate values in MAV_COMPONENT.<br>
+	 * <br>
 	 * <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid source
 	 * address.</em>
 	 */
 	private final short compId;
 	/**
-	 * Defines the channel the packets should be designed for.</br>
-	 * </br>
+	 * Defines the channel the packets should be designed for.<br>
+	 * <br>
 	 * <em>Only works with MAVLinkV2 and signing enabled</em>
 	 */
 	private final short linkId;

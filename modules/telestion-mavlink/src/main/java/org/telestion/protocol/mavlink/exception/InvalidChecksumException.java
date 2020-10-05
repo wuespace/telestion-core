@@ -1,7 +1,7 @@
 package org.telestion.protocol.mavlink.exception;
 
 /**
- * A custom implementation of the {@link RuntimeException}.</br>
+ * A custom implementation of the {@link RuntimeException}.<br>
  * Indicates that the X.25 checksum of a MAVLink-Message is invalid.
  *
  * @author Cedric Boes
