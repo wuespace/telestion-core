@@ -16,35 +16,35 @@ public class ParsingException extends RuntimeException {
 	private static final long serialVersionUID = -7127168456897713093L;
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException()
 	 */
 	public ParsingException() {
 		super();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String)
 	 */
 	public ParsingException(String message) {
 		super(message);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(Throwable)
 	 */
 	public ParsingException(Throwable cause) {
 		super(cause);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable)
 	 */
 	public ParsingException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
 	 */
 	public ParsingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);

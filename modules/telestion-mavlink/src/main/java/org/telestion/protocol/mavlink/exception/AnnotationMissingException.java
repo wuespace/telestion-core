@@ -18,35 +18,35 @@ public class AnnotationMissingException extends RuntimeException {
 	private static final long serialVersionUID = -5342016963944609412L;
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException()
 	 */
 	public AnnotationMissingException() {
 		super();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String)
 	 */
 	public AnnotationMissingException(String s) {
 		super(s);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(Throwable)
 	 */
 	public AnnotationMissingException(Throwable t) {
 		super(t);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable)
 	 */
 	public AnnotationMissingException(String s, Throwable t) {
 		super(s, t);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
 	 */
 	public AnnotationMissingException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {

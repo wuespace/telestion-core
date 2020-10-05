@@ -16,35 +16,35 @@ public class PacketException extends RuntimeException {
 	private static final long serialVersionUID = 2256065887188465994L;
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException()
 	 */
 	public PacketException() {
 		super();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String)
 	 */
 	public PacketException(String s) {
 		super(s);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(Throwable)
 	 */
 	public PacketException(Throwable t) {
 		super(t);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable)
 	 */
 	public PacketException(String s, Throwable t) {
 		super(s, t);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
 	 */
 	public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);

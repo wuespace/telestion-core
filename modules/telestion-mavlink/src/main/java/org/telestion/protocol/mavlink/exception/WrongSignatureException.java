@@ -16,35 +16,35 @@ public class WrongSignatureException extends RuntimeException {
 	private static final long serialVersionUID = 7162627217882841756L;
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException()
 	 */
 	public WrongSignatureException() {
 		super();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String)
 	 */
 	public WrongSignatureException(String message) {
 		super(message);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(Throwable)
 	 */
 	public WrongSignatureException(Throwable cause) {
 		super(cause);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable)
 	 */
 	public WrongSignatureException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
 	 */
 	public WrongSignatureException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
