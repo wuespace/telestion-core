@@ -1,11 +1,12 @@
 package org.telestion.example;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
+import java.time.Duration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
 
 /**
  * Test-Class.<br>

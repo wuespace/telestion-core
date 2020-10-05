@@ -1,15 +1,16 @@
 package org.telestion.protocol.mavlink;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.buffer.Buffer;
+import java.time.Duration;
+
 import org.telestion.core.connection.TcpConn;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.launcher.Launcher;
 import org.telestion.protocol.mavlink.message.MessageIndex;
 import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
 
-import java.time.Duration;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+import io.vertx.core.buffer.Buffer;
 
 /**
  * @author Jan von Pichowski
