@@ -41,14 +41,11 @@ public final class TcpConn extends AbstractVerticle {
 	/**
 	 * Create a {@link TcpConn} with forced configuration.
 	 *
-	 * @param host   the host to which the connection should be established or null if this is the host of
-	 *     the connection
-	 * @param port   the port of the connection host
-	 * @param broadcastAddress   the address to which the incoming data should be published or null if no publishing is
-	 *     allowed
-	 * @param targetAddressesthe list of addresses to which the incoming data should be send or null if no direct
-	 *     targets exist
-	 * @param consumingAddresses the list of addresses from which data will be consumed
+	 * @param host to which the connection should be established or null if this is the host of the connection
+	 * @param port of the connection host
+	 * @param broadcastAddress to which the incoming data should be published or null if no publishing is allowed
+	 * @param targetAddresses to which the incoming data should be send or <code>null</code> if no direct targets exist
+	 * @param consumingAddresses from which data will be consumed
 	 */
 	public TcpConn(String host, int port, String broadcastAddress, List<String> targetAddresses,
 			List<String> consumingAddresses) {
@@ -58,7 +55,7 @@ public final class TcpConn extends AbstractVerticle {
 	/**
 	 * Completes a promise based on the success of a {@link AsyncResult}. If it was successful a handler will be called.
 	 *
-	 * @param result  the result which is observed
+	 * @param result the result which is observed
 	 * @param promise the promise which will be completed
 	 * @param handler the handler which will be executed on a successful result
 	 * @param <T> the type of the result
@@ -194,14 +191,11 @@ public final class TcpConn extends AbstractVerticle {
 	/**
 	 * Configuration for the TCP-Connection.
 	 * 
-	 * @param host   the host to which the connection should be established or null if this is the host of
-	 *   the connection
-	 * @param port   the port of the connection host
-	 * @param broadcastAddress   the address to which the incoming data should be published or null if no publishing is
-	 *   allowed
-	 * @param targetAddressesthe list of addresses to which the incoming data should be send or null if no direct
-	 *   targets exist
-	 * @param consumingAddresses the list of addresses from which data will be consumed
+	 * @param host to which the connection should be established or null if this is the host of the connection
+	 * @param port of the connection host
+	 * @param broadcastAddress to which the incoming data should be published or null if no publishing is allowed
+	 * @param targetAddresses to which the incoming data should be send or <code>null</code> if no direct targets exist
+	 * @param consumingAddresses from which data will be consumed
 	 */
 	@SuppressWarnings("preview")
 	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
