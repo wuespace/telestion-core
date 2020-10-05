@@ -17,55 +17,55 @@ import java.util.UUID;
  */
 public final class SayHello extends AbstractVerticle {
 
-    private static final Logger logger = LoggerFactory.getLogger(SayHello.class);
-    /**
-     * A random uuid which defines this instance
-     */
-    private final UUID uuid = UUID.randomUUID();
-    /**
-     * The forced configuration defined by the construtor
-     */
-    private final Configuration forcedConfig;
-    /**
-     * No forced config is used. The config will be read from the config file or the default values will be used if the
-     * config file is not available.
-     */
-    public SayHello() {
-        this.forcedConfig = null;
-    }
+	private static final Logger logger = LoggerFactory.getLogger(SayHello.class);
+	/**
+	 * A random uuid which defines this instance
+	 */
+	private final UUID uuid = UUID.randomUUID();
+	/**
+	 * The forced configuration defined by the construtor
+	 */
+	private final Configuration forcedConfig;
 
-    /**
-     * The given forced config is used.
-     *
-     * @param period
-     * @param message
-     */
-    public SayHello(long period, String message) {
-        this.forcedConfig = new Configuration(period, message);
-    }
+	/**
+	 * No forced config is used. The config will be read from the config file or the default values will be used if the
+	 * config file is not available.
+	 */
+	public SayHello() {
+		this.forcedConfig = null;
+	}
 
-    @Override
-    public void start(Promise<Void> startPromise) throws Exception {
-        var config = Config.get(forcedConfig, config(), Configuration.class);
-        vertx.setPeriodic(Duration.ofSeconds(config.period()).toMillis(), timerId -> System.out.println(config.message() + " from " + uuid));
-        startPromise.complete();
-        logger.info("Started {} with config {}", SayHello.class.getSimpleName(), config);
-    }
+	/**
+	 * The given forced config is used.
+	 *
+	 * @param period
+	 * @param message
+	 */
+	public SayHello(long period, String message) {
+		this.forcedConfig = new Configuration(period, message);
+	}
 
-    /**
-     * Define a configuration record
-     */
-    @SuppressWarnings("preview")
-    private static record Configuration(
-            @JsonProperty long period,
-            @JsonProperty String message) {
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		var config = Config.get(forcedConfig, config(), Configuration.class);
+		vertx.setPeriodic(Duration.ofSeconds(config.period()).toMillis(),
+				timerId -> System.out.println(config.message() + " from " + uuid));
+		startPromise.complete();
+		logger.info("Started {} with config {}", SayHello.class.getSimpleName(), config);
+	}
 
-        /**
-         * The default values will be set via the constructor
-         */
-        @SuppressWarnings("unused")
-        private Configuration() {
-            this(1, "Hello World");
-        }
-    }
+	/**
+	 * Define a configuration record
+	 */
+	@SuppressWarnings("preview")
+	private static record Configuration(@JsonProperty long period, @JsonProperty String message) {
+
+		/**
+		 * The default values will be set via the constructor
+		 */
+		@SuppressWarnings("unused")
+		private Configuration() {
+			this(1, "Hello World");
+		}
+	}
 }

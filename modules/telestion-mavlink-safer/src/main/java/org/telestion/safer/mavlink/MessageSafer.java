@@ -10,16 +10,16 @@ import org.telestion.example.Position;
  */
 public class MessageSafer extends AbstractVerticle {
 
-    String addr;
+	String addr;
 
-    @Override
-    public void start(Promise<Void> startPromise) throws Exception {
-        vertx.eventBus().consumer("addr1", msg -> {
-            if (msg.body() instanceof Position pos) {
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		vertx.eventBus().consumer("addr1", msg -> {
+			if (msg.body() instanceof Position pos) {
 
-                var stringPos = JsonCodec.INSTANCE.toString(pos);
-            }
-        });
-        startPromise.complete();
-    }
+				var stringPos = JsonCodec.INSTANCE.toString(pos);
+			}
+		});
+		startPromise.complete();
+	}
 }

@@ -11,17 +11,17 @@ import org.telestion.api.message.JsonMessage;
  */
 @SuppressWarnings("preview")
 public final record RawPayload(
-        /**
-         * Actual payload bytes of a MAVLink-message.
-         */
-        @JsonProperty byte[] payload) implements JsonMessage {
+		/**
+		 * Actual payload bytes of a MAVLink-message.
+		 */
+		@JsonProperty byte[] payload) implements JsonMessage {
 
-    /**
-     * There shall be no default constructor for normal people.</br>
-     * This will only be used by the JSON-parser.
-     */
-    @SuppressWarnings("unused")
-    private RawPayload() {
-        this(null);
-    }
+	/**
+	 * There shall be no default constructor for normal people.</br>
+	 * This will only be used by the JSON-parser.
+	 */
+	@SuppressWarnings("unused")
+	private RawPayload() {
+		this(null);
+	}
 }

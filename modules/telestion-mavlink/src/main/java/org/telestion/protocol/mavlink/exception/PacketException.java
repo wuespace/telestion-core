@@ -10,44 +10,44 @@ package org.telestion.protocol.mavlink.exception;
  */
 public class PacketException extends RuntimeException {
 
-    /**
-     * SerialVersion UID for v1.0 of this {@link PacketException}.
-     */
-    private static final long serialVersionUID = 2256065887188465994L;
+	/**
+	 * SerialVersion UID for v1.0 of this {@link PacketException}.
+	 */
+	private static final long serialVersionUID = 2256065887188465994L;
 
-    /**
-     * {@inheritDoc}
-     */
-    public PacketException() {
-        super();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public PacketException() {
+		super();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public PacketException(String s) {
-        super(s);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public PacketException(String s) {
+		super(s);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public PacketException(Throwable t) {
-        super(t);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public PacketException(Throwable t) {
+		super(t);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public PacketException(String s, Throwable t) {
-        super(s, t);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public PacketException(String s, Throwable t) {
+		super(s, t);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
 
 }

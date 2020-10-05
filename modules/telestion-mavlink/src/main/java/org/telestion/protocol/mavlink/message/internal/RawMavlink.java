@@ -15,26 +15,26 @@ import org.telestion.api.message.JsonMessage;
  * @see RawMavlinkV2
  */
 public interface RawMavlink extends JsonMessage {
-    /**
-     * Returns a MAVLink-ID which creation is "unique" to each version of MAVLink.</br>
-     * </br>
-     * <em>To ensure it can be sent over the vert.x bus in a JSON-format the {@link JsonProperty annotation} is
-     * required.</em>
-     *
-     * @return
-     */
-    @JsonProperty(access = Access.READ_ONLY)
-    public String getMavlinkId();
+	/**
+	 * Returns a MAVLink-ID which creation is "unique" to each version of MAVLink.</br>
+	 * </br>
+	 * <em>To ensure it can be sent over the vert.x bus in a JSON-format the {@link JsonProperty annotation} is
+	 * required.</em>
+	 *
+	 * @return
+	 */
+	@JsonProperty(access = Access.READ_ONLY)
+	public String getMavlinkId();
 
-    /**
-     * Returns a the raw payload for each version of MAVLink.</br>
-     * </br>
-     * <em>To ensure it can be sent over the vert.x bus in a JSON-format the {@link JsonProperty annotation} is
-     * required.</br>
-     * This is usually the same but as records cannot be extended it must be overwritten in the classes directly.</em>
-     *
-     * @return
-     */
-    @JsonProperty(access = Access.READ_ONLY)
-    public byte[] getRaw();
+	/**
+	 * Returns a the raw payload for each version of MAVLink.</br>
+	 * </br>
+	 * <em>To ensure it can be sent over the vert.x bus in a JSON-format the {@link JsonProperty annotation} is
+	 * required.</br>
+	 * This is usually the same but as records cannot be extended it must be overwritten in the classes directly.</em>
+	 *
+	 * @return
+	 */
+	@JsonProperty(access = Access.READ_ONLY)
+	public byte[] getRaw();
 }

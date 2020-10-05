@@ -8,13 +8,10 @@ import org.telestion.api.message.JsonMessage;
  * <code>{"x":5.3,"y":4.2,"z":7.1,"name":"Position"}</code>
  */
 @SuppressWarnings("preview")
-public record Position(
-        @JsonProperty double x,
-        @JsonProperty double y,
-        @JsonProperty double z) implements JsonMessage {
+public record Position(@JsonProperty double x, @JsonProperty double y, @JsonProperty double z) implements JsonMessage {
 
-    @SuppressWarnings("unused")
-    private Position() {
-        this(0.0, 0.0, 0.0);
-    }
+	@SuppressWarnings("unused")
+	private Position() {
+		this(0.0, 0.0, 0.0);
+	}
 }

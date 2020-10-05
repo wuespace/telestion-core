@@ -10,44 +10,44 @@ package org.telestion.protocol.mavlink.exception;
  */
 public class ParsingException extends RuntimeException {
 
-    /**
-     * SerialVersion UID for v1.0 of this {@link ParsingException}.
-     */
-    private static final long serialVersionUID = -7127168456897713093L;
+	/**
+	 * SerialVersion UID for v1.0 of this {@link ParsingException}.
+	 */
+	private static final long serialVersionUID = -7127168456897713093L;
 
-    /**
-     * {@inheritDoc}
-     */
-    public ParsingException() {
-        super();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public ParsingException() {
+		super();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public ParsingException(String message) {
-        super(message);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public ParsingException(String message) {
+		super(message);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public ParsingException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public ParsingException(Throwable cause) {
+		super(cause);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public ParsingException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public ParsingException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public ParsingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public ParsingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
 
 }
