@@ -41,13 +41,13 @@ public final class TcpConn extends AbstractVerticle {
 	/**
 	 * Create a {@link TcpConn} with forced configuration.
 	 *
-	 * @param host               the host to which the connection should be established or null if this is the host of
-	 *                           the connection
-	 * @param port               the port of the connection host
+	 * @param host   the host to which the connection should be established or null if this is the host of
+	 *   the connection
+	 * @param port   the port of the connection host
 	 * @param broadcastAddress   the address to which the incoming data should be published or null if no publishing is
-	 *                           allowed
-	 * @param targetAddresses    the list of addresses to which the incoming data should be send or null if no direct
-	 *                           targets exist
+	 *   allowed
+	 * @param targetAddressesthe list of addresses to which the incoming data should be send or null if no direct
+	 *   targets exist
 	 * @param consumingAddresses the list of addresses from which data will be consumed
 	 */
 	public TcpConn(String host, int port, String broadcastAddress, List<String> targetAddresses,
@@ -61,7 +61,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param result  the result which is observed
 	 * @param promise the promise which will be completed
 	 * @param handler the handler which will be executed on a successful result
-	 * @param <T>     the type of the result
+	 * @param <T> the type of the result
 	 */
 	private static <T> void complete(AsyncResult<T> result, Promise<?> promise, Handler<T> handler) {
 		if (result.failed()) {
@@ -135,7 +135,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * Registers handler to all consuming addresses specified in the configuration.
 	 *
 	 * @param handler the actual handler
-	 * @param <T>     the type of the handled object
+	 * @param <T> the type of the handled object
 	 */
 	private <T> void consume(Handler<Message<T>> handler) {
 		if (config.consumingAddresses() != null) {
@@ -163,7 +163,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * A chunk of data which is transmitted with the {@link TcpConn}.
 	 *
 	 * @param participant the participant of the tcp connection which has send this chunk of data or should receive it
-	 * @param data        the actual data
+	 * @param datathe actual data
 	 */
 	@SuppressWarnings("preview") public static record Data(@JsonProperty Participant participant,
 			@JsonProperty byte[] data) implements JsonMessage {
@@ -190,13 +190,13 @@ public final class TcpConn extends AbstractVerticle {
 	}
 
 	/**
-	 * @param host               the host to which the connection should be established or null if this is the host of
-	 *                           the connection
-	 * @param port               the port of the connection host
+	 * @param host   the host to which the connection should be established or null if this is the host of
+	 *   the connection
+	 * @param port   the port of the connection host
 	 * @param broadcastAddress   the address to which the incoming data should be published or null if no publishing is
-	 *                           allowed
-	 * @param targetAddresses    the list of addresses to which the incoming data should be send or null if no direct
-	 *                           targets exist
+	 *   allowed
+	 * @param targetAddressesthe list of addresses to which the incoming data should be send or null if no direct
+	 *   targets exist
 	 * @param consumingAddresses the list of addresses from which data will be consumed
 	 */
 	@SuppressWarnings("preview") private static record Configuration(@JsonProperty String host, @JsonProperty int port,

@@ -66,7 +66,7 @@ public enum NativeType {
 	 * Creating a new {@link NativeType}.</br>
 	 * This can only be created by the enum-fields.
 	 *
-	 * @param size     in memory of the new {@link NativeType}
+	 * @param size in memory of the new {@link NativeType}
 	 * @param unsigned indicates whether a {@link NativeType} is unsigned or not
 	 */
 	private NativeType(int size, boolean unsigned) {

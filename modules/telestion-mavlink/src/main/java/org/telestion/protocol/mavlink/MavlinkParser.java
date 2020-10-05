@@ -100,8 +100,8 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * {@link MavlinkParser} using the default {@link #addressIdentifier} and the given {@link HeaderContext} and
 	 * {@link SecretKeySafe}.
 	 *
-	 * @param context      for parsing
-	 * @param safe         containing the password for the signature
+	 * @param context  for parsing
+	 * @param safe containing the password for the signature
 	 * @param forcedConfig the forced configuration
 	 */
 	public MavlinkParser(HeaderContext context, SecretKeySafe safe, Configuration forcedConfig) {
@@ -289,7 +289,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	/**
 	 * Casting an Object to the right {@link Number number-object}.
 	 *
-	 * @param o     {@link Number} as {@link Object}
+	 * @param o {@link Number} as {@link Object}
 	 * @param clazz {@link Class} to which the object should be casted
 	 * @return
 	 */
@@ -311,7 +311,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 *
 	 * @param index   at which the parsing starts happening
 	 * @param payload of the MAVLink-message
-	 * @param c       {@link RecordComponent} which will be used for parsing
+	 * @param c   {@link RecordComponent} which will be used for parsing
 	 * @return parsed Object
 	 */
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
@@ -468,7 +468,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @param o Object to covert
 	 * @return byte[] representation of the given object
 	 * @throws IllegalArgumentException if the accessor of the for the {@link RecordComponent} cannot be invoked
-	 * @throws ParsingException         if the type of the {@link RecordComponent} is unknown
+	 * @throws ParsingException if the type of the {@link RecordComponent} is unknown
 	 */
 	private byte[] recordToRaw(RecordComponent c, Object o) {
 		MavField info = c.getAnnotation(MavField.class);
@@ -508,7 +508,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @param mav {@link MavlinkMessage} to convert
 	 * @return converted byte[] array
 	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
-	 * @throws ParsingException           if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws ParsingException   if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
 		// TODO: Add char-support
@@ -550,13 +550,13 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * The parser configuration.
 	 *
 	 * @param rawMavSupplierAddr Address for parsing {@link RawMavlink RawMavlink-message} to a {@link MavlinkMessage}.
-	 * @param mavConsumerAddr    Output Address for parsed {@link RawMavlink RawMavlink-messages}.
+	 * @param mavConsumerAddrOutput Address for parsed {@link RawMavlink RawMavlink-messages}.
 	 * @param mavV1SupplierAddr  Address which will be accepting {@link MavlinkMessage messages} and parse them into a
-	 *                           {@link RawMavlinkV1} which already contains the header for the given payload and a
-	 *                           unique messageId.
+	 *   {@link RawMavlinkV1} which already contains the header for the given payload and a
+	 *   unique messageId.
 	 * @param mavV2SupplierAddr  Address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2} which
-	 *                           already contains the header for the given payload, a unique messageId and a signature
-	 *                           (if specified).
+	 *   already contains the header for the given payload, a unique messageId and a signature
+	 *   (if specified).
 	 * @param rawMavConsumerAddr Address which consumes the {@link RawMavlink RawMavlink-messages}.
 	 */
 	@SuppressWarnings("preview")

@@ -24,7 +24,7 @@ public interface JsonMessage {
 	 * @param clazz   Class of the message-object
 	 * @param msgBody {@link Message#body() msg-body} of the sent message
 	 * @param handler handler for the message
-	 * @param <T>     Generic type for the {@link Handler}
+	 * @param <T> Generic type for the {@link Handler}
 	 * @return whether decoding was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler) {
@@ -50,9 +50,9 @@ public interface JsonMessage {
 	 * Returns whether decoding was successful or not.
 	 *
 	 * @param clazz   Class of the message-object
-	 * @param msg     sent message
+	 * @param msg sent message
 	 * @param handler handler for the message
-	 * @param <T>     type of the {@link Message}
+	 * @param <T> type of the {@link Message}
 	 * @return whether decoding was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {

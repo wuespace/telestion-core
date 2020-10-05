@@ -41,11 +41,11 @@ import java.util.List;
  * 
  * <pre>
  * {@code
- *       SockJSBridgeOptions defaultSockJSBridgeOptions = new SockJSBridgeOptions()
- *          .addInboundPermitted(new PermittedOptions()
- *              .setAddress(Address.incoming(<YourClass>.class, "<method>")))
- *          .addOutboundPermitted(new PermittedOptions()
- *              .setAddress(Address.outgoing(<YourClass>.class, "<method>)));
+ *   SockJSBridgeOptions defaultSockJSBridgeOptions = new SockJSBridgeOptions()
+ *  .addInboundPermitted(new PermittedOptions()
+ *  .setAddress(Address.incoming(<YourClass>.class, "<method>")))
+ *  .addOutboundPermitted(new PermittedOptions()
+ *  .setAddress(Address.outgoing(<YourClass>.class, "<method>)));
  * }
  * </pre>
  * </p>
@@ -60,8 +60,8 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	/**
 	 * This constructor supplies default options and uses the defaultSockJSBridgeOptions for the applied rules.
 	 *
-	 * @param host              the ip address of the host on which the HTTP-Server should run
-	 * @param port              the port on which the HTTP-Server should listen
+	 * @param host  the ip address of the host on which the HTTP-Server should run
+	 * @param port  the port on which the HTTP-Server should listen
 	 * @param inboundPermitted  the permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted the permitted eventbus addresses for outbound connections
 	 */
@@ -125,8 +125,8 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	/**
 	 * The bridge configuration
 	 *
-	 * @param host              the ip address of the host on which the HTTP-Server should run
-	 * @param port              the port on which the HTTP-Server should listen
+	 * @param host  the ip address of the host on which the HTTP-Server should run
+	 * @param port  the port on which the HTTP-Server should listen
 	 * @param inboundPermitted  the permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted the permitted eventbus addresses for outbound connections
 	 */

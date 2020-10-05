@@ -58,10 +58,10 @@ public final class MavV2Signator {
 	 * MAVLink-specifications.
 	 *
 	 * @param secretKey key for the SHA-256 hash <em>(&rightarrow; must be exchanged on a secure channel)</em>
-	 * @param header    of the MAVLink-Message
+	 * @param headerof the MAVLink-Message
 	 * @param payload   of the MAVLink-Message
 	 * @param crcExtra  for the MAVLink-Message
-	 * @param linkId    of the message
+	 * @param linkIdof the message
 	 * @param timestamp for the message
 	 * @return first 6 bytes of the SHA-256 hashed signature
 	 * @throws NoSuchAlgorithmException
@@ -88,10 +88,10 @@ public final class MavV2Signator {
 	 * linkId.
 	 *
 	 * @param secretKey key for the SHA-256 hash <em>(&rightarrow; must be exchanged on a secure channel)</em>
-	 * @param header    of the MAVLink-Message
+	 * @param headerof the MAVLink-Message
 	 * @param payload   of the MAVLink-Message
 	 * @param crcExtra  for the MAVLink-Message
-	 * @param linkId    of the message
+	 * @param linkIdof the message
 	 * @return full 13 MAVLink-Signature
 	 * @throws NoSuchAlgorithmException
 	 */
