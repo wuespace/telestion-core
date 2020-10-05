@@ -1,42 +1,41 @@
 package org.telestion.protocol.mavlink.security;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
-import java.util.Random;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.util.Random;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @ExtendWith(VertxExtension.class)
 public class HeaderContextTest {
-    
+
     @Test
     void testMessageContext(Vertx vertx, VertxTestContext testContext) throws Throwable {
-    	Random r = new Random();
-    	
-    	var incompFlags = (short) r.nextInt();
-    	var compFlags = (short) r.nextInt();
-    	var sysId = (short) r.nextInt();
-    	var compId = (short) r.nextInt();
-    	var linkId = (short) r.nextInt();
-    	
-    	var context = new HeaderContext(incompFlags, compFlags, sysId, compId, linkId);
-    	
-    	assertThat(context.incompFlags(), is(incompFlags));
-    	assertThat(context.compFlags(), is(compFlags));
-    	assertThat(context.sysId(), is(sysId));
-    	assertThat(context.compId(), is(compId));
-    	assertThat(context.linkId(), is(linkId));
-    	
-    	for (int i = 0; i < Short.MAX_VALUE + 1; i++) {
-    		assertThat(context.getNewPacketSeq(), is((byte) i));
-    	}
-    	
-    	testContext.completeNow();
+        Random r = new Random();
+
+        var incompFlags = (short) r.nextInt();
+        var compFlags = (short) r.nextInt();
+        var sysId = (short) r.nextInt();
+        var compId = (short) r.nextInt();
+        var linkId = (short) r.nextInt();
+
+        var context = new HeaderContext(incompFlags, compFlags, sysId, compId, linkId);
+
+        assertThat(context.incompFlags(), is(incompFlags));
+        assertThat(context.compFlags(), is(compFlags));
+        assertThat(context.sysId(), is(sysId));
+        assertThat(context.compId(), is(compId));
+        assertThat(context.linkId(), is(linkId));
+
+        for (int i = 0; i < Short.MAX_VALUE + 1; i++) {
+            assertThat(context.getNewPacketSeq(), is((byte) i));
+        }
+
+        testContext.completeNow();
     }
 }

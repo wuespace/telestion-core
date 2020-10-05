@@ -19,13 +19,13 @@ sourceSets {
     }
 }
 
-task createOfficialMavlinkRecords(type:Exec) {
+task createOfficialMavlinkRecords(type: Exec) {
     outputs.upToDateWhen { false }
     workingDir 'src/tools'
     commandLine 'python', 'mavlink_xml2record.py', '-f', '../../mavlink/message_definitions/v1.0/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.protocol.mavlink.messages.official.*'
 }
 
-task createTelestionMavlinkRecords(type:Exec) {
+task createTelestionMavlinkRecords(type: Exec) {
     outputs.upToDateWhen { false }
     workingDir 'src/tools'
     commandLine 'python', 'mavlink_xml2record.py', '-f', '../messages/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.protocol.mavlink.messages.telestion.*'
