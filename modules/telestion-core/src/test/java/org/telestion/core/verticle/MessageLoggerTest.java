@@ -1,5 +1,18 @@
 package org.telestion.core.verticle;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.LoggerFactory;
+import org.telestion.core.monitoring.MessageLogger;
+
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -7,18 +20,6 @@ import ch.qos.logback.core.read.ListAppender;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.LoggerFactory;
-import org.telestion.core.monitoring.MessageLogger;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 
 @ExtendWith(VertxExtension.class)
 public class MessageLoggerTest {
@@ -41,7 +42,7 @@ public class MessageLoggerTest {
 			vertx.eventBus().publish("addr1", "testString");
 
 			vertx.setTimer(Duration.ofSeconds(1).toMillis(), timerId -> {
-				// remove apprender
+				// remove appender
 				((Logger) logger).detachAppender(listAppender);
 				listAppender.stop();
 

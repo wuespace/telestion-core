@@ -50,7 +50,7 @@ import java.util.List;
  * </pre>
  * </p>
  *
- * @see <a href="../../../../../../../README.md"</a> for more information
+ * @see <a href="../../../../../../../README.md">README.md</a> for more information
  */
 public final class EventbusTcpBridge extends AbstractVerticle {
 
@@ -70,7 +70,7 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	}
 
 	/**
-	 * If this constructor is used all, settings have to be specified in the config file
+	 * If this constructor is used all, settings have to be specified in the config file.
 	 */
 	public EventbusTcpBridge() {
 		this.forcedConfig = null;
@@ -113,17 +113,17 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 
 	/**
 	 * Creates a staticHandler for serving static resources from the file system or classpath. May be used to display
-	 * HTML-Page explaining how to use the WidgetBridge or to redirect users to the right url:
-	 * {@link "http://localhost:8080"}
+	 * HTML-Page explaining how to use the WidgetBridge or to redirect users to the right url:<br>
+	 * <a href="http://localhost:8080">localhost:8080</a>
 	 *
-	 * @return StaticHandler
+	 * @return {@link StaticHandler}
 	 */
 	private StaticHandler staticHandler() {
 		return StaticHandler.create().setCachingEnabled(false);
 	}
 
 	/**
-	 * The bridge configuration
+	 * The bridge configuration.
 	 *
 	 * @param host  the ip address of the host on which the HTTP-Server should run
 	 * @param port  the port on which the HTTP-Server should listen

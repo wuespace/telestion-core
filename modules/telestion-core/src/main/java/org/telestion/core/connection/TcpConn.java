@@ -42,12 +42,12 @@ public final class TcpConn extends AbstractVerticle {
 	 * Create a {@link TcpConn} with forced configuration.
 	 *
 	 * @param host   the host to which the connection should be established or null if this is the host of
-	 *   the connection
+	 *     the connection
 	 * @param port   the port of the connection host
 	 * @param broadcastAddress   the address to which the incoming data should be published or null if no publishing is
-	 *   allowed
+	 *     allowed
 	 * @param targetAddressesthe list of addresses to which the incoming data should be send or null if no direct
-	 *   targets exist
+	 *     targets exist
 	 * @param consumingAddresses the list of addresses from which data will be consumed
 	 */
 	public TcpConn(String host, int port, String broadcastAddress, List<String> targetAddresses,
@@ -165,7 +165,8 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param participant the participant of the tcp connection which has send this chunk of data or should receive it
 	 * @param datathe actual data
 	 */
-	@SuppressWarnings("preview") public static record Data(@JsonProperty Participant participant,
+	@SuppressWarnings("preview")
+	public static record Data(@JsonProperty Participant participant,
 			@JsonProperty byte[] data) implements JsonMessage {
 
 		@SuppressWarnings("unused")
@@ -175,12 +176,13 @@ public final class TcpConn extends AbstractVerticle {
 	}
 
 	/**
-	 * A participant of the {@link TcpConn}
+	 * A participant of the {@link TcpConn}.
 	 *
 	 * @param host its host address
 	 * @param port its port
 	 */
-	@SuppressWarnings("preview") public static record Participant(@JsonProperty String host, @JsonProperty int port)
+	@SuppressWarnings("preview")
+	public static record Participant(@JsonProperty String host, @JsonProperty int port)
 			implements JsonMessage {
 
 		@SuppressWarnings("unused")
@@ -190,6 +192,8 @@ public final class TcpConn extends AbstractVerticle {
 	}
 
 	/**
+	 * Configuration for the TCP-Connection.
+	 * 
 	 * @param host   the host to which the connection should be established or null if this is the host of
 	 *   the connection
 	 * @param port   the port of the connection host
@@ -199,7 +203,8 @@ public final class TcpConn extends AbstractVerticle {
 	 *   targets exist
 	 * @param consumingAddresses the list of addresses from which data will be consumed
 	 */
-	@SuppressWarnings("preview") private static record Configuration(@JsonProperty String host, @JsonProperty int port,
+	@SuppressWarnings("preview")
+	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
 			@JsonProperty String broadcastAddress, @JsonProperty List<String> targetAddresses,
 			@JsonProperty List<String> consumingAddresses) {
 		@SuppressWarnings("unused")

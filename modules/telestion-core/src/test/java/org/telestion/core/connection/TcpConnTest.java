@@ -18,12 +18,12 @@ public class TcpConnTest {
 
 	@Test
 	void roundTripTest(Vertx vertx, VertxTestContext testContext) throws Throwable {
-		var serverOutgoing = "serverOutgoing"; // the server publishes all received data to this address on the event
+		var serverOutgoing = "serverOutgoing";	// the server publishes all received data to this address on the event
 												// bus
-		var serverIncoming = "serverIncoming"; // the server sends all on this event bus address consumed data over tcp
-		var clientOutgoing = "clientOutgoing"; // the client publishes all received data to this address on the event
+		var serverIncoming = "serverIncoming";	// the server sends all on this event bus address consumed data over tcp
+		var clientOutgoing = "clientOutgoing";	// the client publishes all received data to this address on the event
 												// bus
-		var clientIncoming = "clientIncoming"; // the client sends all on this event bus address consumed data over tcp
+		var clientIncoming = "clientIncoming";	// the client sends all on this event bus address consumed data over tcp
 
 		vertx.eventBus().consumer(clientOutgoing, msg -> {
 			JsonMessage.on(TcpConn.Data.class, msg, data -> {
