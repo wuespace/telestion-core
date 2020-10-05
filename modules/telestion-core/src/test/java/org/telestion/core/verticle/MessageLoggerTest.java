@@ -42,7 +42,7 @@ public class MessageLoggerTest {
 			vertx.eventBus().publish("addr1", "testString");
 
 			vertx.setTimer(Duration.ofSeconds(1).toMillis(), timerId -> {
-				// remove appender
+				// remove apprender
 				((Logger) logger).detachAppender(listAppender);
 				listAppender.stop();
 

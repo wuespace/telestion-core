@@ -21,11 +21,11 @@ public final class SayHello extends AbstractVerticle {
 
 	private static final Logger logger = LoggerFactory.getLogger(SayHello.class);
 	/**
-	 * A random uuid which defines this instance
+	 * A random uuid which defines this instance.
 	 */
 	private final UUID uuid = UUID.randomUUID();
 	/**
-	 * The forced configuration defined by the construtor
+	 * The forced configuration defined by the constructor.
 	 */
 	private final Configuration forcedConfig;
 
@@ -40,8 +40,8 @@ public final class SayHello extends AbstractVerticle {
 	/**
 	 * The given forced config is used.
 	 *
-	 * @param period
-	 * @param message
+	 * @param period in which they get published
+	 * @param message to be published
 	 */
 	public SayHello(long period, String message) {
 		this.forcedConfig = new Configuration(period, message);
@@ -57,13 +57,13 @@ public final class SayHello extends AbstractVerticle {
 	}
 
 	/**
-	 * Define a configuration record
+	 * Define a configuration record.
 	 */
 	@SuppressWarnings("preview")
 	private static record Configuration(@JsonProperty long period, @JsonProperty String message) {
 
 		/**
-		 * The default values will be set via the constructor
+		 * The default values will be set via the constructor.
 		 */
 		@SuppressWarnings("unused")
 		private Configuration() {

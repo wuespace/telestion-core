@@ -14,11 +14,11 @@ import io.vertx.core.Vertx;
 public final class PositionPublisher extends AbstractVerticle {
 
 	/**
-	 * Internal. Don't use it! TODO remove it.
-	 * 
+	 * Internal. Don't use it! TODO remove it.<br>
+	 * <br>
 	 * A small self containing usage example.
 	 *
-	 * @param args
+	 * @param args console-arguments
 	 */
 	@Deprecated
 	public static void main(String[] args) {

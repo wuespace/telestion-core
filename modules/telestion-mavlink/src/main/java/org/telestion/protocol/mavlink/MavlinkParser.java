@@ -145,7 +145,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 
 	/**
-	 * Changes the {@link #context} for this {@link MavlinkParser}
+	 * Changes the {@link #context} for this {@link MavlinkParser}.
 	 *
 	 * @param context with which {@link #context} will be replaced
 	 */
@@ -154,7 +154,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	}
 
 	/**
-	 * Changes the {@link #keySafe} for this {@link MavlinkParser}
+	 * Changes the {@link #keySafe} for this {@link MavlinkParser}.
 	 *
 	 * @param safe with which {@link #keySafe} will be replaced
 	 */
@@ -514,7 +514,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @param mav {@link MavlinkMessage} to convert
 	 * @return converted byte[] array
 	 * @throws AnnotationMissingException if the {@link MavField MavField-annotation} is missing
-	 * @throws ParsingException   if the accessor of the for the {@link RecordComponent} cannot be invoked
+	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
 		// TODO: Add char-support
