@@ -1,9 +1,5 @@
 package org.telestion.protocol.mavlink;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.Verticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -13,6 +9,12 @@ import org.telestion.core.message.Address;
 import org.telestion.protocol.mavlink.message.internal.RawMavlink;
 import org.telestion.protocol.mavlink.message.internal.RawMavlinkV1;
 import org.telestion.protocol.mavlink.message.internal.RawMavlinkV2;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+import io.vertx.core.Verticle;
 
 /**
  * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).<br>

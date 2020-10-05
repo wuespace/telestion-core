@@ -1,7 +1,9 @@
 package org.telestion.protocol.mavlink.message;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.telestion.api.message.JsonMessage;
+import org.telestion.protocol.mavlink.message.internal.RawMavlink;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Wrapper for the payload of MAVLink-messages to easily use it in the {@link RawMavlink RawMavlinkV-messages}.
