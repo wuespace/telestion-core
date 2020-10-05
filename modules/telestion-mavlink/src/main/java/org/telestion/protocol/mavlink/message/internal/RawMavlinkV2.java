@@ -82,7 +82,7 @@ public final record RawMavlinkV2(
 	 */
 	@SuppressWarnings("unused")
 	private RawMavlinkV2() {
-		this((short) 0, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, 0l, null, 0, (short) 0, null);
+		this((short) 0, (short) 0, (short) 0, (short) 0, (short) 0, (short) 0, 0L, null, 0, (short) 0, null);
 	}
 
 	/**

@@ -18,7 +18,7 @@ public final class MessageIndex {
 	private static HashMap<Long, Class<? extends MavlinkMessage>> map = new HashMap<>();
 
 	/**
-	 * There shall be no objects!
+	 * There shall be no objects.
 	 */
 	private MessageIndex() throws InstantiationException {
 		throw new InstantiationException("There shall be no MessageIndex Object!");
@@ -31,7 +31,7 @@ public final class MessageIndex {
 	 * <em>Note that if an other {@link MavlinkMessage} has already been linked with the given id an will
 	 * {@link IllegalArgumentException} be thrown.</em>
 	 *
-	 * @param idof the new {@link MavlinkMessage MavlinkMessage-implementation}
+	 * @param id of the new {@link MavlinkMessage MavlinkMessage-implementation}
 	 * @param clazz Class of the {@link MavlinkMessage} which should be linked
 	 * @throws IllegalArgumentException if the given id is already in use
 	 */

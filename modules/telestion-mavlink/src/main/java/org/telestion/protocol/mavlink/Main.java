@@ -13,14 +13,22 @@ import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 
 /**
+ * Can this class be removed @jvpichowski?
+ * 
  * @author Jan von Pichowski
  */
+@Deprecated
 public class Main {
 
 	private static final byte[] HEARTBEAT_MESSAGE = { (byte) 0xFD, (byte) 0x09, (byte) 0x00, (byte) 0x00, (byte) 0x00,
 			(byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x09, (byte) 0x00, (byte) 0x02,
 			(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x04, (byte) 0x14, (byte) 0x54, (byte) 0x28 };
 
+	/**
+	 * Main Entry point.
+	 * 
+	 * @param args from console
+	 */
 	public static void main(String[] args) {
 		MessageIndex.put(new Heartbeat(0L, 0, 0, 0, 0, 0).getId(), Heartbeat.class);
 

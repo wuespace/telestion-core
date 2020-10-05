@@ -27,10 +27,11 @@ public interface MavlinkMessage extends JsonMessage {
 	 */
 	@JsonProperty(access = Access.READ_ONLY)
 	default MavInfo checkAnnotation() {
-		if (!this.getClass().isAnnotationPresent(MavInfo.class))
+		if (!this.getClass().isAnnotationPresent(MavInfo.class)) {
 			throw new AnnotationMissingException("Required Annotation @MavInfo is missing!");
-		else
+		} else {
 			return this.getClass().getAnnotation(MavInfo.class);
+		}
 	}
 
 	/**
