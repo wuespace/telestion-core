@@ -11,7 +11,7 @@ import java.util.List;
 @SuppressWarnings("preview")
 public record Positions(@JsonProperty List<Position> list) implements JsonMessage {
     @SuppressWarnings("unused")
-	private Positions() {
+    private Positions() {
         this(null);
     }
 }

@@ -43,10 +43,10 @@ public class TcpConnTest {
         });
 
         var server = new TcpConn(null, 23654, serverOutgoing, null, Collections.singletonList(serverIncoming));
-        var client = new TcpConn("127.0.0.1", 23654, clientOutgoing, null , Collections.singletonList(clientIncoming));
+        var client = new TcpConn("127.0.0.1", 23654, clientOutgoing, null, Collections.singletonList(clientIncoming));
 
         vertx.deployVerticle(server, result -> {
-            if(result.succeeded()) {
+            if (result.succeeded()) {
                 vertx.deployVerticle(client);
             }
         });

@@ -1,8 +1,7 @@
 package org.telestion.example;
 
-import org.telestion.api.message.JsonMessage;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.telestion.api.message.JsonMessage;
 
 /**
  * Data class which contains a position. Its json looks like this:
@@ -15,7 +14,7 @@ public record Position(
         @JsonProperty double z) implements JsonMessage {
 
     @SuppressWarnings("unused")
-	private Position() {
+    private Position() {
         this(0.0, 0.0, 0.0);
     }
 }

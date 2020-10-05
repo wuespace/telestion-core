@@ -19,25 +19,6 @@ import io.vertx.core.spi.json.JsonCodec;
 public interface JsonMessage {
 
     /**
-     * Returns the simple class name of the subclass.
-     *
-     * @return simple class name of subclass
-     */
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    default String className() {
-        return getClass().getName();
-    }
-
-    /**
-     * Returns the Json-representation of the message.
-     *
-     * @return json representation of message
-     */
-    default JsonObject json() {
-        return JsonObject.mapFrom(this);
-    }
-
-    /**
      * This method decodes a {@link JsonMessage} from the event bus.<br>
      * Returns whether decoding was successful or not.
      *
@@ -115,5 +96,24 @@ public interface JsonMessage {
      */
     static <T extends JsonMessage> T from(Object json, Class<T> type) {
         return JsonCodec.INSTANCE.fromString((String) json, type);
+    }
+
+    /**
+     * Returns the simple class name of the subclass.
+     *
+     * @return simple class name of subclass
+     */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    default String className() {
+        return getClass().getName();
+    }
+
+    /**
+     * Returns the Json-representation of the message.
+     *
+     * @return json representation of message
+     */
+    default JsonObject json() {
+        return JsonObject.mapFrom(this);
     }
 }

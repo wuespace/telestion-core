@@ -11,41 +11,41 @@ import io.vertx.core.Verticle;
  * addresses.</br>
  * </br>
  * This class should only be used in static context.
- * 
+ *
  * @author Jan von Pichowsky, Cedric Boes
  * @version 1.0
- *
  */
 public final class Address {
 
-	/**
-	 * Private Constructor! -> There shall be no objects!
-	 */
-	private Address() {}
-	
-	/**
-	 * Creates a new outgoing address from a {@link Verticle} and returns it as a {@link String}.
-	 * 
-	 * @param source {@link Verticle} to compose address from
-	 * @return composed {@link String address}
-	 */
+    /**
+     * Private Constructor! -> There shall be no objects!
+     */
+    private Address() {
+    }
+
+    /**
+     * Creates a new outgoing address from a {@link Verticle} and returns it as a {@link String}.
+     *
+     * @param source {@link Verticle} to compose address from
+     * @return composed {@link String address}
+     */
     public static String outgoing(Verticle source) {
         return outgoing(source.getClass());
     }
 
-	/**
-	 * Creates a new outgoing address from a {@link Verticle} and returns it as a {@link String}.
-	 *
-	 * @param source {@link Verticle} to compose address from
-	 * @return composed {@link String address}
-	 */
-	public static String outgoing(Class<? extends Verticle> source) {
-    	return source.getName()+"/out";
-	}
+    /**
+     * Creates a new outgoing address from a {@link Verticle} and returns it as a {@link String}.
+     *
+     * @param source {@link Verticle} to compose address from
+     * @return composed {@link String address}
+     */
+    public static String outgoing(Class<? extends Verticle> source) {
+        return source.getName() + "/out";
+    }
 
     /**
      * Creates a new outgoing address from a method within a {@link Verticle} and returns it as a {@link String}.
-     * 
+     *
      * @param source {@link Verticle} to compose address from
      * @param method Method which specifies the output address
      * @return composed {@link String address}
@@ -54,56 +54,57 @@ public final class Address {
         return outgoing(source.getClass(), method);
     }
 
-	/**
-	 * Creates a new outgoing address from a method within a {@link Verticle} and returns it as a {@link String}.
-	 *
-	 * @param source {@link Verticle} to compose address from
-	 * @param method Method which specifies the output address
-	 * @return composed {@link String address}
-	 */
-	public static String outgoing(Class<? extends Verticle> source, String method) {
-		return outgoing(source)+"#"+method;
-	}
-    
-	/**
-	 * Creates a new incoming address from a {@link Verticle} and returns it as a {@link String}.
-	 * 
-	 * @param target {@link Verticle} to compose address from
-	 * @return composed {@link String address}
-	 */
-    public static String incoming(Class<? extends Verticle> target) {
-        return target.getName()+"/in";
+    /**
+     * Creates a new outgoing address from a method within a {@link Verticle} and returns it as a {@link String}.
+     *
+     * @param source {@link Verticle} to compose address from
+     * @param method Method which specifies the output address
+     * @return composed {@link String address}
+     */
+    public static String outgoing(Class<? extends Verticle> source, String method) {
+        return outgoing(source) + "#" + method;
     }
-    
+
+    /**
+     * Creates a new incoming address from a {@link Verticle} and returns it as a {@link String}.
+     *
+     * @param target {@link Verticle} to compose address from
+     * @return composed {@link String address}
+     */
+    public static String incoming(Class<? extends Verticle> target) {
+        return target.getName() + "/in";
+    }
+
     /**
      * Creates a new incoming address from a method within a {@link Verticle} and returns it as a {@link String}.
-     * 
+     *
      * @param target {@link Verticle} to compose address from
      * @param method Method which specifies the input address
      * @return composed {@link String address}
      */
     public static String incoming(Class<? extends Verticle> target, String method) {
-        return incoming(target)+"#"+method;
+        return incoming(target) + "#" + method;
     }
-	/**
-	 * Creates a new incoming address from a {@link Verticle} and returns it as a {@link String}.
-	 *
-	 * @param target {@link Verticle} to compose address from
-	 * @return composed {@link String address}
-	 */
-	public static String incoming(Verticle target) {
-		return incoming(target.getClass());
-	}
 
-	/**
-	 * Creates a new incoming address from a method within a {@link Verticle} and returns it as a {@link String}.
-	 *
-	 * @param target {@link Verticle} to compose address from
-	 * @param method Method which specifies the input address
-	 * @return composed {@link String address}
-	 */
-	public static String incoming(Verticle target, String method) {
-		return incoming(target.getClass(), method);
-	}
+    /**
+     * Creates a new incoming address from a {@link Verticle} and returns it as a {@link String}.
+     *
+     * @param target {@link Verticle} to compose address from
+     * @return composed {@link String address}
+     */
+    public static String incoming(Verticle target) {
+        return incoming(target.getClass());
+    }
+
+    /**
+     * Creates a new incoming address from a method within a {@link Verticle} and returns it as a {@link String}.
+     *
+     * @param target {@link Verticle} to compose address from
+     * @param method Method which specifies the input address
+     * @return composed {@link String address}
+     */
+    public static String incoming(Verticle target, String method) {
+        return incoming(target.getClass(), method);
+    }
 
 }

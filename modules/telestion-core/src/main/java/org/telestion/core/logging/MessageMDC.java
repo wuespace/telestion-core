@@ -1,15 +1,14 @@
 package org.telestion.core.logging;
 
+import io.vertx.core.eventbus.Message;
 import org.slf4j.MDC;
 import org.telestion.core.util.SafeCloseable;
 
-import io.vertx.core.eventbus.Message;
-
 /**
  * A MDC implementation for the {@link Message} object.
- * 
- * @version 1.0
+ *
  * @author Jan von Pichowski, Cedric Boes
+ * @version 1.0
  * @see MDC
  * @see Message
  */
@@ -21,7 +20,7 @@ public final class MessageMDC {
      * </br>
      * <i>See {@link MessageMDC#put(String, Message)} for the elements which are put to the store.</i>
      *
-     * @param key to identify the {@link Message} in the store
+     * @param key     to identify the {@link Message} in the store
      * @param message {@link Message} to store
      * @return A {@link SafeCloseable} which can remove the key if {@link SafeCloseable#close() close()} is called
      */
@@ -42,16 +41,16 @@ public final class MessageMDC {
      * </br>
      * The key is either the name of the objects, if the key is <code>null</code> or <code>key.name</code>.
      *
-     * @param key to identify the {@link Message} in the store
+     * @param key     to identify the {@link Message} in the store
      * @param message {@link Message} to store
      */
     public static void put(String key, Message<?> message) {
-        String prefix = (key == null ? "" : key+".");
-        MDC.put(prefix+"address", message.address());
-        MDC.put(prefix+"replyAddress", message.replyAddress());
-        MDC.put(prefix+"headers", message.toString());
-        MDC.put(prefix+"send", Boolean.toString(message.isSend()));
-        MDC.put(prefix+"body", message.body() == null ? null : message.body().toString());
+        String prefix = (key == null ? "" : key + ".");
+        MDC.put(prefix + "address", message.address());
+        MDC.put(prefix + "replyAddress", message.replyAddress());
+        MDC.put(prefix + "headers", message.toString());
+        MDC.put(prefix + "send", Boolean.toString(message.isSend()));
+        MDC.put(prefix + "body", message.body() == null ? null : message.body().toString());
     }
 
     /**

@@ -3,7 +3,10 @@ package org.telestion.application;
 import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.config.ConfigRetriever;
-import io.vertx.core.*;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.core.config.Configuration;
@@ -22,7 +25,7 @@ public final class Telestion extends AbstractVerticle {
 
     /**
      * Deploys this Telestion verticle.
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -35,12 +38,12 @@ public final class Telestion extends AbstractVerticle {
         var breaker = CircuitBreaker.create(Telestion.class.getSimpleName(), vertx,
                 new CircuitBreakerOptions().setMaxFailures(2).setMaxRetries(5).setTimeout(2000).setResetTimeout(10000));
 
-        var deployer = CircuitBreaker.create(Telestion.class.getSimpleName()+"#deployVerticle", vertx,
+        var deployer = CircuitBreaker.create(Telestion.class.getSimpleName() + "#deployVerticle", vertx,
                 new CircuitBreakerOptions().setMaxRetries(3).setMaxFailures(1).setTimeout(2000).setResetTimeout(10000));
 
         ConfigRetriever retriever = ConfigRetriever.create(vertx);
         retriever.getConfig(configRes -> {
-            if(configRes.failed()) {
+            if (configRes.failed()) {
                 logger.error("Failed to load config", configRes.cause());
                 startPromise.fail(configRes.cause());
                 return;

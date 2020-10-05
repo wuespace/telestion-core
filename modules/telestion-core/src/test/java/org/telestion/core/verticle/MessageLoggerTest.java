@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 @ExtendWith(VertxExtension.class)
@@ -29,9 +29,10 @@ public class MessageLoggerTest {
         var logger = LoggerFactory.getLogger(MessageLogger.class);
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
-        ((Logger)logger).addAppender(listAppender);
+        ((Logger) logger).addAppender(listAppender);
 
-        vertx.eventBus().consumer("addr1", message -> {});
+        vertx.eventBus().consumer("addr1", message -> {
+        });
 
         //start test case
         vertx.deployVerticle(MessageLogger.class.getName(), event -> {
@@ -41,7 +42,7 @@ public class MessageLoggerTest {
 
             vertx.setTimer(Duration.ofSeconds(1).toMillis(), timerId -> {
                 //remove apprender
-                ((Logger)logger).detachAppender(listAppender);
+                ((Logger) logger).detachAppender(listAppender);
                 listAppender.stop();
 
                 //check state

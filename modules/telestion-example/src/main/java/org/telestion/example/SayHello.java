@@ -18,24 +18,6 @@ import java.util.UUID;
 public final class SayHello extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(SayHello.class);
-
-    /**
-     * Define a configuration record
-     */
-    @SuppressWarnings("preview")
-	private static record Configuration(
-            @JsonProperty long period,
-            @JsonProperty String message) {
-
-        /**
-         * The default values will be set via the constructor
-         */
-        @SuppressWarnings("unused")
-		private Configuration() {
-            this(1, "Hello World");
-        }
-    }
-
     /**
      * A random uuid which defines this instance
      */
@@ -44,7 +26,6 @@ public final class SayHello extends AbstractVerticle {
      * The forced configuration defined by the construtor
      */
     private final Configuration forcedConfig;
-
     /**
      * No forced config is used. The config will be read from the config file or the default values will be used if the
      * config file is not available.
@@ -66,8 +47,25 @@ public final class SayHello extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         var config = Config.get(forcedConfig, config(), Configuration.class);
-        vertx.setPeriodic(Duration.ofSeconds(config.period()).toMillis(), timerId -> System.out.println(config.message()+" from "+uuid));
+        vertx.setPeriodic(Duration.ofSeconds(config.period()).toMillis(), timerId -> System.out.println(config.message() + " from " + uuid));
         startPromise.complete();
         logger.info("Started {} with config {}", SayHello.class.getSimpleName(), config);
+    }
+
+    /**
+     * Define a configuration record
+     */
+    @SuppressWarnings("preview")
+    private static record Configuration(
+            @JsonProperty long period,
+            @JsonProperty String message) {
+
+        /**
+         * The default values will be set via the constructor
+         */
+        @SuppressWarnings("unused")
+        private Configuration() {
+            this(1, "Hello World");
+        }
     }
 }

@@ -2,8 +2,8 @@ package org.telestion.example;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telestion.core.message.Address;
 
 import java.time.Duration;
@@ -34,8 +34,8 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 
         Position pos = new Position(x, y, z);
 
-        x += rand.nextDouble()*0.02;
-        y += rand.nextDouble()*0.02;
+        x += rand.nextDouble() * 0.02;
+        y += rand.nextDouble() * 0.02;
         //z += rand.nextDouble()*0.02;
         vertx.sharedData().getLocalMap("randPos").put("x", x);
         vertx.sharedData().getLocalMap("randPos").put("y", y);

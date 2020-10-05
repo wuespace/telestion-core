@@ -18,16 +18,6 @@ import org.telestion.core.config.Config;
 public final class HystrixMetrics extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(HystrixMetrics.class);
-
-    @SuppressWarnings({ "preview", "unused" })
-	private static record Configuration(
-            @JsonProperty int port,
-            @JsonProperty String path) {
-        private Configuration() {
-            this(8080, "/hystrix-metrics");
-        }
-    }
-
     private final Configuration forcedConfig;
 
     public HystrixMetrics() {
@@ -48,5 +38,14 @@ public final class HystrixMetrics extends AbstractVerticle {
                 .listen(config.port);
         startPromise.complete();
         logger.info("Started {} with config {}", HystrixMetrics.class.getSimpleName(), config);
+    }
+
+    @SuppressWarnings({"preview", "unused"})
+    private static record Configuration(
+            @JsonProperty int port,
+            @JsonProperty String path) {
+        private Configuration() {
+            this(8080, "/hystrix-metrics");
+        }
     }
 }

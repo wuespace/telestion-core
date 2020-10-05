@@ -18,22 +18,9 @@ import java.util.Objects;
  */
 public final class WebServer extends AbstractVerticle {
 
-    /**
-     * Web server configuration
-     *
-     * @param port the port to bind to
-     */
-	@SuppressWarnings({ "preview", "unused" })
-    private static record Configuration(@JsonProperty int port) {
-        private Configuration() {
-            this(8080);
-        }
-    }
-
     private Configuration forcedConfig;
 
     /**
-     *
      * @param port the port to bind to
      */
     public WebServer(int port) {
@@ -65,5 +52,17 @@ public final class WebServer extends AbstractVerticle {
         });
 
         server.requestHandler(router).listen(config.port);
+    }
+
+    /**
+     * Web server configuration
+     *
+     * @param port the port to bind to
+     */
+    @SuppressWarnings({"preview", "unused"})
+    private static record Configuration(@JsonProperty int port) {
+        private Configuration() {
+            this(8080);
+        }
     }
 }
