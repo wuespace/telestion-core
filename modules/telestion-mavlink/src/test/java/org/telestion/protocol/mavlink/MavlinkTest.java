@@ -113,21 +113,20 @@ public class MavlinkTest {
 
         vertx.eventBus().consumer(transmitterConsumer, msg -> verifyResult(msg, testContext, checkpoint));
         
+        Thread.sleep(Duration.ofSeconds(1).toMillis());
+        
         logger.info("Testing MAVLinkV1");
         vertx.eventBus().publish(v1ToRaw, new Heartbeat(1L, 2, 3, 4, 5, 6).json());
-        Thread.sleep(Duration.ofSeconds(1).toMillis());
 
         parser.changeHeaderContext(new HeaderContext((short) 0x0, (short) 0x0, (short) 0x1, (short) 0x1, (short) 0x2));
         logger.info("Testing MAVLinkV2 (without signing)");
         vertx.eventBus().publish(v2ToRaw, new Heartbeat(150_995_456L, 0, 0, 0, 4, 20).json());
-        Thread.sleep(Duration.ofSeconds(1).toMillis());
 
         parser.changeHeaderContext(new HeaderContext((short) 0x01, (short) 0x0, (short) 0x1, (short) 0x1, (short) 0x2));
         logger.info("Testing MAVLinkV2 (with signing)");
         vertx.eventBus().publish(v2ToRaw, new Heartbeat(150_995_456L, 0, 0, 0, 4, 20).json());
         
-//        assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
-        Thread.sleep(Duration.ofSeconds(2).toMillis());
+        assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
         if (testContext.failed()) {
         	throw testContext.causeOfFailure();
         }

@@ -305,6 +305,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @return
 	 */
 	private Number toRightNum(Object o, Class<? extends Number> clazz) {
+		// TODO: Add char-support
 		return switch(clazz.getSimpleName()) {
 			case "Byte" -> (Byte) o;
 			case "Short" -> (Short) o;
@@ -325,6 +326,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @return parsed Object
 	 */
 	private Object parse(AtomicInteger index, byte[] payload, RecordComponent c) {
+		// TODO: Add char-support
 		var annotation = c.getAnnotation(MavField.class);
 		
 		if (index.get() > payload.length) {
@@ -402,7 +404,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 */
 	@SuppressWarnings({ "preview", "rawtypes" })
 	private void interpretMsg(RawMavlink raw, Configuration config) {
-
+		// TODO: Add char-support
 		Class<? extends MavlinkMessage> mavlinkClass = null;
 
 		int subtract = 1;
@@ -528,7 +530,8 @@ public final class MavlinkParser extends AbstractVerticle {
 			o = Float.floatToIntBits((float) o);
 			natType = NativeType.INT_32;
 		}
-		
+
+		// TODO: Add char-support
 		Number n = (Number) o;
 		
 		return switch(natType) {
@@ -559,7 +562,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 * @throws ParsingException if the accessor of the for the {@link RecordComponent} cannot be invoked
 	 */
 	private byte[] getRaw(MavlinkMessage mav) {
-
+		// TODO: Add char-support
 		var components = Arrays.stream(mav.getClass().getRecordComponents())
 				.sorted(MavlinkParser::compareRecordComponents)
 				.toArray(RecordComponent[]::new);
