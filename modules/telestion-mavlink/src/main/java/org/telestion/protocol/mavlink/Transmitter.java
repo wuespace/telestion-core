@@ -75,12 +75,6 @@ public final class Transmitter extends AbstractVerticle {
 	 * @param mav {@link MavlinkMessage} to convert
 	 */
 	private void interpretMsg(RawMavlink mav, String outAddress) {
-
-//		var addrPort = AddressAssociator.remove(mav.getMavlinkId());
-//		System.out.println(addrPort + " " + Arrays.toString(buildArray));
-//		vertx.eventBus().send(outAddress,
-//				new TcpConn.Data(new TcpConn.Participant(addrPort.address(), addrPort.port()), buildArray).json());
-
 		vertx.eventBus().send(outAddress, new RawPayload(mav.getRaw()).json());
 	}
 
@@ -90,7 +84,8 @@ public final class Transmitter extends AbstractVerticle {
 	 * @param rawMavSupplierAddr  {@link RawMavlink RawMavlink-messages} will be send here.
 	 * @param tcpDataConsumerAddr Messages (as {@link TcpData}) will be published on this address.
 	 */
-	@SuppressWarnings("preview") private static record Configuration(@JsonProperty String rawMavSupplierAddr,
+	@SuppressWarnings("preview")
+	private static record Configuration(@JsonProperty String rawMavSupplierAddr,
 			@JsonProperty String tcpDataConsumerAddr) {
 		@SuppressWarnings("unused")
 		private Configuration() {

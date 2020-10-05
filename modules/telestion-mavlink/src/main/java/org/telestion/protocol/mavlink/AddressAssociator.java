@@ -21,7 +21,7 @@ public final class AddressAssociator {
 	private static final HashMap<String, AddressPort> map = new HashMap<>();
 
 	/**
-	 * There shall be no objects!
+	 * There shall be no objects.
 	 */
 	private AddressAssociator() throws InstantiationException {
 		throw new InstantiationException("There shall be no MessageIndex Object!");

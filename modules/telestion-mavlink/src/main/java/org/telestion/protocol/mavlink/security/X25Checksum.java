@@ -20,10 +20,11 @@ public final class X25Checksum {
 	public static final int INIT_CRC = 0xffff;
 
 	/**
-	 * There shall be no objects!
+	 * There shall be no objects.
 	 */
 	private X25Checksum() {
-		/* There shall be no objects! */}
+		/* There shall be no objects! */
+	}
 
 	/**
 	 * Calculates the CRC X.25-checksum for one byte with regards to the current-checksum.
