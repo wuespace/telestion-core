@@ -46,7 +46,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * @implNote Should not be overwritten!
 	 */
 	@JsonProperty(access = Access.READ_ONLY)
-	public default int getCrc() {
+	default int getCrc() {
 		return checkAnnotation().crc();
 	}
 
@@ -61,7 +61,7 @@ public interface MavlinkMessage extends JsonMessage {
 	 * @implNote Should not be overwritten!
 	 */
 	@JsonProperty(access = Access.READ_ONLY)
-	public default int getId() {
+	default int getId() {
 		return checkAnnotation().id();
 	}
 

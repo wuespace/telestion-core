@@ -9,13 +9,11 @@ import org.telestion.protocol.mavlink.message.internal.RawMavlink;
  *
  * @author Cedric Boes
  * @version 1.0
+ *
+ * @param payload Actual payload bytes of a MAVLink-message.
  */
 @SuppressWarnings("preview")
-public final record RawPayload(
-		/**
-		 * Actual payload bytes of a MAVLink-message.
-		 */
-		@JsonProperty byte[] payload) implements JsonMessage {
+public final record RawPayload(@JsonProperty byte[] payload) implements JsonMessage {
 
 	/**
 	 * There shall be no default constructor for normal people.<br>
