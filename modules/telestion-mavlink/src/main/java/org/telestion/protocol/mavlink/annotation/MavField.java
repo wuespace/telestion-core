@@ -16,8 +16,7 @@ import org.telestion.protocol.mavlink.message.MavlinkMessage;
  */
 @Target(ElementType.RECORD_COMPONENT)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MavField
-{
+public @interface MavField {
 	/**
 	 * Returns the {@link NativeType} of the field.
 	 *

@@ -159,8 +159,7 @@ public class MavlinkTest {
 
 		Thread.sleep(Duration.ofSeconds(1).toMillis());
 
-		vertx.deployVerticle(new AbstractVerticle()
-		{
+		vertx.deployVerticle(new AbstractVerticle() {
 			@Override
 			public void start(Promise<Void> startPromise) throws Exception {
 				var client = vertx.createNetClient();

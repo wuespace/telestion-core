@@ -129,9 +129,9 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted permitted eventbus addresses for outbound connections
 	 */
-	@SuppressWarnings({ "preview", "unused" }) private static record Configuration(@JsonProperty String host,
-			@JsonProperty int port, @JsonProperty List<String> inboundPermitted,
-			@JsonProperty List<String> outboundPermitted) {
+	@SuppressWarnings({ "preview", "unused" })
+	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
+			@JsonProperty List<String> inboundPermitted, @JsonProperty List<String> outboundPermitted) {
 		private Configuration() {
 			this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
 		}

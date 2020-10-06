@@ -17,8 +17,7 @@ import org.telestion.protocol.mavlink.message.MavlinkMessage;
  */
 @Target(ElementType.RECORD_COMPONENT)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MavArray
-{
+public @interface MavArray {
 	/**
 	 * Returns the length of the array.
 	 *
