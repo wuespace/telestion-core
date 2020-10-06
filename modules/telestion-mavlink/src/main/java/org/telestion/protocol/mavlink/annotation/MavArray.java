@@ -15,10 +15,10 @@ import java.lang.annotation.*;
 @Target(ElementType.RECORD_COMPONENT)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MavArray {
-	/**
-	 * Returns the length of the array.
-	 *
-	 * @return length of the array
-	 */
-	public int length();
+    /**
+     * Returns the length of the array.
+     *
+     * @return length of the array
+     */
+    public int length();
 }

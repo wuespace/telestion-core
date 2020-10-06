@@ -14,26 +14,26 @@ import java.lang.annotation.*;
 @Target(ElementType.RECORD_COMPONENT)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MavField {
-	/**
-	 * Returns the {@link NativeType} of the field.
-	 *
-	 * @return {@link NativeType} of the field
-	 */
-	public NativeType nativeType();
+    /**
+     * Returns the {@link NativeType} of the field.
+     *
+     * @return {@link NativeType} of the field
+     */
+    public NativeType nativeType();
 
-	/**
-	 * Returns the position of a MAVLink-Field in the raw array if the raw packet is not arranged according to the
-	 * specifications.<br>
-	 * The default value of <code>-1</code> means that the default-position is used.
-	 *
-	 * @return position of the field in the raw array
-	 */
-	public int position() default -1;
+    /**
+     * Returns the position of a MAVLink-Field in the raw array if the raw packet is not arranged according to the
+     * specifications.<br>
+     * The default value of <code>-1</code> means that the default-position is used.
+     *
+     * @return position of the field in the raw array
+     */
+    public int position() default -1;
 
-	/**
-	 * Returns whether a field is an extension or not.
-	 *
-	 * @return if a field is an extension
-	 */
-	public boolean extension() default false;
+    /**
+     * Returns whether a field is an extension or not.
+     *
+     * @return if a field is an extension
+     */
+    public boolean extension() default false;
 }
