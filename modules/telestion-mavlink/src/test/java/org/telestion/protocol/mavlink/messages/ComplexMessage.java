@@ -1,11 +1,12 @@
 package org.telestion.protocol.mavlink.messages;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.telestion.protocol.mavlink.annotation.MavArray;
 import org.telestion.protocol.mavlink.annotation.MavField;
 import org.telestion.protocol.mavlink.annotation.MavInfo;
 import org.telestion.protocol.mavlink.annotation.NativeType;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SuppressWarnings("preview")
 @MavInfo(id = 1, crc = 0)

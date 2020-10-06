@@ -1,8 +1,12 @@
 package org.telestion.protocol.mavlink.annotation;
 
-import org.telestion.protocol.mavlink.message.MavlinkMessage;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import org.telestion.protocol.mavlink.message.MavlinkMessage;
 
 /**
  * An {@link Annotation} specifying that a MAVLink-Message-Field is an array.<br>

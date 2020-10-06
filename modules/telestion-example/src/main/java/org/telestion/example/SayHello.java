@@ -1,14 +1,16 @@
 package org.telestion.example;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
+import java.time.Duration;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.core.config.Config;
 
-import java.time.Duration;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
 
 /**
  * A class which says hello and shows the usage of configuration files.

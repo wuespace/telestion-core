@@ -1,10 +1,11 @@
 package org.telestion.protocol.mavlink.messages.minimal;
 
-import org.junit.jupiter.api.Test;
-import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+import org.junit.jupiter.api.Test;
+import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
 
 public class HeartbeatTest {
 

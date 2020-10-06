@@ -1,7 +1,8 @@
 package org.telestion.example;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.telestion.api.message.JsonMessage;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Data class which contains a position. Its json looks like this:
