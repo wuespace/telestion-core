@@ -13,8 +13,8 @@ import org.telestion.protocol.mavlink.message.RawPayload;
  * @param len      Length of the payload (array-buffer length).
  * @param seq      A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
  *                 The parser later must identify if there has occurred any packet loss.
- * @param compId   ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a
- *                 camera). Use appropriate values in MAV_COMPONENT.<br><br>
+ * @param compId   ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and
+ *                 a camera). Use appropriate values in MAV_COMPONENT.<br><br>
  *                 <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid
  *                 source ddress.</em>
  * @param msgId    Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.

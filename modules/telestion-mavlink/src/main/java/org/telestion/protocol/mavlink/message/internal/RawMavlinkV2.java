@@ -18,18 +18,20 @@ import org.telestion.protocol.mavlink.message.RawPayload;
  * @param seq           A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
  *                      The parser later must identify if there has occurred any packet loss.
  * @param sysId         ID of system (vehicle) sending the message. Used to differentiate systems on network.<br><br>
- *                      <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source address.
- *                      </em>
- * @param compId        ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a
+ *                      <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source
+ *                      address.</em>
+ * @param compId        ID of component sending the message. Used to differentiate components in a system (e.g.
+ *                      autopilot and a
  *                      camera). Use appropriate values in MAV_COMPONENT.<br><br>
- *                      <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid
- *                      source address.</em>
+ *                      <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an
+ *                      invalid source address.</em>
  * @param msgId         Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.<br>
  *                      Compared to MAVLinkV1 this allows for 3 (unsigned) bytes of message id.
  * @param payload       Actual MAVLink payload bytes of a message.
  * @param checksum      The X.25 checksum for this message.
  * @param linkId        A linkId for this message (usually a channelId to be robust for multisignal usecases).
- * @param signature     The generated signature for this message (or <code>null</code> if {@link #incompatFlags} != 0x1).
+ * @param signature     The generated signature for this message
+ *                      (or <code>null</code> if {@link #incompatFlags} != 0x1).
  * @author Cedric Boes
  * @version 1.1
  * @implNote Support for MAVLink V2
