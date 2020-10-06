@@ -6,7 +6,6 @@ import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.core.web.WebServer;
 import org.telestion.example.RandomPositionPublisher;
 import org.telestion.launcher.Launcher;
-
 import java.util.Collections;
 
 /**

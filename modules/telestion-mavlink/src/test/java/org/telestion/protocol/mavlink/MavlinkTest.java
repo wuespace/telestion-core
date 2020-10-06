@@ -21,7 +21,6 @@ import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
 import org.telestion.protocol.mavlink.security.HeaderContext;
 import org.telestion.protocol.mavlink.security.MavV2Signator;
 import org.telestion.protocol.mavlink.security.SecretKeySafe;
-
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Arrays;

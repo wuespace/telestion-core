@@ -24,7 +24,6 @@ import org.telestion.protocol.mavlink.security.HeaderContext;
 import org.telestion.protocol.mavlink.security.MavV2Signator;
 import org.telestion.protocol.mavlink.security.SecretKeySafe;
 import org.telestion.protocol.mavlink.security.X25Checksum;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;

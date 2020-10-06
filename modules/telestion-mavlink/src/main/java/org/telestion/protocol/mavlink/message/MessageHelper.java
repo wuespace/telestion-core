@@ -3,7 +3,6 @@ package org.telestion.protocol.mavlink.message;
 import org.telestion.core.util.UnsafePredicate;
 import org.telestion.protocol.mavlink.annotation.MavArray;
 import org.telestion.protocol.mavlink.annotation.MavField;
-
 import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
 

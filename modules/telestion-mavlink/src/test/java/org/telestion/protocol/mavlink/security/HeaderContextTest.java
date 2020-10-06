@@ -5,7 +5,6 @@ import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -4,7 +4,6 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import org.telestion.core.message.Address;
-
 import java.time.Duration;
 
 /**

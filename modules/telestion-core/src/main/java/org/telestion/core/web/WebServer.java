@@ -7,7 +7,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import org.telestion.core.config.Config;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 

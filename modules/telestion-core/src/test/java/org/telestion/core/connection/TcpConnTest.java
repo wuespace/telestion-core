@@ -6,7 +6,6 @@ import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.telestion.api.message.JsonMessage;
-
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 

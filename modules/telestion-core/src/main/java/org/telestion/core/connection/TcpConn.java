@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.config.Config;
 import org.telestion.core.message.Address;
-
 import java.util.Collections;
 import java.util.List;
 
