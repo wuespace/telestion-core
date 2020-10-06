@@ -1,11 +1,10 @@
 package org.telestion.protocol.mavlink.messages.common;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import org.junit.jupiter.api.Test;
 import org.telestion.protocol.mavlink.messages.official.common.DebugFloatArray;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class DebugFloatArrayTest {
 
