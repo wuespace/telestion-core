@@ -1,10 +1,8 @@
 package org.telestion.example;
 
-import java.util.List;
-
-import org.telestion.api.message.JsonMessage;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import org.telestion.api.message.JsonMessage;
 
 /**
  * A list message containing multiple {@link Position}.

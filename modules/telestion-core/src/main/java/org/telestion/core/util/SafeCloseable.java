@@ -1,9 +1,8 @@
 package org.telestion.core.util;
 
-import org.slf4j.LoggerFactory;
-
 import java.io.Closeable;
 import java.io.IOException;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link Closeable} which does not throw {@link IOException IOExceptions}. This enables the try-close-pattern without

@@ -2,11 +2,10 @@ package org.telestion.launcher;
 
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.Duration;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A generic launcher class which deploys {@link Verticle Verticles}.

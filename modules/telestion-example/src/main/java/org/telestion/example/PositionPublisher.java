@@ -1,12 +1,10 @@
 package org.telestion.example;
 
-import java.time.Duration;
-
-import org.telestion.core.message.Address;
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import java.time.Duration;
+import org.telestion.core.message.Address;
 
 /**
  * A class which publishes positions every two seconds. A codec for {@link Position} has to be registered.

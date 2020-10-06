@@ -1,13 +1,12 @@
 package org.telestion.application;
 
+import java.util.Collections;
 import org.telestion.core.connection.EventbusTcpBridge;
 import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.core.web.WebServer;
 import org.telestion.example.RandomPositionPublisher;
 import org.telestion.launcher.Launcher;
-
-import java.util.Collections;
 
 /**
  * Starts the Telestion-Project as a standalone Application.

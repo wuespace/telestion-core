@@ -1,7 +1,6 @@
 package org.telestion.core.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**

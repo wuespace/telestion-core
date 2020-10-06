@@ -1,16 +1,6 @@
 package org.telestion.core.connection;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.telestion.api.message.JsonMessage;
-import org.telestion.core.config.Config;
-import org.telestion.core.message.Address;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -22,6 +12,13 @@ import io.vertx.core.net.NetClientOptions;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
+import java.util.Collections;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.telestion.api.message.JsonMessage;
+import org.telestion.core.config.Config;
+import org.telestion.core.message.Address;
 
 /**
  * This class opens a tcp connection. This could either be a tcp client to a host or a host which accepts new clients.
