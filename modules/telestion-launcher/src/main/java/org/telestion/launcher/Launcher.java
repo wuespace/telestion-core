@@ -52,6 +52,12 @@ public final class Launcher {
         });
     }
 
+    /**
+     * Deploys the given {@link Verticle Verticles}.<br>
+     * If Vert.x fails to deploy a {@link Verticle}, it will retry after 5 secs.
+     *
+     * @param verticles the verticles to be deployed
+     */
     public static void start(Verticle... verticles) {
         logger.info("Deploying {} verticles", verticles.length);
         var vertx = Vertx.vertx();

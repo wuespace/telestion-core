@@ -31,7 +31,7 @@ public final class MavV2Signator {
     private static final long secondJan2015 = OffsetDateTime.of(2015, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC).toEpochSecond();
 
     /**
-     * There shall be no objects!
+     * There shall be no objects.
      */
     private MavV2Signator() {
         // There shall be no objects!

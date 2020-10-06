@@ -54,7 +54,7 @@ public final class WebServer extends AbstractVerticle {
     }
 
     /**
-     * Web server configuration
+     * Web server configuration.
      *
      * @param port the port to bind to
      */

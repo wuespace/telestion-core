@@ -20,7 +20,7 @@ import io.vertx.core.Verticle;
 public final class Address {
 
     /**
-     * Private Constructor! -> There shall be no objects!
+     * There shall be no objects.
      */
     private Address() {
     }

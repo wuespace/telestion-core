@@ -40,10 +40,12 @@ public final class TcpConn extends AbstractVerticle {
     /**
      * Create a {@link TcpConn} with forced configuration.
      *
-     * @param host               to which the connection should be established or null if this is the host of the connection
+     * @param host               to which the connection should be established or null if this is the host of the
+     *                           connection
      * @param port               of the connection host
      * @param broadcastAddress   to which the incoming data should be published or null if no publishing is allowed
-     * @param targetAddresses    to which the incoming data should be send or <code>null</code> if no direct targets exist
+     * @param targetAddresses    to which the incoming data should be send or <code>null</code> if no direct targets
+     *                           exist
      * @param consumingAddresses from which data will be consumed
      */
     public TcpConn(String host, int port, String broadcastAddress, List<String> targetAddresses,
@@ -190,10 +192,12 @@ public final class TcpConn extends AbstractVerticle {
     /**
      * Configuration for the TCP-Connection.
      *
-     * @param host               to which the connection should be established or null if this is the host of the connection
+     * @param host               to which the connection should be established or null if this is the host of the
+     *                           connection
      * @param port               of the connection host
      * @param broadcastAddress   to which the incoming data should be published or null if no publishing is allowed
-     * @param targetAddresses    to which the incoming data should be send or <code>null</code> if no direct targets exist
+     * @param targetAddresses    to which the incoming data should be send or <code>null</code> if no direct targets
+     *                           exist
      * @param consumingAddresses from which data will be consumed
      */
     @SuppressWarnings("preview")

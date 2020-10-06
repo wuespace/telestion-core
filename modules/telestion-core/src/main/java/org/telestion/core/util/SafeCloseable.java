@@ -33,7 +33,7 @@ public interface SafeCloseable extends Closeable {
     }
 
     /**
-     * Same as {@link Closeable#close()} but it is not allowed to throw an {@link IOException}
+     * Same as {@link Closeable#close()} but it is not allowed to throw an {@link IOException}.
      */
     void close();
 }
