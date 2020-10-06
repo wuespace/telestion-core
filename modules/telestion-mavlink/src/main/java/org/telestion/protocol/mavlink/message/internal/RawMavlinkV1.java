@@ -12,6 +12,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Implementation of {@link RawMavlink} for MAVLink Version 1.
  *
+ * @param len Length of the payload (array-buffer length).
+ * @param seq A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
+ *            The parser later must identify if there has occurred any packet loss.
+ * @param compId ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a
+ *               camera). Use appropriate values in MAV_COMPONENT.<br><br>
+ *               <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid
+ *               source ddress.</em>
+ * @param msgId Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.
+ * @param payload Actual MAVLink payload bytes of a message.
+ * @param checksum The X.25 checksum for this message.
+ *
  * @author Cedric Boes
  * @version 1.0
  * @implNote Support for MAVLink V1
@@ -20,34 +31,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @SuppressWarnings("preview")
 public final record RawMavlinkV1(
-		/**
-		 * Length of the payload (array-buffer length).
-		 */
 		@JsonProperty short len,
-		/**
-		 * A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
-		 * The parser later must identify if there has occurred any packet loss.
-		 */
 		@JsonProperty short seq,
-		/**
-		 * ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a
-		 * camera). Use appropriate values in MAV_COMPONENT.<br>
-		 * <br>
-		 * <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid source
-		 * address.</em>
-		 */
 		@JsonProperty short compId,
-		/**
-		 * Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.
-		 */
 		@JsonProperty short msgId,
-		/**
-		 * Actual MAVLink payload bytes of a message.
-		 */
 		@JsonProperty RawPayload payload,
-		/**
-		 * The X.25 checksum for this message.
-		 */
 		@JsonProperty int checksum) implements RawMavlink {
 
 	/**

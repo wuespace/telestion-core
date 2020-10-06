@@ -12,6 +12,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Implementation of {@link RawMavlink} for MAVLink Version 2.
  *
+ * @param len Length of the payload (array-buffer length).
+ * @param incompatFlags Represents the incompatible-flags for the MAVLinkV2-packets.<br> <br>
+ *                      <em>Note that implementation discards packet if it does not understand flag.</em>
+ * @param compatFlags Represents the compatible-flags for the MAVLinkV2-packets
+ *                    <em>(currently not in use by official messages)</em>.
+ * @param seq A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
+ *                    The parser later must identify if there has occurred any packet loss.
+ * @param sysId ID of system (vehicle) sending the message. Used to differentiate systems on network.<br><br>
+ *              <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source address.
+ *              </em>
+ * @param compId ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a
+ *               camera). Use appropriate values in MAV_COMPONENT.<br><br>
+ *               <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid
+ *               source address.</em>
+ * @param msgId Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.<br>
+ *              Compared to MAVLinkV1 this allows for 3 (unsigned) bytes of message id.
+ * @param payload Actual MAVLink payload bytes of a message.
+ * @param checksum The X.25 checksum for this message.
+ * @param linkId A linkId for this message (usually a channelId to be robust for multisignal usecases).
+ * @param signature The generated signature for this message (or <code>null</code> if {@link #incompatFlags} != 0x1).
+ *
  * @author Cedric Boes
  * @version 1.1
  * @implNote Support for MAVLink V2
@@ -20,60 +41,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @SuppressWarnings("preview")
 public final record RawMavlinkV2(
-		/**
-		 * Length of the payload (array-buffer length).
-		 */
 		@JsonProperty short len,
-		/**
-		 * Represents the incompatible-flags for the MAVLinkV2-packets.<br>
-		 * <br>
-		 * <em>Note that implementation discards packet if it does not understand flag.</em>
-		 */
 		@JsonProperty short incompatFlags,
-		/**
-		 * Represents the compatible-flags for the MAVLinkV2-packets <em>(currently not in use by official messages)
-		 * </em>.
-		 */
 		@JsonProperty short compatFlags,
-		/**
-		 * A "unique" id for packages to identify packet loss. Will be incremented for each packet.<br>
-		 * The parser later must identify if there has occurred any packet loss.
-		 */
 		@JsonProperty short seq,
-		/**
-		 * ID of system (vehicle) sending the message. Used to differentiate systems on network.<br>
-		 * <br>
-		 * <em>Note that the broadcast address 0 may not be used in this field as it is an invalid source address.</em>
-		 */
 		@JsonProperty short sysId,
-		/**
-		 * ID of component sending the message. Used to differentiate components in a system (e.g. autopilot and a
-		 * camera). Use appropriate values in MAV_COMPONENT.<br>
-		 * <br>
-		 * <em>Note that the broadcast address MAV_COMP_ID_ALL may not be used in this field as it is an invalid source
-		 * address.</em>
-		 */
 		@JsonProperty short compId,
-		/**
-		 * Id of the {@link MavlinkMessage}. Must be registered in the {@link MessageIndex}.<br>
-		 * Compared to MAVLinkV1 this allows for 3 (unsigned) bytes of message id.
-		 */
 		@JsonProperty long msgId,
-		/**
-		 * Actual MAVLink payload bytes of a message.
-		 */
 		@JsonProperty RawPayload payload,
-		/**
-		 * The X.25 checksum for this message.
-		 */
 		@JsonProperty int checksum,
-		/**
-		 * A linkId for this message (usually a channelId to be robust for multisignal usecases).
-		 */
 		@JsonProperty short linkId,
-		/**
-		 * The generated signature for this message (or <code>null</code> if {@link #incompatFlags} != 0x1).
-		 */
 		@JsonProperty byte[] signature) implements RawMavlink {
 
 	/**
