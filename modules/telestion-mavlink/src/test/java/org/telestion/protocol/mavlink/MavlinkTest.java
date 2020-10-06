@@ -1,5 +1,8 @@
 package org.telestion.protocol.mavlink;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
@@ -25,9 +28,6 @@ import org.telestion.protocol.mavlink.messages.official.minimal.Heartbeat;
 import org.telestion.protocol.mavlink.security.HeaderContext;
 import org.telestion.protocol.mavlink.security.MavV2Signator;
 import org.telestion.protocol.mavlink.security.SecretKeySafe;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 @ExtendWith(VertxExtension.class)
 public class MavlinkTest {

@@ -1,10 +1,10 @@
 package org.telestion.api.message;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.junit.jupiter.api.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.junit.jupiter.api.Test;
 
 public class JsonMessageTest {
 
