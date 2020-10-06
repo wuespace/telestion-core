@@ -10,17 +10,14 @@ import io.vertx.core.json.JsonObject;
  * @author Jan von Pichowski
  */
 @SuppressWarnings("preview")
-public record VerticleConfig(
-        @JsonProperty String name,
-        @JsonProperty String verticle,
-        @JsonProperty int magnitude,
-        @JsonProperty JsonNode config) {
+public record VerticleConfig(@JsonProperty String name, @JsonProperty String verticle, @JsonProperty int magnitude,
+                             @JsonProperty JsonNode config) {
 
     /**
      * Only for deserialization
      */
     @SuppressWarnings("unused")
-    private VerticleConfig(){
+    private VerticleConfig() {
         this(null, null, 0, null);
     }
 
@@ -29,7 +26,7 @@ public record VerticleConfig(
      *
      * @return the json representation of this record
      */
-    public JsonObject json(){
+    public JsonObject json() {
         return JsonObject.mapFrom(this);
     }
 
@@ -38,7 +35,7 @@ public record VerticleConfig(
      *
      * @return the json representation of the config node
      */
-    public JsonObject jsonConfig(){
+    public JsonObject jsonConfig() {
         return new JsonObject(config().toString());
     }
 }

@@ -7,7 +7,7 @@ sourceCompatibility = gradle.sourceCompatibility
 targetCompatibility = gradle.targetCompatibility
 
 application {
-    // Define the main class for the application.
+// Define the main class for the application.
     mainClassName = 'org.telestion.launcher.Launcher'
 }
 

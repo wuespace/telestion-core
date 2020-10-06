@@ -1,7 +1,6 @@
 package org.telestion.core.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -10,15 +9,13 @@ import java.util.List;
  * @author Jan von Pichowski
  */
 @SuppressWarnings("preview")
-public record Configuration(
-        @JsonProperty String app_name,
-        @JsonProperty List<VerticleConfig> verticles) {
+public record Configuration(@JsonProperty String app_name, @JsonProperty List<VerticleConfig> verticles) {
 
     /**
      * Only for deserialization
      */
     @SuppressWarnings("unused")
-    private Configuration(){
+    private Configuration() {
         this(null, null);
     }
 }

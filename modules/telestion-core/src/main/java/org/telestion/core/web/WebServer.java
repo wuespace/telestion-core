@@ -6,10 +6,9 @@ import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
-import org.telestion.core.config.Config;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import org.telestion.core.config.Config;
 
 /**
  * A simple WebServer which publishes the index page.
@@ -18,21 +17,9 @@ import java.util.Objects;
  */
 public final class WebServer extends AbstractVerticle {
 
-    /**
-     * Web server configuration
-     *
-     * @param port the port to bind to
-     */
-    private static record Configuration(@JsonProperty int port){
-        private Configuration(){
-            this(8080);
-        }
-    }
-
     private Configuration forcedConfig;
 
     /**
-     *
      * @param port the port to bind to
      */
     public WebServer(int port) {
@@ -64,5 +51,17 @@ public final class WebServer extends AbstractVerticle {
         });
 
         server.requestHandler(router).listen(config.port);
+    }
+
+    /**
+     * Web server configuration.
+     *
+     * @param port the port to bind to
+     */
+    @SuppressWarnings({"preview", "unused"})
+    private static record Configuration(@JsonProperty int port) {
+        private Configuration() {
+            this(8080);
+        }
     }
 }

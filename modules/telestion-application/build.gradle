@@ -4,7 +4,7 @@ plugins {
 }
 
 application {
-    // Define the main class for the application.
+// Define the main class for the application.
     mainClassName = 'org.telestion.application.Application'
 }
 
