@@ -1,9 +1,8 @@
 package org.telestion.protocol.mavlink.message.internal;
 
-import org.telestion.api.message.JsonMessage;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import org.telestion.api.message.JsonMessage;
 
 /**
  * Superclass for all raw MAVLink-Messages.<br>

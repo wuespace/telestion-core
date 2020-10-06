@@ -1,15 +1,9 @@
 package org.telestion.protocol.mavlink;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.RecordComponent;
-import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
+import io.vertx.core.Verticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -19,11 +13,7 @@ import org.telestion.protocol.mavlink.annotation.MavArray;
 import org.telestion.protocol.mavlink.annotation.MavField;
 import org.telestion.protocol.mavlink.annotation.MavInfo;
 import org.telestion.protocol.mavlink.annotation.NativeType;
-import org.telestion.protocol.mavlink.exception.AnnotationMissingException;
-import org.telestion.protocol.mavlink.exception.InvalidChecksumException;
-import org.telestion.protocol.mavlink.exception.PacketException;
-import org.telestion.protocol.mavlink.exception.ParsingException;
-import org.telestion.protocol.mavlink.exception.WrongSignatureException;
+import org.telestion.protocol.mavlink.exception.*;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
 import org.telestion.protocol.mavlink.message.MessageHelper;
 import org.telestion.protocol.mavlink.message.MessageIndex;
@@ -35,11 +25,15 @@ import org.telestion.protocol.mavlink.security.MavV2Signator;
 import org.telestion.protocol.mavlink.security.SecretKeySafe;
 import org.telestion.protocol.mavlink.security.X25Checksum;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.Verticle;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.RecordComponent;
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 /**
  * A {@link Verticle} converting MAVLink-Message <code>byte[]</code> buffers to {@link MavlinkMessage MavlinkMessages}
