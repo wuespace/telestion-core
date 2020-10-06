@@ -35,10 +35,10 @@
     </module>
 
     <!-- Checks for whitespace                               -->
-    <!-- See http://checkstyle.org/config_whitespace.html -->
-    <!-- <module name="FileTabCharacter">
+    See http://checkstyle.org/config_whitespace.html -->
+    <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
-    </module> -->
+    </module>
 
     <module name="LineLength">
         <property name="fileExtensions" value="java"/>
@@ -47,11 +47,11 @@
     </module>
 
     <module name="TreeWalker">
-        <module name="RegexpSinglelineJava">
+        <!--<module name="RegexpSinglelineJava">
             <property name="format" value="^\t* "/>
             <property name="message" value="Indent must use tab characters"/>
             <property name="ignoreComments" value="true"/>
-        </module>
+        </module> -->
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
