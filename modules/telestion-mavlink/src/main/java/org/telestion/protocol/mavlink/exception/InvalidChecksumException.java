@@ -10,45 +10,45 @@ package org.telestion.protocol.mavlink.exception;
  */
 public class InvalidChecksumException extends RuntimeException {
 
-	/**
-	 * SerialVersion UID for v1.0 of the {@link InvalidChecksumException}.
-	 */
-	private static final long serialVersionUID = 5920137939040604788L;
+    /**
+     * SerialVersion UID for v1.0 of the {@link InvalidChecksumException}.
+     */
+    private static final long serialVersionUID = 5920137939040604788L;
 
-	/**
-	 * @see RuntimeException#RuntimeException()
-	 */
-	public InvalidChecksumException() {
-		super();
-	}
+    /**
+     * @see RuntimeException#RuntimeException()
+     */
+    public InvalidChecksumException() {
+        super();
+    }
 
-	/**
-	 * @see RuntimeException#RuntimeException(String)
-	 */
-	public InvalidChecksumException(String s) {
-		super(s);
-	}
+    /**
+     * @see RuntimeException#RuntimeException(String)
+     */
+    public InvalidChecksumException(String s) {
+        super(s);
+    }
 
-	/**
-	 * @see RuntimeException#RuntimeException(Throwable)
-	 */
-	public InvalidChecksumException(Throwable t) {
-		super(t);
-	}
+    /**
+     * @see RuntimeException#RuntimeException(Throwable)
+     */
+    public InvalidChecksumException(Throwable t) {
+        super(t);
+    }
 
-	/**
-	 * @see RuntimeException#RuntimeException(String, Throwable)
-	 */
-	public InvalidChecksumException(String s, Throwable t) {
-		super(s, t);
-	}
+    /**
+     * @see RuntimeException#RuntimeException(String, Throwable)
+     */
+    public InvalidChecksumException(String s, Throwable t) {
+        super(s, t);
+    }
 
-	/**
-	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
-	 */
-	public InvalidChecksumException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
+    /**
+     * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
+     */
+    public InvalidChecksumException(String message, Throwable cause, boolean enableSuppression,
+                                    boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 
 }

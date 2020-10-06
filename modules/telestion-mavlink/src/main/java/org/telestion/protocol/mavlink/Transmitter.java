@@ -26,72 +26,72 @@ import io.vertx.core.Verticle;
  */
 public final class Transmitter extends AbstractVerticle {
 
-	/**
-	 * All logs of {@link Transmitter} will be using this {@link Logger}.
-	 */
-	private final Logger logger = LoggerFactory.getLogger(Transmitter.class);
-	/**
-	 * This configuration will be used if not <code>null</code>.
-	 */
-	private final Configuration forcedConfig;
+    /**
+     * All logs of {@link Transmitter} will be using this {@link Logger}.
+     */
+    private final Logger logger = LoggerFactory.getLogger(Transmitter.class);
+    /**
+     * This configuration will be used if not <code>null</code>.
+     */
+    private final Configuration forcedConfig;
 
-	/**
-	 * Creates a transmitter with the default configuration or the file configuration if available.
-	 */
-	public Transmitter() {
-		forcedConfig = null;
-	}
+    /**
+     * Creates a transmitter with the default configuration or the file configuration if available.
+     */
+    public Transmitter() {
+        forcedConfig = null;
+    }
 
-	/**
-	 * Creates a transmitter with the given addresses.
-	 *
-	 * @param rawMavSupplierAddr  {@link RawMavlink RawMavlink-messages} will be send here.
-	 * @param tcpDataConsumerAddr Messages (as {@link TcpData}) will be published on this address.
-	 */
-	public Transmitter(String rawMavSupplierAddr, String tcpDataConsumerAddr) {
-		forcedConfig = new Configuration(rawMavSupplierAddr, tcpDataConsumerAddr);
-	}
+    /**
+     * Creates a transmitter with the given addresses.
+     *
+     * @param rawMavSupplierAddr  {@link RawMavlink RawMavlink-messages} will be send here.
+     * @param tcpDataConsumerAddr Messages (as {@link TcpData}) will be published on this address.
+     */
+    public Transmitter(String rawMavSupplierAddr, String tcpDataConsumerAddr) {
+        forcedConfig = new Configuration(rawMavSupplierAddr, tcpDataConsumerAddr);
+    }
 
-	@Override
-	public void start(Promise<Void> startPromise) {
-		var config = Config.get(forcedConfig, config(), Configuration.class);
+    @Override
+    public void start(Promise<Void> startPromise) {
+        var config = Config.get(forcedConfig, config(), Configuration.class);
 
-		vertx.eventBus().consumer(config.rawMavSupplierAddr(), msg -> {
-			if (!(JsonMessage.on(RawMavlinkV1.class, msg, m -> interpretMsg(m, config.tcpDataConsumerAddr()))
-					|| JsonMessage.on(RawMavlinkV2.class, msg, m -> interpretMsg(m, config.tcpDataConsumerAddr())))) {
-				logger.error("Unsupported type sent to {}", msg.address());
-			}
-		});
+        vertx.eventBus().consumer(config.rawMavSupplierAddr(), msg -> {
+            if (!(JsonMessage.on(RawMavlinkV1.class, msg, m -> interpretMsg(m, config.tcpDataConsumerAddr()))
+                    || JsonMessage.on(RawMavlinkV2.class, msg, m -> interpretMsg(m, config.tcpDataConsumerAddr())))) {
+                logger.error("Unsupported type sent to {}", msg.address());
+            }
+        });
 
-		startPromise.complete();
-	}
+        startPromise.complete();
+    }
 
-	@Override
-	public void stop(Promise<Void> stopPromise) {
-		stopPromise.complete();
-	}
+    @Override
+    public void stop(Promise<Void> stopPromise) {
+        stopPromise.complete();
+    }
 
-	/**
-	 * Converts {@link RawMavlink RawMavlink-messages} to a {@link TcpData TcpData-objects}.
-	 *
-	 * @param mav {@link MavlinkMessage} to convert
-	 */
-	private void interpretMsg(RawMavlink mav, String outAddress) {
-		vertx.eventBus().send(outAddress, new RawPayload(mav.getRaw()).json());
-	}
+    /**
+     * Converts {@link RawMavlink RawMavlink-messages} to a {@link TcpData TcpData-objects}.
+     *
+     * @param mav {@link MavlinkMessage} to convert
+     */
+    private void interpretMsg(RawMavlink mav, String outAddress) {
+        vertx.eventBus().send(outAddress, new RawPayload(mav.getRaw()).json());
+    }
 
-	/**
-	 * The transmitter configuration.
-	 *
-	 * @param rawMavSupplierAddr  {@link RawMavlink RawMavlink-messages} will be send here.
-	 * @param tcpDataConsumerAddr Messages (as {@link TcpData}) will be published on this address.
-	 */
-	@SuppressWarnings("preview")
-	private static record Configuration(@JsonProperty String rawMavSupplierAddr,
-			@JsonProperty String tcpDataConsumerAddr) {
-		@SuppressWarnings("unused")
-		private Configuration() {
-			this(Address.incoming(Transmitter.class), Address.outgoing(Transmitter.class));
-		}
-	}
+    /**
+     * The transmitter configuration.
+     *
+     * @param rawMavSupplierAddr  {@link RawMavlink RawMavlink-messages} will be send here.
+     * @param tcpDataConsumerAddr Messages (as {@link TcpData}) will be published on this address.
+     */
+    @SuppressWarnings("preview")
+    private static record Configuration(@JsonProperty String rawMavSupplierAddr,
+                                        @JsonProperty String tcpDataConsumerAddr) {
+        @SuppressWarnings("unused")
+        private Configuration() {
+            this(Address.incoming(Transmitter.class), Address.outgoing(Transmitter.class));
+        }
+    }
 }

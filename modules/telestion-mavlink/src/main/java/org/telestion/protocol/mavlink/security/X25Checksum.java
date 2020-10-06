@@ -13,45 +13,45 @@ package org.telestion.protocol.mavlink.security;
  */
 public final class X25Checksum {
 
-	/**
-	 * Initial value for the CRC-Calculation.<br>
-	 * This is needed because for each byte of the message the current-checksum gets "reused".
-	 */
-	public static final int INIT_CRC = 0xffff;
+    /**
+     * Initial value for the CRC-Calculation.<br>
+     * This is needed because for each byte of the message the current-checksum gets "reused".
+     */
+    public static final int INIT_CRC = 0xffff;
 
-	/**
-	 * There shall be no objects.
-	 */
-	private X25Checksum() {
-		/* There shall be no objects! */
-	}
+    /**
+     * There shall be no objects.
+     */
+    private X25Checksum() {
+        /* There shall be no objects! */
+    }
 
-	/**
-	 * Calculates the CRC X.25-checksum for one byte with regards to the current-checksum.
-	 *
-	 * @param data   byte which should be added to the checksum
-	 * @param currentCrc current checksum which should be extended
-	 * @return checksum composed from a prior checksum and a byte of data
-	 */
-	public static int calculate(int data, int currentCrc) {
-		data ^= (byte) (currentCrc & 0xff);
-		data ^= (data << 4);
-		data &= 0xff;
-		return ((currentCrc >> 8) ^ (data << 8) ^ (data << 3) ^ (data >> 4)) & 0xffff;
-	}
+    /**
+     * Calculates the CRC X.25-checksum for one byte with regards to the current-checksum.
+     *
+     * @param data       byte which should be added to the checksum
+     * @param currentCrc current checksum which should be extended
+     * @return checksum composed from a prior checksum and a byte of data
+     */
+    public static int calculate(int data, int currentCrc) {
+        data ^= (byte) (currentCrc & 0xff);
+        data ^= (data << 4);
+        data &= 0xff;
+        return ((currentCrc >> 8) ^ (data << 8) ^ (data << 3) ^ (data >> 4)) & 0xffff;
+    }
 
-	/**
-	 * Calculates the CRC X.25-checksum for a whole byte[] array.<br>
-	 * <em>Must contain the CRC_EXTRA byte which must be added for each message.</em>
-	 *
-	 * @param buffer of data to calculate a checksum for
-	 * @return checksum for the whole buffer
-	 */
-	public static int calculate(byte[] buffer) {
-		int currentCrc = INIT_CRC;
-		for (byte b : buffer) {
-			currentCrc = calculate(b, currentCrc);
-		}
-		return currentCrc & 0xffff;
-	}
+    /**
+     * Calculates the CRC X.25-checksum for a whole byte[] array.<br>
+     * <em>Must contain the CRC_EXTRA byte which must be added for each message.</em>
+     *
+     * @param buffer of data to calculate a checksum for
+     * @return checksum for the whole buffer
+     */
+    public static int calculate(byte[] buffer) {
+        int currentCrc = INIT_CRC;
+        for (byte b : buffer) {
+            currentCrc = calculate(b, currentCrc);
+        }
+        return currentCrc & 0xffff;
+    }
 }

@@ -15,27 +15,27 @@ import org.telestion.core.logging.MessageMDC;
  */
 public final class MessageLogger extends AbstractVerticle {
 
-	/**
-	 * {@link Logger Logger-Module} for the {@link MessageLogger} to use.
-	 */
-	private final Logger logger = LoggerFactory.getLogger(MessageLogger.class);
+    /**
+     * {@link Logger Logger-Module} for the {@link MessageLogger} to use.
+     */
+    private final Logger logger = LoggerFactory.getLogger(MessageLogger.class);
 
-	@Override
-	public void start(Promise<Void> startPromise) {
-		vertx.eventBus().addOutboundInterceptor(interceptor -> {
-			try (var c = MessageMDC.putCloseable(null, interceptor.message())) {
-				logger.info("Outbound message to {}: {}", interceptor.message().address(),
-						interceptor.body().toString());
-			}
-			interceptor.next();
-		});
-		vertx.eventBus().addInboundInterceptor(interceptor -> {
-			try (var c = MessageMDC.putCloseable(null, interceptor.message())) {
-				logger.info("Inbound message to {}: {}", interceptor.message().address(),
-						interceptor.body().toString());
-			}
-			interceptor.next();
-		});
-		startPromise.complete();
-	}
+    @Override
+    public void start(Promise<Void> startPromise) {
+        vertx.eventBus().addOutboundInterceptor(interceptor -> {
+            try (var c = MessageMDC.putCloseable(null, interceptor.message())) {
+                logger.info("Outbound message to {}: {}", interceptor.message().address(),
+                        interceptor.body().toString());
+            }
+            interceptor.next();
+        });
+        vertx.eventBus().addInboundInterceptor(interceptor -> {
+            try (var c = MessageMDC.putCloseable(null, interceptor.message())) {
+                logger.info("Inbound message to {}: {}", interceptor.message().address(),
+                        interceptor.body().toString());
+            }
+            interceptor.next();
+        });
+        startPromise.complete();
+    }
 }

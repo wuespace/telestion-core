@@ -17,31 +17,31 @@ import org.telestion.core.config.Config;
  */
 public final class HystrixMetrics extends AbstractVerticle {
 
-	private static final Logger logger = LoggerFactory.getLogger(HystrixMetrics.class);
-	private final Configuration forcedConfig;
+    private static final Logger logger = LoggerFactory.getLogger(HystrixMetrics.class);
+    private final Configuration forcedConfig;
 
-	public HystrixMetrics() {
-		forcedConfig = null;
-	}
+    public HystrixMetrics() {
+        forcedConfig = null;
+    }
 
-	public HystrixMetrics(int port, String path) {
-		this.forcedConfig = new Configuration(port, path);
-	}
+    public HystrixMetrics(int port, String path) {
+        this.forcedConfig = new Configuration(port, path);
+    }
 
-	@Override
-	public void start(Promise<Void> startPromise) throws Exception {
-		var config = Config.get(forcedConfig, config(), Configuration.class);
-		Router router = Router.router(vertx);
-		router.get(config.path).handler(HystrixMetricHandler.create(vertx));
-		vertx.createHttpServer().requestHandler(router).listen(config.port);
-		startPromise.complete();
-		logger.info("Started {} with config {}", HystrixMetrics.class.getSimpleName(), config);
-	}
+    @Override
+    public void start(Promise<Void> startPromise) throws Exception {
+        var config = Config.get(forcedConfig, config(), Configuration.class);
+        Router router = Router.router(vertx);
+        router.get(config.path).handler(HystrixMetricHandler.create(vertx));
+        vertx.createHttpServer().requestHandler(router).listen(config.port);
+        startPromise.complete();
+        logger.info("Started {} with config {}", HystrixMetrics.class.getSimpleName(), config);
+    }
 
-	@SuppressWarnings({ "preview", "unused" })
-	private static record Configuration(@JsonProperty int port, @JsonProperty String path) {
-		private Configuration() {
-			this(8080, "/hystrix-metrics");
-		}
-	}
+    @SuppressWarnings({"preview", "unused"})
+    private static record Configuration(@JsonProperty int port, @JsonProperty String path) {
+        private Configuration() {
+            this(8080, "/hystrix-metrics");
+        }
+    }
 }

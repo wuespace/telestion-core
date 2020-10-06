@@ -14,14 +14,14 @@ import io.vertx.core.Promise;
  */
 public final class HelloWorld extends AbstractVerticle {
 
-	private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
+    private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
 
-	@Override
-	public void start(Promise<Void> startPromise) {
-		vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {
-			logger.info("Hello World!");
-			vertx.eventBus().publish("world", "Hello!");
-		});
-		startPromise.complete();
-	}
+    @Override
+    public void start(Promise<Void> startPromise) {
+        vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {
+            logger.info("Hello World!");
+            vertx.eventBus().publish("world", "Hello!");
+        });
+        startPromise.complete();
+    }
 }

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @SuppressWarnings("preview")
 public record Positions(@JsonProperty List<Position> list) implements JsonMessage {
-	@SuppressWarnings("unused")
-	private Positions() {
-		this(null);
-	}
+    @SuppressWarnings("unused")
+    private Positions() {
+        this(null);
+    }
 }
