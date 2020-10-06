@@ -11,8 +11,6 @@ package org.telestion.protocol.mavlink.exception;
 public class WrongSignatureException extends RuntimeException {
 
     /**
-     * Creates a WrongSignatureException.
-     *
      * SerialVersion UID for v1.0 of this {@link WrongSignatureException}.
      */
     private static final long serialVersionUID = 7162627217882841756L;

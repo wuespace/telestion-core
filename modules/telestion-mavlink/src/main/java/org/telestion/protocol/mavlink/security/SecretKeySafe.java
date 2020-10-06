@@ -2,6 +2,7 @@ package org.telestion.protocol.mavlink.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Arrays;
 
 /**
  * A {@link SecretKeySafe} for the MAVLink-Signature-Keys. To ensure security the key will be stored in a final byte
@@ -19,11 +20,7 @@ public final class SecretKeySafe {
     /**
      * Is used to create uniqueIds. They are needed to identify each SecretKeySafe in the logger.
      */
-    private static long globalId;
-
-    static {
-        globalId = 0;
-    }
+    private static long globalId = 0;
 
     /**
      * Id to identify this {@link SecretKeySafe} in the logs.
@@ -32,7 +29,7 @@ public final class SecretKeySafe {
     /**
      * Logs all important messages for a SecretKeySafe.
      */
-    private Logger logger = LoggerFactory.getLogger(SecretKeySafe.class);
+    private final Logger logger = LoggerFactory.getLogger(SecretKeySafe.class);
     /**
      * The actual secretKey. This is an array to delete all traces of the key in memory after freeing it.
      */
@@ -44,7 +41,7 @@ public final class SecretKeySafe {
      * <em>Keys are final and cannot be changed. This however means after calling {@link #deleteKey()} this
      * {@link SecretKeySafe} is no longer usable which is a security feature.</em>
      *
-     * @param secretKey
+     * @param secretKey the secret key
      */
     public SecretKeySafe(byte[] secretKey) {
         this.secretKey = secretKey;
@@ -57,7 +54,7 @@ public final class SecretKeySafe {
      *
      * @return new unique id
      */
-    private static final long getNewId() {
+    private static long getNewId() {
         return globalId++;
     }
 
@@ -66,7 +63,7 @@ public final class SecretKeySafe {
      * <br>
      * Will return null after {@link #deleteKey()} has been called.
      *
-     * @return
+     * @return the stored secret key
      */
     public byte[] getSecretKey() {
         return secretKey;
@@ -98,9 +95,7 @@ public final class SecretKeySafe {
      */
     public void deleteKey() {
         if (!isDeleted()) {
-            for (int i = 0; i < secretKey.length; i++) {
-                secretKey[i] = 0x0;
-            }
+            Arrays.fill(secretKey, (byte) 0x0);
 
             secretKey = null;
             System.gc();
