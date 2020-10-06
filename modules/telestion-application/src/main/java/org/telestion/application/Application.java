@@ -16,17 +16,17 @@ import org.telestion.launcher.Launcher;
  */
 public class Application {
 
-    /**
-     * Calls the Launcher for a specific Testcase (at the moment).<br>
-     * Real functionality will be added later.
-     *
-     * @param args <em>unused at the moment</em>
-     */
-    public static void main(String[] args) {
-        Launcher.start(new MessageLogger(), new RandomPositionPublisher(),
-                new EventbusTcpBridge("localhost", 9870, Collections.emptyList(),
-                        Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
-                new WebServer(8080));
-    }
+	/**
+	 * Calls the Launcher for a specific Testcase (at the moment).<br>
+	 * Real functionality will be added later.
+	 *
+	 * @param args <em>unused at the moment</em>
+	 */
+	public static void main(String[] args) {
+		Launcher.start(new MessageLogger(), new RandomPositionPublisher(),
+				new EventbusTcpBridge("localhost", 9870, Collections.emptyList(),
+						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
+				new WebServer(8080));
+	}
 
 }

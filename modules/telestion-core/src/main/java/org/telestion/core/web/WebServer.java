@@ -17,51 +17,51 @@ import org.telestion.core.config.Config;
  */
 public final class WebServer extends AbstractVerticle {
 
-    private Configuration forcedConfig;
+	private Configuration forcedConfig;
 
-    /**
-     * @param port the port to bind to
-     */
-    public WebServer(int port) {
-        forcedConfig = new Configuration(port);
-    }
+	/**
+	 * @param port the port to bind to
+	 */
+	public WebServer(int port) {
+		forcedConfig = new Configuration(port);
+	}
 
-    /**
-     * Web server with default port 8080
-     */
-    public WebServer() {
-        forcedConfig = null;
-    }
+	/**
+	 * Web server with default port 8080
+	 */
+	public WebServer() {
+		forcedConfig = null;
+	}
 
-    @Override
-    public void start(Promise<Void> startPromise) throws Exception {
-        var config = Config.get(forcedConfig, config(), Configuration.class);
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		var config = Config.get(forcedConfig, config(), Configuration.class);
 
-        var data = Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("index.html")).readAllBytes();
-        var content = new String(data, StandardCharsets.UTF_8);
+		var data = Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("index.html")).readAllBytes();
+		var content = new String(data, StandardCharsets.UTF_8);
 
-        HttpServer server = vertx.createHttpServer();
+		HttpServer server = vertx.createHttpServer();
 
-        Router router = Router.router(vertx);
+		Router router = Router.router(vertx);
 
-        router.route().handler(routingContext -> {
-            HttpServerResponse response = routingContext.response();
-            response.putHeader("content-type", "text/html");
-            response.end(content);
-        });
+		router.route().handler(routingContext -> {
+			HttpServerResponse response = routingContext.response();
+			response.putHeader("content-type", "text/html");
+			response.end(content);
+		});
 
-        server.requestHandler(router).listen(config.port);
-    }
+		server.requestHandler(router).listen(config.port);
+	}
 
-    /**
-     * Web server configuration.
-     *
-     * @param port the port to bind to
-     */
-    @SuppressWarnings({"preview", "unused"})
-    private static record Configuration(@JsonProperty int port) {
-        private Configuration() {
-            this(8080);
-        }
-    }
+	/**
+	 * Web server configuration.
+	 *
+	 * @param port the port to bind to
+	 */
+	@SuppressWarnings({ "preview", "unused" })
+	private static record Configuration(@JsonProperty int port) {
+		private Configuration() {
+			this(8080);
+		}
+	}
 }

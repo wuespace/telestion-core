@@ -14,12 +14,12 @@ import org.telestion.protocol.mavlink.message.internal.RawMavlink;
 @SuppressWarnings("preview")
 public final record RawPayload(@JsonProperty byte[] payload) implements JsonMessage {
 
-    /**
-     * There shall be no default constructor for normal people.<br>
-     * This will only be used by the JSON-parser.
-     */
-    @SuppressWarnings("unused")
-    private RawPayload() {
-        this(null);
-    }
+	/**
+	 * There shall be no default constructor for normal people.<br>
+	 * This will only be used by the JSON-parser.
+	 */
+	@SuppressWarnings("unused")
+	private RawPayload() {
+		this(null);
+	}
 }

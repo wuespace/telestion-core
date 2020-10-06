@@ -11,11 +11,11 @@ import java.util.List;
 @SuppressWarnings("preview")
 public record Configuration(@JsonProperty String app_name, @JsonProperty List<VerticleConfig> verticles) {
 
-    /**
-     * Only for deserialization
-     */
-    @SuppressWarnings("unused")
-    private Configuration() {
-        this(null, null);
-    }
+	/**
+	 * Only for deserialization
+	 */
+	@SuppressWarnings("unused")
+	private Configuration() {
+		this(null, null);
+	}
 }

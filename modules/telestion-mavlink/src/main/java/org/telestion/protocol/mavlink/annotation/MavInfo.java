@@ -13,17 +13,17 @@ import org.telestion.protocol.mavlink.message.MavlinkMessage;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MavInfo {
-    /**
-     * Equivalent to the message id of the MAVLink-Specifications.
-     *
-     * @return message id
-     */
-    public int id();
+	/**
+	 * Equivalent to the message id of the MAVLink-Specifications.
+	 *
+	 * @return message id
+	 */
+	public int id();
 
-    /**
-     * The calculated CRC_EXTRA byte for this message.
-     *
-     * @return CRC_EXTRA byte for this message
-     */
-    public int crc();
+	/**
+	 * The calculated CRC_EXTRA byte for this message.
+	 *
+	 * @return CRC_EXTRA byte for this message
+	 */
+	public int crc();
 }

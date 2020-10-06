@@ -10,55 +10,55 @@ package org.telestion.protocol.mavlink.exception;
  */
 public class WrongSignatureException extends RuntimeException {
 
-    /**
-     * SerialVersion UID for v1.0 of this {@link WrongSignatureException}.
-     */
-    private static final long serialVersionUID = 7162627217882841756L;
+	/**
+	 * SerialVersion UID for v1.0 of this {@link WrongSignatureException}.
+	 */
+	private static final long serialVersionUID = 7162627217882841756L;
 
-    /**
-     * Creates a WrongSignatureException.
-     *
-     * @see RuntimeException#RuntimeException()
-     */
-    public WrongSignatureException() {
-        super();
-    }
+	/**
+	 * Creates a WrongSignatureException.
+	 *
+	 * @see RuntimeException#RuntimeException()
+	 */
+	public WrongSignatureException() {
+		super();
+	}
 
-    /**
-     * Creates a WrongSignatureException.
-     *
-     * @see RuntimeException#RuntimeException(String)
-     */
-    public WrongSignatureException(String message) {
-        super(message);
-    }
+	/**
+	 * Creates a WrongSignatureException.
+	 *
+	 * @see RuntimeException#RuntimeException(String)
+	 */
+	public WrongSignatureException(String message) {
+		super(message);
+	}
 
-    /**
-     * Creates a WrongSignatureException.
-     *
-     * @see RuntimeException#RuntimeException(Throwable)
-     */
-    public WrongSignatureException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * Creates a WrongSignatureException.
+	 *
+	 * @see RuntimeException#RuntimeException(Throwable)
+	 */
+	public WrongSignatureException(Throwable cause) {
+		super(cause);
+	}
 
-    /**
-     * Creates a WrongSignatureException.
-     *
-     * @see RuntimeException#RuntimeException(String, Throwable)
-     */
-    public WrongSignatureException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Creates a WrongSignatureException.
+	 *
+	 * @see RuntimeException#RuntimeException(String, Throwable)
+	 */
+	public WrongSignatureException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    /**
-     * Creates a WrongSignatureException.
-     *
-     * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
-     */
-    public WrongSignatureException(String message, Throwable cause, boolean enableSuppression,
-                                   boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+	/**
+	 * Creates a WrongSignatureException.
+	 *
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
+	 */
+	public WrongSignatureException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
 
 }

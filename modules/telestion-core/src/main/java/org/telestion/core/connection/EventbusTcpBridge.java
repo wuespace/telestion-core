@@ -53,88 +53,87 @@ import org.telestion.core.config.Config;
  */
 public final class EventbusTcpBridge extends AbstractVerticle {
 
-    private final Logger logger = LoggerFactory.getLogger(EventbusTcpBridge.class);
-    private final Configuration forcedConfig;
+	private final Logger logger = LoggerFactory.getLogger(EventbusTcpBridge.class);
+	private final Configuration forcedConfig;
 
-    /**
-     * This constructor supplies default options and uses the defaultSockJSBridgeOptions for the applied rules.
-     *
-     * @param host              the ip address of the host on which the HTTP-Server should run
-     * @param port              the port on which the HTTP-Server should listen
-     * @param inboundPermitted  the permitted eventbus addresses for inbound connections
-     * @param outboundPermitted the permitted eventbus addresses for outbound connections
-     */
-    public EventbusTcpBridge(String host, int port, List<String> inboundPermitted, List<String> outboundPermitted) {
-        this.forcedConfig = new Configuration(host, port, inboundPermitted, outboundPermitted);
-    }
+	/**
+	 * This constructor supplies default options and uses the defaultSockJSBridgeOptions for the applied rules.
+	 *
+	 * @param host              the ip address of the host on which the HTTP-Server should run
+	 * @param port              the port on which the HTTP-Server should listen
+	 * @param inboundPermitted  the permitted eventbus addresses for inbound connections
+	 * @param outboundPermitted the permitted eventbus addresses for outbound connections
+	 */
+	public EventbusTcpBridge(String host, int port, List<String> inboundPermitted, List<String> outboundPermitted) {
+		this.forcedConfig = new Configuration(host, port, inboundPermitted, outboundPermitted);
+	}
 
-    /**
-     * If this constructor is used all, settings have to be specified in the config file.
-     */
-    public EventbusTcpBridge() {
-        this.forcedConfig = null;
-    }
+	/**
+	 * If this constructor is used all, settings have to be specified in the config file.
+	 */
+	public EventbusTcpBridge() {
+		this.forcedConfig = null;
+	}
 
-    @Override
-    public void start(Promise<Void> startPromise) {
-        var config = Config.get(forcedConfig, config(), Configuration.class);
+	@Override
+	public void start(Promise<Void> startPromise) {
+		var config = Config.get(forcedConfig, config(), Configuration.class);
 
-        HttpServerOptions httpOptions = new HttpServerOptions().setHost(config.host).setPort(config.port);
+		HttpServerOptions httpOptions = new HttpServerOptions().setHost(config.host).setPort(config.port);
 
-        Router router = Router.router(vertx);
+		Router router = Router.router(vertx);
 
-        router.mountSubRouter("/bridge", bridgeHandler(config.inboundPermitted, config.outboundPermitted));
-        router.route().handler(staticHandler());
+		router.mountSubRouter("/bridge", bridgeHandler(config.inboundPermitted, config.outboundPermitted));
+		router.route().handler(staticHandler());
 
-        vertx.createHttpServer(httpOptions).requestHandler(router).listen();
+		vertx.createHttpServer(httpOptions).requestHandler(router).listen();
 
-        logger.info("Server listening on {}:{}/bridge", httpOptions.getHost(), httpOptions.getPort());
-        startPromise.complete();
-    }
+		logger.info("Server listening on {}:{}/bridge", httpOptions.getHost(), httpOptions.getPort());
+		startPromise.complete();
+	}
 
-    /**
-     * Creates a sockJSHandler using vertx.
-     *
-     * @return Router to be mounted on an existing Router bridging the eventBus with the defined sockJSBridgeOptions
-     */
-    private Router bridgeHandler(List<String> inboundPermitted, List<String> outboundPermitted) {
-        logger.info("Inbound permitted: " + inboundPermitted);
-        logger.info("Outbound permitted: " + outboundPermitted);
-        SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions();
-        inboundPermitted
-                .forEach(addr -> sockJSBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
-        outboundPermitted
-                .forEach(addr -> sockJSBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
+	/**
+	 * Creates a sockJSHandler using vertx.
+	 *
+	 * @return Router to be mounted on an existing Router bridging the eventBus with the defined sockJSBridgeOptions
+	 */
+	private Router bridgeHandler(List<String> inboundPermitted, List<String> outboundPermitted) {
+		logger.info("Inbound permitted: " + inboundPermitted);
+		logger.info("Outbound permitted: " + outboundPermitted);
+		SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions();
+		inboundPermitted
+				.forEach(addr -> sockJSBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
+		outboundPermitted
+				.forEach(addr -> sockJSBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
 
-        SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-        return sockJSHandler.bridge(sockJSBridgeOptions);
-    }
+		SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
+		return sockJSHandler.bridge(sockJSBridgeOptions);
+	}
 
-    /**
-     * Creates a staticHandler for serving static resources from the file system or classpath. May be used to display
-     * HTML-Page explaining how to use the WidgetBridge or to redirect users to the right url:<br>
-     * <a href="http://localhost:8080">localhost:8080</a>
-     *
-     * @return {@link StaticHandler}
-     */
-    private StaticHandler staticHandler() {
-        return StaticHandler.create().setCachingEnabled(false);
-    }
+	/**
+	 * Creates a staticHandler for serving static resources from the file system or classpath. May be used to display
+	 * HTML-Page explaining how to use the WidgetBridge or to redirect users to the right url:<br>
+	 * <a href="http://localhost:8080">localhost:8080</a>
+	 *
+	 * @return {@link StaticHandler}
+	 */
+	private StaticHandler staticHandler() {
+		return StaticHandler.create().setCachingEnabled(false);
+	}
 
-    /**
-     * The bridge configuration.
-     *
-     * @param host              of the host on which the HTTP-Server should run
-     * @param port              on which the HTTP-Server should listen
-     * @param inboundPermitted  permitted eventbus addresses for inbound connections
-     * @param outboundPermitted permitted eventbus addresses for outbound connections
-     */
-    @SuppressWarnings({"preview", "unused"})
-    private static record Configuration(@JsonProperty String host,
-                                        @JsonProperty int port, @JsonProperty List<String> inboundPermitted,
-                                        @JsonProperty List<String> outboundPermitted) {
-        private Configuration() {
-            this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
-        }
-    }
+	/**
+	 * The bridge configuration.
+	 *
+	 * @param host              of the host on which the HTTP-Server should run
+	 * @param port              on which the HTTP-Server should listen
+	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
+	 * @param outboundPermitted permitted eventbus addresses for outbound connections
+	 */
+	@SuppressWarnings({ "preview", "unused" })
+	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
+			@JsonProperty List<String> inboundPermitted, @JsonProperty List<String> outboundPermitted) {
+		private Configuration() {
+			this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
+		}
+	}
 }
