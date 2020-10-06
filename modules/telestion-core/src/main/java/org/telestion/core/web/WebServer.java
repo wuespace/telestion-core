@@ -18,10 +18,10 @@ import org.telestion.core.config.Config;
 public final class WebServer extends AbstractVerticle {
 
 	private Configuration forcedConfig;
-
+	
 	/**
-	 * Creating a WebServer on the specified port.
-	 * 
+ 	 * Creating a WebServer on the specified port.
+	 *
 	 * @param port to bind to
 	 */
 	public WebServer(int port) {
