@@ -1,10 +1,10 @@
 package org.telestion.protocol.mavlink.message;
 
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
 import org.telestion.core.util.UnsafePredicate;
 import org.telestion.protocol.mavlink.annotation.MavArray;
 import org.telestion.protocol.mavlink.annotation.MavField;
-import java.lang.reflect.RecordComponent;
-import java.util.Arrays;
 
 /**
  * Utility class for {@link MavlinkMessage MavlinkMessages}.<br>
@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class MessageHelper {
 
     /**
-     * There shall be no objects! This is a utility class!
+     * There shall be no objects. This is a utility class.
      */
     private MessageHelper() {
     }

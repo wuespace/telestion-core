@@ -6,9 +6,9 @@ import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
-import org.telestion.core.config.Config;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import org.telestion.core.config.Config;
 
 /**
  * A simple WebServer which publishes the index page.

@@ -1,11 +1,11 @@
 package org.telestion.protocol.mavlink.message.internal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
 import org.telestion.protocol.mavlink.message.MessageIndex;
 import org.telestion.protocol.mavlink.message.RawPayload;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 /**
  * Implementation of {@link RawMavlink} for MAVLink Version 1.

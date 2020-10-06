@@ -7,10 +7,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.core.config.Configuration;
-import java.util.Collections;
 
 /**
  * This is going to be the Telestion application. It launches the verticles which are specified in the configuration.
