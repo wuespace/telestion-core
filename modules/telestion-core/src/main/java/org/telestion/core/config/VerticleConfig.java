@@ -14,7 +14,7 @@ public record VerticleConfig(@JsonProperty String name, @JsonProperty String ver
 		@JsonProperty JsonNode config) {
 
 	/**
-	 * Only for deserialization
+	 * Only for deserialization.
 	 */
 	@SuppressWarnings("unused")
 	private VerticleConfig() {

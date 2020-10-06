@@ -24,7 +24,7 @@ public final class Telestion extends AbstractVerticle {
 	/**
 	 * Deploys this Telestion verticle.
 	 *
-	 * @param args
+	 * @param args of the console
 	 */
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();

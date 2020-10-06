@@ -12,7 +12,7 @@ import java.util.List;
 public record Configuration(@JsonProperty String app_name, @JsonProperty List<VerticleConfig> verticles) {
 
 	/**
-	 * Only for deserialization
+	 * Only for deserialization.
 	 */
 	@SuppressWarnings("unused")
 	private Configuration() {

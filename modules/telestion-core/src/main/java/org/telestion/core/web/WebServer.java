@@ -20,14 +20,16 @@ public final class WebServer extends AbstractVerticle {
 	private Configuration forcedConfig;
 
 	/**
-	 * @param port the port to bind to
+	 * Creating a WebServer on the specified port.
+	 * 
+	 * @param port to bind to
 	 */
 	public WebServer(int port) {
 		forcedConfig = new Configuration(port);
 	}
 
 	/**
-	 * Web server with default port 8080
+	 * Web server with default port 8080.
 	 */
 	public WebServer() {
 		forcedConfig = null;
