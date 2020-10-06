@@ -16,6 +16,8 @@ public class PacketException extends RuntimeException {
     private static final long serialVersionUID = 2256065887188465994L;
 
     /**
+     * Creates a PacketException.
+     *
      * @see RuntimeException#RuntimeException()
      */
     public PacketException() {
@@ -23,6 +25,8 @@ public class PacketException extends RuntimeException {
     }
 
     /**
+     * Creates a PacketException.
+     *
      * @see RuntimeException#RuntimeException(String)
      */
     public PacketException(String s) {
@@ -30,6 +34,8 @@ public class PacketException extends RuntimeException {
     }
 
     /**
+     * Creates a PacketException.
+     *
      * @see RuntimeException#RuntimeException(Throwable)
      */
     public PacketException(Throwable t) {
@@ -37,6 +43,8 @@ public class PacketException extends RuntimeException {
     }
 
     /**
+     * Creates a PacketException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable)
      */
     public PacketException(String s, Throwable t) {
@@ -44,6 +52,8 @@ public class PacketException extends RuntimeException {
     }
 
     /**
+     * Creates a PacketException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
      */
     public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

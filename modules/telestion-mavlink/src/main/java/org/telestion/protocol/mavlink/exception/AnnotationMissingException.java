@@ -18,6 +18,8 @@ public class AnnotationMissingException extends RuntimeException {
     private static final long serialVersionUID = -5342016963944609412L;
 
     /**
+     * Creates an AnnotationMissingException.
+     *
      * @see RuntimeException#RuntimeException()
      */
     public AnnotationMissingException() {
@@ -25,6 +27,8 @@ public class AnnotationMissingException extends RuntimeException {
     }
 
     /**
+     * Creates an AnnotationMissingException.
+     *
      * @see RuntimeException#RuntimeException(String)
      */
     public AnnotationMissingException(String s) {
@@ -32,6 +36,8 @@ public class AnnotationMissingException extends RuntimeException {
     }
 
     /**
+     * Creates an AnnotationMissingException.
+     *
      * @see RuntimeException#RuntimeException(Throwable)
      */
     public AnnotationMissingException(Throwable t) {
@@ -39,6 +45,8 @@ public class AnnotationMissingException extends RuntimeException {
     }
 
     /**
+     * Creates an AnnotationMissingException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable)
      */
     public AnnotationMissingException(String s, Throwable t) {
@@ -46,6 +54,8 @@ public class AnnotationMissingException extends RuntimeException {
     }
 
     /**
+     * Creates an AnnotationMissingException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
      */
     public AnnotationMissingException(String message, Throwable cause, boolean enableSuppression,

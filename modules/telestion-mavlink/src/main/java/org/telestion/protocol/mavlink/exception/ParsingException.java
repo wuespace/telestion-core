@@ -16,6 +16,8 @@ public class ParsingException extends RuntimeException {
     private static final long serialVersionUID = -7127168456897713093L;
 
     /**
+     * Creates a ParsingException.
+     *
      * @see RuntimeException#RuntimeException()
      */
     public ParsingException() {
@@ -23,6 +25,8 @@ public class ParsingException extends RuntimeException {
     }
 
     /**
+     * Creates a ParsingException.
+     *
      * @see RuntimeException#RuntimeException(String)
      */
     public ParsingException(String message) {
@@ -30,6 +34,8 @@ public class ParsingException extends RuntimeException {
     }
 
     /**
+     * Creates a ParsingException.
+     *
      * @see RuntimeException#RuntimeException(Throwable)
      */
     public ParsingException(Throwable cause) {
@@ -37,6 +43,8 @@ public class ParsingException extends RuntimeException {
     }
 
     /**
+     * Creates a ParsingException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable)
      */
     public ParsingException(String message, Throwable cause) {
@@ -44,6 +52,8 @@ public class ParsingException extends RuntimeException {
     }
 
     /**
+     * Creates a ParsingException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
      */
     public ParsingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

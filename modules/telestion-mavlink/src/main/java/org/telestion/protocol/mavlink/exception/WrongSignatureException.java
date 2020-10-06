@@ -11,11 +11,15 @@ package org.telestion.protocol.mavlink.exception;
 public class WrongSignatureException extends RuntimeException {
 
     /**
+     * Creates a WrongSignatureException.
+     *
      * SerialVersion UID for v1.0 of this {@link WrongSignatureException}.
      */
     private static final long serialVersionUID = 7162627217882841756L;
 
     /**
+     * Creates a WrongSignatureException.
+     *
      * @see RuntimeException#RuntimeException()
      */
     public WrongSignatureException() {
@@ -23,6 +27,8 @@ public class WrongSignatureException extends RuntimeException {
     }
 
     /**
+     * Creates a WrongSignatureException.
+     *
      * @see RuntimeException#RuntimeException(String)
      */
     public WrongSignatureException(String message) {
@@ -30,6 +36,8 @@ public class WrongSignatureException extends RuntimeException {
     }
 
     /**
+     * Creates a WrongSignatureException.
+     *
      * @see RuntimeException#RuntimeException(Throwable)
      */
     public WrongSignatureException(Throwable cause) {
@@ -37,6 +45,8 @@ public class WrongSignatureException extends RuntimeException {
     }
 
     /**
+     * Creates a WrongSignatureException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable)
      */
     public WrongSignatureException(String message, Throwable cause) {
@@ -44,6 +54,8 @@ public class WrongSignatureException extends RuntimeException {
     }
 
     /**
+     * Creates a WrongSignatureException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
      */
     public WrongSignatureException(String message, Throwable cause, boolean enableSuppression,

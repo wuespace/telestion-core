@@ -16,6 +16,8 @@ public class InvalidChecksumException extends RuntimeException {
     private static final long serialVersionUID = 5920137939040604788L;
 
     /**
+     * Creates an InvalidChecksumException.
+     *
      * @see RuntimeException#RuntimeException()
      */
     public InvalidChecksumException() {
@@ -23,6 +25,8 @@ public class InvalidChecksumException extends RuntimeException {
     }
 
     /**
+     * Creates an InvalidChecksumException.
+     *
      * @see RuntimeException#RuntimeException(String)
      */
     public InvalidChecksumException(String s) {
@@ -30,6 +34,8 @@ public class InvalidChecksumException extends RuntimeException {
     }
 
     /**
+     * Creates an InvalidChecksumException.
+     *
      * @see RuntimeException#RuntimeException(Throwable)
      */
     public InvalidChecksumException(Throwable t) {
@@ -37,6 +43,8 @@ public class InvalidChecksumException extends RuntimeException {
     }
 
     /**
+     * Creates an InvalidChecksumException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable)
      */
     public InvalidChecksumException(String s, Throwable t) {
@@ -44,6 +52,8 @@ public class InvalidChecksumException extends RuntimeException {
     }
 
     /**
+     * Creates an InvalidChecksumException.
+     *
      * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
      */
     public InvalidChecksumException(String message, Throwable cause, boolean enableSuppression,
