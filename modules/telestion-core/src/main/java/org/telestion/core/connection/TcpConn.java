@@ -167,8 +167,8 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param participant the participant of the tcp connection which has send this chunk of data or should receive it
 	 * @param datathe     actual data
 	 */
-	@SuppressWarnings("preview") public static record Data(@JsonProperty Participant participant,
-			@JsonProperty byte[] data) implements JsonMessage {
+	@SuppressWarnings("preview")
+	public static record Data(@JsonProperty Participant participant, @JsonProperty byte[] data) implements JsonMessage {
 
 		@SuppressWarnings("unused")
 		private Data() {
@@ -182,8 +182,8 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param host its host address
 	 * @param port its port
 	 */
-	@SuppressWarnings("preview") public static record Participant(@JsonProperty String host, @JsonProperty int port)
-			implements JsonMessage {
+	@SuppressWarnings("preview")
+	public static record Participant(@JsonProperty String host, @JsonProperty int port) implements JsonMessage {
 
 		@SuppressWarnings("unused")
 		private Participant() {
@@ -202,7 +202,8 @@ public final class TcpConn extends AbstractVerticle {
 	 *                           exist
 	 * @param consumingAddresses from which data will be consumed
 	 */
-	@SuppressWarnings("preview") private static record Configuration(@JsonProperty String host, @JsonProperty int port,
+	@SuppressWarnings("preview")
+	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
 			@JsonProperty String broadcastAddress, @JsonProperty List<String> targetAddresses,
 			@JsonProperty List<String> consumingAddresses) {
 		@SuppressWarnings("unused")

@@ -47,6 +47,7 @@
     </module>
 
     <module name="TreeWalker">
+	    <property name="tabWidth" value="4"/>
         <module name="RegexpSinglelineJava">
             <property name="format" value="^\t* "/>
             <property name="message" value="Indent must use tab characters"/>
