@@ -16,7 +16,8 @@ import org.telestion.protocol.mavlink.message.MavlinkMessage;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MavInfo {
+public @interface MavInfo
+{
 	/**
 	 * Equivalent to the message id of the MAVLink-Specifications.
 	 *

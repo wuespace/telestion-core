@@ -84,7 +84,8 @@ public final class Transmitter extends AbstractVerticle {
 	 * @param rawMavSupplierAddr  {@link RawMavlink RawMavlink-messages} will be send here.
 	 * @param tcpDataConsumerAddr Messages (as {@link TcpData}) will be published on this address.
 	 */
-	@SuppressWarnings("preview") private static record Configuration(@JsonProperty String rawMavSupplierAddr,
+	@SuppressWarnings("preview")
+	private static record Configuration(@JsonProperty String rawMavSupplierAddr,
 			@JsonProperty String tcpDataConsumerAddr) {
 		@SuppressWarnings("unused")
 		private Configuration() {

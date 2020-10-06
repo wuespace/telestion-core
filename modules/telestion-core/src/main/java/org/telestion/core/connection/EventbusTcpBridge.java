@@ -59,8 +59,8 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	/**
 	 * This constructor supplies default options and uses the defaultSockJSBridgeOptions for the applied rules.
 	 *
-	 * @param host  the ip address of the host on which the HTTP-Server should run
-	 * @param port  the port on which the HTTP-Server should listen
+	 * @param host              the ip address of the host on which the HTTP-Server should run
+	 * @param port              the port on which the HTTP-Server should listen
 	 * @param inboundPermitted  the permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted the permitted eventbus addresses for outbound connections
 	 */
@@ -124,9 +124,9 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	/**
 	 * The bridge configuration.
 	 *
-	 * @param host of the host on which the HTTP-Server should run
-	 * @param port on which the HTTP-Server should listen
-	 * @param inboundPermitted permitted eventbus addresses for inbound connections
+	 * @param host              of the host on which the HTTP-Server should run
+	 * @param port              on which the HTTP-Server should listen
+	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted permitted eventbus addresses for outbound connections
 	 */
 	@SuppressWarnings({ "preview", "unused" }) private static record Configuration(@JsonProperty String host,

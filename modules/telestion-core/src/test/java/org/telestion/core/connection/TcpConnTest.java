@@ -19,13 +19,13 @@ public class TcpConnTest {
 	void roundTripTest(Vertx vertx, VertxTestContext testContext) throws Throwable {
 		// the server publishes all received data to this address on the event bus
 		var serverOutgoing = "serverOutgoing";
-		
+
 		// the server sends all on this event bus address consumed data over tcp
 		var serverIncoming = "serverIncoming";
-		
+
 		// the client publishes all received data to this address on the event bus
 		var clientOutgoing = "clientOutgoing";
-		
+
 		// the client sends all on this event bus address consumed data over tcp
 		var clientIncoming = "clientIncoming";
 

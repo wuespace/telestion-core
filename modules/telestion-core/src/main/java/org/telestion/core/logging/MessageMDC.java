@@ -20,7 +20,7 @@ public final class MessageMDC {
 	 * <br>
 	 * <i>See {@link MessageMDC#put(String, Message)} for the elements which are put to the store.</i>
 	 *
-	 * @param key to identify the {@link Message} in the store
+	 * @param key     to identify the {@link Message} in the store
 	 * @param message {@link Message} to store
 	 * @return A {@link SafeCloseable} which can remove the key if {@link SafeCloseable#close() close()} is called
 	 */
@@ -43,7 +43,7 @@ public final class MessageMDC {
 	 * <br>
 	 * The key is either the name of the objects, if the key is <code>null</code> or <code>key.name</code>.
 	 *
-	 * @param key to identify the {@link Message} in the store
+	 * @param key     to identify the {@link Message} in the store
 	 * @param message {@link Message} to store
 	 */
 	public static void put(String key, Message<?> message) {
