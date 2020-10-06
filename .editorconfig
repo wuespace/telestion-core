@@ -1,9 +1,15 @@
-# This will be used as default EditorConfig for repos that don't have their own.
-# It's saved automatically as you type.
-# You can find docs at http://editorconfig.org
-
 root = true
 
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
 [*.java]
-indent_style = space
-tab_width = 4
+charset = utf-8
+indent_style = tab
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
