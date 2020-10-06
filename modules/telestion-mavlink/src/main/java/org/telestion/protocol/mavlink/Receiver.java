@@ -87,7 +87,7 @@ public final class Receiver extends AbstractVerticle {
     }
 
     /**
-     * The configuration of the receiver
+     * The configuration of the receiver.
      *
      * @param tcpDataSupplierAddress the address which provides the data which should be received
      * @param rawMavConsumerAddress  the address which consumes the RawMavlink message

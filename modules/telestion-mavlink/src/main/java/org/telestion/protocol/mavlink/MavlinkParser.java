@@ -198,7 +198,7 @@ public final class MavlinkParser extends AbstractVerticle {
 
                 bytes[bytes.length - 1] = (byte) raw.getCrc();
 
-                int checksum = X25Checksum.calculate(bytes);
+                final int checksum = X25Checksum.calculate(bytes);
 
                 byte[] rawBytes = new byte[bytes.length + 2];
                 rawBytes[0] = (byte) 0xFE;
@@ -241,7 +241,7 @@ public final class MavlinkParser extends AbstractVerticle {
                 buffer.put(payload);
                 buffer.put((byte) (raw.getCrc() & 0xff));
 
-                int checksum = X25Checksum.calculate(buffer.array());
+                final int checksum = X25Checksum.calculate(buffer.array());
                 byte[] signature = new byte[0];
                 if (context.incompFlags() == 0x01) {
                     try {
@@ -339,7 +339,8 @@ public final class MavlinkParser extends AbstractVerticle {
                 return unsigned ? toRightNum(l, Long.class) : toRightNum((int) l, Integer.class);
             case 8:
                 // There is no real support for unsigned longs, yet!
-                l = (((long) payload[index.incrementAndGet()]) << 56) + (((long) payload[index.incrementAndGet()]) << 48)
+                l = (((long) payload[index.incrementAndGet()]) << 56)
+                        + (((long) payload[index.incrementAndGet()]) << 48)
                         + (((long) payload[index.incrementAndGet()]) << 40)
                         + (((long) payload[index.incrementAndGet()]) << 32) + (payload[index.incrementAndGet()] << 24)
                         + (payload[index.incrementAndGet()] << 16) + (payload[index.incrementAndGet()] << 8)
@@ -548,14 +549,15 @@ public final class MavlinkParser extends AbstractVerticle {
     /**
      * The parser configuration.
      *
-     * @param rawMavSupplierAddr    Address for parsing {@link RawMavlink RawMavlink-message} to a {@link MavlinkMessage}.
-     * @param mavConsumerAddrOutput Address for parsed {@link RawMavlink RawMavlink-messages}.
-     * @param mavV1SupplierAddr     Address which will be accepting {@link MavlinkMessage messages} and parse them into a
-     *                              {@link RawMavlinkV1} which already contains the header for the given payload and a
+     * @param rawMavSupplierAddr    Address for parsing {@link RawMavlink RawMavlink-message} to a
+     *                              {@link MavlinkMessage}.
+     * @param mavConsumerAddr       Address for parsed {@link RawMavlink RawMavlink-messages}.
+     * @param mavV1SupplierAddr     Address which will be accepting {@link MavlinkMessage messages} and parse them into
+     *                              a {@link RawMavlinkV1} which already contains the header for the given payload and a
      *                              unique messageId.
-     * @param mavV2SupplierAddr     Address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2} which
-     *                              already contains the header for the given payload, a unique messageId and a signature
-     *                              (if specified).
+     * @param mavV2SupplierAddr     Address for parsing {@link MavlinkMessage messages} into a {@link RawMavlinkV2}
+     *                              which already contains the header for the given payload, a unique messageId and a
+     *                              signature (if specified).
      * @param rawMavConsumerAddr    Address which consumes the {@link RawMavlink RawMavlink-messages}.
      */
     @SuppressWarnings("preview")
