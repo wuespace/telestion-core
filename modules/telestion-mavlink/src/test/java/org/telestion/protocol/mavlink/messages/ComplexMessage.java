@@ -10,19 +10,26 @@ import org.telestion.protocol.mavlink.message.MavlinkMessage;
 @SuppressWarnings("preview")
 @MavInfo(id = 1, crc = 0)
 public record ComplexMessage(
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_64) @JsonProperty long[] bigArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_64)
+		@JsonProperty long[] bigArray,
 
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_32) @JsonProperty int[] mediumArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_32)
+		@JsonProperty int[] mediumArray,
 
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_16) @JsonProperty short[] smallArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_16)
+		@JsonProperty short[] smallArray,
 
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_8) @JsonProperty byte[] tinyArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_8)
+		@JsonProperty byte[] tinyArray,
 
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.DOUBLE) @JsonProperty double[] bigFloatingArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.DOUBLE)
+		@JsonProperty double[] bigFloatingArray,
 
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.FLOAT) @JsonProperty float[] floatingArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.FLOAT)
+		@JsonProperty float[] floatingArray,
 
-		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.CHAR) @JsonProperty char[] charArray,
+		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.CHAR)
+		@JsonProperty char[] charArray,
 
 		@MavField(extension = false, nativeType = NativeType.INT_64) @JsonProperty long big,
 
@@ -38,7 +45,8 @@ public record ComplexMessage(
 
 		@MavField(extension = false, nativeType = NativeType.CHAR) @JsonProperty char character,
 
-		@MavArray(length = 10) @MavField(extension = false, nativeType = NativeType.CHAR) @JsonProperty char[] extension)
+		@MavArray(length = 10) @MavField(extension = false, nativeType = NativeType.CHAR)
+		@JsonProperty char[] extension)
 		implements MavlinkMessage {
 
 	@SuppressWarnings("unused")
