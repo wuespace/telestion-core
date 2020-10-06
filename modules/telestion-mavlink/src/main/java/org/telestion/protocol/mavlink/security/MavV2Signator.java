@@ -47,10 +47,8 @@ public final class MavV2Signator {
         OffsetDateTime dt = OffsetDateTime.now(ZoneOffset.UTC);
         long time = ((dt.toEpochSecond() - secondJan2015) * 1_000_000 + (int) dt.toInstant().getNano() / 1_000) / 10;
 
-        byte[] timestamp = {(byte) ((time >> 40) & 0xff), (byte) ((time >> 32) & 0xff), (byte) ((time >> 24) & 0xff),
-                (byte) ((time >> 16) & 0xff), (byte) ((time >> 8) & 0xff), (byte) (time & 0xff),};
-
-        return timestamp;
+        return new byte[]{(byte) ((time >> 40) & 0xff), (byte) ((time >> 32) & 0xff), (byte) ((time >> 24) & 0xff),
+                (byte) ((time >> 16) & 0xff), (byte) ((time >> 8) & 0xff), (byte) (time & 0xff)};
     }
 
     /**
@@ -64,12 +62,10 @@ public final class MavV2Signator {
      * @param linkId    of the message
      * @param timestamp for the message
      * @return first 6 bytes of the SHA-256 hashed signature
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException at missing massage digest
      */
     public static byte[] rawSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId,
                                       byte[] timestamp) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
         ByteBuffer buffer = ByteBuffer
                 .allocate(secretKey.length + header.length + payload.length + 3 + timestamp.length);
 
@@ -80,6 +76,7 @@ public final class MavV2Signator {
         buffer.put((byte) (linkId & 0xff));
         buffer.put(timestamp);
 
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
         return Arrays.copyOfRange(digest.digest(buffer.array()), 0, 6);
     }
 
@@ -93,7 +90,7 @@ public final class MavV2Signator {
      * @param crcExtra  for the MAVLink-Message
      * @param linkId    of the message
      * @return full 13 MAVLink-Signature
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException at missing massage digest
      */
     public static byte[] generateSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId)
             throws NoSuchAlgorithmException {
