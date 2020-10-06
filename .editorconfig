@@ -5,5 +5,5 @@
 root = true
 
 [*.java]
-indent_style = space
+indent_style = tab
 tab_width = 4

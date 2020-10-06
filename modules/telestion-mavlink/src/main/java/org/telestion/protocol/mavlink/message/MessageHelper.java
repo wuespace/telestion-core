@@ -16,7 +16,7 @@ import org.telestion.protocol.mavlink.annotation.MavField;
 public final class MessageHelper {
 
 	/**
-	 * There shall be no objects! This is a utility class!
+	 * There shall be no objects. This is a utility class.
 	 */
 	private MessageHelper() {
 	}

@@ -35,7 +35,7 @@ public final class AddressAssociator {
 	 * happens.</em>
 	 *
 	 * @param mavlinkAddress of the new {@link AddressPort}
-	 * @param ip which should be linked
+	 * @param ip             which should be linked
 	 */
 	public static void put(String mavlinkAddress, AddressPort ip) {
 		if (map.get(mavlinkAddress) != null) {

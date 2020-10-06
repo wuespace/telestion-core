@@ -31,7 +31,7 @@ public final class MavV2Signator {
 	private static final long secondJan2015 = OffsetDateTime.of(2015, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC).toEpochSecond();
 
 	/**
-	 * There shall be no objects!
+	 * There shall be no objects.
 	 */
 	private MavV2Signator() {
 		// There shall be no objects!
@@ -48,7 +48,7 @@ public final class MavV2Signator {
 		long time = ((dt.toEpochSecond() - secondJan2015) * 1_000_000 + (int) dt.toInstant().getNano() / 1_000) / 10;
 
 		byte[] timestamp = { (byte) ((time >> 40) & 0xff), (byte) ((time >> 32) & 0xff), (byte) ((time >> 24) & 0xff),
-				(byte) ((time >> 16) & 0xff), (byte) ((time >> 8) & 0xff), (byte) (time & 0xff), };
+				(byte) ((time >> 16) & 0xff), (byte) ((time >> 8) & 0xff), (byte) (time & 0xff) };
 
 		return timestamp;
 	}
@@ -58,17 +58,17 @@ public final class MavV2Signator {
 	 * MAVLink-specifications.
 	 *
 	 * @param secretKey key for the SHA-256 hash <em>(&rightarrow; must be exchanged on a secure channel)</em>
-	 * @param header of the MAVLink-Message
-	 * @param payload of the MAVLink-Message
-	 * @param crcExtra for the MAVLink-Message
-	 * @param linkId of the message
+	 * @param header    of the MAVLink-Message
+	 * @param payload   of the MAVLink-Message
+	 * @param crcExtra  for the MAVLink-Message
+	 * @param linkId    of the message
 	 * @param timestamp for the message
 	 * @return first 6 bytes of the SHA-256 hashed signature
-	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchAlgorithmException if something goes wrong
 	 */
 	public static byte[] rawSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId,
 			byte[] timestamp) throws NoSuchAlgorithmException {
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		final MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
 		ByteBuffer buffer = ByteBuffer
 				.allocate(secretKey.length + header.length + payload.length + 3 + timestamp.length);
@@ -88,12 +88,12 @@ public final class MavV2Signator {
 	 * linkId.
 	 *
 	 * @param secretKey key for the SHA-256 hash <em>(&rightarrow; must be exchanged on a secure channel)</em>
-	 * @param header of the MAVLink-Message
-	 * @param payload of the MAVLink-Message
-	 * @param crcExtra for the MAVLink-Message
-	 * @param linkId of the message
+	 * @param header    of the MAVLink-Message
+	 * @param payload   of the MAVLink-Message
+	 * @param crcExtra  for the MAVLink-Message
+	 * @param linkId    of the message
 	 * @return full 13 MAVLink-Signature
-	 * @throws NoSuchAlgorithmException
+	 * @throws NoSuchAlgorithmException if something goes wrong
 	 */
 	public static byte[] generateSignature(byte[] secretKey, byte[] header, byte[] payload, int crcExtra, short linkId)
 			throws NoSuchAlgorithmException {

@@ -29,7 +29,7 @@ public final class X25Checksum {
 	/**
 	 * Calculates the CRC X.25-checksum for one byte with regards to the current-checksum.
 	 *
-	 * @param data   byte which should be added to the checksum
+	 * @param data       byte which should be added to the checksum
 	 * @param currentCrc current checksum which should be extended
 	 * @return checksum composed from a prior checksum and a byte of data
 	 */

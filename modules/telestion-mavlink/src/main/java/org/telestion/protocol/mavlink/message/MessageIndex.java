@@ -31,7 +31,7 @@ public final class MessageIndex {
 	 * <em>Note that if an other {@link MavlinkMessage} has already been linked with the given id an will
 	 * {@link IllegalArgumentException} be thrown.</em>
 	 *
-	 * @param id of the new {@link MavlinkMessage MavlinkMessage-implementation}
+	 * @param id    of the new {@link MavlinkMessage MavlinkMessage-implementation}
 	 * @param clazz Class of the {@link MavlinkMessage} which should be linked
 	 * @throws IllegalArgumentException if the given id is already in use
 	 */

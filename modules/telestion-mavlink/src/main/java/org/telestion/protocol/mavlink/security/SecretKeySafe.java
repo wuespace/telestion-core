@@ -44,7 +44,7 @@ public final class SecretKeySafe {
 	 * <em>Keys are final and cannot be changed. This however means after calling {@link #deleteKey()} this
 	 * {@link SecretKeySafe} is no longer usable which is a security feature.</em>
 	 *
-	 * @param secretKey
+	 * @param secretKey {@link #secretKey}
 	 */
 	public SecretKeySafe(byte[] secretKey) {
 		this.secretKey = secretKey;
@@ -66,7 +66,7 @@ public final class SecretKeySafe {
 	 * <br>
 	 * Will return null after {@link #deleteKey()} has been called.
 	 *
-	 * @return
+	 * @return byte-representation of the {@link #secretKey}
 	 */
 	public byte[] getSecretKey() {
 		return secretKey;
