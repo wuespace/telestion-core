@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/3.9.2/vertx-eventbus.js"></script>
-    <script>
-        var eb = new EventBus('http://localhost:9870/bridge');
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="http://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/3.9.2/vertx-eventbus.js"></script>
+<script>
+var eb = new EventBus('http://localhost:9870/bridge');
 
-        eb.onopen = () => {
-            console.log('Eventbus opened!');
+eb.onopen = () => {
+console.log('Eventbus opened!');
 
-            eb.registerHandler('org.telestion.example.RandomPositionPublisher/out#MockPos', (error, message) => {
-                console.log('Message from server: ' + JSON.stringify(message));
-                document.getElementById('position').innerHTML = "Current position: " + JSON.stringify(message.body);
-            });
-        }
-    </script>
-    <title>SockTest</title>
+eb.registerHandler('org.telestion.example.RandomPositionPublisher/out#MockPos', (error, message) => {
+console.log('Message from server: ' + JSON.stringify(message));
+document.getElementById('position').innerHTML = "Current position: " + JSON.stringify(message.body);
+});
+}
+</script>
+<title>SockTest</title>
 </head>
 <body>
 <div id="position"></div>

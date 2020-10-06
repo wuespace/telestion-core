@@ -15,26 +15,26 @@ import java.io.IOException;
  */
 public interface SafeCloseable extends Closeable {
 
-    /**
-     * Wraps the given {@link Closeable} into a {@link SafeCloseable} which logs and prints the <code>stacktrace</code>
-     * of the thrown {@link IOException}.
-     *
-     * @param closeable {@link Closeable} to be wrapped
-     * @return new {@link SafeCloseable} from the given {@link Closeable}
-     */
-    static SafeCloseable safe(Closeable closeable) {
-        return () -> {
-            try {
-                closeable.close();
-            } catch (IOException ex) {
-                LoggerFactory.getLogger(SafeCloseable.class).error(ex.getLocalizedMessage(), ex);
-                ex.printStackTrace();
-            }
-        };
-    }
+	/**
+	 * Wraps the given {@link Closeable} into a {@link SafeCloseable} which logs and prints the <code>stacktrace</code>
+	 * of the thrown {@link IOException}.
+	 *
+	 * @param closeable {@link Closeable} to be wrapped
+	 * @return new {@link SafeCloseable} from the given {@link Closeable}
+	 */
+	static SafeCloseable safe(Closeable closeable) {
+		return () -> {
+			try {
+				closeable.close();
+			} catch (IOException ex) {
+				LoggerFactory.getLogger(SafeCloseable.class).error(ex.getLocalizedMessage(), ex);
+				ex.printStackTrace();
+			}
+		};
+	}
 
-    /**
-     * Same as {@link Closeable#close()} but it is not allowed to throw an {@link IOException}
-     */
-    void close();
+	/**
+	 * Same as {@link Closeable#close()} but it is not allowed to throw an {@link IOException}
+	 */
+	void close();
 }

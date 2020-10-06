@@ -10,44 +10,44 @@ package org.telestion.protocol.mavlink.exception;
  */
 public class ParsingException extends RuntimeException {
 
-    /**
-     * SerialVersion UID for v1.0 of this {@link ParsingException}.
-     */
-    private static final long serialVersionUID = -7127168456897713093L;
+	/**
+	 * SerialVersion UID for v1.0 of this {@link ParsingException}.
+	 */
+	private static final long serialVersionUID = -7127168456897713093L;
 
-    /**
-     * @see RuntimeException#RuntimeException()
-     */
-    public ParsingException() {
-        super();
-    }
+	/**
+	 * @see RuntimeException#RuntimeException()
+	 */
+	public ParsingException() {
+		super();
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(String)
-     */
-    public ParsingException(String message) {
-        super(message);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(String)
+	 */
+	public ParsingException(String message) {
+		super(message);
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(Throwable)
-     */
-    public ParsingException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(Throwable)
+	 */
+	public ParsingException(Throwable cause) {
+		super(cause);
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(String, Throwable)
-     */
-    public ParsingException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable)
+	 */
+	public ParsingException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
-     */
-    public ParsingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
+	 */
+	public ParsingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
 
 }

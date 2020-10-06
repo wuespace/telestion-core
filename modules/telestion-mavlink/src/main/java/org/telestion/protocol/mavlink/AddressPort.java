@@ -10,21 +10,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @SuppressWarnings("preview")
 public final record AddressPort(
-        /**
-         * Actual address of a net-address.
-         */
-        @JsonProperty String address,
-        /**
-         * Port of a net-address.
-         */
-        @JsonProperty int port) {
+		/**
+		 * Actual address of a net-address.
+		 */
+		@JsonProperty String address,
+		/**
+		 * Port of a net-address.
+		 */
+		@JsonProperty int port) {
 
-    /**
-     * There shall be no default constructor for normal people.<br>
-     * This will only be used by the JSON-parser.
-     */
-    @SuppressWarnings("unused")
-    private AddressPort() {
-        this(null, 0);
-    }
+	/**
+	 * There shall be no default constructor for normal people.<br>
+	 * This will only be used by the JSON-parser.
+	 */
+	@SuppressWarnings("unused")
+	private AddressPort() {
+		this(null, 0);
+	}
 }

@@ -10,44 +10,44 @@ package org.telestion.protocol.mavlink.exception;
  */
 public class PacketException extends RuntimeException {
 
-    /**
-     * SerialVersion UID for v1.0 of this {@link PacketException}.
-     */
-    private static final long serialVersionUID = 2256065887188465994L;
+	/**
+	 * SerialVersion UID for v1.0 of this {@link PacketException}.
+	 */
+	private static final long serialVersionUID = 2256065887188465994L;
 
-    /**
-     * @see RuntimeException#RuntimeException()
-     */
-    public PacketException() {
-        super();
-    }
+	/**
+	 * @see RuntimeException#RuntimeException()
+	 */
+	public PacketException() {
+		super();
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(String)
-     */
-    public PacketException(String s) {
-        super(s);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(String)
+	 */
+	public PacketException(String s) {
+		super(s);
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(Throwable)
-     */
-    public PacketException(Throwable t) {
-        super(t);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(Throwable)
+	 */
+	public PacketException(Throwable t) {
+		super(t);
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(String, Throwable)
-     */
-    public PacketException(String s, Throwable t) {
-        super(s, t);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable)
+	 */
+	public PacketException(String s, Throwable t) {
+		super(s, t);
+	}
 
-    /**
-     * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
-     */
-    public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+	/**
+	 * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
+	 */
+	public PacketException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
 
 }
