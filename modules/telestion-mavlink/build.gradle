@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
+
+application {
+    // Define the main class for the application.
+    mainClassName = 'org.telestion.adapter.mavlink.Main'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/messages'
+        }
+    }
+}
+
+task createOfficialMavlinkRecords(type: Exec) {
+    outputs.upToDateWhen { false }
+    workingDir 'src/tools'
+    commandLine 'python', 'mavlink_xml2record.py', '-f', '../../mavlink/message_definitions/v1.0/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.protocol.mavlink.messages.official.*'
+}
+
+task createTelestionMavlinkRecords(type: Exec) {
+    outputs.upToDateWhen { false }
+    workingDir 'src/tools'
+    commandLine 'python', 'mavlink_xml2record.py', '-f', '../messages/*.xml', '-o', '../main/messages/~', '-p', 'org.telestion.protocol.mavlink.messages.telestion.*'
+}
+
+compileJava.dependsOn createTelestionMavlinkRecords
+compileJava.dependsOn createOfficialMavlinkRecords
+
+dependencies {
+    implementation project(':modules:telestion-core')
+    implementation project(':modules:telestion-api')
+    implementation project(':modules:telestion-launcher')
+    implementation project(':modules:telestion-example')
+
+    implementation 'com.google.guava:guava:29.0-jre'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.hamcrest:hamcrest-library:2.2'
+    testImplementation "org.mockito:mockito-core:2.+"
+
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
+
+    implementation "io.vertx:vertx-core:3.9.3"
+
+    testImplementation "io.vertx:vertx-junit5:3.9.3"
+}
+
+test {
+    useJUnitPlatform()
+}

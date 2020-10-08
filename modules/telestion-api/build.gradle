@@ -3,25 +3,25 @@ plugins {
     id 'application'
 }
 
-sourceCompatibility = '14'
-targetCompatibility = '14'
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
 
 application {
-    // Define the main class for the application.
+// Define the main class for the application.
     mainClassName = 'org.telestion.application.Application'
 }
 
 //TODO we should create a proper manifest like here. This needs some testing...
 /*task createJar(type: Jar) {
-    archiveName = "GradleJarProject.jar"
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',
-                'Implementation-Version': version,
-                'Main-Class': 'me.test.Test'
-    }
-    baseName = project.name
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+archiveName = "GradleJarProject.jar"
+manifest {
+attributes 'Implementation-Title': 'Gradle Jar File Example',
+'Implementation-Version': version,
+'Main-Class': 'me.test.Test'
+}
+baseName = project.name
+from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+with jar
 }*/
 
 task publishApi(type: Copy) {
@@ -31,8 +31,8 @@ task publishApi(type: Copy) {
 
 dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation "org.mockito:mockito-core:2.+"
@@ -41,7 +41,7 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
-    implementation "io.vertx:vertx-core:$gradle.vertxVersion"
+    implementation "io.vertx:vertx-core:3.9.3"
 }
 
 test {

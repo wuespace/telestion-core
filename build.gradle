@@ -2,12 +2,12 @@ allprojects {
     repositories {
         jcenter()
     }
-
 }
 
 subprojects {
     version = '1.0-SNAPSHOT'
     group 'org.telestion'
+
 
 
     tasks.withType(JavaExec) {
@@ -30,6 +30,10 @@ subprojects {
     }
     tasks.withType(Test) {
         jvmArgs += "--enable-preview"
+        ignoreFailures = true
+        reports {
+            junitXml.enabled = true
+        }
     }
     tasks.withType(JavaExec) {
         jvmArgs += '--enable-preview'

@@ -42,18 +42,18 @@ After that we mount a SubRouter
  ######BridgeOptions with event handling
  ```
 return sockJSHandler.bridge(options, event -> {
-    if (event.type() == BridgeEventType.SOCKET_CREATED) {
-        logger.info("A socket was created.");
-    }
-    if (event.type() == BridgeEventType.SEND) {
-        logger.info("Client sent message.");
-    }
-    System.out.println(event.type());
-    event.complete(true);
-    // You have to complete(true) to make
-    // clear that the event has finished.
-    // If you for example want to reject
-    // certain event types you can complete(false).
+if (event.type() == BridgeEventType.SOCKET_CREATED) {
+logger.info("A socket was created.");
+}
+if (event.type() == BridgeEventType.SEND) {
+logger.info("Client sent message.");
+}
+System.out.println(event.type());
+event.complete(true);
+// You have to complete(true) to make
+// clear that the event has finished.
+// If you for example want to reject
+// certain event types you can complete(false).
 });
 ```
 
@@ -63,27 +63,27 @@ simply publish to the event bus in
 your verticle like you normally would.
 ```
 vertx.eventBus().publish(
-    Address.outgoing(
-        <YourClass>.class, "method"
-    ), 
-    data.json()
+Address.outgoing(
+<YourClass>.class, "method"
+), 
+data.json()
 );
 ```
 Then you have to allow that address to
 go through to the frontend.
 ```
 .addOutboundPermitted(new PermittedOptions()
-    .setAddress(Address.outgoing(
-        <YourClass>.class, "method")))
+.setAddress(Address.outgoing(
+<YourClass>.class, "method")))
 ```
 ######Receive from frontend
 To receive messages you simply do the same
 as publishing, but you use
 ```
 vertx.eventBus().consumer(<Address>, msg -> {
-    JsonMessage.on(<YourClass>.class, msg, data -> {
-        System.out.println(data);
-    });
+JsonMessage.on(<YourClass>.class, msg, data -> {
+System.out.println(data);
+});
 });
 ```
 and `addInboundPermitted(...)`.

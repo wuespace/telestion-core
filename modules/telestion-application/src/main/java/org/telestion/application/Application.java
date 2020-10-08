@@ -1,38 +1,32 @@
 package org.telestion.application;
 
-import org.telestion.core.message.Address;
-import org.telestion.core.verticle.MessageLogger;
-import org.telestion.core.verticle.RandomPositionPublisher;
-import org.telestion.core.verticle.WebServer;
-import org.telestion.core.verticle.WidgetBridge;
-import org.telestion.launcher.Launcher;
-
 import java.util.Collections;
+import org.telestion.core.connection.EventbusTcpBridge;
+import org.telestion.core.message.Address;
+import org.telestion.core.monitoring.MessageLogger;
+import org.telestion.core.web.WebServer;
+import org.telestion.example.RandomPositionPublisher;
+import org.telestion.launcher.Launcher;
 
 /**
  * Starts the Telestion-Project as a standalone Application.
- * 
- * @version 1.0
- * @author Jan von Pichowski, Cedric Boes
  *
+ * @author Jan von Pichowski, Cedric Boes
+ * @version 1.0
  */
 public class Application {
-	
+
 	/**
-	 * Calls the Launcher for a specific Testcase (at the moment).</br>
+	 * Calls the Launcher for a specific Testcase (at the moment).<br>
 	 * Real functionality will be added later.
-	 * 
-	 * @param args <i>unused at the moment</i>
+	 *
+	 * @param args <em>unused at the moment</em>
 	 */
-    public static void main(String[] args) {
-        Launcher.start(
-                new MessageLogger(),
-				new RandomPositionPublisher(),
-				new WidgetBridge("localhost", 9000,
-						Collections.emptyList(),
+	public static void main(String[] args) {
+		Launcher.start(new MessageLogger(), new RandomPositionPublisher(),
+				new EventbusTcpBridge("localhost", 9870, Collections.emptyList(),
 						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
-				new WebServer(8080)
-        );
-    }
+				new WebServer(8080));
+	}
 
 }

@@ -299,3 +299,5 @@ $RECYCLE.BIN/
 *.classpath
 *.project
 
+# Project Files
+modules/telestion-mavlink/src/main/messages/org/telestion/mavlink/
