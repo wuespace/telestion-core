@@ -12,22 +12,30 @@ import org.telestion.core.message.DBRequest;
 import org.telestion.core.message.DBResponse;
 import org.telestion.core.message.Position;
 
+import java.util.List;
+
 public final class Database extends AbstractVerticle {
     private final Logger logger = LoggerFactory.getLogger(Database.class);
 
-    private final JsonObject dbConfig = new JsonObject()
-            .put("db_name", "telestion_db")
-            .put("useObjectId", true);
-    private final String dbPoolName = "TelestionPool";
-    private final MongoClient client = MongoClient.createShared(vertx, dbConfig, dbPoolName);
+    private JsonObject dbConfig;
+    private String dbPoolName;
+    private MongoClient client;
 
     private final String inSave = Address.incoming(Database.class, "save");
     private final String outSave = Address.outgoing(Database.class, "save");
     private final String inFind = Address.incoming(Database.class, "find");
     private final String outFind = Address.outgoing(Database.class, "find");
 
+    public Database(String dbName, String dbPoolName) {
+        this.dbConfig = new JsonObject().put("db_name", dbName).put("useObjectId", true);
+        this.dbPoolName = dbPoolName;
+    }
+
+    public Database() {}
+
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
+        this.client = MongoClient.createShared(vertx, this.dbConfig, this.dbPoolName);
         vertx.eventBus().consumer(inSave, document -> {
             JsonMessage.on(Position.class, document, this::save);
         });
@@ -71,3 +79,25 @@ public final class Database extends AbstractVerticle {
         });
     }
 }
+
+/**
+ *
+ * Project = Database name, pool name
+ * data_row = {
+ *     timestamp: ...,
+ *     data_set: <ID of dataset>,
+ *     time_rel_to_data_set: ...,
+ *     data: {
+ *         position: {
+ *             x, y, z
+ *         },
+ *         velocity: {
+ *             x, y, z, ...
+ *         },
+ *         :
+ *         :
+ *     }
+ * }
+ *
+ *
+ */
