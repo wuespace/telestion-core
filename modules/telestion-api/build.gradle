@@ -41,7 +41,7 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.4'
 
-    implementation "io.vertx:vertx-core:3.9.3"
+    implementation "io.vertx:vertx-core:3.9.4"
 }
 
 test {
