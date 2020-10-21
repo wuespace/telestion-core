@@ -53,7 +53,7 @@ dependencies {
 
     implementation "io.vertx:vertx-core:3.9.3"
 
-    testImplementation "io.vertx:vertx-junit5:3.9.3"
+    testImplementation "io.vertx:vertx-junit5:3.9.4"
 }
 
 test {
