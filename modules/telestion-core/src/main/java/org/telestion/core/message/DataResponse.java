@@ -7,9 +7,10 @@ import org.telestion.api.message.JsonMessage;
 import java.util.Collections;
 import java.util.List;
 
-public record DBResponse(
-        @JsonProperty Class<?> dataType,
-        @JsonProperty List<JsonObject> result) implements JsonMessage {
+public record DataResponse(
+		@JsonProperty JsonObject data) implements JsonMessage {
 
-    private DBResponse() { this(null, Collections.emptyList()); }
+	private DataResponse() {
+		this(new JsonObject());
+	}
 }
