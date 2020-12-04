@@ -4,6 +4,7 @@ import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -12,49 +13,45 @@ import org.telestion.core.message.DbRequest;
 import org.telestion.core.message.DbResponse;
 import org.telestion.core.monitoring.MessageLogger;
 
-import java.util.List;
-
 public final class MongoDatabase extends AbstractVerticle {
-    private final Logger logger = LoggerFactory.getLogger(MongoDatabase.class);
-
-    private JsonObject dbConfig;
-    private String dbPoolName;
-    private MongoClient client;
-
+	private final Logger logger = LoggerFactory.getLogger(MongoDatabase.class);
+	private JsonObject dbConfig;
+	private String dbPoolName;
+	private MongoClient client;
     /*
     	Address must be a global known unique address for Database operations,
 		because every Database implementation should listen to the same address
 		so that the database can be replaced easily.
 		TODO: Change incoming and outgoing address!
 	*/
-    private final String inSave = Address.incoming(MongoDatabase.class, "save");
-    private final String outSave = Address.outgoing(MongoDatabase.class, "save");
-    private final String inFind = Address.incoming(MongoDatabase.class, "find");
-    private final String outFind = Address.outgoing(MongoDatabase.class, "find");
+	private final String inSave = Address.incoming(MongoDatabase.class, "save");
+	private final String outSave = Address.outgoing(MongoDatabase.class, "save");
+	private final String inFind = Address.incoming(MongoDatabase.class, "find");
+	private final String outFind = Address.outgoing(MongoDatabase.class, "find");
 
-    public MongoDatabase(String dbName, String dbPoolName) {
-        this.dbConfig = new JsonObject().put("db_name", dbName).put("useObjectId", true);
-        this.dbPoolName = dbPoolName;
-    }
+	public MongoDatabase(String dbName, String dbPoolName) {
+		this.dbConfig = new JsonObject().put("db_name", dbName).put("useObjectId", true);
+		this.dbPoolName = dbPoolName;
+	}
 
-    public MongoDatabase() {}
+	public MongoDatabase() {}
 
-    public static void main(String[] args) {
-        Vertx vertx = Vertx.vertx();
-        // we have to register the codec for the used message! Do this in your Launcher.
-        vertx.deployVerticle(new MongoDatabase("daedalus2", "daedalus2Pool"));
-        vertx.deployVerticle(RandomPositionPublisher.class.getName());
-        vertx.deployVerticle(new MessageLogger());
-    }
+	public static void main(String[] args) {
+		Vertx vertx = Vertx.vertx();
+    	// we have to register the codec for the used message! Do this in your Launcher.
+		vertx.deployVerticle(new MongoDatabase("daedalus2", "daedalus2Pool"));
+		vertx.deployVerticle(RandomPositionPublisher.class.getName());
+		vertx.deployVerticle(new MessageLogger());
+	}
 
-    @Override
-    public void start(Promise<Void> startPromise) throws Exception {
-        this.client = MongoClient.createShared(vertx, this.dbConfig, this.dbPoolName);
-        this.registerConsumers();
-        startPromise.complete();
-    }
+	@Override
+	public void start(Promise<Void> startPromise) throws Exception {
+		this.client = MongoClient.createShared(vertx, this.dbConfig, this.dbPoolName);
+		this.registerConsumers();
+		startPromise.complete();
+	}
 
-    private void registerConsumers() {
+	private void registerConsumers() {
 		vertx.eventBus().consumer(inSave, document -> {
 			JsonMessage.on(Position.class, document, this::save);
 		});
@@ -76,38 +73,38 @@ public final class MongoDatabase extends AbstractVerticle {
 		});
 	}
 
-    private void save(JsonMessage document) {
-        logger.debug("Started save");
-        var object = document.json();
-        client.save(document.className(), object, res -> {
-            if (res.failed()) {
-                logger.error("DB Save failed: ", res.cause());
-                return;
-            }
-            String id = res.result();
-            client.find(document.className(), new JsonObject().put("_id", id), rec -> {
-                if (rec.failed()) {
-                    logger.error("DB Find failed: ", rec.cause());
-                    return;
-                }
-                DbResponse dbRes = new DbResponse(document.getClass(), rec.result());
-                vertx.eventBus().publish(outSave, dbRes.json());
-            });
-        });
-    }
-
-    private void findLatest(DbRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
-    	FindOptions findOptions = new FindOptions()
-			.setSort(new JsonObject().put("_id", -1))
-			.setLimit(1);
-    	client.findWithOptions(request.dataType().getName(),
-			request.query().orElse(new JsonObject()), findOptions, res -> {
-    			if (res.failed()) {
-    				logger.error("DB Request failed: ", res.cause());
-    				handler.handle(Future.failedFuture(res.cause()));
-    				return;
+	private void save(JsonMessage document) {
+		logger.debug("Started save");
+		var object = document.json();
+		client.save(document.className(), object, res -> {
+			if (res.failed()) {
+				logger.error("DB Save failed: ", res.cause());
+				return;
+			}
+			String id = res.result();
+			client.find(document.className(), new JsonObject().put("_id", id), rec -> {
+				if (rec.failed()) {
+					logger.error("DB Find failed: ", rec.cause());
+					return;
 				}
-    			handler.handle(Future.succeededFuture(res.result()));
+				DbResponse dbRes = new DbResponse(document.getClass(), rec.result());
+				vertx.eventBus().publish(outSave, dbRes.json());
+			});
+		});
+	}
+
+	private void findLatest(DbRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
+		FindOptions findOptions = new FindOptions()
+				.setSort(new JsonObject().put("_id", -1)).setLimit(1);
+		client.findWithOptions(request.dataType().getName(),
+			request.query().orElse(new JsonObject()),
+			findOptions, res -> {
+				if (res.failed()) {
+					logger.error("DB Request failed: ", res.cause());
+					handler.handle(Future.failedFuture(res.cause()));
+					return;
+				}
+				handler.handle(Future.succeededFuture(res.result()));
 			});
 	}
 }

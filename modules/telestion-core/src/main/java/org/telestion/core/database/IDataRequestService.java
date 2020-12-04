@@ -13,11 +13,11 @@ public interface IDataRequestService {
 	void dataRequestDispatcher(DataRequest request, Handler<AsyncResult<JsonObject>> resultHandler);
 
 	@Fluent
-	IDataRequestService fetchLatestData (List<Class<?>> dataTypes, Handler<AsyncResult<JsonArray>> resultHandler);
+	IDataRequestService fetchLatestData(List<Class<?>> dataTypes, Handler<AsyncResult<JsonArray>> resultHandler);
 
 	@Fluent
-	IDataRequestService fetchLatestData (Class<?> dataType, Handler<AsyncResult<JsonObject>> resultHandler);
+	IDataRequestService fetchLatestData(Class<?> dataType, Handler<AsyncResult<JsonObject>> resultHandler);
 
 	@Fluent
-	IDataRequestService applyManipulation (DataOperation dataOperation, Handler<AsyncResult<JsonObject>> handler);
+	IDataRequestService applyManipulation(DataOperation dataOperation, Handler<AsyncResult<JsonObject>> handler);
 }
