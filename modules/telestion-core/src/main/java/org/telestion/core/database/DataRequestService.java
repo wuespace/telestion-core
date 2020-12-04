@@ -1,20 +1,16 @@
 package org.telestion.core.database;
 
 import io.vertx.core.*;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.DBRequest;
 import org.telestion.core.message.DataOperation;
 import org.telestion.core.message.DataRequest;
 import org.telestion.core.monitoring.MessageLogger;
-
-import java.util.List;
-import java.util.Optional;
 
 public class DataRequestService extends AbstractVerticle implements IDataRequestService {
 	private final Logger logger = LoggerFactory.getLogger(DataRequestService.class);

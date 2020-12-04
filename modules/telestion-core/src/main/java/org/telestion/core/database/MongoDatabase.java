@@ -1,7 +1,6 @@
 package org.telestion.core.database;
 
 import io.vertx.core.*;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
@@ -9,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.DBRequest;
-import org.telestion.core.message.DBResponse;
+import org.telestion.core.message.DbRequest;
+import org.telestion.core.message.DbResponse;
 import org.telestion.core.monitoring.MessageLogger;
 
 import java.util.List;
@@ -60,7 +59,7 @@ public final class MongoDatabase extends AbstractVerticle {
 			JsonMessage.on(Position.class, document, this::save);
 		});
 		vertx.eventBus().consumer(inFind, request -> {
-			JsonMessage.on(DBRequest.class, request, (dbRequest) -> {
+			JsonMessage.on(DbRequest.class, request, (dbRequest) -> {
 				this.findLatest(dbRequest, result -> {
 					if (result.failed()) {
 						request.fail(-1, result.cause().getMessage());
@@ -91,13 +90,13 @@ public final class MongoDatabase extends AbstractVerticle {
                     logger.error("DB Find failed: ", rec.cause());
                     return;
                 }
-                DBResponse dbRes = new DBResponse(document.getClass(), rec.result());
+                DbResponse dbRes = new DbResponse(document.getClass(), rec.result());
                 vertx.eventBus().publish(outSave, dbRes.json());
             });
         });
     }
 
-    private void findLatest(DBRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
+    private void findLatest(DbRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
     	FindOptions findOptions = new FindOptions()
 			.setSort(new JsonObject().put("_id", -1))
 			.setLimit(1);

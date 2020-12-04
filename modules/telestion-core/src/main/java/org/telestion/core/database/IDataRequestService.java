@@ -5,10 +5,9 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import java.util.List;
 import org.telestion.core.message.DataOperation;
 import org.telestion.core.message.DataRequest;
-
-import java.util.List;
 
 public interface IDataRequestService {
 	void dataRequestDispatcher(DataRequest request, Handler<AsyncResult<JsonObject>> resultHandler);
