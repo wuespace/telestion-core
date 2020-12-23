@@ -1,5 +1,6 @@
 package org.telestion.core.connection;
 
+import com.fazecast.jSerialComm.SerialPort;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
@@ -18,7 +19,6 @@ public final class UartConn extends AbstractVerticle {
 		LOG.info("Started UartConn");
 
 		//Uart init
-
 		vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), new Handler<Long>() {
 			@Override
 			public void handle(Long event) {
