@@ -38,6 +38,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"));
 		// deploy random position publisher
+		vertx.deployVerticle(new RandomPositionPublisher());
 		vertx.deployVerticle(new MessageLogger());
 	}
 
