@@ -7,6 +7,7 @@ import io.vertx.core.Vertx;
 
 import java.nio.Buffer;
 import java.time.Duration;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,21 +25,20 @@ public final class UartConn extends AbstractVerticle {
 		//Uart init
 		SerialPort serialPort = SerialPort.getCommPort("COM1");
 		byte[] buffer = new byte[12];
-
+		serialPort.openPort();
 		vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), new Handler<Long>() {
 			@Override
 			public void handle(Long event) {
 
 				//Uart auslesennnn
-				serialPort.openPort();
+
 				serialPort.readBytes(buffer, 12);
-				serialPort.closePort();
+
 
 				//Eventbus publishen
-				vertx.eventBus().publish("UartData", buffer);
+				vertx.eventBus().publish("UartData", Arrays.toString(buffer));
 			}
 		});
-
 		startPromise.complete();
 	}
 
