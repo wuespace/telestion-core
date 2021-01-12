@@ -29,7 +29,7 @@ public final class UartConn extends AbstractVerticle {
 			@Override
 			public void handle(Long event) {
 
-				//Uart auslesen
+				//Uart auslesennnn
 				serialPort.openPort();
 				serialPort.readBytes(buffer, 12);
 				serialPort.closePort();
