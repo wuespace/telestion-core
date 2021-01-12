@@ -16,7 +16,7 @@ dependencies {
     implementation project(':modules:telestion-api')
     implementation project(':modules:telestion-core')
 
-    implementation 'com.google.guava:guava:30.0-jre'
+    implementation 'com.google.guava:guava:30.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     testImplementation 'org.hamcrest:hamcrest:2.2'
