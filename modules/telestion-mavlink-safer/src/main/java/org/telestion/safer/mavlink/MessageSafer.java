@@ -17,7 +17,7 @@ public class MessageSafer extends AbstractVerticle {
 		vertx.eventBus().consumer("addr1", msg -> {
 			if (msg.body() instanceof Position pos) {
 
-				var stringPos = JsonCodec.INSTANCE.toString(pos);
+				//var stringPos = JsonCodec.INSTANCE.toString(pos);
 			}
 		});
 		startPromise.complete();
