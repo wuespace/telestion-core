@@ -29,7 +29,7 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
     implementation "io.vertx:vertx-core:4.0.0"
-    implementation "io.vertx:vertx-circuit-breaker:3.9.4"
+    implementation "io.vertx:vertx-circuit-breaker:4.0.0"
     implementation "io.vertx:vertx-config:4.0.0"
 }
 
