@@ -35,7 +35,7 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
     implementation "io.vertx:vertx-web:3.9.4"
-    implementation "io.vertx:vertx-core:3.9.4"
+    implementation "io.vertx:vertx-core:4.0.0"
     implementation "io.vertx:vertx-hazelcast:3.9.4"
 // implementation "io.vertx:vertx-infinispan:3.9.2"
     implementation "io.vertx:vertx-health-check:3.9.4"
