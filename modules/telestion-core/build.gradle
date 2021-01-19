@@ -42,7 +42,7 @@ dependencies {
     implementation "io.vertx:vertx-http-service-factory:4.0.0"
     implementation "io.vertx:vertx-rx-java2:4.0.0"
     implementation "io.vertx:vertx-config:3.9.4"
-    implementation "io.vertx:vertx-service-factory:3.9.4"
+    implementation "io.vertx:vertx-service-factory:4.0.0"
     implementation "io.vertx:vertx-mongo-client:3.9.4"
     implementation "io.vertx:vertx-circuit-breaker:3.9.4"
 
