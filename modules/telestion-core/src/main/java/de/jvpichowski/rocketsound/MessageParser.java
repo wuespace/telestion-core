@@ -1,6 +1,5 @@
 package de.jvpichowski.rocketsound;
 
-import de.jvpichowski.rocketsound.messages.GPSPosition;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.Message;
@@ -46,6 +45,6 @@ public final class MessageParser extends AbstractVerticle {
 	 * @param message
 	 */
 	private void parseMessage(String message){
-		vertx.eventBus().publish(OUTGOING_DATA, new GPSPosition(5.7f, 4.3f, 6.7f));
+		//vertx.eventBus().publish(OUTGOING_DATA, new GPSData(5.7f, 4.3f, 6.7f));
 	}
 }

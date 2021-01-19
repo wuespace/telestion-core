@@ -11,8 +11,15 @@ application {
     mainClassName = 'org.telestion.core.Main'
 }
 
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+}
 
 dependencies {
+    //implementation name: 'engine'
+
     implementation project(':modules:telestion-api')
 
     compile group: 'com.fazecast', name: 'jSerialComm', version: '2.6.2'
