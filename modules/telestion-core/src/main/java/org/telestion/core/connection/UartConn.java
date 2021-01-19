@@ -1,14 +1,18 @@
 package org.telestion.core.connection;
 
-import com.fazecast.jSerialComm.SerialPort;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+
+import java.nio.Buffer;
 import java.time.Duration;
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.core.monitoring.MessageLogger;
+import com.fazecast.jSerialComm.*;
 
 public final class UartConn extends AbstractVerticle {
 
@@ -19,16 +23,22 @@ public final class UartConn extends AbstractVerticle {
 		LOG.info("Started UartConn");
 
 		//Uart init
+		SerialPort serialPort = SerialPort.getCommPort("COM1");
+		byte[] buffer = new byte[12];
+		serialPort.openPort();
 		vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), new Handler<Long>() {
 			@Override
 			public void handle(Long event) {
-				//Uart auslesen
+
+				//Uart auslesennnn
+
+				serialPort.readBytes(buffer, 12);
+
 
 				//Eventbus publishen
-				vertx.eventBus().publish("UartData", "Hello World");
+				vertx.eventBus().publish("UartData", Arrays.toString(buffer));
 			}
 		});
-
 		startPromise.complete();
 	}
 
