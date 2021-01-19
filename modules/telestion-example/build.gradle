@@ -32,7 +32,7 @@ dependencies {
     implementation "io.vertx:vertx-hazelcast:3.9.4"
 // implementation "io.vertx:vertx-infinispan:3.9.2"
     implementation "io.vertx:vertx-health-check:3.9.4"
-    implementation "io.vertx:vertx-http-service-factory:3.9.4"
+    implementation "io.vertx:vertx-http-service-factory:4.0.0"
     implementation "io.vertx:vertx-rx-java2:4.0.0"
     implementation "io.vertx:vertx-config:3.9.4"
     implementation "io.vertx:vertx-service-factory:3.9.4"
