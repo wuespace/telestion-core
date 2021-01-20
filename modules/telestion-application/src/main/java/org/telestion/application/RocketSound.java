@@ -1,11 +1,15 @@
 package org.telestion.application;
 
 import de.jvpichowski.rocketsound.MockRocketPublisher;
+import de.jvpichowski.rocketsound.messages.base.BaroData;
+import de.jvpichowski.rocketsound.messages.base.NineDofData;
+import de.jvpichowski.rocketsound.messages.sound.Amplitude;
 import de.jvpichowski.rocketsound.messages.base.GpsData;
 import de.jvpichowski.rocketsound.messages.base.Position;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+
+import de.jvpichowski.rocketsound.messages.sound.Spectrum;
 import org.telestion.core.connection.EventbusTcpBridge;
 import org.telestion.core.database.DataListener;
 import org.telestion.core.database.DataService;
@@ -19,9 +23,15 @@ public class RocketSound {
 	public static void main(String[] args) {
 		//For now use this approach please. I will add a deployment mechanism with a config later.
 		//Have a look at the MockRocketPublisher implementation to see how we use configurations.
-		var dataTypeMap = new HashMap<String, Class<?>>();
-		dataTypeMap.put("gpsposition", GpsData.class);
-		dataTypeMap.put("position", Position.class);
+
+		var dataTypes = List.of(
+				GpsData.class.getName(),
+				Position.class.getName(),
+				Amplitude.class.getName(),
+				Spectrum.class.getName(),
+				NineDofData.class.getName(),
+				BaroData.class.getName()
+		);
 
 		Launcher.start(
 				new MessageLogger(),
@@ -38,7 +48,7 @@ public class RocketSound {
 								Address.outgoing(MockRocketPublisher.class, "pub")
 						)),
 				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"),
-				new DataService(dataTypeMap, Collections.emptyMap()),
+				new DataService(dataTypes, Collections.emptyMap()),
 				new DataListener(
 						List.of(
 								Address.outgoing(MockRocketPublisher.class, "pub")
