@@ -192,8 +192,7 @@ public final class DataService extends AbstractVerticle {
 	 * @param dataOperation			Determines which manipulation should be applied.
 	 * @param resultHandler			Handles the request to the data operation verticle. Can be failed or succeeded.
 	*/
-	private void applyManipulation(DataOperation dataOperation,
-								   Handler<AsyncResult<JsonObject>> resultHandler) {
+	private void applyManipulation(DataOperation dataOperation, Handler<AsyncResult<JsonObject>> resultHandler) {
 		JsonObject result = new JsonObject();
 		vertx.eventBus().request(dataOperation.operationAddress(), dataOperation, reply -> {
 			if (reply.failed()) {

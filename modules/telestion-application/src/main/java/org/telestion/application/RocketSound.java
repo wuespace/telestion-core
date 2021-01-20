@@ -3,16 +3,15 @@ package org.telestion.application;
 import de.jvpichowski.rocketsound.MockRocketPublisher;
 import de.jvpichowski.rocketsound.messages.base.GpsData;
 import de.jvpichowski.rocketsound.messages.base.Position;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import org.telestion.core.connection.EventbusTcpBridge;
 import org.telestion.core.database.DataService;
 import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.launcher.Launcher;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 public class RocketSound {
 
