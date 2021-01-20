@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import org.telestion.core.connection.EventbusTcpBridge;
+import org.telestion.core.database.DataListener;
 import org.telestion.core.database.DataService;
 import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
@@ -24,7 +25,7 @@ public class RocketSound {
 
 		Launcher.start(
 				new MessageLogger(),
-				new MockRocketPublisher(Address.incoming(MongoDatabaseService.class, "save")),
+				new MockRocketPublisher(Address.outgoing(MockRocketPublisher.class, "pub")),
 				new EventbusTcpBridge(
 						"localhost", 9870,
 						List.of(
@@ -37,7 +38,12 @@ public class RocketSound {
 								Address.outgoing(MockRocketPublisher.class, "pub")
 						)),
 				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"),
-				new DataService(dataTypeMap, Collections.emptyMap())
+				new DataService(dataTypeMap, Collections.emptyMap()),
+				new DataListener(
+						List.of(
+								Address.outgoing(MockRocketPublisher.class, "pub")
+						)
+				)
 		);
 	}
 }

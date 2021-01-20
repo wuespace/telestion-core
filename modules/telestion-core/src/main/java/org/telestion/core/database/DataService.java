@@ -17,7 +17,6 @@ import org.telestion.core.message.DbRequest;
 /**
  * DataService is a verticle which is the interface to a underlying database implementation.
  * All data requests should come to the DataService and will be parsed and executed.
- * TODO: Save data with the DataService.  Right now the save command is handled by the db directly.
  * TODO: DataService listens for publishes of new data from UART / Mavlink / ...
  * TODO: DataOperations like Integrate, Differentiate, Offset, Sum, ...
  * TODO: Change dataTypeMap to Class.forName(...) and get the class name string from frontend.
@@ -73,20 +72,20 @@ public final class DataService extends AbstractVerticle {
 						request.fail(-1, res.cause().getMessage());
 						return;
 					}
-					logger.info(res.result().toString());
 					request.reply(res.result());
 				});
 			});
 		});
 		vertx.eventBus().consumer(inSave, document -> {
-			vertx.eventBus().request(dbSave, document, res -> {
-				if (res.failed()) {
-					logger.error(res.cause().getMessage());
-					document.fail(-1, res.cause().getMessage());
-					return;
-				}
-				logger.info(res.result().toString());
-				document.reply(res.result().body());
+			JsonMessage.on(JsonMessage.class, document, doc -> {
+				vertx.eventBus().request(dbSave, doc.json(), res -> {
+					if (res.failed()) {
+						logger.error(res.cause().getMessage());
+						document.fail(-1, res.cause().getMessage());
+						return;
+					}
+					document.reply(res.result().body());
+				});
 			});
 		});
 	}
@@ -145,8 +144,7 @@ public final class DataService extends AbstractVerticle {
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
 	 * @return the data service to chain operations.
 	 */
-	private DataService fetchLatestData(List<Class<?>> dataTypes,
-										Handler<AsyncResult<JsonArray>> resultHandler) {
+	private DataService fetchLatestData(List<Class<?>> dataTypes, Handler<AsyncResult<JsonArray>> resultHandler) {
 		JsonArray result = new JsonArray();
 		dataTypes.forEach(dataType -> {
 			DbRequest dbRequest = new DbRequest(dataType, new JsonObject());
