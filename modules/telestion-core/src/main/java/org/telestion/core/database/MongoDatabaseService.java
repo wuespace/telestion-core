@@ -5,6 +5,7 @@ import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -13,18 +14,14 @@ import org.telestion.core.message.Address;
 import org.telestion.core.message.DbRequest;
 import org.telestion.core.message.DbResponse;
 
-import java.util.List;
-
 /**
  * MongoDatabaseService is a verticle which connects to a local running MongoDB-Database and listens for incoming
  * database requests to process.
- *
- *  TODO: Each database implementation (currently only MongoDB) is written in its own DBClient,
- *  TODO: but listens to the same address for DBRequests. The address is the interface to the database implementation,
- *  TODO: so that the used DB can be replaced easily by spawning another DBClient.
- *
- *  Mongo specific:
- *  Data is always saved in their exclusive collection which is always named after their Class.name / MessageType.
+ * TODO: Each database implementation (currently only MongoDB) is written in its own DBClient,
+ * TODO: but listens to the same address for DBRequests. The address is the interface to the database implementation,
+ * TODO: so that the used DB can be replaced easily by spawning another DBClient.
+ * Mongo specific:
+ * Data is always saved in their exclusive collection which is always named after their Class.name / MessageType.
  */
 public final class MongoDatabaseService extends AbstractVerticle {
 	private final Logger logger = LoggerFactory.getLogger(MongoDatabaseService.class);
@@ -33,7 +30,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	private MongoClient client;
 
 	/**
-	 * MongoDB Eventbus Addresses
+	 * MongoDB Eventbus Addresses.
 	 */
 	private final String inSave = Address.incoming(MongoDatabaseService.class, "save");
 	private final String outSave = Address.outgoing(MongoDatabaseService.class, "save");
@@ -66,7 +63,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	}
 
 	/**
-	 * Function to register consumers to the eventbus.
+	 * Method to register consumers to the eventbus.
 	 */
 	private void registerConsumers() {
 		vertx.eventBus().consumer(inSave, document -> {
@@ -90,6 +87,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * Save the received document to the database.
 	 * If a MongoDB-ObjectId is specified data will be upserted, meaning if the id does not exist it will be inserted,
 	 * otherwise it will be updated. Else it will be inserted with a new id.
+	 *
 	 * @param document a JsonMessage validated through the JsonMessage.on method
 	 */
 	private void save(JsonMessage document) {
@@ -113,6 +111,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 
 	/**
 	 * Find the latest entry of the requested data type.
+	 *
 	 * @param request	DbRequest = { class of requested data type, query? }
 	 * @param handler	Result handler, can be failed or succeeded
 	 */

@@ -2,10 +2,10 @@ package org.telestion.core.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonObject;
-import java.util.Optional;
 import org.telestion.api.message.JsonMessage;
 
 /**
+ * Record to provide the structure of a database request.
  * @param dataType			class of the data type
  * @param query				MongoDb query looks like this: { key: value }
  *                          with key meaning the name of the field in the document.

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.*;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -13,12 +14,9 @@ import org.telestion.core.message.DataOperation;
 import org.telestion.core.message.DataRequest;
 import org.telestion.core.message.DbRequest;
 
-import java.util.*;
-
 /**
  * DataService is a verticle which is the interface to a underlying database implementation.
  * All data requests should come to the DataService and will be parsed and executed.
- *
  * TODO: Save data with the DataService.  Right now the save command is handled by the db directly.
  * TODO: DataService listens for publishes of new data from UART / Mavlink / ...
  * TODO: DataOperations like Integrate, Differentiate, Offset, Sum, ...
@@ -32,7 +30,7 @@ public final class DataService extends AbstractVerticle {
 
 	private final Logger logger = LoggerFactory.getLogger(DataService.class);
 	/**
-	 * DataService Eventbus Addresses
+	 * DataService Eventbus Addresses.
 	 */
 	private final String inSave = Address.incoming(DataService.class, "save");
 	private final String inFind = Address.incoming(DataService.class, "find");
@@ -64,7 +62,7 @@ public final class DataService extends AbstractVerticle {
 	}
 
 	/**
-	 * Function to register consumers to the eventbus.
+	 * Method to register consumers to the eventbus.
 	 */
 	private void registerConsumers() {
 		vertx.eventBus().consumer(inFind, request -> {
@@ -95,13 +93,16 @@ public final class DataService extends AbstractVerticle {
 
 	/**
 	 * Parse and dispatch incoming DataRequests.
+	 *
 	 * @param request			Determines which dataTypes should be retrieved and if an Operation should be executed.
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
 	 */
 	private void dataRequestDispatcher(DataRequest request, Handler<AsyncResult<JsonObject>> resultHandler) {
 		var dataTypes = new ArrayList<Class<?>>();
 		request.classNames().forEach(clazz -> {
-			if (config.dataTypeMap.get(clazz) != null)	dataTypes.add(config.dataTypeMap.get(clazz));
+			if (config.dataTypeMap.get(clazz) != null) {
+				dataTypes.add(config.dataTypeMap.get(clazz));
+			}
 		});
 		if (dataTypes.size() == 1) {
 			if (!request.operation().equals("")) {
@@ -139,6 +140,7 @@ public final class DataService extends AbstractVerticle {
 
 	/**
 	 * Method to fetch the latest data of a specified data types.
+	 *
 	 * @param dataTypes			Determines which data types should be fetched.
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
 	 * @return the data service to chain operations.
@@ -164,6 +166,7 @@ public final class DataService extends AbstractVerticle {
 
 	/**
 	 * Method to fetch the latest data of a specified data type.
+	 *
 	 * @param dataType			Determines which data type should be fetched.
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
 	 * @return the data service to chain operations.
@@ -184,7 +187,8 @@ public final class DataService extends AbstractVerticle {
 	}
 
 	/**
-	 * Apply data operation to fetched data
+	 * Apply data operation to fetched data.
+	 *
 	 * @param dataOperation			Determines which manipulation should be applied.
 	 * @param resultHandler			Handles the request to the data operation verticle. Can be failed or succeeded.
 	*/

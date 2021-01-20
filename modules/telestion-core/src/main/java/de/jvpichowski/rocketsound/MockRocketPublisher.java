@@ -28,8 +28,10 @@ public final class MockRocketPublisher extends AbstractVerticle {
 
 		vertx.setPeriodic(Duration.ofSeconds(1).toMillis(), h -> {
 			vertx.eventBus().publish(config.address, new Amplitude(3.7).json());
-			vertx.eventBus().publish(config.address, new Spectrum(2.7, 1004.3, new double[]{2.6, 0.0, 3.5, 100, 980.5}).json());
-			vertx.eventBus().publish(config.address, new GpsData(3, 7, 4343345.0, -376.322, 42134894).json());
+			vertx.eventBus().publish(config.address,
+					new Spectrum(2.7, 1004.3, new double[]{2.6, 0.0, 3.5, 100, 980.5}).json());
+			vertx.eventBus().publish(config.address,
+					new GpsData(3, 7, 4343345.0, -376.322, 42134894).json());
 			vertx.eventBus().publish(config.address, new NineDofData(
 					new Accelerometer(0.47, 3.5, 1.0),
 					new Gyroscope(0.3, -7.2, -0.1),
