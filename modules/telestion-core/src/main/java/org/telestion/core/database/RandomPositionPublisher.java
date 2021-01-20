@@ -1,6 +1,6 @@
 package org.telestion.core.database;
 
-import de.jvpichowski.rocketsound.messages.Position;
+import de.jvpichowski.rocketsound.messages.base.Position;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import java.time.Duration;

@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
 
 /**
@@ -15,6 +16,8 @@ import org.telestion.core.message.Address;
 public final class RandomPositionPublisher extends AbstractVerticle {
 	private static final Logger logger = LoggerFactory.getLogger(RandomPositionPublisher.class);
 	private final Random rand = new Random(555326456);
+
+	private final String dbSave = Address.incoming(MongoDatabaseService.class, "save");
 
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -30,7 +33,7 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 		var y = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("y", 21.0836);
 		var z = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("z", 0.0);
 
-		final Position pos = new Position(x, y, z);
+		final de.jvpichowski.rocketsound.messages.base.Position pos = new de.jvpichowski.rocketsound.messages.base.Position(x, y, z);
 
 		x += rand.nextDouble() * 0.02;
 		y += rand.nextDouble() * 0.02;
@@ -40,6 +43,7 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 		vertx.sharedData().getLocalMap("randPos").put("z", z);
 
 		vertx.eventBus().publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos.json());
+		vertx.eventBus().publish(dbSave, pos.json());
 		logger.debug("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
 	}
 }

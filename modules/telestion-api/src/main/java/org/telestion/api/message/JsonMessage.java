@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.json.jackson.JacksonCodec;
 import io.vertx.core.spi.json.JsonCodec;
 
 /**
@@ -16,7 +17,7 @@ import io.vertx.core.spi.json.JsonCodec;
  */
 @SuppressWarnings("preview")
 public interface JsonMessage {
-
+	static JsonCodec JSON_CODEC = new JacksonCodec();
 	/**
 	 * This method decodes a {@link JsonMessage} from the event bus.<br>
 	 * Returns whether decoding was successful or not.
@@ -82,7 +83,7 @@ public interface JsonMessage {
 	 * @return decoded message object
 	 */
 	static <T extends JsonMessage> T from(String json, Class<T> type) {
-		return JsonCodec.INSTANCE.fromString(json, type);
+		return JSON_CODEC.fromString(json, type);
 	}
 
 	/**
@@ -94,7 +95,7 @@ public interface JsonMessage {
 	 * @return decoded message object
 	 */
 	static <T extends JsonMessage> T from(Object json, Class<T> type) {
-		return JsonCodec.INSTANCE.fromString((String) json, type);
+		return JSON_CODEC.fromString((String) json, type);
 	}
 
 	/**

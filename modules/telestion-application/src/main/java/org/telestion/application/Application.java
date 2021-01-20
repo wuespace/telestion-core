@@ -2,6 +2,8 @@ package org.telestion.application;
 
 import java.util.Collections;
 import org.telestion.core.connection.EventbusTcpBridge;
+import org.telestion.core.database.DataService;
+import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.core.web.WebServer;
@@ -24,9 +26,12 @@ public class Application {
 	 */
 	public static void main(String[] args) {
 		Launcher.start(new MessageLogger(), new RandomPositionPublisher(),
-				new EventbusTcpBridge("localhost", 9870, Collections.emptyList(),
+				new EventbusTcpBridge("localhost", 9870,
+						Collections.singletonList(Address.incoming(DataService.class, "find")),
 						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
-				new WebServer(8080));
+				new WebServer(8080),
+				new DataService(),
+				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"));
 	}
 
 }
