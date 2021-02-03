@@ -45,7 +45,8 @@ public class RocketSound {
 								Address.incoming(DataService.class, "find")
 						),
 						List.of(
-								Address.outgoing(MockRocketPublisher.class, "pub")
+								Address.outgoing(MockRocketPublisher.class, "pub"),
+								Address.outgoing(MongoDatabaseService.class, "save")
 						)),
 				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"),
 				new DataService(dataTypes, Collections.emptyMap()),
