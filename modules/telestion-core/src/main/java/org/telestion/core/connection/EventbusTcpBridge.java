@@ -48,6 +48,21 @@ import org.telestion.core.config.Config;
  * }
  * </pre>
  * </p>
+ * <p>
+ * To support that the one can send data type specific data on the outbound address vertx supports regex.
+ * You can add a regex to <code>new PermittedOptions()</code>.
+ * </p>
+ * <p>
+ * An example looks like this:
+ *
+ * <pre>
+ * {@code
+ * 	SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions()
+ * 	.addOutboundPermitted(new PermittedOptions().setAddressRegex("(<Address>)(\/(\S+))?"));
+ * }
+ * </pre>
+ * Which results in permission granted to all messages to the given address optionally suffixed with e.g. "/<className>.
+ * </p>
  *
  * @see <a href="../../../../../../../README.md">README.md</a> for more information
  */
