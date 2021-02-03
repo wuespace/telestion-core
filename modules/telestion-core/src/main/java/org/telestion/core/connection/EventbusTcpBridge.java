@@ -104,7 +104,9 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 		inboundPermitted
 				.forEach(addr -> sockJsBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
 		outboundPermitted
-				.forEach(addr -> sockJsBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
+				.forEach(addr -> sockJsBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddressRegex(
+						"(" + addr + ")(\\/(\\S+))?"
+				)));
 
 		SockJSHandler sockJsHandler = SockJSHandler.create(vertx);
 		return sockJsHandler.bridge(sockJsBridgeOptions);
