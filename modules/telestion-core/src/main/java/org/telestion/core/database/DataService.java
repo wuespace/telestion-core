@@ -2,7 +2,6 @@ package org.telestion.core.database;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.*;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import java.util.*;
 import org.slf4j.Logger;
