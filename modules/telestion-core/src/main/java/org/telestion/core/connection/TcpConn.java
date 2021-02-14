@@ -161,7 +161,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * A chunk of data which is transmitted with the {@link TcpConn}.
 	 *
 	 * @param participant the participant of the tcp connection which has send this chunk of data or should receive it
-	 * @param datathe     actual data
+	 * @param data the     actual data
 	 */
 	@SuppressWarnings("preview")
 	public static record Data(@JsonProperty Participant participant, @JsonProperty byte[] data) implements JsonMessage {
@@ -179,7 +179,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param port its port
 	 */
 	@SuppressWarnings("preview")
-	public static record Participant(@JsonProperty String host, @JsonProperty int port) implements JsonMessage {
+	public static record Participant(@JsonProperty String host, @JsonProperty int port) implements ConnectionDetails {
 
 		@SuppressWarnings("unused")
 		private Participant() {
