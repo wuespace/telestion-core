@@ -18,9 +18,7 @@ import io.vertx.core.spi.json.JsonCodec;
  */
 @SuppressWarnings("preview")
 public interface JsonMessage {
-
 	static JsonCodec JSON_CODEC = new JacksonCodec();
-
 	/**
 	 * This method decodes a {@link JsonMessage} from the event bus.<br>
 	 * Returns whether decoding was successful or not.

@@ -1,4 +1,4 @@
-package org.telestion.example;
+package org.telestion.core.database;
 
 import de.jvpichowski.rocketsound.messages.base.Position;
 import io.vertx.core.AbstractVerticle;
@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
 
 /**
@@ -18,7 +17,7 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 	private static final Logger logger = LoggerFactory.getLogger(RandomPositionPublisher.class);
 	private final Random rand = new Random(555326456);
 
-	private final String dbSave = Address.incoming(MongoDatabaseService.class, "save");
+	private final String inSave = Address.incoming(DataService.class, "save");
 
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -44,7 +43,8 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 		vertx.sharedData().getLocalMap("randPos").put("z", z);
 
 		vertx.eventBus().publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos.json());
-		vertx.eventBus().publish(dbSave, pos.json());
+		vertx.eventBus().publish(inSave, pos.json());
 		logger.debug("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
 	}
 }
+
