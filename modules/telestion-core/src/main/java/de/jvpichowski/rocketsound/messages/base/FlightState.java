@@ -6,7 +6,7 @@ import org.telestion.api.message.JsonMessage;
 public record FlightState(@JsonProperty int state, @JsonProperty String name) implements JsonMessage {
 
 	@SuppressWarnings("unused")
-	public FlightState(){
+	public FlightState() {
 		this(0, null);
 	}
 
