@@ -24,12 +24,12 @@ publishing {
         }
     }
     publications {
-        maven(MavenPublication) {
+        gpr(MavenPublication) {
             groupId = 'org.telestion'
             artifactId = 'api'
             //version = '1.1'
 
-            //from components.java
+            from components.java
         }
     }
 }
