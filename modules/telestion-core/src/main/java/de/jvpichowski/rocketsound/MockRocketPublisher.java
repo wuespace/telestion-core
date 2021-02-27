@@ -7,12 +7,15 @@ import de.jvpichowski.rocketsound.messages.sound.Spectrum;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import java.time.Duration;
+import java.util.Random;
+
 import org.telestion.core.config.Config;
 
 public final class MockRocketPublisher extends AbstractVerticle {
 
 	private final Configuration forcedConfig;
 	private Configuration config;
+	private final Random rand = new Random(678678323);
 
 	public MockRocketPublisher() {
 		forcedConfig = null;
@@ -26,8 +29,9 @@ public final class MockRocketPublisher extends AbstractVerticle {
 	public void start(Promise<Void> startPromise) throws Exception {
 		config = Config.get(forcedConfig, config(), Configuration.class);
 
-		vertx.setPeriodic(Duration.ofSeconds(1).toMillis(), h -> {
-			vertx.eventBus().publish(config.address, new Amplitude(3.7).json());
+		vertx.setPeriodic(Duration.ofMillis(100).toMillis(), h -> {
+			var randAmplitude = rand.nextDouble() * (rand.nextDouble() * 3.0) * 20;
+			vertx.eventBus().publish(config.address, new Amplitude(randAmplitude).json());
 			vertx.eventBus().publish(config.address,
 					new Spectrum(2.7, 1004.3, new double[]{2.6, 0.0, 3.5, 100, 980.5}).json());
 			vertx.eventBus().publish(config.address,
