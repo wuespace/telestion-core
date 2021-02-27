@@ -9,7 +9,9 @@ allprojects {
 }
 
 subprojects {
-    version = gitVersion()
+    def details = versionDetails()
+    version = details.lastTag + (details.commitDistance.toString() != '0' ? ('-' + details.commitDistance) : '')
+    //version = gitVersion()
     group 'org.telestion'
 
     tasks.withType(JavaExec) {
