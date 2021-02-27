@@ -1,6 +1,6 @@
 # Telestion
 
-Telestion is a ground station software developed by the TelestionTeam for [WüSpace projects](https://www.wuespace.de/).
+Telestion is a ground station software developed by the TelestionTeam for [WüSpace](https://www.wuespace.de/) projects.
 We support space related projects by providing a generic ground station for commanding the projects and managing collected 
 data. We help the teams during the whole project cycle starting at the development, continuing with a successful launch 
 and ending with recovery and post flight analysis.
