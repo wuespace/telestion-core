@@ -11,6 +11,6 @@ jobs:
         with:
           java-version: 14
       - name: Publish api package
-        run: chmod +x gradlew && ./gradlew publish
+        run: git status && chmod +x gradlew && ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
