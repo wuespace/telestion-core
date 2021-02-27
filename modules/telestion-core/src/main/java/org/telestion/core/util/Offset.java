@@ -26,8 +26,8 @@ public final class Offset extends AbstractVerticle {
 
 	private void registerConsumers() {
 		vertx.eventBus().consumer(inOffset, request -> {
-			JsonMessage.on(DataOperation.class, request, dOp -> {
-				this.calculateOffset(dOp, res -> {
+			JsonMessage.on(DataOperation.class, request, dataOperation -> {
+				this.calculateOffset(dataOperation, res -> {
 					if (res.failed()) {
 						request.fail(-1, res.cause().getMessage());
 					} else {
@@ -38,7 +38,7 @@ public final class Offset extends AbstractVerticle {
 		});
 	}
 
-	private void calculateOffset(DataOperation dOp, Handler<AsyncResult<JsonObject>> handler) {
+	private void calculateOffset(DataOperation dataOperation, Handler<AsyncResult<JsonObject>> handler) {
 		// TODO: parse data of dOp to numeric value
 		// TODO: parse offset of dOp to numeric value
 		// TODO: add offset to data and return

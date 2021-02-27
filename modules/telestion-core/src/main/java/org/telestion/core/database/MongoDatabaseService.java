@@ -5,8 +5,6 @@ import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
-
-import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +88,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * If a MongoDB-ObjectId is specified data will be upserted, meaning if the id does not exist it will be inserted,
 	 * otherwise it will be updated. Else it will be inserted with a new id.
 	 * If the save was successful the database looks for the newly saved document and publishes it to the database
-	 * outgoing address concatenated with "/<Class>.name". With this behaviour clients (e.g. Frontend) can listen
+	 * outgoing address concatenated with "/Class.name". With this behaviour clients (e.g. Frontend) can listen
 	 * to the outgoing address of a specific data value and will always be provided with the most recent data.
 	 *
 	 * @param document a JsonMessage validated through the JsonMessage.on method

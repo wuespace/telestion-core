@@ -2,9 +2,9 @@ package org.telestion.core.database;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Promise;
 import java.util.Collections;
 import java.util.List;
-import io.vertx.core.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
@@ -19,7 +19,9 @@ public final class DataListener extends AbstractVerticle {
 
 	private final String save = Address.incoming(DataService.class, "save");
 
-	public DataListener() { this.forcedConfig = null; }
+	public DataListener() {
+		this.forcedConfig = null;
+	}
 
 	public DataListener(List<String> listeningAddresses) {
 		this.forcedConfig = new Configuration(listeningAddresses);
@@ -43,6 +45,8 @@ public final class DataListener extends AbstractVerticle {
 	}
 
 	private static record Configuration(@JsonProperty List<String> listeningAddresses) {
-		private Configuration() { this(Collections.emptyList()); }
+		private Configuration() {
+			this(Collections.emptyList());
+		}
 	}
 }

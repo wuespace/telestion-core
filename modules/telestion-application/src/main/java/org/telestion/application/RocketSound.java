@@ -6,10 +6,9 @@ import de.jvpichowski.rocketsound.messages.base.NineDofData;
 import de.jvpichowski.rocketsound.messages.sound.Amplitude;
 import de.jvpichowski.rocketsound.messages.base.GpsData;
 import de.jvpichowski.rocketsound.messages.base.Position;
+import de.jvpichowski.rocketsound.messages.sound.Spectrum;
 import java.util.Collections;
 import java.util.List;
-
-import de.jvpichowski.rocketsound.messages.sound.Spectrum;
 import org.telestion.core.connection.EventbusTcpBridge;
 import org.telestion.core.database.DataListener;
 import org.telestion.core.database.DataService;

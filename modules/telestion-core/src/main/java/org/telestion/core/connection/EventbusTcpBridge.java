@@ -61,7 +61,7 @@ import org.telestion.core.config.Config;
  * 	.addOutboundPermitted(new PermittedOptions().setAddressRegex("(<Address>)(\/(\S+))?"));
  * }
  * </pre>
- * Which results in permission granted to all messages to the given address optionally suffixed with e.g. "/<className>.
+ * Which results in permission granted to all messages to the given address optionally suffixed with e.g. "/className.
  * </p>
  *
  * @see <a href="../../../../../../../README.md">README.md</a> for more information

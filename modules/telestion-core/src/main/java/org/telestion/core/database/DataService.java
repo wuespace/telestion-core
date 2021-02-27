@@ -106,15 +106,15 @@ public final class DataService extends AbstractVerticle {
 					resultHandler.handle(Future.succeededFuture(res.result()));
 				});
 			} else {
-				var dOp = new DataOperation(new JsonObject(), request.operationParams());
+				var dataOperation = new DataOperation(new JsonObject(), request.operationParams());
 				this.fetchLatestData(dataType, request.query(), res -> {
 					if (res.failed()) {
 						resultHandler.handle(Future.failedFuture(res.cause().getMessage()));
 						return;
 					}
-					dOp.data().put("data", res.result());
+					dataOperation.data().put("data", res.result());
 				});
-				this.applyManipulation(request.operation(), dOp, resultHandler);
+				this.applyManipulation(request.operation(), dataOperation, resultHandler);
 			}
 		} catch (ClassNotFoundException e) {
 			logger.error("ClassNotFoundException: {}", e.getMessage());
@@ -128,7 +128,9 @@ public final class DataService extends AbstractVerticle {
 	 * @param message			Object to send to the desired verticle.
 	 * @param resultHandler		Handles the result of the requested operation.
 	 */
-	private void requestResultHandler(String address, JsonMessage message, Handler<AsyncResult<JsonObject>> resultHandler) {
+	private void requestResultHandler(String address,
+									  JsonMessage message,
+									  Handler<AsyncResult<JsonObject>> resultHandler) {
 		JsonObject result = new JsonObject();
 		vertx.eventBus().request(address, message, reply -> {
 			if (reply.failed()) {
