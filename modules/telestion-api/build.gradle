@@ -25,7 +25,7 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            groupId = 'de.wuespace.telestion'
+            groupId = 'io.github.telestionteam'
             artifactId = 'telestion-api'
             //version = '1.1'
 
