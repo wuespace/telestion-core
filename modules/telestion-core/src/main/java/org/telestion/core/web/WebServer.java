@@ -8,7 +8,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 
 /**
  * A simple WebServer which publishes the index page.
@@ -18,7 +18,7 @@ import org.telestion.core.config.Config;
 public final class WebServer extends AbstractVerticle {
 
 	private Configuration forcedConfig;
-	
+
 	/**
  	 * Creating a WebServer on the specified port.
 	 *

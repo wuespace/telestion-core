@@ -8,7 +8,7 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 import org.telestion.core.message.Address;
 import org.telestion.core.message.DataOperation;
 import org.telestion.core.message.DataRequest;

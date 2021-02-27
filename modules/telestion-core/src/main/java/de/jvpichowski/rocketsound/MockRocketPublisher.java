@@ -7,7 +7,7 @@ import de.jvpichowski.rocketsound.messages.sound.Spectrum;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import java.time.Duration;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 
 public final class MockRocketPublisher extends AbstractVerticle {
 
