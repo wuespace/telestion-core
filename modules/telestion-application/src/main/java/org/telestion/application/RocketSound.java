@@ -11,7 +11,7 @@ import org.telestion.core.database.DataService;
 import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
-import org.telestion.launcher.Launcher;
+//import org.telestion.launcher.Launcher;
 
 public class RocketSound {
 
