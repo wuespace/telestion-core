@@ -1,6 +1,30 @@
 plugins {
     id 'java'
     id 'application'
+    id 'maven-publish'
+}
+
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/TelestionTeam/telestion"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = 'io.github.telestionteam'
+            artifactId = 'telestion-app'
+            //version = '1.1'
+
+            from components.java
+        }
+    }
 }
 
 application {
