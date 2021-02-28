@@ -12,3 +12,11 @@ The modular system is extended for the requirements of the experiments (e.g.
 
 The frontend for visualising the data and commanding the experiment is located in the 
 [client repository](https://github.com/TelestionTeam/telestion-client).
+
+## Contributors
+
+Thank you to all contributors of this repository:
+
+[![Contributors](https://contrib.rocks/image?repo=TelestionTeam/telestion)](https://github.com/TelestionTeam/telestion/graphs/contributors)
+
+Made with [contributors-img](https://contrib.rocks).
