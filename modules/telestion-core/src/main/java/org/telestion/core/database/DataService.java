@@ -46,8 +46,8 @@ public final class DataService extends AbstractVerticle {
 	 * @param dataTypes				List of all full class names of the data types
 	 * @param dataOperationMap		Map of String->DataOperation for incoming dataRequests
 	 */
-	public DataService(List<String> dataTypes, Map<String, DataOperation> dataOperationMap) {
-		this.forcedConfig = new Configuration(dataTypes, dataOperationMap);
+	public DataService(Map<String, DataOperation> dataOperationMap) {
+		this.forcedConfig = new Configuration(dataOperationMap);
 	}
 
 	@Override
@@ -128,9 +128,8 @@ public final class DataService extends AbstractVerticle {
 	 * @param message			Object to send to the desired verticle.
 	 * @param resultHandler		Handles the result of the requested operation.
 	 */
-	private void requestResultHandler(String address,
-									  JsonMessage message,
-									  Handler<AsyncResult<JsonObject>> resultHandler) {
+	private void requestResultHandler(
+			String address, JsonMessage message, Handler<AsyncResult<JsonObject>> resultHandler) {
 		JsonObject result = new JsonObject();
 		vertx.eventBus().request(address, message, reply -> {
 			if (reply.failed()) {
@@ -168,11 +167,10 @@ public final class DataService extends AbstractVerticle {
 	}
 
 	private static record Configuration(
-			@JsonProperty List<String> dataTypes,
 			@JsonProperty Map<String, DataOperation> dataOperationMap
 	) {
 		private Configuration() {
-			this(Collections.emptyList(), Collections.emptyMap());
+			this(Collections.emptyMap());
 		}
 	}
 }

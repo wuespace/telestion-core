@@ -23,15 +23,6 @@ public class RocketSound {
 		//For now use this approach please. I will add a deployment mechanism with a config later.
 		//Have a look at the MockRocketPublisher implementation to see how we use configurations.
 
-		var dataTypes = List.of(
-				GpsData.class.getName(),
-				Position.class.getName(),
-				Amplitude.class.getName(),
-				Spectrum.class.getName(),
-				NineDofData.class.getName(),
-				BaroData.class.getName()
-		);
-
 		Launcher.start(
 				new MessageLogger(),
 				new MockRocketPublisher(Address.outgoing(MockRocketPublisher.class, "pub")),
@@ -48,7 +39,7 @@ public class RocketSound {
 								Address.outgoing(MongoDatabaseService.class, "save")
 						)),
 				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"),
-				new DataService(dataTypes, Collections.emptyMap()),
+				new DataService(Collections.emptyMap()),
 				new DataListener(
 						List.of(
 								Address.outgoing(MockRocketPublisher.class, "pub")
