@@ -1,7 +1,8 @@
-package org.telestion.protocol.old_mavlink.annotation;
+package org.telestion.protocol.mavlink.annotation;
+
+import org.telestion.protocol.mavlink.message.MavlinkMessage;
 
 import java.lang.annotation.*;
-import org.telestion.protocol.old_mavlink.message.MavlinkMessage;
 
 /**
  * An {@link Annotation} giving more information about a MAVLink-Message-Field.
@@ -18,7 +19,7 @@ public @interface MavField {
 	 *
 	 * @return {@link NativeType} of the field
 	 */
-	public NativeType nativeType();
+	NativeType nativeType();
 
 	/**
 	 * Returns the position of a MAVLink-Field in the raw array if the raw packet is not arranged according to the
@@ -27,12 +28,12 @@ public @interface MavField {
 	 *
 	 * @return position of the field in the raw array
 	 */
-	public int position() default -1;
+	int position() default -1;
 
 	/**
 	 * Returns whether a field is an extension or not.
 	 *
 	 * @return if a field is an extension
 	 */
-	public boolean extension() default false;
+	boolean extension() default false;
 }

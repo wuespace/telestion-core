@@ -1,8 +1,9 @@
-package org.telestion.protocol.old_mavlink.security;
+package org.telestion.protocol.mavlink.security;
 
-import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 
 /**
  * A {@link SecretKeySafe} for the MAVLink-Signature-Keys. To ensure security the key will be stored in a final byte

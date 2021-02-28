@@ -1,4 +1,4 @@
-package org.telestion.protocol.mavlink.message.internal;
+package org.telestion.protocol.mavlink.message;
 
 public record Mavlink1Information(int seq,
 								  int sysId,

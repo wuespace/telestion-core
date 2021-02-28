@@ -1,4 +1,4 @@
-package org.telestion.protocol.old_mavlink.security;
+package org.telestion.protocol.mavlink.security;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;

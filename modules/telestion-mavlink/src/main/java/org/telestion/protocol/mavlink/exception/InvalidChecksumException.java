@@ -1,4 +1,4 @@
-package org.telestion.protocol.old_mavlink.exception;
+package org.telestion.protocol.mavlink.exception;
 
 /**
  * A custom implementation of the {@link RuntimeException}.<br>

@@ -1,11 +1,11 @@
-package org.telestion.protocol.old_mavlink.message;
+package org.telestion.protocol.mavlink.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import org.telestion.api.message.JsonMessage;
-import org.telestion.protocol.old_mavlink.annotation.MavInfo;
-import org.telestion.protocol.old_mavlink.exception.AnnotationMissingException;
-import org.telestion.protocol.old_mavlink.security.X25Checksum;
+import org.telestion.protocol.mavlink.annotation.MavInfo;
+import org.telestion.protocol.mavlink.exception.AnnotationMissingException;
+import org.telestion.protocol.mavlink.security.X25Checksum;
 
 /**
  * Superclass for all MavlinkMessages.<br>

@@ -1,4 +1,4 @@
-package org.telestion.protocol.old_mavlink.annotation;
+package org.telestion.protocol.mavlink.annotation;
 
 /**
  * Defines all native Types of MAVLink which are supported by this Adapter.
@@ -69,7 +69,7 @@ public enum NativeType {
 	 * @param size     in memory of the new {@link NativeType}
 	 * @param unsigned indicates whether a {@link NativeType} is unsigned or not
 	 */
-	private NativeType(int size, boolean unsigned) {
+	NativeType(int size, boolean unsigned) {
 		this.size = size;
 		this.unsigned = unsigned;
 	}

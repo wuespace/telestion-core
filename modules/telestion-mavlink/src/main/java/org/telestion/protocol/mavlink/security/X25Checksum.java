@@ -1,4 +1,4 @@
-package org.telestion.protocol.old_mavlink.security;
+package org.telestion.protocol.mavlink.security;
 
 /**
  * This class is handling the creation of the X.25 (CRC-16-CCITT) custom checksum for MAVLink.<br>
