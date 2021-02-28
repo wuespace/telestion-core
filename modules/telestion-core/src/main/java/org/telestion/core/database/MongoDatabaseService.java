@@ -9,10 +9,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.DbRequest;
-import org.telestion.core.message.DbResponse;
 
 /**
  * MongoDatabaseService is a verticle which connects to a local running MongoDB-Database and listens for incoming
