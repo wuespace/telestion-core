@@ -1,12 +1,6 @@
 package org.telestion.application;
 
 import de.jvpichowski.rocketsound.MockRocketPublisher;
-import de.jvpichowski.rocketsound.messages.base.BaroData;
-import de.jvpichowski.rocketsound.messages.base.NineDofData;
-import de.jvpichowski.rocketsound.messages.sound.Amplitude;
-import de.jvpichowski.rocketsound.messages.base.GpsData;
-import de.jvpichowski.rocketsound.messages.base.Position;
-import de.jvpichowski.rocketsound.messages.sound.Spectrum;
 import java.util.Collections;
 import java.util.List;
 import org.telestion.core.connection.EventbusTcpBridge;
