@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+application {
+    mainClassName = 'org.telestion.tools.serialclient.Main'
+}
+
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':modules:telestion-application')
+    implementation project(':modules:telestion-core')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+distZip {
+    into(project.name+"-"+project.version) {
+        from '.'
+        include 'conf/*'
+    }
+}
