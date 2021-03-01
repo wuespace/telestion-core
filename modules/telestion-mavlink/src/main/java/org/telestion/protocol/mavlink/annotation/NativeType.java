@@ -10,48 +10,49 @@ public enum NativeType {
 	/**
 	 * Representation of the int8_t type for MAVLink.
 	 */
-	INT_8(1, false),
+	INT_8(1, false, byte.class),
 	/**
 	 * Representation of the uint8_t type for MAVLink.
 	 */
-	UINT_8(1, true),
+	UINT_8(1, true, short.class),
 	/**
 	 * Representation of the int16_t type for MAVLink.
 	 */
-	INT_16(2, false),
+	INT_16(2, false, short.class),
 	/**
 	 * Representation of the uint16_t type for MAVLink.
 	 */
-	UINT_16(2, true),
+	UINT_16(2, true, int.class),
 	/**
 	 * Representation of the int32_t type for MAVLink.
 	 */
-	INT_32(4, false),
+	INT_32(4, false, int.class),
 	/**
 	 * Representation of the uint32_t type for MAVLink.
 	 */
-	UINT_32(4, true),
+	UINT_32(4, true, long.class),
 	/**
 	 * Representation of the int64_t type for MAVLink.
 	 */
-	INT_64(8, false),
+	INT_64(8, false, long.class),
 	/**
-	 * Representation of the uint64_t type for MAVLink.
+	 * Representation of the uint64_t type for MAVLink.<br>
+	 * As the Java-Long type has a max. limit of {@value Long#MAX_VALUE} this might be exceeded!
 	 */
-	UINT_64(8, true),
+	UINT_64(8, true, long.class),
 	/**
 	 * Representation of the float type for MAVLink.
 	 */
-	FLOAT(4, false),
+	FLOAT(4, false, float.class),
 	/**
 	 * Representation of the double type for MAVLink.
 	 */
-	DOUBLE(8, false),
+	DOUBLE(8, false, double.class),
 	/**
 	 * Representation of the char type for MAVLink.<br>
 	 * Basically {@link #UINT_8} but a parser can use this type to create Strings more conveniently.
 	 */
-	CHAR(1, true);
+	CHAR(1, true, char.class);
 
 	/**
 	 * Size in memory of a {@link NativeType}.
@@ -63,14 +64,25 @@ public enum NativeType {
 	public final boolean unsigned;
 
 	/**
+	 * Shows the recommended java datatype for this {@link NativeType}. This is a recommendation and might not the only
+	 * working type however that is the type the default parsers of the
+	 * {@link org.telestion.protocol.mavlink.PayloadParser PayloadParser} will try to convert to. Usually it is also
+	 * the smallest possible datatype to represent the given data.
+	 */
+	public final Class<?> javaType;
+
+	/**
 	 * Creating a new {@link NativeType}.<br>
 	 * This can only be created by the enum-fields.
 	 *
-	 * @param size     in memory of the new {@link NativeType}
-	 * @param unsigned indicates whether a {@link NativeType} is unsigned or not
+	 * @param size     in memory of the new {@link NativeType} [{@link #size}]
+	 * @param unsigned indicates whether a {@link NativeType} is unsigned or not [{@link #unsigned}]
+	 * @param javaType Java-datatype in which this {@link NativeType} is best represented (recommended to use)
+	 *                    [{@link #javaType}]
 	 */
-	NativeType(int size, boolean unsigned) {
+	NativeType(int size, boolean unsigned, Class<?> javaType) {
 		this.size = size;
 		this.unsigned = unsigned;
+		this.javaType = javaType;
 	}
 }

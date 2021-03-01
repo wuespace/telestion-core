@@ -54,4 +54,18 @@ public final class X25Checksum {
 		}
 		return currentCrc & 0xffff;
 	}
+
+	/**
+	 * Calculates the CRC X.25-checksum for a given payload array and the right crc-extra extra byte.<br>
+	 *
+	 * @param payload data to calculate the checksum for
+	 * @param crc crc-byte which must be added
+	 * @return checksum for the payload
+	 */
+	public static int calculate(byte[] payload, int crc) {
+		var buffer = new byte[payload.length + 1];
+		System.arraycopy(payload, 0, buffer, 0, payload.length);
+		buffer[payload.length] = (byte) crc;
+		return calculate(buffer);
+	}
 }

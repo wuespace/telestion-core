@@ -1,5 +1,7 @@
 package org.telestion.protocol.mavlink.message;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @param incompatFlags
@@ -11,9 +13,13 @@ package org.telestion.protocol.mavlink.message;
  * @author Cedric Boes
  * @version 1.0
  */
-public record Mavlink2Information(int incompatFlags,
-								  int compatFlags,
-								  int seqNum,
-								  int sysId,
-								  int compId) implements PacketInformation {
+public record Mavlink2Information(@JsonProperty int incompatFlags,
+								  @JsonProperty int compatFlags,
+								  @JsonProperty int seqNum,
+								  @JsonProperty int sysId,
+								  @JsonProperty int compId) implements PacketInformation {
+	@SuppressWarnings("unused")
+	private Mavlink2Information() {
+		this(0, 0, 0, 0, 0);
+	}
 }

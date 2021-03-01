@@ -1,5 +1,7 @@
 package org.telestion.protocol.mavlink.message;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This will be published on the bus, if the {@link org.telestion.protocol.mavlink.Validator Validator} detects
  * that a packet was a MAVLink-packet.<br>
@@ -12,6 +14,10 @@ package org.telestion.protocol.mavlink.message;
  * @version 1.0
  * @see org.telestion.protocol.mavlink.Validator
  */
-public record RawMavlinkPacket(byte[] raw,
-							   boolean success) {
+public record RawMavlinkPacket(@JsonProperty byte[] raw,
+							   @JsonProperty boolean success) {
+	@SuppressWarnings("unused")
+	private RawMavlinkPacket() {
+		this(null, false);
+	}
 }

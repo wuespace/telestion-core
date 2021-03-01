@@ -13,13 +13,13 @@ import io.vertx.core.eventbus.Message;
 public abstract class Validator extends AbstractVerticle {
 
 	@Override
-	public void start(Promise<Void> startPromise) throws Exception {
+	public void start(Promise<Void> startPromise) {
 		vertx.eventBus().consumer(getInAddress(), this::handleMessage);
 		startPromise.complete();
 	}
 
 	@Override
-	public void stop(Promise<Void> stopPromise) throws Exception {
+	public void stop(Promise<Void> stopPromise) {
 		stopPromise.complete();
 	}
 
@@ -61,27 +61,6 @@ public abstract class Validator extends AbstractVerticle {
 	 */
 	public String getParserInAddress() {
 		return parserInAddress;
-	}
-
-	/**
-	 * Config-Class which can be used to create a new {@link Validator}.
-	 *
-	 * @param inAddress {@link #inAddress}
-	 * @param packetOutAddress {@link #packetOutAddress}
-	 * @param parserInAddress {@link #parserInAddress}
-	 */
-	public final record Config(String inAddress,
-							   String packetOutAddress,
-							   String parserInAddress) {
-	}
-
-	/**
-	 * Creates a new {@link Validator} with the given {@link Config}.
-	 *
-	 * @param config {@link Config}
-	 */
-	public Validator(Config config) {
-		this(config.parserInAddress, config.inAddress, config.packetOutAddress);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package org.telestion.protocol.mavlink;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.eventbus.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import org.telestion.protocol.mavlink.dummy.NetPacket;
 import org.telestion.protocol.mavlink.message.Mavlink1Information;
 import org.telestion.protocol.mavlink.message.RawMavlinkPacket;
 import org.telestion.protocol.mavlink.message.internal.ValidatedMavlinkPacket;
-import org.telestion.protocol.old_mavlink.security.X25Checksum;
+import org.telestion.protocol.mavlink.security.X25Checksum;
 
 import java.util.Arrays;
 
@@ -20,11 +21,31 @@ import java.util.Arrays;
 public final class ValidatorMavlink1 extends Validator {
 
 	/**
+	 * Config-Class which can be used to create a new {@link Validator}.
 	 *
-	 * @param config
+	 * @param inAddress {@link #inAddress}
+	 * @param packetOutAddress {@link #packetOutAddress}
+	 * @param parserInAddress {@link #parserInAddress}
 	 */
-	public ValidatorMavlink1(Config config) {
-		super(config);
+	public final record Configuration(@JsonProperty String inAddress,
+									  @JsonProperty String packetOutAddress,
+									  @JsonProperty String parserInAddress) implements JsonMessage {
+		/**
+		 * Used for reflection!
+		 */
+		@SuppressWarnings("unused")
+		private Configuration() {
+			this(null, null, null);
+		}
+	}
+
+	/**
+	 * Creates a new {@link ValidatorMavlink1} with the given {@link Configuration}.
+	 *
+	 * @param config {@link Configuration}
+	 */
+	public ValidatorMavlink1(Configuration config) {
+		this(config.parserInAddress, config.inAddress, config.packetOutAddress);
 	}
 
 	/**

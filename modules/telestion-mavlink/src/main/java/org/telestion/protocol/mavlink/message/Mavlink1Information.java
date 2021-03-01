@@ -1,6 +1,15 @@
 package org.telestion.protocol.mavlink.message;
 
-public record Mavlink1Information(int seq,
-								  int sysId,
-								  int compId) implements PacketInformation {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record Mavlink1Information(@JsonProperty int seq,
+								  @JsonProperty int sysId,
+								  @JsonProperty int compId) implements PacketInformation {
+	/**
+	 * Used for reflection!
+	 */
+	@SuppressWarnings("unused")
+	private Mavlink1Information() {
+		this(0, 0, 0);
+	}
 }
