@@ -14,3 +14,4 @@ include ':modules:telestion-mavlink-safer'
 include ':modules:telestion-widget-bridge'
 include ':modules:telestion-plugin-daedalus2'
 include ':modules:telestion-example'
+
