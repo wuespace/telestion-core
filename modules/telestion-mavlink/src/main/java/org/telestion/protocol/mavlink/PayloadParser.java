@@ -20,7 +20,10 @@ import java.util.HashMap;
  * @author Cedric Boes
  * @version 1.0
  */
-public class PayloadParser extends AbstractVerticle {
+public final class PayloadParser extends AbstractVerticle {
+	/**
+	 *
+	 */
 	public static final HashMap<Class<?>, TypeParser<?>> DEFAULT_TYPE_PARSER;
 
 	static {
@@ -36,7 +39,7 @@ public class PayloadParser extends AbstractVerticle {
 		DEFAULT_TYPE_PARSER.put(short.class, (payload, arraySize) -> {
 			var data = new short[arraySize > 0 ? arraySize : 1];
 			for (int i = 0; i < data.length; i++) {
-				data[i] = (byte) (payload[2 * i + 1] << 8 + payload[2 * i]);
+				data[i] = (short) (payload[2*i + 1] << 8 + payload[2*i]);
 			}
 			if (arraySize == 0) {
 				return data[0];
@@ -60,7 +63,7 @@ public class PayloadParser extends AbstractVerticle {
 		DEFAULT_TYPE_PARSER.put(long.class, (payload, arraySize) -> {
 			var data = new long[arraySize > 0 ? arraySize : 1];
 			for (int i = 0; i < data.length; i++) {
-				data[i] = (long) payload[8 * i + 7] << 56 + payload[8*i + 6] << 48 + payload[8*i + 5] << 40
+				data[i] = (long) payload[8*i + 7] << 56 + payload[8*i + 6] << 48 + payload[8*i + 5] << 40
 						+ payload[8*i + 4] << 32 + payload[8*i + 3] << 24 + payload[8*i + 2] << 16
 						+ payload[8*i + 1] << 8 + payload[8*i];
 			}
@@ -87,7 +90,7 @@ public class PayloadParser extends AbstractVerticle {
 		DEFAULT_TYPE_PARSER.put(double.class, (payload, arraySize) -> {
 			var data = new double[arraySize > 0 ? arraySize : 1];
 			for (int i = 0; i < data.length; i++) {
-				data[i] = Double.longBitsToDouble((long) payload[8 * i + 7] << 56 + payload[8*i + 6] << 48
+				data[i] = Double.longBitsToDouble((long) payload[8*i + 7] << 56 + payload[8*i + 6] << 48
 						+ payload[8*i + 5] << 40 + payload[8*i + 4] << 32 + payload[8*i + 3] << 24
 						+ payload[8*i + 2] << 16 + payload[8*i + 1] << 8 + payload[8*i]);
 			}
@@ -145,6 +148,8 @@ public class PayloadParser extends AbstractVerticle {
 								c.getAnnotation(MavArray.class).length() : 0;
 						var type = c.getAnnotation(MavField.class).nativeType();
 
+						parser.get(type.javaType).parse(payload, arrLength);
+
 						currentIndex += type.size * (arrLength == 0 ? 1 : arrLength);
 					}
 
@@ -184,9 +189,10 @@ public class PayloadParser extends AbstractVerticle {
 	 *
 	 * @param inAddress
 	 * @param outAddress
+	 * @param parser
 	 */
-	public PayloadParser(String inAddress, String outAddress) {
-		this(new Configuration(inAddress, outAddress));
+	public PayloadParser(String inAddress, String outAddress, HashMap<Class<?>, TypeParser<?>> parser) {
+		this(new Configuration(inAddress, outAddress), parser);
 	}
 
 	/**
@@ -194,8 +200,17 @@ public class PayloadParser extends AbstractVerticle {
 	 * @param config
 	 */
 	public PayloadParser(Configuration config) {
+		this(config, DEFAULT_TYPE_PARSER);
+	}
+
+	/**
+	 *
+	 * @param config
+	 * @param parser
+	 */
+	public PayloadParser(Configuration config, HashMap<Class<?>, TypeParser<?>> parser) {
 		this.config = config;
-		parser = new HashMap<>(DEFAULT_TYPE_PARSER);
+		this.parser = parser;
 	}
 
 	/**
@@ -255,5 +270,8 @@ public class PayloadParser extends AbstractVerticle {
 	 */
 	private final Configuration config;
 
-	private final HashMap<Class<?>, TypeParser> parser;
+	/**
+	 *
+	 */
+	private final HashMap<Class<?>, TypeParser<?>> parser;
 }
