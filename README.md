@@ -8,7 +8,7 @@ and ending with recovery and post flight analysis.
 The ground station is based on a generic modular backend which is provided in this repository. 
 The backend handles the data streams, holds the connection and provides interfaces to the experiments. 
 The modular system is extended for the requirements of the experiments (e.g. 
-[RocketSound](https://github.com/TelestionTeam/RocketSound)).
+[RocketSound](https://github.com/TelestionTeam/telestion-rocketsound).
 
 The frontend for visualising the data and commanding the experiment is located in the 
 [client repository](https://github.com/TelestionTeam/telestion-client).
