@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 
 /**
  * A class which says hello and shows the usage of configuration files.

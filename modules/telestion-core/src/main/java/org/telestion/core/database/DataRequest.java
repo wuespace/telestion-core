@@ -1,4 +1,4 @@
-package org.telestion.core.message;
+package org.telestion.core.database;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonObject;

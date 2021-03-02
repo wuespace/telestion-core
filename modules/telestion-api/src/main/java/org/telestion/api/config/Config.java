@@ -1,4 +1,4 @@
-package org.telestion.core.config;
+package org.telestion.api.config;
 
 import io.vertx.core.json.JsonObject;
 
