@@ -2,7 +2,6 @@ package org.telestion.core.database;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.*;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import java.util.*;
 import org.slf4j.Logger;
@@ -14,10 +13,7 @@ import org.telestion.core.message.Address;
 /**
  * DataService is a verticle which is the interface to a underlying database implementation.
  * All data requests should come to the DataService and will be parsed and executed.
- * TODO: Save data with the DataService.  Right now the save command is handled by the db directly.
- * TODO: DataService listens for publishes of new data from UART / Mavlink / ...
  * TODO: DataOperations like Integrate, Differentiate, Offset, Sum, ...
- * TODO: Change dataTypeMap to Class.forName(...) and get the class name string from frontend.
  * TODO: MongoDB Queries explanation and implementation in fetchLatestData.
  *
  */
@@ -44,11 +40,11 @@ public final class DataService extends AbstractVerticle {
 	/**
 	 * This constructor supplies default options.
 	 *
-	 * @param dataTypeMap			Map of String->Class<?> for incoming dataRequests
+	 * @param dataTypes				List of all full class names of the data types
 	 * @param dataOperationMap		Map of String->DataOperation for incoming dataRequests
 	 */
-	public DataService(Map<String, Class<?>> dataTypeMap, Map<String, DataOperation> dataOperationMap) {
-		this.forcedConfig = new Configuration(dataTypeMap, dataOperationMap);
+	public DataService(Map<String, DataOperation> dataOperationMap) {
+		this.forcedConfig = new Configuration(dataOperationMap);
 	}
 
 	@Override
@@ -70,20 +66,20 @@ public final class DataService extends AbstractVerticle {
 						request.fail(-1, res.cause().getMessage());
 						return;
 					}
-					logger.info(res.result().toString());
 					request.reply(res.result());
 				});
 			});
 		});
 		vertx.eventBus().consumer(inSave, document -> {
-			vertx.eventBus().request(dbSave, document, res -> {
-				if (res.failed()) {
-					logger.error(res.cause().getMessage());
-					document.fail(-1, res.cause().getMessage());
-					return;
-				}
-				logger.info(res.result().toString());
-				document.reply(res.result().body());
+			JsonMessage.on(JsonMessage.class, document, doc -> {
+				vertx.eventBus().request(dbSave, doc.json(), res -> {
+					if (res.failed()) {
+						logger.error(res.cause().getMessage());
+						document.fail(-1, res.cause().getMessage());
+						return;
+					}
+					document.reply(res.result().body());
+				});
 			});
 		});
 	}
@@ -91,123 +87,87 @@ public final class DataService extends AbstractVerticle {
 	/**
 	 * Parse and dispatch incoming DataRequests.
 	 *
-	 * @param request			Determines which dataTypes should be retrieved and if an Operation should be executed.
+	 * @param request			Determines which dataType should be retrieved and if an Operation should be executed.
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
 	 */
 	private void dataRequestDispatcher(DataRequest request, Handler<AsyncResult<JsonObject>> resultHandler) {
-		var dataTypes = new ArrayList<Class<?>>();
-		request.classNames().forEach(clazz -> {
-			if (config.dataTypeMap.get(clazz) != null) {
-				dataTypes.add(config.dataTypeMap.get(clazz));
-			}
-		});
-		if (dataTypes.size() == 1) {
-			if (!request.operation().equals("")) {
-				logger.info("Operations are not yet supported!");
-				/* TODO:
-				DataOperation dOp = new DataOperation(request.operation().get().operationAddress(),
-									new JsonObject(), request.operation().get().params());
-				this.fetchLatestData(request.dataTypes().get(0), res -> {
-					if (res.failed()) {
-						resultHandler.handle(Future.failedFuture(res.cause().getMessage()));
-						return;
-					}
-					dOp.data().put("data", res.result());
-				}).applyManipulation(dOp, resultHandler);*/
-			} else {
-				this.fetchLatestData(dataTypes.get(0), res -> {
+		// TODO: If className is empty, check if query exists and just pass the query to the DatabaseClient
+		try {
+			var dataType = Class.forName(request.className());
+			if (request.operation().isEmpty()) {
+				this.fetchLatestData(dataType, request.query(), res -> {
 					if (res.failed()) {
 						resultHandler.handle(Future.failedFuture(res.cause().getMessage()));
 						return;
 					}
 					resultHandler.handle(Future.succeededFuture(res.result()));
 				});
+			} else {
+				var dataOperation = new DataOperation(new JsonObject(), request.operationParams());
+				this.fetchLatestData(dataType, request.query(), res -> {
+					if (res.failed()) {
+						resultHandler.handle(Future.failedFuture(res.cause().getMessage()));
+						return;
+					}
+					dataOperation.data().put("data", res.result());
+				});
+				this.applyManipulation(request.operation(), dataOperation, resultHandler);
 			}
-		} else {
-			this.fetchLatestData(dataTypes, res -> {
-				if (res.failed()) {
-					resultHandler.handle(Future.failedFuture(res.cause().getMessage()));
-					return;
-				}
-				JsonObject wrapped = new JsonObject().put("data", res.result());
-				resultHandler.handle(Future.succeededFuture(wrapped));
-			});
+		} catch (ClassNotFoundException e) {
+			logger.error("ClassNotFoundException: {}", e.getMessage());
 		}
 	}
 
 	/**
-	 * Method to fetch the latest data of a specified data types.
+	 * Request data from another verticle and handle the result of the request.
 	 *
-	 * @param dataTypes			Determines which data types should be fetched.
-	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
-	 * @return the data service to chain operations.
+	 * @param address			Address String of the desired verticle.
+	 * @param message			Object to send to the desired verticle.
+	 * @param resultHandler		Handles the result of the requested operation.
 	 */
-	private DataService fetchLatestData(List<Class<?>> dataTypes,
-										Handler<AsyncResult<JsonArray>> resultHandler) {
-		JsonArray result = new JsonArray();
-		dataTypes.forEach(dataType -> {
-			DbRequest dbRequest = new DbRequest(dataType, new JsonObject());
-			vertx.eventBus().request(dbFind, dbRequest, reply -> {
-				if (reply.failed()) {
-					logger.error(reply.cause().getMessage());
-					resultHandler.handle(Future.failedFuture(reply.cause().getMessage()));
-					return;
-				}
-				JsonObject dataRes = new JsonObject();
-				result.add(dataRes.put("data", reply.result().body()));
-			});
+	private void requestResultHandler(
+			String address, JsonMessage message, Handler<AsyncResult<JsonObject>> resultHandler) {
+		JsonObject result = new JsonObject();
+		vertx.eventBus().request(address, message, reply -> {
+			if (reply.failed()) {
+				logger.error(reply.cause().getMessage());
+				resultHandler.handle(Future.failedFuture(reply.cause().getMessage()));
+				return;
+			}
+			result.put("data", reply.result().body());
+			resultHandler.handle(Future.succeededFuture(result));
 		});
-		resultHandler.handle(Future.succeededFuture(result));
-		return this;
 	}
 
 	/**
 	 * Method to fetch the latest data of a specified data type.
 	 *
 	 * @param dataType			Determines which data type should be fetched.
+	 * @param query				MongoDB query, can be empty JsonObject if no specific query is needed.
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
-	 * @return the data service to chain operations.
 	 */
-	private DataService fetchLatestData(Class<?> dataType, Handler<AsyncResult<JsonObject>> resultHandler) {
-		JsonObject result = new JsonObject();
-		DbRequest dbRequest = new DbRequest(dataType, new JsonObject());
-		vertx.eventBus().request(dbFind, dbRequest, reply -> {
-			if (reply.failed()) {
-				logger.error(reply.cause().getMessage());
-				resultHandler.handle(Future.failedFuture(reply.cause().getMessage()));
-				return;
-			}
-			result.put("data", reply.result().body());
-			resultHandler.handle(Future.succeededFuture(result));
-		});
-		return this;
+	private void fetchLatestData(Class<?> dataType, JsonObject query,
+			Handler<AsyncResult<JsonObject>> resultHandler) {
+		DbRequest dbRequest = new DbRequest(dataType, query);
+		this.requestResultHandler(dbFind, dbRequest, resultHandler);
 	}
 
 	/**
 	 * Apply data operation to fetched data.
 	 *
-	 * @param dataOperation			Determines which manipulation should be applied.
-	 * @param resultHandler			Handles the request to the data operation verticle. Can be failed or succeeded.
+	 * @param dataOperation		Determines which manipulation should be applied.
+	 * @param resultHandler		Handles the request to the data operation verticle. Can be failed or succeeded.
 	*/
-	private void applyManipulation(DataOperation dataOperation, Handler<AsyncResult<JsonObject>> resultHandler) {
-		JsonObject result = new JsonObject();
-		vertx.eventBus().request(dataOperation.operationAddress(), dataOperation, reply -> {
-			if (reply.failed()) {
-				logger.error(reply.cause().getMessage());
-				resultHandler.handle(Future.failedFuture(reply.cause().getMessage()));
-				return;
-			}
-			result.put("data", reply.result().body());
-			resultHandler.handle(Future.succeededFuture(result));
-		});
+	private void applyManipulation(String operationAddress, DataOperation dataOperation,
+								   Handler<AsyncResult<JsonObject>> resultHandler) {
+		this.requestResultHandler(operationAddress, dataOperation, resultHandler);
 	}
 
 	private static record Configuration(
-			@JsonProperty Map<String, Class<?>> dataTypeMap,
 			@JsonProperty Map<String, DataOperation> dataOperationMap
 	) {
 		private Configuration() {
-			this(Collections.emptyMap(), Collections.emptyMap());
+			this(Collections.emptyMap());
 		}
 	}
 }
