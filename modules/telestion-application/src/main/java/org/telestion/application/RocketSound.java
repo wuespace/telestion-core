@@ -40,12 +40,12 @@ public class RocketSound {
 				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"),
 				new DataService(dataTypeMap, Collections.emptyMap())
 		);*/
-				new DataService(Collections.emptyMap()),
+				/*new DataService(Collections.emptyMap()),
 				new DataListener(
 						List.of(
 								Address.outgoing(MockRocketPublisher.class, "pub")
 						)
 				)
-		);
+		);*/
 	}
 }
