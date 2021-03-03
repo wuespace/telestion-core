@@ -9,10 +9,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 import org.telestion.core.message.Address;
-import org.telestion.core.message.DbRequest;
-import org.telestion.core.message.DbResponse;
 
 /**
  * MongoDatabaseService is a verticle which connects to a local running MongoDB-Database and listens for incoming
@@ -87,6 +85,9 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * Save the received document to the database.
 	 * If a MongoDB-ObjectId is specified data will be upserted, meaning if the id does not exist it will be inserted,
 	 * otherwise it will be updated. Else it will be inserted with a new id.
+	 * If the save was successful the database looks for the newly saved document and publishes it to the database
+	 * outgoing address concatenated with "/Class.name". With this behaviour clients (e.g. Frontend) can listen
+	 * to the outgoing address of a specific data value and will always be provided with the most recent data.
 	 *
 	 * @param document a JsonMessage validated through the JsonMessage.on method
 	 */
@@ -104,7 +105,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 					return;
 				}
 				DbResponse dbRes = new DbResponse(document.getClass(), rec.result());
-				vertx.eventBus().publish(outSave, dbRes.json());
+				vertx.eventBus().publish(outSave.concat("/").concat(document.className()), dbRes.json());
 			});
 		});
 	}

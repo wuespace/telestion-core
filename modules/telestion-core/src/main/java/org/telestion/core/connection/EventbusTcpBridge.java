@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 
 /**
  * EventbusTcpBridge is a verticle which uses SockJS-WebSockets to extend the vertx.eventBus() to an HTTP-Server.
@@ -47,6 +47,21 @@ import org.telestion.core.config.Config;
  *  .setAddress(Address.outgoing(<YourClass>.class, "<method>)));
  * }
  * </pre>
+ * </p>
+ * <p>
+ * To support that the one can send data type specific data on the outbound address vertx supports regex.
+ * You can add a regex to <code>new PermittedOptions()</code>.
+ * </p>
+ * <p>
+ * An example looks like this:
+ *
+ * <pre>
+ * {@code
+ * 	SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions()
+ * 	.addOutboundPermitted(new PermittedOptions().setAddressRegex("(<Address>)(\/(\S+))?"));
+ * }
+ * </pre>
+ * Which results in permission granted to all messages to the given address optionally suffixed with e.g. "/className.
  * </p>
  *
  * @see <a href="../../../../../../../README.md">README.md</a> for more information
@@ -104,7 +119,9 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 		inboundPermitted
 				.forEach(addr -> sockJsBridgeOptions.addInboundPermitted(new PermittedOptions().setAddress(addr)));
 		outboundPermitted
-				.forEach(addr -> sockJsBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddress(addr)));
+				.forEach(addr -> sockJsBridgeOptions.addOutboundPermitted(new PermittedOptions().setAddressRegex(
+						"(" + addr + ")(\\/(\\S+))?"
+				)));
 
 		SockJSHandler sockJsHandler = SockJSHandler.create(vertx);
 		return sockJsHandler.bridge(sockJsBridgeOptions);

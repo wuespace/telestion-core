@@ -7,7 +7,7 @@ import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telestion.core.config.Config;
+import org.telestion.api.config.Config;
 
 /**
  * A verticle which streams the hystrix-metrics to a given address. You could view it using the hystrix-dashboard

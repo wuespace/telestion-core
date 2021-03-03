@@ -7,8 +7,8 @@ import org.telestion.core.database.MongoDatabaseService;
 import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.core.web.WebServer;
-import org.telestion.example.RandomPositionPublisher;
-import org.telestion.launcher.Launcher;
+//import org.telestion.example.RandomPositionPublisher;
+//import org.telestion.launcher.Launcher;
 
 /**
  * Starts the Telestion-Project as a standalone Application.
@@ -25,13 +25,13 @@ public class Application {
 	 * @param args <em>unused at the moment</em>
 	 */
 	public static void main(String[] args) {
-		Launcher.start(new MessageLogger(), new RandomPositionPublisher(),
+		/*Launcher.start(new MessageLogger(), new RandomPositionPublisher(),
 				new EventbusTcpBridge("localhost", 9870,
 						Collections.singletonList(Address.incoming(DataService.class, "find")),
 						Collections.singletonList(Address.outgoing(RandomPositionPublisher.class, "MockPos"))),
 				new WebServer(8080),
 				new DataService(),
-				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"));
+				new MongoDatabaseService("raketenpraktikum", "raketenpraktikumPool"));*/
 	}
 
 }
