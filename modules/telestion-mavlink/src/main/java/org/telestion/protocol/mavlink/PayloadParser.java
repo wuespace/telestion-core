@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.telestion.api.message.JsonMessage;
 import org.telestion.protocol.mavlink.annotation.MavArray;
 import org.telestion.protocol.mavlink.annotation.MavField;
+import org.telestion.protocol.mavlink.annotation.NativeType;
 import org.telestion.protocol.mavlink.exception.AnnotationMissingException;
 import org.telestion.protocol.mavlink.message.internal.ValidatedMavlinkPacket;
 
@@ -15,105 +16,14 @@ import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Cedric Boes
  * @version 1.0
  */
 public final class PayloadParser extends AbstractVerticle {
-	/**
-	 *
-	 */
-	public static final HashMap<Class<?>, TypeParser<?>> DEFAULT_TYPE_PARSER;
-
-	static {
-		DEFAULT_TYPE_PARSER = new HashMap<>();
-		DEFAULT_TYPE_PARSER.put(byte.class, (payload, arraySize) ->  {
-			if (arraySize == 0) {
-				return payload[0];
-			} else {
-				return payload;
-			}
-		});
-
-		DEFAULT_TYPE_PARSER.put(short.class, (payload, arraySize) -> {
-			var data = new short[arraySize > 0 ? arraySize : 1];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = (short) (payload[2*i + 1] << 8 + payload[2*i]);
-			}
-			if (arraySize == 0) {
-				return data[0];
-			} else {
-				return data;
-			}
-		});
-
-		DEFAULT_TYPE_PARSER.put(int.class, (payload, arraySize) -> {
-			var data = new int[arraySize > 0 ? arraySize : 1];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = payload[4*i + 3] << 24 + payload[4*i + 2] << 16 + payload[4*i + 1] << 8 + payload[4*i];
-			}
-			if (arraySize == 0) {
-				return data[0];
-			} else {
-				return data;
-			}
-		});
-
-		DEFAULT_TYPE_PARSER.put(long.class, (payload, arraySize) -> {
-			var data = new long[arraySize > 0 ? arraySize : 1];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = (long) payload[8*i + 7] << 56 + payload[8*i + 6] << 48 + payload[8*i + 5] << 40
-						+ payload[8*i + 4] << 32 + payload[8*i + 3] << 24 + payload[8*i + 2] << 16
-						+ payload[8*i + 1] << 8 + payload[8*i];
-			}
-			if (arraySize == 0) {
-				return data[0];
-			} else {
-				return data;
-			}
-		});
-
-		DEFAULT_TYPE_PARSER.put(float.class, (payload, arraySize) -> {
-			var data = new float[arraySize > 0 ? arraySize : 1];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = Float.intBitsToFloat(payload[4*i + 3] << 24 + payload[4*i + 2] << 16 + payload[4*i + 1] << 8
-						+ payload[4*i]);
-			}
-			if (arraySize == 0) {
-				return data[0];
-			} else {
-				return data;
-			}
-		});
-
-		DEFAULT_TYPE_PARSER.put(double.class, (payload, arraySize) -> {
-			var data = new double[arraySize > 0 ? arraySize : 1];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = Double.longBitsToDouble((long) payload[8*i + 7] << 56 + payload[8*i + 6] << 48
-						+ payload[8*i + 5] << 40 + payload[8*i + 4] << 32 + payload[8*i + 3] << 24
-						+ payload[8*i + 2] << 16 + payload[8*i + 1] << 8 + payload[8*i]);
-			}
-			if (arraySize == 0) {
-				return data[0];
-			} else {
-				return data;
-			}
-		});
-
-		DEFAULT_TYPE_PARSER.put(char.class, (payload, arraySize) -> {
-			var data = new char[arraySize > 0 ? arraySize : 1];
-			for (int i = 0; i < data.length; i++) {
-				data[i] = (char) payload[i];
-			}
-
-			if (arraySize == 0) {
-				return data[0];
-			} else {
-				return String.valueOf(data);
-			}
-		});
-	}
 
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -134,29 +44,28 @@ public final class PayloadParser extends AbstractVerticle {
 				}
 
 				try {
-					Object[] objs = new Object[components.length];
+					var currentIndex = new AtomicInteger(0);
+					var objs = Arrays.stream(components).
+							map(c -> {
+								var annotation = c.getAnnotation(MavField.class);
+								// Extensions are optional and at the end of the parsing process
+								if (payload.length - 1 - currentIndex.get() == 0 && annotation.extension()) {
+									return null;
+								}
 
-					int currentIndex = 0;
-					for (var c : components) {
-						var annotation = c.getAnnotation(MavField.class);
-						// Extensions are optional and at the end of the parsing process
-						if (payload.length - 1 - currentIndex == 0 && annotation.extension()) {
-							break;
-						}
+								var arrLength = c.isAnnotationPresent(MavArray.class) ?
+										c.getAnnotation(MavArray.class).length() : 0;
+								var type = c.getAnnotation(MavField.class).nativeType();
 
-						var arrLength = c.isAnnotationPresent(MavArray.class) ?
-								c.getAnnotation(MavArray.class).length() : 0;
-						var type = c.getAnnotation(MavField.class).nativeType();
-
-						parser.get(type.javaType).parse(payload, arrLength);
-
-						currentIndex += type.size * (arrLength == 0 ? 1 : arrLength);
-					}
+								return parser.get(type).parse(payload, arrLength,
+										currentIndex.getAndAdd(type.size * (arrLength == 0 ? 1 : arrLength)));
+							}).filter(Objects::nonNull).toArray();
 
 					var constructor = clazz.getConstructor(Arrays.stream(components)
 							.map(RecordComponent::getType).toArray(Class[]::new));
 
-					vertx.eventBus().publish(getOutAddress(), constructor.newInstance(objs));
+					var instance = constructor.newInstance(objs);
+					vertx.eventBus().publish(getOutAddress(), instance);
 				} catch(Exception e) {
 					logger.error("Parsing packet payload failed due to an unexpected error!", e);
 				}
@@ -191,7 +100,7 @@ public final class PayloadParser extends AbstractVerticle {
 	 * @param outAddress
 	 * @param parser
 	 */
-	public PayloadParser(String inAddress, String outAddress, HashMap<Class<?>, TypeParser<?>> parser) {
+	public PayloadParser(String inAddress, String outAddress, HashMap<NativeType, TypeParser<?>> parser) {
 		this(new Configuration(inAddress, outAddress), parser);
 	}
 
@@ -200,7 +109,7 @@ public final class PayloadParser extends AbstractVerticle {
 	 * @param config
 	 */
 	public PayloadParser(Configuration config) {
-		this(config, DEFAULT_TYPE_PARSER);
+		this(config, DefaultParsers.LITTLE_ENDIAN);
 	}
 
 	/**
@@ -208,7 +117,7 @@ public final class PayloadParser extends AbstractVerticle {
 	 * @param config
 	 * @param parser
 	 */
-	public PayloadParser(Configuration config, HashMap<Class<?>, TypeParser<?>> parser) {
+	public PayloadParser(Configuration config, HashMap<NativeType, TypeParser<?>> parser) {
 		this.config = config;
 		this.parser = parser;
 	}
@@ -273,5 +182,5 @@ public final class PayloadParser extends AbstractVerticle {
 	/**
 	 *
 	 */
-	private final HashMap<Class<?>, TypeParser<?>> parser;
+	private final HashMap<NativeType, TypeParser<?>> parser;
 }
