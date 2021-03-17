@@ -1,4 +1,4 @@
-package org.telestion.core.connection;
+package org.telestion.core.connection.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
@@ -6,18 +6,14 @@ import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.time.Duration;
 
-import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.config.Config;
 import org.telestion.api.message.JsonMessage;
-import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import com.fazecast.jSerialComm.*;
-import org.telestion.core.web.WebServer;
 
 public final class SerialConn extends AbstractVerticle {
 

@@ -1,4 +1,4 @@
-package org.telestion.core.connection;
+package org.telestion.core.connection.old;
 
 public enum ConnectionType {
 	TCP(TcpConn.Participant.class),

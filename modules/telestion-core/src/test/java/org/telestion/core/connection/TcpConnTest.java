@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.telestion.api.message.JsonMessage;
+import org.telestion.core.connection.old.TcpConn;
 
 @ExtendWith(VertxExtension.class)
 public class TcpConnTest {

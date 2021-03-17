@@ -1,4 +1,4 @@
-package org.telestion.core.connection;
+package org.telestion.core.connection.old;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
