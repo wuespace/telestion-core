@@ -41,8 +41,7 @@ public interface JsonMessage {
 				handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
 				return true;
 			} catch (ClassNotFoundException e) {
-				logger.error("Error while converting JSON into JsonMessage. The requested message is not available on the "
-						+ "classpath.", e);
+				logger.error("Error while converting JSON into JsonMessage (msg not on classpath).", e);
 				return false;
 			}
 		} else {
