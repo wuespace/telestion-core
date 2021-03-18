@@ -33,7 +33,18 @@ public interface JsonMessage {
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler) {
 		if (msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
-			return reconstructMsg(clazz, jsonObject, handler);
+			try {
+				var msgClazz = Class.forName(jsonObject.getString("className"));
+				if (!clazz.isAssignableFrom(msgClazz)) {
+					return false;
+				}
+				handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
+				return true;
+			} catch (ClassNotFoundException e) {
+				logger.error("Error while converting JSON into JsonMessage. The requested message is not available on the "
+						+ "classpath.", e);
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -50,11 +61,7 @@ public interface JsonMessage {
 	 * @return whether decoding was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {
-		if (msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
-			return reconstructMsg(clazz, jsonObject, handler);
-		} else {
-			return false;
-		}
+		return on(clazz, msg.body(), handler);
 	}
 
 	/**
@@ -98,31 +105,5 @@ public interface JsonMessage {
 	 */
 	default JsonObject json() {
 		return JsonObject.mapFrom(this);
-	}
-
-	/**
-	 * Reflection part of {@link #on(Class, Message, Handler)} and {@link #on(Class, Object, Handler)} which constructs
-	 * the original message.
-	 *
-	 * @param clazz			Class to cast to
-	 * @param jsonObject	Object to be casted
-	 * @param handler		Handler for the message
-	 * @param <T>			Type of the message
-	 * @return if parsing successful
-	 */
-	private static <T extends JsonMessage> boolean reconstructMsg(Class<T> clazz, JsonObject jsonObject,
-																Handler<T> handler) {
-		try {
-			var msgClazz = Class.forName(jsonObject.getString("className"));
-			if (!clazz.isAssignableFrom(msgClazz)) {
-				return false;
-			}
-			handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
-			return true;
-		} catch (ClassNotFoundException e) {
-			logger.error("Error while converting JSON into JsonMessage. The requested message is not available on the "
-					+ "classpath.", e);
-			return false;
-		}
 	}
 }
