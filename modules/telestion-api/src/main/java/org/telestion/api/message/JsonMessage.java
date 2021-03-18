@@ -1,12 +1,13 @@
 package org.telestion.api.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonEncoding;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.json.jackson.JacksonCodec;
 import io.vertx.core.spi.json.JsonCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The base class for all messages which are automatically encoded with the JsonMessageCodec.<br>
@@ -14,11 +15,12 @@ import io.vertx.core.spi.json.JsonCodec;
  * {@link io.vertx.core.spi.json.JsonCodec} which is backed by {@link io.vertx.core.json.jackson.JacksonCodec}.
  *
  * @author Jan von Pichowski, Cedric Boes
- * @version 1.1
+ * @version 1.2
  */
 @SuppressWarnings("preview")
 public interface JsonMessage {
-	static JsonCodec JSON_CODEC = new JacksonCodec();
+	JsonCodec JSON_CODEC = new JacksonCodec();
+	Logger logger = LoggerFactory.getLogger(JsonMessage.class);
 	/**
 	 * This method decodes a {@link JsonMessage} from the event bus.<br>
 	 * Returns whether decoding was successful or not.
@@ -39,7 +41,7 @@ public interface JsonMessage {
 				handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
 				return true;
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				logger.warn("Error while converting JSON into JsonMessage (msg not on classpath).", e);
 				return false;
 			}
 		} else {
@@ -58,21 +60,7 @@ public interface JsonMessage {
 	 * @return whether decoding was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {
-		if (msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
-			try {
-				var msgClazz = Class.forName(jsonObject.getString("className"));
-				if (!clazz.isAssignableFrom(msgClazz)) {
-					return false;
-				}
-				handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
-				return true;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				return false;
-			}
-		} else {
-			return false;
-		}
+		return on(clazz, msg.body(), handler);
 	}
 
 	/**

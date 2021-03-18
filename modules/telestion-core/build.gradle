@@ -58,18 +58,18 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
     implementation "io.vertx:vertx-web:4.0.2"
-    implementation "io.vertx:vertx-core:4.0.2"
-    implementation "io.vertx:vertx-hazelcast:4.0.2"
+    implementation "io.vertx:vertx-core:4.0.3"
+    implementation "io.vertx:vertx-hazelcast:4.0.3"
 // implementation "io.vertx:vertx-infinispan:3.9.2"
     implementation "io.vertx:vertx-health-check:4.0.2"
-    implementation "io.vertx:vertx-http-service-factory:4.0.2"
-    implementation "io.vertx:vertx-rx-java2:4.0.2"
-    implementation "io.vertx:vertx-config:4.0.2"
+    implementation "io.vertx:vertx-http-service-factory:4.0.3"
+    implementation "io.vertx:vertx-rx-java2:4.0.3"
+    implementation "io.vertx:vertx-config:4.0.3"
     implementation "io.vertx:vertx-service-factory:4.0.2"
     implementation "io.vertx:vertx-mongo-client:4.0.2"
-    implementation "io.vertx:vertx-circuit-breaker:4.0.2"
+    implementation "io.vertx:vertx-circuit-breaker:4.0.3"
 
-    testImplementation "io.vertx:vertx-junit5:4.0.2"
+    testImplementation "io.vertx:vertx-junit5:4.0.3"
 }
 
 test {
