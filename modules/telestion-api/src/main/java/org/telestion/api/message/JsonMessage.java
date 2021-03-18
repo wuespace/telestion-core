@@ -111,7 +111,7 @@ public interface JsonMessage {
 	 * @return if parsing successful
 	 */
 	private static <T extends JsonMessage> boolean reconstructMsg(Class<T> clazz, JsonObject jsonObject,
-																  Handler<T> handler) {
+																Handler<T> handler) {
 		try {
 			var msgClazz = Class.forName(jsonObject.getString("className"));
 			if (!clazz.isAssignableFrom(msgClazz)) {
@@ -120,8 +120,8 @@ public interface JsonMessage {
 			handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
 			return true;
 		} catch (ClassNotFoundException e) {
-			logger.error("Error while converting JSON into JsonMessage. The requested message is not available on the" +
-					" classpath.", e);
+			logger.error("Error while converting JSON into JsonMessage. The requested message is not available on the "
+					+ "classpath.", e);
 			return false;
 		}
 	}
