@@ -33,7 +33,7 @@ public interface JsonMessage {
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler) {
 		if (msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
-			return doReflection(clazz, jsonObject, handler);
+			return reconstructMsg(clazz, jsonObject, handler);
 		} else {
 			return false;
 		}
@@ -51,7 +51,7 @@ public interface JsonMessage {
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {
 		if (msg.body() instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
-			return doReflection(clazz, jsonObject, handler);
+			return reconstructMsg(clazz, jsonObject, handler);
 		} else {
 			return false;
 		}
@@ -101,7 +101,8 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * Reflection part of {@link #on(Class, Message, Handler)} and {@link #on(Class, Object, Handler)}.
+	 * Reflection part of {@link #on(Class, Message, Handler)} and {@link #on(Class, Object, Handler)} which constructs
+	 * the original message.
 	 *
 	 * @param clazz			Class to cast to
 	 * @param jsonObject	Object to be casted
@@ -109,8 +110,8 @@ public interface JsonMessage {
 	 * @param <T>			Type of the message
 	 * @return if parsing successful
 	 */
-	private static <T extends JsonMessage> boolean doReflection(Class<T> clazz, JsonObject jsonObject,
-																Handler<T> handler) {
+	private static <T extends JsonMessage> boolean reconstructMsg(Class<T> clazz, JsonObject jsonObject,
+																  Handler<T> handler) {
 		try {
 			var msgClazz = Class.forName(jsonObject.getString("className"));
 			if (!clazz.isAssignableFrom(msgClazz)) {
@@ -119,7 +120,8 @@ public interface JsonMessage {
 			handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
 			return true;
 		} catch (ClassNotFoundException e) {
-			logger.error("Error while converting Json into JsonMessage!", e);
+			logger.error("Error while converting JSON into JsonMessage. The requested message is not available on the" +
+					" classpath.", e);
 			return false;
 		}
 	}
