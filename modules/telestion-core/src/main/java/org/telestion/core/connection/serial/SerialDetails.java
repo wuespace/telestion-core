@@ -1,4 +1,6 @@
 package org.telestion.core.connection.serial;
 
-public class SerialDetails {
+import org.telestion.core.connection.ConnectionDetails;
+
+public record SerialDetails() implements ConnectionDetails {
 }

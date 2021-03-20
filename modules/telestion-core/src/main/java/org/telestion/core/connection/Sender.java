@@ -5,12 +5,14 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telestion.api.config.Config;
 import org.telestion.api.message.JsonMessage;
 
-public class Sender extends AbstractVerticle {
+public final class Sender extends AbstractVerticle {
 
 	@Override
 	public void stop(Promise<Void> stopPromise) {
+		config = Config.get(config, config(), Configuration.class);
 		stopPromise.complete();
 	}
 
@@ -38,6 +40,10 @@ public class Sender extends AbstractVerticle {
 		}
 	}
 
+	public Sender() {
+		this(null);
+	}
+
 	/**
 	 *
 	 * @param config {@link Configuration} for the creation
@@ -60,7 +66,7 @@ public class Sender extends AbstractVerticle {
 	/**
 	 *
 	 */
-	private final Configuration config;
+	private Configuration config;
 
 	/**
 	 *

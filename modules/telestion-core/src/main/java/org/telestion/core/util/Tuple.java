@@ -3,7 +3,7 @@ package org.telestion.core.util;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A simple implementation of a Value-Pair which are linked together without any key - value connection.
+ * A simple implementation of a Value-Pair whose values are linked together without any key - value relationship.
  *
  * @param <T1>	Type 1
  * @param <T2>	Type 2

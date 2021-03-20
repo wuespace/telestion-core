@@ -5,12 +5,15 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telestion.api.config.Config;
 import org.telestion.api.message.JsonMessage;
 
-public class Receiver extends AbstractVerticle {
+public final class Receiver extends AbstractVerticle {
 
 	@Override
 	public void start(Promise<Void> startPromise) {
+		config = Config.get(config, config(), Configuration.class);
+
 		for (var con : config.connectionAddresses()) {
 			vertx.eventBus().consumer(con,
 					raw -> JsonMessage.on(ConnectionData.class, raw,
@@ -40,6 +43,10 @@ public class Receiver extends AbstractVerticle {
 		}
 	}
 
+	public Receiver() {
+		this(null);
+	}
+
 	/**
 	 *
 	 * @param config {@link Configuration} for the creation
@@ -51,7 +58,7 @@ public class Receiver extends AbstractVerticle {
 	/**
 	 *
 	 */
-	private final Configuration config;
+	private Configuration config;
 
 	/**
 	 *
