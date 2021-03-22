@@ -32,7 +32,7 @@ public final class Sender extends AbstractVerticle {
 	 */
 	public record Configuration(
 			@JsonProperty String inputAddress,
-			@JsonProperty String... connectionAddresses) {
+			@JsonProperty String... connectionAddresses) implements JsonMessage {
 
 		@SuppressWarnings("unused")
 		private Configuration() {

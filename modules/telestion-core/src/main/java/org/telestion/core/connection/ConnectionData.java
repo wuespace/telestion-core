@@ -13,7 +13,7 @@ import org.telestion.api.message.JsonMessage;
  * </p>
  * <p>
  *     IncomingData-objects will only be checked by the parsers which might be added to the
- *     {@link io.vertx.core.eventbus.EventBus}. To send them to specific parsers, the output-address of the
+ *     {@link io.vertx.core.eventbus.EventBus EventBus}. To send them to specific parsers, the output-address of the
  *     receiver-verticles must be equivalent to the incoming-addresses of the parser-verticles.
  * </p>
  *
