@@ -16,12 +16,23 @@ import org.telestion.api.message.JsonMessage;
 import org.telestion.core.connection.ConnectionData;
 import org.telestion.core.util.Tuple;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Unencrypted TcpServer implementation.
+ * <b>An implementation of an unencrypted TCP-Server.</b>
+ * <p>
+ *     Features are:
+ *     <ul>
+ *         <li>Opening new connections to TCP-Clients</li>
+ *         <li>Receiving data from all the open connections</li>
+ *         <li>Keep the connections open until either no package gets sent for a certain amount of time (timeout) or
+ *         the Client closes the connection</li>
+ *         <li>Sending answers back to the Client if the connections are still open</li>
+ *     </ul>
+ * </p>
  */
 public final class TcpServer extends AbstractVerticle {
 
@@ -33,8 +44,8 @@ public final class TcpServer extends AbstractVerticle {
 		var serverOptions = new NetServerOptions();
 		serverOptions.setHost(config.hostAddress());
 		serverOptions.setPort(config.port());
-		serverOptions.setIdleTimeout(config.clientTimeout() == TcpTimeouts.NO_RESPONSES
-				? TcpTimeouts.NO_TIMEOUT : config.clientTimeout);
+		serverOptions.setIdleTimeout(config.clientTimeout().equals(TcpTimeouts.NO_RESPONSES)
+				? (int) TcpTimeouts.NO_TIMEOUT.toMillis() : (int) config.clientTimeout().toMillis());
 		serverOptions.setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
 		activeCons = new HashMap<>();
 
@@ -65,25 +76,28 @@ public final class TcpServer extends AbstractVerticle {
 	}
 
 	/**
+	 * Configuration for this Verticle which can be loaded from a config.<br>
+	 * An optional timeout can be specified which is the consecutive time without any packets incoming or outgoing after
+	 * which a client will be disconnected. Special timeouts can be found in {@link TcpTimeouts}.
 	 *
-	 * @param inAddress
-	 * @param outAddress
-	 * @param hostAddress
-	 * @param port
-	 * @param clientTimeout 0 = no timeout
+	 * @param inAddress		address on which the verticle listens on
+	 * @param outAddress	address on which the verticle publishes
+	 * @param hostAddress	host-address on which the Server-Socket should run
+	 * @param port			port on which the Server-Socket should run
+	 * @param clientTimeout time until timeout
 	 */
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
 								@JsonProperty String hostAddress,
 								@JsonProperty int port,
-								@JsonProperty int clientTimeout) implements JsonMessage {
+								@JsonProperty Duration clientTimeout) implements JsonMessage {
 
 		/**
 		 * Used for reflection.
 		 */
 		@SuppressWarnings("unused")
 		private Configuration() {
-			this(null, null, null, 0, 0);
+			this(null, null, null, 0, null);
 		}
 
 		public Configuration(String inAddress, String outAddress, String hostAddress, int port) {
@@ -96,7 +110,7 @@ public final class TcpServer extends AbstractVerticle {
 	}
 
 	public TcpServer(Configuration config) {
-		if (config.hostAddress() == null || config.hostAddress().equals("")) {
+		if (config != null && (config.hostAddress() == null || config.hostAddress().equals(""))) {
 			config = new Configuration(config.inAddress(), config.outAddress(), "localhost", config.port(),
 					config.clientTimeout());
 		}
@@ -127,7 +141,7 @@ public final class TcpServer extends AbstractVerticle {
 			var packetId = packetIdCounter.getAndIncrement();
 			logger.debug("New message received from Client ({}:{}, packetId={})", ip, port, packetId);
 			vertx.eventBus().publish(config.outAddress(), new ConnectionData(buffer.getBytes(), new TcpDetails(ip, port,
-					packetId)));
+					packetId)).json());
 			if (config.clientTimeout() == TcpTimeouts.NO_RESPONSES) {
 				netSocket.close();
 			}
@@ -166,6 +180,8 @@ public final class TcpServer extends AbstractVerticle {
 		var details = data.details();
 
 		var element = activeCons.get(new Tuple<>(details.ip(), details.port()));
+
+		// Might be useful to send this to the TCP-Client however the config must be varied for this (future update?)
 		if (element == null) {
 			logger.warn("Requested connection {}:{} is (no longer) available. Packet will be dropped.",
 					data.details().ip(), data.details().port());

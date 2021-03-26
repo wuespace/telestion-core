@@ -59,7 +59,7 @@ public final class Sender extends AbstractVerticle {
 	private void handleMessage(SenderData msg) {
 		for (var s : config.connectionAddresses()) {
 			logger.debug("Sending Message to {}", s);
-			vertx.eventBus().publish(s, msg);
+			vertx.eventBus().publish(s, msg.json());
 		}
 	}
 

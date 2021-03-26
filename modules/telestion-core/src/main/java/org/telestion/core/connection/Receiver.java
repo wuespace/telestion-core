@@ -19,7 +19,7 @@ public final class Receiver extends AbstractVerticle {
 					raw -> JsonMessage.on(ConnectionData.class, raw,
 							msg -> {
 								logger.debug("Connection-Message received on {}", con);
-								vertx.eventBus().publish(config.outputAddr(), msg);
+								vertx.eventBus().publish(config.outputAddr(), msg.json());
 							}));
 		}
 		startPromise.complete();

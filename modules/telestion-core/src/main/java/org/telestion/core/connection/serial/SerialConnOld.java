@@ -1,4 +1,4 @@
-package org.telestion.core.connection.old;
+package org.telestion.core.connection.serial;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;
@@ -12,25 +12,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telestion.api.config.Config;
 import org.telestion.api.message.JsonMessage;
+import org.telestion.core.connection.old.SerialData;
 import org.telestion.core.monitoring.MessageLogger;
 import com.fazecast.jSerialComm.*;
 
-public final class SerialConn extends AbstractVerticle {
+public final class SerialConnOld extends AbstractVerticle {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SerialConn.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SerialConnOld.class);
 
 	private final Configuration forcedConfig;
 	private SerialPort serialPort;
 
-	public SerialConn(Configuration forcedConfig) {
+	public SerialConnOld(Configuration forcedConfig) {
 		this.forcedConfig = forcedConfig;
 	}
 
-	public SerialConn(String serialPort, String consumeAddress, String publishAddress){
+	public SerialConnOld(String serialPort, String consumeAddress, String publishAddress){
 		this(new Configuration(serialPort, consumeAddress, publishAddress));
 	}
 
-	public SerialConn(){
+	public SerialConnOld(){
 		this(null);
 	}
 
@@ -79,6 +80,6 @@ public final class SerialConn extends AbstractVerticle {
 	public static void main(String[] args) {
 		var vertx = Vertx.vertx();
 		vertx.deployVerticle(new MessageLogger());
-		vertx.deployVerticle(new SerialConn(new Configuration("COM8", "serial", "serial")));
+		vertx.deployVerticle(new SerialConnOld(new Configuration("COM8", "serial", "serial")));
 	}
 }

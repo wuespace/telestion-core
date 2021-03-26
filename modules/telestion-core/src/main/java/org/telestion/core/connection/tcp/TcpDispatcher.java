@@ -25,9 +25,10 @@ public class TcpDispatcher extends AbstractVerticle {
 						for (var server : servers) {
 							if (server.isActiveCon(new Tuple<>(det.ip(), det.port()))) {
 								vertx.eventBus().publish(server.getConfig().inAddress(),
-										new ConnectionData(msg.rawData(), det));
+										new ConnectionData(msg.rawData(), det).json());
 							} else {
-								vertx.eventBus().publish(config.outAddress(), new ConnectionData(msg.rawData(), det));
+								vertx.eventBus().publish(config.outAddress(),
+										new ConnectionData(msg.rawData(), det).json());
 							}
 						}
 					}));

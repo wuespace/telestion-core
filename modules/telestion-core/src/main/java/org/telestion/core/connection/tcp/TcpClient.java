@@ -113,7 +113,7 @@ public final class TcpClient extends AbstractVerticle {
 			var packetId = packetIdCounter.getAndIncrement();
 			logger.debug("New message received from Server ({}:{}, packetId={})", ip, port, packetId);
 			vertx.eventBus().publish(config.outAddress(), new ConnectionData(buffer.getBytes(), new TcpDetails(ip, port,
-					packetId)));
+					packetId)).json());
 		});
 
 		socket.exceptionHandler(error -> {
