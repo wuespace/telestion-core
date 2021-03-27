@@ -17,7 +17,7 @@ public class StaticSender extends AbstractVerticle {
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
 			JsonMessage.on(RawMessage.class, raw, msg -> {
 				logger.debug("Sending static message");
-				vertx.eventBus().publish(config.outAddress(), new ConnectionData(msg.data(),
+				vertx.eventBus().publish(config.outAddress(), new SenderData(msg.data(),
 						config.staticDetails()).json());
 			});
 		});

@@ -18,20 +18,16 @@ public class TcpDispatcher extends AbstractVerticle {
 		config = Config.get(config, config(), Configuration.class);
 
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
-			JsonMessage.on(SenderData.class, raw, msg -> Arrays.stream(msg.conDetails())
+			if (!JsonMessage.on(SenderData.class, raw, msg -> Arrays.stream(msg.conDetails())
 					.filter(det -> det instanceof TcpDetails)
 					.map(det -> (TcpDetails) det)
-					.forEach(det -> {
-						for (var server : servers) {
-							if (server.isActiveCon(new Tuple<>(det.ip(), det.port()))) {
-								vertx.eventBus().publish(server.getConfig().inAddress(),
-										new ConnectionData(msg.rawData(), det).json());
-							} else {
-								vertx.eventBus().publish(config.outAddress(),
-										new ConnectionData(msg.rawData(), det).json());
-							}
-						}
-					}));
+					.forEach(det -> handle(msg.rawData(), det)))) {
+				JsonMessage.on(ConnectionData.class, raw, msg -> {
+					if (msg.conDetails() instanceof TcpDetails det) {
+						handle(msg.rawData(), det);
+					}
+				});
+			}
 		});
 		startPromise.complete();
 	}
@@ -59,6 +55,18 @@ public class TcpDispatcher extends AbstractVerticle {
 	public TcpDispatcher(Configuration config, TcpServer... servers) {
 		this.config = config;
 		this.servers = servers;
+	}
+
+	private void handle(byte[] bytes, TcpDetails details) {
+		for (var server : servers) {
+			if (server.isActiveCon(new Tuple<>(details.ip(), details.port()))) {
+				vertx.eventBus().publish(server.getConfig().inAddress(),
+						new TcpData(bytes, details).json());
+			} else {
+				vertx.eventBus().publish(config.outAddress(),
+						new TcpData(bytes, details).json());
+			}
+		}
 	}
 
 	private Configuration config;

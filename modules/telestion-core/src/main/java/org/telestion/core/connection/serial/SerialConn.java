@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @author Cedric Boes, Jan v. Pichowski
  * @version 2.0
  */
-public class SerialConn extends AbstractVerticle {
+public final class SerialConn extends AbstractVerticle {
 
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -35,7 +35,7 @@ public class SerialConn extends AbstractVerticle {
 				var inpStream = serialPort.getInputStream();
 				var len = inpStream.available();
 				if (len > 0) {
-					logger.info("Reading available bytes");
+					logger.debug("Reading available bytes");
 					var data = inpStream.readNBytes(len);
 					vertx.eventBus().publish(config.outAddress(),
 							new ConnectionData(data, new SerialDetails(config.serialPort())).json());
@@ -46,18 +46,17 @@ public class SerialConn extends AbstractVerticle {
 		});
 
 		// Out
-		vertx.eventBus().consumer(config.inAddress(), raw -> {
-			JsonMessage.on(SenderData.class, raw,
-					msg -> Arrays.stream(msg.conDetails())
-							.filter(det -> det instanceof SerialDetails)
-							.map(det -> (SerialDetails) det)
-							.forEach(det -> {
-								if (det.serialPort().equals(config.serialPort())) {
-									serialPort.writeBytes(msg.rawData(), msg.rawData().length);
-								}
-							})
-			);
-		});
+		vertx.eventBus().consumer(config.inAddress(), raw -> JsonMessage.on(SenderData.class, raw,
+				msg -> Arrays.stream(msg.conDetails())
+						.filter(det -> det instanceof SerialDetails)
+						.map(det -> (SerialDetails) det)
+						.forEach(det -> {
+							if (det.serialPort().equals(config.serialPort())) {
+								logger.debug("Sending bytes");
+								serialPort.writeBytes(msg.rawData(), msg.rawData().length);
+							}
+						})
+		));
 
 		startPromise.complete();
 	}
