@@ -24,7 +24,8 @@ public final class TcpClient extends AbstractVerticle {
 		config = Config.get(config, config(), Configuration.class);
 
 		var options = new NetClientOptions();
-		options.setIdleTimeout(config.timeout());
+		options.setIdleTimeout(config.timeout() == TcpTimeouts.NO_RESPONSES
+				? (int) TcpTimeouts.NO_TIMEOUT : (int) config.timeout());
 		currentClient = vertx.createNetClient(options);
 
 		activeClients = new HashMap<>();
@@ -45,13 +46,13 @@ public final class TcpClient extends AbstractVerticle {
 
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
-								@JsonProperty int timeout) implements JsonMessage {
+								@JsonProperty long timeout) implements JsonMessage {
 		/**
 		 * For json
 		 */
 		@SuppressWarnings("unused")
 		private Configuration() {
-			this(null, null, 0);
+			this(null, null, 0L);
 		}
 	}
 

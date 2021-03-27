@@ -44,8 +44,8 @@ public final class TcpServer extends AbstractVerticle {
 		var serverOptions = new NetServerOptions();
 		serverOptions.setHost(config.hostAddress());
 		serverOptions.setPort(config.port());
-		serverOptions.setIdleTimeout(config.clientTimeout().equals(TcpTimeouts.NO_RESPONSES)
-				? (int) TcpTimeouts.NO_TIMEOUT.toMillis() : (int) config.clientTimeout().toMillis());
+		serverOptions.setIdleTimeout(config.clientTimeout() == TcpTimeouts.NO_RESPONSES
+				? (int) TcpTimeouts.NO_TIMEOUT : (int) config.clientTimeout());
 		serverOptions.setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
 		activeCons = new HashMap<>();
 
@@ -90,14 +90,14 @@ public final class TcpServer extends AbstractVerticle {
 								@JsonProperty String outAddress,
 								@JsonProperty String hostAddress,
 								@JsonProperty int port,
-								@JsonProperty Duration clientTimeout) implements JsonMessage {
+								@JsonProperty long clientTimeout) implements JsonMessage {
 
 		/**
 		 * Used for reflection.
 		 */
 		@SuppressWarnings("unused")
 		private Configuration() {
-			this(null, null, null, 0, null);
+			this(null, null, null, 0, 0L);
 		}
 
 		public Configuration(String inAddress, String outAddress, String hostAddress, int port) {

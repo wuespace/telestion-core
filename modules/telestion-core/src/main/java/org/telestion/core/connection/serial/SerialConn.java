@@ -12,7 +12,6 @@ import org.telestion.core.connection.ConnectionData;
 import org.telestion.core.connection.SenderData;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Arrays;
 
 /**
@@ -31,7 +30,7 @@ public class SerialConn extends AbstractVerticle {
 		serialPort.openPort();
 
 		// In
-		vertx.setPeriodic(config.sampleRate().toMillis(), event -> {
+		vertx.setPeriodic(config.sampleTime(), event -> {
 			try {
 				var inpStream = serialPort.getInputStream();
 				var len = inpStream.available();
@@ -77,14 +76,14 @@ public class SerialConn extends AbstractVerticle {
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
 								@JsonProperty String serialPort,
-								@JsonProperty Duration sampleRate) implements JsonMessage {
+								@JsonProperty long sampleTime) implements JsonMessage {
 		@SuppressWarnings("unused")
 		private Configuration() {
-			this(null, null, null, null);
+			this(null, null, null, 0L);
 		}
 
 		public Configuration(String inAddress, String outAddress, String serialPort) {
-			this(inAddress, outAddress, serialPort, Duration.ofMillis(100));
+			this(inAddress, outAddress, serialPort, 100);
 		}
 	}
 
