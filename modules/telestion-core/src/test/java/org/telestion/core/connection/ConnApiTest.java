@@ -1,8 +1,5 @@
 package org.telestion.core.connection;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
@@ -16,9 +13,13 @@ import org.telestion.api.message.JsonMessage;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @ExtendWith(VertxExtension.class)
 public class ConnApiTest {
@@ -93,13 +94,24 @@ public class ConnApiTest {
 				raw -> JsonMessage.on(SenderData.class, raw, msg -> {
 			for (var detail : msg.conDetails()) {
 				if (detail instanceof TestConnDetails testDetails) {
-					logger.info("Received data from {}", testDetails.receiverNumber());
+					// Not the most beautiful implementation :(
+					if (testDetails.receiverNumber() != Integer.parseInt(addr.replace("SenderIncoming", ""))) {
+						continue;
+					}
+					logger.info("Received package to {}", testDetails.receiverNumber());
 					assertThat(msg.rawData(), is(bytes));
 					queue.add(testDetails.receiverNumber());
-					Supplier<Stream<Integer>> supplier = () -> queue.stream().distinct();
-					if (supplier.get().allMatch(i -> i >= 0 && i <= SENDER_COUNT)
-							&& supplier.get().toArray().length == SENDER_COUNT) {
-						testContext.completeNow();
+					if (queue.stream().distinct().allMatch(i -> i >= 0 && i <= SENDER_COUNT)) {
+						var length = queue.toArray().length;
+						var requestedLength = SENDER_COUNT*PACKAGE_COUNT;
+						if (length > requestedLength) {
+							testContext.failNow("Too many messages received");
+						}
+						if (length == requestedLength) {
+							testContext.completeNow();
+						}
+					} else {
+						testContext.failNow("Data from unknown sender received in test-case");
 					}
 				} else {
 					logger.warn("Although this is a special Test-Case, other information were sent to the "
@@ -133,13 +145,65 @@ public class ConnApiTest {
 	}
 
 	@Test
-	void testStaticSender(Vertx vertx, VertxTestContext testContext) {
-		testContext.completeNow();
+	void testStaticSender(Vertx vertx, VertxTestContext testContext) throws Throwable {
+		// Define some useful constants
+		var PACKAGE_COUNT = 10;
+		var bytes = new byte[] {'T', 'E', 'S', 'T'};
+		var staticDetails = new TestConnDetails(42);
+
+		// Create dummy-connection and test-evaluator
+		var counter = new AtomicInteger(0);
+		vertx.eventBus().consumer("StaticSenderPublish", raw -> {
+			JsonMessage.on(ConnectionData.class, raw, msg -> {
+				try {
+					assertThat(msg.rawData(), is(bytes));
+					assertThat(msg.conDetails(), is(staticDetails));
+					logger.info("Received package no. {}", counter.incrementAndGet());
+					if (counter.get() == PACKAGE_COUNT) {
+						testContext.completeNow();
+					} else if (counter.get() > PACKAGE_COUNT) {
+						testContext.failNow("Too many packages received on the dummy test-sender");
+					}
+				} catch(Throwable e) {
+					testContext.failNow(e);
+					logger.error("An exception occurred while testing StaticSender", e);
+				}
+			});
+		});
+
+		// Create Static-Sender
+		var staticSender = new StaticSender(new StaticSender.Configuration(
+				"StaticSenderIn", "StaticSenderPublish", staticDetails));
+
+		// Deployment of tested verticle mustn't fail!
+		vertx.deployVerticle(staticSender, handler -> {
+			if (handler.failed()) {
+				testContext.failNow(handler.cause());
+			}
+		});
+
+		// Publish test-data
+		logger.info("Sending packages to StaticSender with receiverNumber {}", staticDetails.receiverNumber());
+		IntStream.range(0, PACKAGE_COUNT).forEach(i -> {
+			logger.info("Sending package {} to StaticSender", i);
+			vertx.eventBus().publish("StaticSenderIn", new RawMessage(bytes).json());
+		});
+		logger.info("All packages for StaticSender sent");
+
+		// Wait for completion
+		assertThat(testContext.awaitCompletion(5, TimeUnit.SECONDS), is(true));
+		if (testContext.failed()) {
+			throw testContext.causeOfFailure();
+		}
 	}
 
 	@Test
-	void testRoundTrip(Vertx vertx, VertxTestContext testContext) {
+	void testRealUse(Vertx vertx, VertxTestContext testContext) throws Throwable {
 		testContext.completeNow();
+
+		if (testContext.failed()) {
+			throw testContext.causeOfFailure();
+		}
 	}
 
 	private record TestConnDetails(@JsonProperty int receiverNumber) implements ConnectionDetails {

@@ -38,7 +38,7 @@ public interface JsonMessage {
 				if (!clazz.isAssignableFrom(msgClazz)) {
 					return false;
 				}
-				handler.handle((clazz.cast(jsonObject.mapTo(msgClazz))));
+				handler.handle(clazz.cast(jsonObject.mapTo(msgClazz)));
 				return true;
 			} catch (ClassNotFoundException e) {
 				logger.warn("Error while converting JSON into JsonMessage (msg not on classpath).", e);
