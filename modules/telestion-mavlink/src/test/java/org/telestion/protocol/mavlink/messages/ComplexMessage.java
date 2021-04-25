@@ -7,7 +7,6 @@ import org.telestion.protocol.mavlink.annotation.MavInfo;
 import org.telestion.protocol.mavlink.annotation.NativeType;
 import org.telestion.protocol.mavlink.message.MavlinkMessage;
 
-@SuppressWarnings("preview")
 @MavInfo(id = 1, crc = 0)
 public record ComplexMessage(
 		@MavArray(length = 2) @MavField(extension = false, nativeType = NativeType.INT_64)

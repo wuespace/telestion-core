@@ -40,7 +40,6 @@ import org.telestion.protocol.mavlink.message.RawPayload;
  * @see MavlinkMessage
  * @see MessageIndex
  */
-@SuppressWarnings("preview")
 public final record RawMavlinkV2(@JsonProperty short len, @JsonProperty short incompatFlags,
 		@JsonProperty short compatFlags, @JsonProperty short seq, @JsonProperty short sysId, @JsonProperty short compId,
 		@JsonProperty long msgId, @JsonProperty RawPayload payload, @JsonProperty int checksum,

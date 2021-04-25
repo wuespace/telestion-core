@@ -92,8 +92,7 @@ public final class Receiver extends AbstractVerticle {
 	 * @param tcpDataSupplierAddress the address which provides the data which should be received
 	 * @param rawMavConsumerAddress  the address which consumes the RawMavlink message
 	 */
-	@SuppressWarnings("preview")
-	private static record Configuration(@JsonProperty String tcpDataSupplierAddress,
+		private static record Configuration(@JsonProperty String tcpDataSupplierAddress,
 			@JsonProperty String rawMavConsumerAddress) {
 
 		@SuppressWarnings("unused")

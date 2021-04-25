@@ -56,8 +56,7 @@ public final class SayHello extends AbstractVerticle {
 	/**
 	 * Define a configuration record.
 	 */
-	@SuppressWarnings("preview")
-	private static record Configuration(@JsonProperty long period, @JsonProperty String message) {
+		private static record Configuration(@JsonProperty long period, @JsonProperty String message) {
 
 		/**
 		 * The default values will be set via the constructor.

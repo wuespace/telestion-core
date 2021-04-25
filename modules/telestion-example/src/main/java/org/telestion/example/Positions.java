@@ -7,7 +7,6 @@ import org.telestion.api.message.JsonMessage;
 /**
  * A list message containing multiple {@link Position}.
  */
-@SuppressWarnings("preview")
 public record Positions(@JsonProperty List<Position> list) implements JsonMessage {
 	@SuppressWarnings("unused")
 	private Positions() {

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Cedric Boes
  * @version 1.0
  */
-@SuppressWarnings("preview")
 public final record AddressPort(@JsonProperty String address, @JsonProperty int port) {
 
 	/**

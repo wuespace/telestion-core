@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
  * @author Jan von Pichowski, Cedric Boes
  * @version 1.2
  */
-@SuppressWarnings("preview")
 public interface JsonMessage {
 	JsonCodec JSON_CODEC = new JacksonCodec();
 	Logger logger = LoggerFactory.getLogger(JsonMessage.class);

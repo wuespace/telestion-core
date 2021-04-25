@@ -8,7 +8,6 @@ import java.util.List;
  *
  * @author Jan von Pichowski
  */
-@SuppressWarnings("preview")
 public record Configuration(@JsonProperty String app_name, @JsonProperty List<VerticleConfig> verticles) {
 
 	/**

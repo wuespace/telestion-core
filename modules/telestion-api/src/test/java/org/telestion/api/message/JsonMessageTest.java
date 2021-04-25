@@ -19,8 +19,7 @@ public class JsonMessageTest {
 		}), is(true));
 	}
 
-	@SuppressWarnings("preview")
-	private static record TestMessage(@JsonProperty float param1) implements JsonMessage {
+		private static record TestMessage(@JsonProperty float param1) implements JsonMessage {
 		private TestMessage() {
 			this(0);
 		}

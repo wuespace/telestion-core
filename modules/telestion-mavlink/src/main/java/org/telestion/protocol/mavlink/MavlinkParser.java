@@ -558,8 +558,7 @@ public final class MavlinkParser extends AbstractVerticle {
 	 *                           (if specified).
 	 * @param rawMavConsumerAddr Address which consumes the {@link RawMavlink RawMavlink-messages}.
 	 */
-	@SuppressWarnings("preview")
-	public static record Configuration(@JsonProperty String rawMavSupplierAddr, @JsonProperty String mavConsumerAddr,
+		public static record Configuration(@JsonProperty String rawMavSupplierAddr, @JsonProperty String mavConsumerAddr,
 			@JsonProperty String mavV1SupplierAddr, @JsonProperty String mavV2SupplierAddr,
 			@JsonProperty String rawMavConsumerAddr) {
 

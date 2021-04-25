@@ -194,7 +194,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 {f'{new_line} * @deprecated This is still WIP and might change!' if msg.get_wip() else ''}
  */{f'{new_line}@Deprecated' if msg.get_wip() else ''}
 @MavInfo(id = {msg.get_msg_id()}, crc = {msg.calc_crc_extra()})
-@SuppressWarnings("preview")
 public record {name}(/*TEMPLATE_RECORD_TYPES*/) implements MavlinkMessage {{
 \t/**
 \t * There shall be no default-constructor for normal developers.

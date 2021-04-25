@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonObject;
  *
  * @author Jan von Pichowski
  */
-@SuppressWarnings("preview")
 public record VerticleConfig(@JsonProperty String name, @JsonProperty String verticle, @JsonProperty int magnitude,
 		@JsonProperty JsonNode config) {
 
