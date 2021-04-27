@@ -8,7 +8,7 @@ import org.telestion.core.message.Address;
 import org.telestion.core.monitoring.MessageLogger;
 import org.telestion.core.web.WebServer;
 //import org.telestion.example.RandomPositionPublisher;
-//import org.telestion.launcher.Launcher;
+//import org.telestion.launcher.launcher.Launcher;
 
 /**
  * Starts the Telestion-Project as a standalone Application.

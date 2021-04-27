@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A generic launcher class which deploys {@link Verticle Verticles}.
+ * A generic org.telestion.launcher.launcher class which deploys {@link Verticle Verticles}.
  *
  * @author Jan von Pichowski, Cedric Boes
  * @version 1.0
