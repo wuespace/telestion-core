@@ -6,6 +6,6 @@ gradle.ext.targetCompatibility = '16'
 include ':modules:telestion-services'
 include ':modules:telestion-api'
 include ':modules:telestion-application'
-include ':modules:telestion-mavlink'
+//include ':modules:telestion-mavlink'
 include ':modules:telestion-example'
 
