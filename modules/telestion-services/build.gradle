@@ -12,6 +12,12 @@ application {
     mainClassName = 'de.wuespace.telestion.application.Application'
 }
 
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+}
+
 publishing {
     repositories {
         maven {
@@ -26,7 +32,7 @@ publishing {
     publications {
         gpr(MavenPublication) {
             groupId = 'de.wuespace.telestion'
-            artifactId = 'telestion-api'
+            artifactId = 'telestion-services'
             //version = '1.1'
 
             from components.java
@@ -34,25 +40,12 @@ publishing {
     }
 }
 
-//TODO we should create a proper manifest like here. This needs some testing...
-/*task createJar(type: Jar) {
-archiveName = "GradleJarProject.jar"
-manifest {
-attributes 'Implementation-Title': 'Gradle Jar File Example',
-'Implementation-Version': version,
-'Main-Class': 'me.test.Test'
-}
-baseName = project.name
-from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-with jar
-}*/
-
-task publishApi(type: Copy) {
-    from jar // shortcut for createJar.outputs.files
-    into "../telestion-plugin-daedalus2/lib"
-}
-
 dependencies {
+    //implementation name: 'engine'
+
+    implementation project(':modules:telestion-api')
+
+    implementation group: 'com.fazecast', name: 'jSerialComm', version: '2.6.2'
     implementation 'com.google.guava:guava:30.1.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
@@ -64,7 +57,19 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
+    implementation "io.vertx:vertx-web:4.0.2"
     implementation "io.vertx:vertx-core:4.0.3"
+    implementation "io.vertx:vertx-hazelcast:4.0.3"
+// implementation "io.vertx:vertx-infinispan:3.9.2"
+    implementation "io.vertx:vertx-health-check:4.0.2"
+    implementation "io.vertx:vertx-http-service-factory:4.0.3"
+    implementation "io.vertx:vertx-rx-java2:4.0.3"
+    implementation "io.vertx:vertx-config:4.0.3"
+    implementation "io.vertx:vertx-service-factory:4.0.2"
+    implementation "io.vertx:vertx-mongo-client:4.0.2"
+    implementation "io.vertx:vertx-circuit-breaker:4.0.3"
+
+    testImplementation "io.vertx:vertx-junit5:4.0.3"
 }
 
 test {

@@ -4,7 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import java.time.Duration;
-import de.wuespace.telestion.core.message.Address;
+import de.wuespace.telestion.services.message.Address;
 
 /**
  * A class which publishes positions every two seconds. A codec for {@link Position} has to be registered.

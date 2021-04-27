@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.core.connection.TcpConn;
-import de.wuespace.telestion.core.message.Address;
+import de.wuespace.telestion.services.connection.TcpConn;
+import de.wuespace.telestion.services.message.Address;
 
 /**
  * {@link Verticle} which handles incoming MAVLink-Messages (in bytes[]).<br>

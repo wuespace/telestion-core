@@ -1,4 +1,4 @@
-package de.wuespace.telestion.example;
+package de.wuespace.telestion.services.database;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -6,7 +6,6 @@ import java.time.Duration;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import de.wuespace.telestion.services.database.MongoDatabaseService;
 import de.wuespace.telestion.services.message.Address;
 
 /**
@@ -17,7 +16,7 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 	private static final Logger logger = LoggerFactory.getLogger(RandomPositionPublisher.class);
 	private final Random rand = new Random(555326456);
 
-	private final String dbSave = Address.incoming(MongoDatabaseService.class, "save");
+	private final String inSave = Address.incoming(DataService.class, "save");
 
 	@Override
 	public void start(Promise<Void> startPromise) {
@@ -33,7 +32,7 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 		var y = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("y", 21.0836);
 		var z = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("z", 0.0);
 
-		final Position pos = new Position(x, y, z);
+		//final Position pos = new Position(x, y, z);
 
 		x += rand.nextDouble() * 0.02;
 		y += rand.nextDouble() * 0.02;
@@ -42,8 +41,9 @@ public final class RandomPositionPublisher extends AbstractVerticle {
 		vertx.sharedData().getLocalMap("randPos").put("y", y);
 		vertx.sharedData().getLocalMap("randPos").put("z", z);
 
-		vertx.eventBus().publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos.json());
-		vertx.eventBus().publish(dbSave, pos.json());
-		logger.debug("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
+		//vertx.eventBus().publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos.json());
+		//vertx.eventBus().publish(inSave, pos.json());
+		//logger.debug("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
 	}
 }
+

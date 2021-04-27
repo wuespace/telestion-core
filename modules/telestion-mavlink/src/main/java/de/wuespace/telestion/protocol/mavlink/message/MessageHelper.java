@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import de.wuespace.telestion.protocol.mavlink.annotation.MavArray;
 import de.wuespace.telestion.protocol.mavlink.annotation.MavField;
-import de.wuespace.telestion.core.util.UnsafePredicate;
+import de.wuespace.telestion.services.util.UnsafePredicate;
 
 /**
  * Utility class for {@link MavlinkMessage MavlinkMessages}.<br>

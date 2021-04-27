@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.core.message.Address;
+import de.wuespace.telestion.services.message.Address;
 import org.telestion.protocol.mavlink.exception.*;
 
 /**

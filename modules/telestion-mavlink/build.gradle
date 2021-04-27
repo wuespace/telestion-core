@@ -35,7 +35,7 @@ compileJava.dependsOn createTelestionMavlinkRecords
 compileJava.dependsOn createOfficialMavlinkRecords
 
 dependencies {
-    implementation project(':modules:telestion-core')
+    implementation project(':modules:telestion-services')
     implementation project(':modules:telestion-api')
 
     implementation 'com.google.guava:guava:30.1.1-jre'
