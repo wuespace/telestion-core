@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 16
-      - name: Publish api package
+      - name: Publish packages
 #        run: git submodule update --init --recursive && chmod +x gradlew && ./gradlew publish
         run: chmod +x gradlew && ./gradlew publish
         env:
