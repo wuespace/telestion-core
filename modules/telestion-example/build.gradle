@@ -16,16 +16,16 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/TelestionTeam/telestion"
+            url = "https://maven.pkg.github.com/wuespace/telestion"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                password = System.getenv("REPO_PAT")
             }
         }
     }
     publications {
         gpr(MavenPublication) {
-            groupId = 'io.github.telestionteam'
+            groupId = 'de.wuespace.telestion'
             artifactId = 'telestion-examples'
             //version = '1.1'
 
