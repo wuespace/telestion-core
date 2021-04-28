@@ -8,7 +8,7 @@ sourceCompatibility = gradle.sourceCompatibility
 targetCompatibility = gradle.targetCompatibility
 
 application {
-// Define the main class for the application.
+    // Define the main class for the application.
     mainClassName = 'de.wuespace.telestion.application.Application'
 }
 
@@ -33,7 +33,7 @@ publishing {
         gpr(MavenPublication) {
             groupId = 'de.wuespace.telestion'
             artifactId = 'telestion-services'
-            //version = '1.1'
+            version = System.getenv("VERSION")
 
             from components.java
         }
@@ -41,7 +41,7 @@ publishing {
 }
 
 dependencies {
-    //implementation name: 'engine'
+    // implementation name: 'engine'
 
     implementation project(':modules:telestion-api')
 
