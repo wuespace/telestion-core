@@ -14,8 +14,7 @@ jobs:
       - name: Checkout 📥
         uses: actions/checkout@v2.3.4
         with:
-          # enable when mavlink package is finished
-          #submodules: 'recursive'
+          submodules: true
 
       - name: Set up JDK 16 💿
         uses: actions/setup-java@v2.0.0
@@ -38,16 +37,6 @@ jobs:
           echo "version=${TAG:1}" >> $GITHUB_ENV
         env:
           TAG: ${{ env.tag }}
-
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ env.upload_url }}
-          asset_path: ./dist/artifact1.txt
-          asset_name: artifact1.txt
-          asset_content_type: text/plain
 
       - name: Publish packages 🗜
         run: chmod +x gradlew && ./gradlew publish
