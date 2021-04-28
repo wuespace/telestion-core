@@ -23,16 +23,18 @@ jobs:
           java-version: '16'
           java-package: jdk
 
-      - name: Restore cache release upload URL ♻️
-        uses: actions/cache@v2.1.5
+      - name: Download build environment 📥
+        uses: dawidd6/action-download-artifact@v2.14.0
         with:
-          path: ~/.build-env
-          key: 'github-release-action'
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow_conclusion: success
+          name: build-env
+          path: ${{ github.workspace }}
 
-      - name: Import environment
-        run: cat ~/.build-env >> $GITHUB_ENV
+      - name: Import environment ⛓
+        run: cat .build-env >> $GITHUB_ENV
 
-      - name: Build version from tag
+      - name: Build version from tag ⛓
         run: |
           echo "version=${TAG:1}" >> $GITHUB_ENV
         env:
