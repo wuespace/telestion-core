@@ -20,6 +20,7 @@ jobs:
           git-user-email: '${{ github.actor }}@users.noreply.github.com'
           release-count: '0'
           version-file: './project.json'
+          skip-on-empty: 'false'
 
       - name: Create Release 🪡
         id: create_release
