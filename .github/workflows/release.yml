@@ -1,0 +1,49 @@
+name: Release
+
+# Events that trigger this workflow
+on: [workflow_dispatch]
+
+jobs:
+  conventional-release:
+    name: Conventional Commit Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 📥
+        uses: actions/checkout@v2.3.4
+      
+      - name: Cache release upload URL ♻️
+        uses: actions/cache@v2.1.5
+        with:
+          path: ~/.build-env
+          key: 'github-release-action'
+
+      - name: Conventional Changelog Action 🎉
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3.7.1
+        with:
+          github-token: ${{ secrets.github_token }}
+          git-user-name: ${{ github.actor }}
+          git-user-email: '${{ github.actor }}@users.noreply.github.com'
+          release-count: '0'
+          version-file: './project.json'
+
+      - name: Create Release 🪡
+        id: create_release
+        uses: actions/create-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+
+      - name: Store upload url 🗜
+        run: |
+          echo "upload_url=${UPLOAD_URL}" >> ~/.build-env
+          echo "tag=${RELEASE_TAG}" >> ~/.build-env
+          echo "skipped=${RELEASE_SKIPPED}" >> ~/.build-env
+        env:
+          UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+          RELEASE_TAG: ${{ steps.changelog.outputs.tag }}
+          RELEASE_SKIPPED: ${{ steps.changelog.outputs.skipped }}

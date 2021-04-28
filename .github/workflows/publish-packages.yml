@@ -1,9 +1,10 @@
-name: Publish
+name: Publish packages
 
 # Events that trigger this workflow
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
 
 jobs:
   publish:

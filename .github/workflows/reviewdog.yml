@@ -1,7 +1,7 @@
 name: reviewdog
 
 # Events that trigger this workflow
-on: workflow_dispatch
+on: [workflow_dispatch]
 
 jobs:
   check_style:
