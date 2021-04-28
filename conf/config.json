@@ -24,14 +24,6 @@
           "inboundPermitted": [],
           "outboundPermitted": ["org.telestion.example.RandomPositionPublisher/out#MockPos"]
         }
-      },
-      {
-        "name": "Web Server",
-        "verticle": "org.telestion.core.web.WebServer",
-        "magnitude": 1,
-        "config": {
-          "port": 8080
-        }
       }
     ]
   }
