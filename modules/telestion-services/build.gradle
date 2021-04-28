@@ -25,7 +25,7 @@ publishing {
             url = "https://maven.pkg.github.com/wuespace/telestion"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("REPO_PAT")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
