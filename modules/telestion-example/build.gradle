@@ -8,7 +8,7 @@ sourceCompatibility = gradle.sourceCompatibility
 targetCompatibility = gradle.targetCompatibility
 
 application {
-// Define the main class for the application.
+    // Define the main class for the application.
     mainClassName = 'org.telestion.core.Main'
 }
 
@@ -27,7 +27,7 @@ publishing {
         gpr(MavenPublication) {
             groupId = 'de.wuespace.telestion'
             artifactId = 'telestion-examples'
-            //version = '1.1'
+            version = System.getenv("VERSION")
 
             from components.java
         }

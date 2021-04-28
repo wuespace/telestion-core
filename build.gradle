@@ -1,7 +1,3 @@
-plugins {
-    id 'com.palantir.git-version' version '0.12.3'
-}
-
 allprojects {
     repositories {
         jcenter()
@@ -10,15 +6,14 @@ allprojects {
 
 subprojects {
     def details = versionDetails()
-    version = details.lastTag + (details.commitDistance.toString() != '0' ? ('-' + details.commitDistance) : '')
-    //version = gitVersion()
+    version = System.getenv("VERSION")
     group 'org.telestion'
 
     tasks.withType(JavaExec) {
         systemProperties System.properties
         systemProperties "hazelcast.logging.type":"slf4j"
 
-        //enable modules for hazelcast
+        // enable modules for hazelcast
         jvmArgs += ["--add-modules", "java.se",
                     "--add-exports", "java.base/jdk.internal.ref=ALL-UNNAMED",
                     "--add-opens", "java.base/java.lang=ALL-UNNAMED",
@@ -28,7 +23,7 @@ subprojects {
                     "--add-opens", "jdk.management/com.sun.management.internal=ALL-UNNAMED"]
     }
 
-    //enable preview features
+    // enable preview features
     tasks.withType(JavaCompile) {
         options.compilerArgs += "--enable-preview"
     }

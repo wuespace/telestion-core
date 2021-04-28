@@ -8,7 +8,7 @@ sourceCompatibility = gradle.sourceCompatibility
 targetCompatibility = gradle.targetCompatibility
 
 application {
-// Define the main class for the application.
+    // Define the main class for the application.
     mainClassName = 'de.wuespace.telestion.application.Application'
 }
 
@@ -27,24 +27,26 @@ publishing {
         gpr(MavenPublication) {
             groupId = 'de.wuespace.telestion'
             artifactId = 'telestion-api'
-            //version = '1.1'
+            version = System.getenv("VERSION")
 
             from components.java
         }
     }
 }
 
-//TODO we should create a proper manifest like here. This needs some testing...
+// TODO: We should create a proper manifest like here. This needs some testing...
 /*task createJar(type: Jar) {
-archiveName = "GradleJarProject.jar"
-manifest {
-attributes 'Implementation-Title': 'Gradle Jar File Example',
-'Implementation-Version': version,
-'Main-Class': 'me.test.Test'
-}
-baseName = project.name
-from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-with jar
+    archiveName = "GradleJarProject.jar"
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+        'Implementation-Version': version,
+        'Main-Class': 'me.test.Test'
+    }
+    baseName = project.name
+    from { 
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }*/
 
 task publishApi(type: Copy) {

@@ -4,6 +4,13 @@ plugins {
     id 'maven-publish'
 }
 
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
+
+application {
+    // Define the main class for the application.
+    mainClassName = 'de.wuespace.telestion.application.Application'
+}
 
 publishing {
     repositories {
@@ -20,21 +27,12 @@ publishing {
         gpr(MavenPublication) {
             groupId = 'de.wuespace.telestion'
             artifactId = 'telestion-application'
-            //version = '1.1'
+            version = System.getenv("VERSION")
 
             from components.java
         }
     }
 }
-
-application {
-// Define the main class for the application.
-    mainClassName = 'de.wuespace.telestion.application.Application'
-}
-
-sourceCompatibility = gradle.sourceCompatibility
-targetCompatibility = gradle.targetCompatibility
-
 
 dependencies {
     implementation project(':modules:telestion-services')
