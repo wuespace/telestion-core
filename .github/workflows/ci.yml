@@ -1,0 +1,76 @@
+name: CI
+
+# Events that trigger this workflow
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 📥
+        uses: actions/checkout@v2.3.4
+        with:
+          submodules: true
+
+      - name: Restore gradle cache ♻️
+        uses: actions/cache@v2.1.5
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 16 💿
+        uses: actions/setup-java@v2.0.0
+        with:
+          distribution: 'zulu'
+          java-version: '16'
+          java-package: jdk
+
+      - name: Set up Python 3.8 💿
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.8
+
+      - name: Build packages 🛠️
+        run: chmod +x gradlew && ./gradlew build
+
+  test:
+    name: Test packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 📥
+        uses: actions/checkout@v2.3.4
+        with:
+          submodules: true
+
+      - name: Restore gradle cache ♻️
+        uses: actions/cache@v2.1.5
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 16 💿
+        uses: actions/setup-java@v2.0.0
+        with:
+          distribution: 'zulu'
+          java-version: '16'
+          java-package: jdk
+
+      - name: Set up Python 3.8 💿
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.8
+
+      - name: Build packages 🛠️
+        run: chmod +x gradlew && ./gradlew build
+      
+      - name: Test packages 🛃
+        run: ./gradlew test
