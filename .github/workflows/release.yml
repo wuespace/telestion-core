@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout 📥
         uses: actions/checkout@v2.3.4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Conventional Changelog Action 🎉
         id: changelog
