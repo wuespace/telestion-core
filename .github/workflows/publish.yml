@@ -1,17 +1,29 @@
-name: Publish package to GitHub Packages
+name: Publish
+
+# Events that trigger this workflow
 on:
   release:
     types: [published]
+
 jobs:
   publish:
+    name: Publish packages to the GitHub Registry
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - name: Checkout 📥
+        uses: actions/checkout@v2.3.4
         with:
-          java-version: 16
-      - name: Publish packages
-#        run: git submodule update --init --recursive && chmod +x gradlew && ./gradlew publish
+          # enable when mavlink package is finished
+          #submodules: 'recursive'
+
+      - name: Set up JDK 16 💿
+        uses: actions/setup-java@v2.0.0
+        with:
+          distribution: 'zulu'
+          java-version: '16'
+          java-package: jdk
+
+      - name: Publish packages 🗜
         run: chmod +x gradlew && ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
