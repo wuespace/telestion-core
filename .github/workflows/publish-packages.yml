@@ -24,7 +24,33 @@ jobs:
           java-version: '16'
           java-package: jdk
 
+      - name: Restore cache release upload URL ♻️
+        uses: actions/cache@v2.1.5
+        with:
+          path: ~/.build-env
+          key: 'github-release-action'
+
+      - name: Import environment
+        run: cat ~/.build-env >> $GITHUB_ENV
+
+      - name: Build version from tag
+        run: |
+          echo "version=${TAG:1}" >> $GITHUB_ENV
+        env:
+          TAG: ${{ env.tag }}
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ env.upload_url }}
+          asset_path: ./dist/artifact1.txt
+          asset_name: artifact1.txt
+          asset_content_type: text/plain
+
       - name: Publish packages 🗜
         run: chmod +x gradlew && ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ env.version }}
