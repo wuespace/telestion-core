@@ -7,7 +7,7 @@ allprojects {
 subprojects {
     def details = versionDetails()
     version = System.getenv("VERSION")
-    group 'org.telestion'
+    group 'de.wuespace.telestion'
 
     tasks.withType(JavaExec) {
         systemProperties System.properties
