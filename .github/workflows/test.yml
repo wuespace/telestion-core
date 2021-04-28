@@ -1,17 +1,27 @@
-name: Build and Test
+name: Test
 
 # Events that trigger this workflow
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Build and Run Tests
+  test-unit-tests:
+    name: Build and run unit tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 📥
         uses: actions/checkout@v2.3.4
         with:
           submodules: true
+
+      - name: Restore gradle cache ♻️
+        uses: actions/cache@v2.1.5
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Set up JDK 16 💿
         uses: actions/setup-java@v2.0.0
@@ -25,8 +35,11 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Build and Run Tests 🛠️
-        run: chmod +x gradlew && ./gradlew build && ./gradlew test
+      - name: Build packages 🛠️
+        run: chmod +x gradlew && ./gradlew build
+
+      - name: Test packages 🛃
+        run: ./gradlew test
 
       - name: Upload Test Report 📠
         uses: scacap/action-surefire-report@v1.0.5
