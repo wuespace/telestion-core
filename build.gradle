@@ -5,7 +5,6 @@ allprojects {
 }
 
 subprojects {
-    def details = versionDetails()
     version = System.getenv("VERSION")
     group 'de.wuespace.telestion'
 
