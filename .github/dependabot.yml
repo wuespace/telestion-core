@@ -25,9 +25,3 @@ updates:
     schedule:
       interval: 'daily'
     open-pull-requests-limit: 10
-    labels:
-      - 'dependencies :link:'
-      - 'github_actions :runner:'
-    commit-message:
-      prefix: 'chore'
-      include: 'scope'
