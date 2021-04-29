@@ -1,3 +1,17 @@
+# Before testing this workflow, please create a personal access token with following scopes:
+# - repo
+# - workflow
+# - write:packages
+# - delete:packages
+# - user:email
+# and name it "GH_RELEASE_TOKEN".
+#
+# Please take a short look at the conventional commits specification before using this action:
+# https://www.conventionalcommits.org/en/v1.0.0/
+#
+# ******** NOTE ********
+# If your repository default branch is **NOT** restricted,
+# please use the default release workflow instead.
 name: Release
 
 # Events that trigger this workflow
@@ -36,19 +50,23 @@ jobs:
           release_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
 
-      - name: Save action output to build environment 🗜
+      - name: Create build environment 🗜
         run: |
-          echo "upload_url=${UPLOAD_URL}" >> ~/.build-env
-          echo "tag=${RELEASE_TAG}" >> ~/.build-env
-          echo "skipped=${RELEASE_SKIPPED}" >> ~/.build-env
+          echo "tag=${TAG}" >> ./.build-env
+          echo "version=${VERSION}" >> ./.build-env
+          echo "skipped=${SKIPPED}" >> ./.build-env
+          echo "upload_url=${UPLOAD_URL}" >> ./.build-env
+          echo "html_url=${HTML_URL}" >> ./.build-env
         env:
+          TAG: ${{ steps.changelog.outputs.tag }}
+          VERSION: ${{ steps.changelog.outputs.version }}
+          SKIPPED: ${{ steps.changelog.outputs.skipped }}
           UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
-          RELEASE_TAG: ${{ steps.changelog.outputs.tag }}
-          RELEASE_SKIPPED: ${{ steps.changelog.outputs.skipped }}
+          HTML_URL: ${{ steps.create_release.outputs.html_url }}
 
       - name: Upload build environment 📤
         uses: actions/upload-artifact@v2.2.3
         with:
           name: build-env
-          path: '~/.build-env'
+          path: './.build-env'
           retention-days: 1
