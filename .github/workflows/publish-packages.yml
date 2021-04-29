@@ -1,3 +1,15 @@
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# This workflow is intended to use with the release workflow also provided in this repository.
+#
+# ******** NOTE ********
+# If you need access to the GitHub Maven package registry from other repositories,
+# create a personal access token with the following scopes:
+# - read:packages
+# and name it "READ_PACKAGES".
+# After this step, overwrite the default GITHUB_TOKEN environment variable with the created PAT
+# in the gradle build and test steps.
 name: Publish packages
 
 # Events that trigger this workflow
@@ -34,14 +46,14 @@ jobs:
       - name: Import environment ⛓
         run: cat .build-env >> $GITHUB_ENV
 
-      - name: Build version from tag ⛓
-        run: |
-          echo "version=${TAG:1}" >> $GITHUB_ENV
-        env:
-          TAG: ${{ env.tag }}
+      - name: Install dependencies 📚
+        run: chmod +x gradlew && ./gradlew
+        # enable, if you need access to the GitHub Maven package registry from other repositories
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.READ_PACKAGES }}
 
       - name: Publish packages 🗜
-        run: chmod +x gradlew && ./gradlew publish
+        run: ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ env.version }}
