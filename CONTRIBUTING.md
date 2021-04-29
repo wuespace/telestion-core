@@ -39,3 +39,8 @@ Additionally, if you want to upload release assets in these build workflows, you
           asset_name: artifact1.txt
           asset_content_type: text/plain
 ```
+
+## CLA
+
+All contributers are required to sign a contributor's license agreement to contribute to this repository.
+For further details, please contact kontakt@wuespace.de. Thank you! :slightly_smiling_face: 
