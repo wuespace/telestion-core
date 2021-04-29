@@ -1,3 +1,13 @@
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# ******** NOTE ********
+# If you need access to the GitHub Maven package registry from other repositories,
+# create a personal access token with the following scopes:
+# - read:packages
+# and name it "READ_PACKAGES".
+# After this step, overwrite the default GITHUB_TOKEN environment variable with the created PAT
+# in the gradle build and test steps.
 name: CI
 
 # Events that trigger this workflow
@@ -30,13 +40,15 @@ jobs:
           java-version: '16'
           java-package: jdk
 
-      - name: Set up Python 3.8 💿
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: 3.8
+      # - name: Set up Python 3.8 💿
+      #   uses: actions/setup-python@v2.2.2
+      #   with:
+      #     python-version: 3.8
 
       - name: Build packages 🛠️
         run: chmod +x gradlew && ./gradlew build
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.READ_PACKAGES }}
 
   test:
     name: Test packages
@@ -64,13 +76,15 @@ jobs:
           java-version: '16'
           java-package: jdk
 
-      - name: Set up Python 3.8 💿
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: 3.8
+      # - name: Set up Python 3.8 💿
+      #   uses: actions/setup-python@v2.2.2
+      #   with:
+      #     python-version: 3.8
 
       - name: Build packages 🛠️
         run: chmod +x gradlew && ./gradlew build
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.READ_PACKAGES }}
       
       - name: Test packages 🛃
         run: ./gradlew test
