@@ -15,6 +15,7 @@ import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import com.fazecast.jSerialComm.*;
 
+@Deprecated(since = "v0.1.3", forRemoval = true)
 public final class SerialConn extends AbstractVerticle {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SerialConn.class);

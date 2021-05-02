@@ -22,6 +22,7 @@ import de.wuespace.telestion.services.message.Address;
  * published on the event bus. Incoming messages are published to the event bus too. The connection listens to the event
  * bus and send incoming messages over tcp to the participant. All addresses are defined in the configuration.
  */
+@Deprecated(since = "v0.1.3", forRemoval = true)
 public final class TcpConn extends AbstractVerticle {
 
 	private static final Logger logger = LoggerFactory.getLogger(TcpConn.class);
