@@ -1,6 +1,7 @@
 package de.wuespace.telestion.services.connection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.wuespace.telestion.api.config.Config;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServerOptions;
@@ -9,11 +10,11 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-import java.util.Collections;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import de.wuespace.telestion.api.config.Config;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * EventbusTcpBridge is a verticle which uses SockJS-WebSockets to extend the vertx.eventBus() to an HTTP-Server.
@@ -146,7 +147,7 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted permitted eventbus addresses for outbound connections
 	 */
-	@SuppressWarnings({ "unused" })
+	@SuppressWarnings({ "preview", "unused" })
 	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
 			@JsonProperty List<String> inboundPermitted, @JsonProperty List<String> outboundPermitted) {
 		private Configuration() {

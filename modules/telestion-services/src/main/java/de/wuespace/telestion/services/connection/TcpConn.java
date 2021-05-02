@@ -1,6 +1,8 @@
 package de.wuespace.telestion.services.connection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.wuespace.telestion.api.config.Config;
+import de.wuespace.telestion.api.message.JsonMessage;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -8,13 +10,10 @@ import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.net.*;
-import java.util.Collections;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.services.message.Address;
+
+import java.util.List;
 
 /**
  * This class opens a tcp connection. This could either be a tcp client to a host or a host which accepts new clients.
@@ -162,7 +161,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * A chunk of data which is transmitted with the {@link TcpConn}.
 	 *
 	 * @param participant the participant of the tcp connection which has send this chunk of data or should receive it
-	 * @param datathe     actual data
+	 * @param data the     actual data
 	 */
 		public static record Data(@JsonProperty Participant participant, @JsonProperty byte[] data) implements JsonMessage {
 
@@ -202,8 +201,7 @@ public final class TcpConn extends AbstractVerticle {
 			@JsonProperty List<String> consumingAddresses) {
 		@SuppressWarnings("unused")
 		private Configuration() {
-			this(null, 7777, Address.outgoing(TcpConn.class), null,
-					Collections.singletonList(Address.incoming(TcpConn.class)));
+			this(null, 7777, null, null, null);
 		}
 	}
 }

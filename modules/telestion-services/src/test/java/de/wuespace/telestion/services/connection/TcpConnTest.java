@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import de.wuespace.telestion.api.message.JsonMessage;
 
+@Deprecated(since = "v0.1.3", forRemoval = true)
 @ExtendWith(VertxExtension.class)
 public class TcpConnTest {
 
