@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
@@ -62,6 +63,9 @@ public class ConnApiTest {
 				testContext.failNow(result.cause());
 			}
 		});
+
+		// Because GitHub actions run... weird
+		Thread.sleep(Duration.ofSeconds(1).toMillis());
 
 		// Publish Test data on bus
 		logger.info("Sending Test-Data");
@@ -129,6 +133,9 @@ public class ConnApiTest {
 			}
 		});
 
+		// Because GitHub actions run... weird
+		Thread.sleep(Duration.ofSeconds(1).toMillis());
+
 		// Publish Test data on bus
 		logger.info("Sending Test-Data");
 		IntStream.range(0, PACKAGE_COUNT)
@@ -183,6 +190,9 @@ public class ConnApiTest {
 			}
 		});
 
+		// Because GitHub actions run... weird
+		Thread.sleep(Duration.ofSeconds(1).toMillis());
+
 		// Publish test-data
 		logger.info("Sending packages to StaticSender with receiverNumber {}", staticDetails.receiverNumber());
 		IntStream.range(0, PACKAGE_COUNT).forEach(i -> {
@@ -200,6 +210,7 @@ public class ConnApiTest {
 
 	@Test
 	void testRealUse(Vertx vertx, VertxTestContext testContext) throws Throwable {
+		// Not implemented, yet, so nothing should fail here
 		testContext.completeNow();
 
 		if (testContext.failed()) {
