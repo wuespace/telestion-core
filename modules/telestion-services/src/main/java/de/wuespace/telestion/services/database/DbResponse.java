@@ -7,9 +7,8 @@ import java.util.List;
 import de.wuespace.telestion.api.message.JsonMessage;
 
 public record DbResponse(
-		@JsonProperty Class<?> dataType,
 		@JsonProperty List<JsonObject> result) implements JsonMessage {
 			private DbResponse() {
-				this(null, Collections.emptyList());
+				this(Collections.emptyList());
 			}
 }

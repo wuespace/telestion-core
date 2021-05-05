@@ -5,7 +5,7 @@ import io.vertx.core.json.JsonObject;
 import de.wuespace.telestion.api.message.JsonMessage;
 
 public record DataRequest(
-		@JsonProperty String className,
+		@JsonProperty String collection,
 		@JsonProperty JsonObject query,
 		@JsonProperty String operation,
 		@JsonProperty JsonObject operationParams) implements JsonMessage {

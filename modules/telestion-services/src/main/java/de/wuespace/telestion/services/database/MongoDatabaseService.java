@@ -1,16 +1,23 @@
 package de.wuespace.telestion.services.database;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.config.Config;
+import de.wuespace.telestion.services.message.Address;
 import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.services.message.Address;
 
 /**
  * MongoDatabaseService is a verticle which connects to a local running MongoDB-Database and listens for incoming
@@ -69,7 +76,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 		});
 		vertx.eventBus().consumer(inFind, request -> {
 			JsonMessage.on(DbRequest.class, request, dbRequest -> {
-				this.findLatest(dbRequest, result -> {
+				this.find(dbRequest, result -> {
 					if (result.failed()) {
 						request.fail(-1, result.cause().getMessage());
 					}
@@ -93,6 +100,9 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 */
 	private void save(JsonMessage document) {
 		var object = document.json();
+		// Put ISO8601Date-String to document before save
+		var dateString = getISO8601StringForDate(new Date());
+		object.put("datetime",	new JsonObject().put("$date", dateString));
 		client.save(document.className(), object, res -> {
 			if (res.failed()) {
 				logger.error("DB Save failed: ", res.cause());
@@ -104,7 +114,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 					logger.error("DB Find failed: ", rec.cause());
 					return;
 				}
-				DbResponse dbRes = new DbResponse(document.getClass(), rec.result());
+				DbResponse dbRes = new DbResponse(rec.result());
 				vertx.eventBus().publish(outSave.concat("/").concat(document.className()), dbRes.json());
 			});
 		});
@@ -116,10 +126,10 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * @param request	DbRequest = { class of requested data type, query? }
 	 * @param handler	Result handler, can be failed or succeeded
 	 */
-	private void findLatest(DbRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
+	private void findLatest(DbRequest request, Handler<AsyncResult<JsonObject>> handler) {
 		FindOptions findOptions = new FindOptions()
 				.setSort(new JsonObject().put("_id", -1)).setLimit(1); // last item
-		client.findWithOptions(request.dataType().getName(),
+		client.findWithOptions(request.collection(),
 				request.query(),
 				findOptions, res -> {
 					if (res.failed()) {
@@ -127,13 +137,56 @@ public final class MongoDatabaseService extends AbstractVerticle {
 						handler.handle(Future.failedFuture(res.cause()));
 						return;
 					}
-					handler.handle(Future.succeededFuture(res.result()));
+					var dbRes = new DbResponse(res.result());
+					handler.handle(Future.succeededFuture(dbRes.json()));
 				});
+	}
+
+	private void find(DbRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
+		client.findWithOptions(
+				request.collection(),
+				request.query(),
+				setFindOptions(request.fields(), request.sort(), request.limit(), request.skip()),
+				res -> {
+					if (res.failed()) {
+						logger.error("DB Request failed: ", res.cause());
+						handler.handle(Future.failedFuture(res.cause()));
+						return;
+					}
+					// TODO: Reply handle to PeriodicDataPublisher does not work as expected.
+					handler.handle(Future.succeededFuture(res.result()));
+				}
+		);
+	}
+
+	private FindOptions setFindOptions(List<String> fields, List<String> sort, int limit, int skip) {
+		return setFindOptions(fields, sort).setLimit(limit).setSkip(skip);
+	}
+
+	private FindOptions setFindOptions(List<String> fields, List<String> sort) {
+		FindOptions findOptions = new FindOptions();
+		if (!fields.isEmpty()) {
+			JsonObject jsonFields = new JsonObject();
+			fields.forEach(f -> jsonFields.put(f, true));
+			findOptions.setFields(jsonFields);
+		}
+		if (!sort.isEmpty()) {
+			JsonObject jsonSort = new JsonObject();
+			sort.forEach(s -> jsonSort.put(s, -1));
+			findOptions.setSort(jsonSort);
+		}
+		return findOptions;
+	}
+
+	private static String getISO8601StringForDate(Date date) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
+		dateFormat.setTimeZone(TimeZone.getTimeZone("CET"));
+		return dateFormat.format(date);
 	}
 
 	private static record Configuration(@JsonProperty JsonObject dbConfig, @JsonProperty String dbPoolName) {
 		private Configuration() {
-			this(new JsonObject().put("db_name", "raketenpraktikum").put("useObjectId", true), "raketenpraktikumPool");
+			this(new JsonObject().put("db_name", "daedalus2").put("useObjectId", true), "d2Pool");
 		}
 	}
 }

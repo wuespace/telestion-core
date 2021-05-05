@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonObject;
 import de.wuespace.telestion.api.message.JsonMessage;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Record to provide the structure of a database request.
  *
- * @param dataType			class of the data type
+ * @param collection			class of the data type
  * @param query				MongoDb query looks like this: { key: value }
  *                          with key meaning the name of the field in the document.
  *                          IN condition: { key: { $in: ["value1", "value2", ...] }}
@@ -16,9 +19,21 @@ import de.wuespace.telestion.api.message.JsonMessage;
  * @see <a href="https://docs.mongodb.com/manual/tutorial/query-documents/">MongoDB manual</a> for more information
  */
 public record DbRequest(
-		@JsonProperty Class<?> dataType,
-		@JsonProperty JsonObject query) implements JsonMessage {
+		@JsonProperty String collection,
+		@JsonProperty JsonObject query,
+		@JsonProperty List<String> fields,
+		@JsonProperty List<String> sort,
+		@JsonProperty int limit,
+		@JsonProperty int skip) implements JsonMessage {
 			private DbRequest() {
-				this(null, new JsonObject());
+				this("", new JsonObject(), Collections.emptyList(), Collections.emptyList(), -1, 0);
+			}
+
+			public DbRequest(String collection) {
+				this(collection, new JsonObject(), Collections.emptyList(), Collections.emptyList(), -1, 0);
+			}
+
+			public DbRequest(String collection, JsonObject query) {
+				this(collection, query, Collections.emptyList(), Collections.emptyList(), -1, 0);
 			}
 }
