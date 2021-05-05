@@ -11,19 +11,20 @@ import org.slf4j.LoggerFactory;
 public final class Sender extends AbstractVerticle {
 
 	@Override
-	public void stop(Promise<Void> stopPromise) {
-		config = Config.get(config, config(), Configuration.class);
-		stopPromise.complete();
-	}
-
-	@Override
 	public void start(Promise<Void> startPromise) {
+		config = Config.get(config, config(), Configuration.class);
+
 		vertx.eventBus().consumer(config.inputAddress,
 				raw -> {
 					JsonMessage.on(SenderData.class, raw, this::handleMessage);
 					JsonMessage.on(ConnectionData.class, raw, msg -> handleMessage(SenderData.fromConnectionData(msg)));
 				});
 		startPromise.complete();
+	}
+
+	@Override
+	public void stop(Promise<Void> stopPromise) {
+		stopPromise.complete();
 	}
 
 	/**
