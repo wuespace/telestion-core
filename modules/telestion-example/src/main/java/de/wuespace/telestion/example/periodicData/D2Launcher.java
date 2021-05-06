@@ -22,7 +22,13 @@ public final class D2Launcher extends AbstractVerticle {
 		));
 		vertx.deployVerticle(MockD2Publisher.class.getName());
 		vertx.deployVerticle(MockD2DataDispatcher.class.getName());
-		vertx.deployVerticle(new PeriodicDataPublisher("de.wuespace.telestion.example.periodicData.IMU", 1));
+		vertx.deployVerticle(
+				new PeriodicDataPublisher(
+						"de.wuespace.telestion.example.periodicData.IMU",
+						1,
+						"IMUperiodicout"
+				)
+		);
 	}
 
 	@Override
