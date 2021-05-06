@@ -5,8 +5,11 @@ import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.message.Address;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,9 +33,9 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 
 	public PeriodicDataPublisher() { this.forcedConfig = null; }
 
-	public PeriodicDataPublisher(String collection, int rate) {
+	public PeriodicDataPublisher(String collection, int rate, String outAddress) {
 		this.forcedConfig = new Configuration(
-				collection, new JsonObject(), Collections.emptyList(), Collections.emptyList(), rate, ""
+				collection, new JsonObject(), Collections.emptyList(), Collections.emptyList(), rate, outAddress
 		);
 	}
 
@@ -54,15 +57,15 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 			var dateQuery = new JsonObject().put("$gte", new JsonObject().put("$date", timeOfLastDataSet));
 			dbRequest.query().put("datetime", dateQuery);
 		}
-		vertx.eventBus().request(db, dbRequest.json(), reply -> {
+		vertx.eventBus().request(db, dbRequest.json(), (Handler<AsyncResult<Message<JsonArray>>>) reply -> {
 			if (reply.failed()) {
 				logger.error(reply.cause().getMessage());
 				return;
 			}
-			logger.info(reply.result().body().toString());
-			// TODO: reply handling in MDBDataService: get reply result back as JsonObject, maybe with JsonMessage
-			// TODO: config out address
-			// vertx.eventBus().publish(out + "#" + config.collection() + config.rate(), reply.result());
+			JsonArray jArr = reply.result().body();
+			// Set timeOfLastDataSet to the datetime of the last received data
+			timeOfLastDataSet = jArr.getJsonObject(jArr.size()-1).getString("datetime");
+			vertx.eventBus().publish(config.outAddress(), jArr);
 		});
 	}
 
@@ -73,7 +76,7 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 				config.query(),
 				config.fields(),
 				config.sort(),
-				4,
+				-1,
 				0
 		);
 	}
@@ -90,7 +93,7 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 			@JsonProperty List<String> fields,
 			@JsonProperty List<String> sort,
 			@JsonProperty int rate,
-			@JsonProperty String addressAppendix
+			@JsonProperty String outAddress
 	) {
 		private Configuration() {
 			this("", new JsonObject(), Collections.emptyList(), Collections.emptyList(), 0, "");

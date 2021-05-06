@@ -5,6 +5,7 @@ import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.services.message.Address;
 import io.vertx.core.*;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
@@ -108,7 +109,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				logger.error("DB Save failed: ", res.cause());
 				return;
 			}
-			String id = res.result();
+			/*String id = res.result();
 			client.find(document.className(), new JsonObject().put("_id", id), rec -> {
 				if (rec.failed()) {
 					logger.error("DB Find failed: ", rec.cause());
@@ -116,7 +117,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				}
 				DbResponse dbRes = new DbResponse(rec.result());
 				vertx.eventBus().publish(outSave.concat("/").concat(document.className()), dbRes.json());
-			});
+			});*/
 		});
 	}
 
@@ -142,7 +143,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				});
 	}
 
-	private void find(DbRequest request, Handler<AsyncResult<List<JsonObject>>> handler) {
+	private void find(DbRequest request, Handler<AsyncResult<JsonArray>> handler) {
 		client.findWithOptions(
 				request.collection(),
 				request.query(),
@@ -154,7 +155,8 @@ public final class MongoDatabaseService extends AbstractVerticle {
 						return;
 					}
 					// TODO: Reply handle to PeriodicDataPublisher does not work as expected.
-					handler.handle(Future.succeededFuture(res.result()));
+					var jsonArray = new JsonArray(res.result());
+					handler.handle(Future.succeededFuture(jsonArray));
 				}
 		);
 	}
