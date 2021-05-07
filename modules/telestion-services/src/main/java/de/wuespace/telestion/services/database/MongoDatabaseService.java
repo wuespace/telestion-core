@@ -1,12 +1,11 @@
 package de.wuespace.telestion.services.database;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.services.message.Address;
 import io.vertx.core.*;
-import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
@@ -132,12 +131,12 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * @param request	{@link de.wuespace.telestion.services.database.DbRequest}
 	 * @param handler	result handler, can be failed or succeeded
 	 */
+	@SuppressWarnings("unused")
 	private void findLatest(DbRequest request, Handler<AsyncResult<JsonObject>> handler) {
-		FindOptions findOptions = new FindOptions()
-				.setSort(new JsonObject().put("_id", -1)).setLimit(1); // last item
 		client.findWithOptions(request.collection(),
 				getJsonQueryFromString(request.query()),
-				findOptions, res -> {
+				setFindOptions(request.fields(), List.of("_id"), 1, 0),
+				res -> {
 					if (res.failed()) {
 						logger.error("DB Request failed: ", res.cause());
 						handler.handle(Future.failedFuture(res.cause()));
