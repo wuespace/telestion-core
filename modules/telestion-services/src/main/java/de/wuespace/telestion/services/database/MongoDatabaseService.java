@@ -1,5 +1,6 @@
 package de.wuespace.telestion.services.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.api.config.Config;
@@ -109,7 +110,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				logger.error("DB Save failed: ", res.cause());
 				return;
 			}
-			/*String id = res.result();
+			String id = res.result();
 			client.find(document.className(), new JsonObject().put("_id", id), rec -> {
 				if (rec.failed()) {
 					logger.error("DB Find failed: ", rec.cause());
@@ -117,7 +118,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				}
 				DbResponse dbRes = new DbResponse(rec.result());
 				vertx.eventBus().publish(outSave.concat("/").concat(document.className()), dbRes.json());
-			});*/
+			});
 		});
 	}
 
@@ -154,9 +155,8 @@ public final class MongoDatabaseService extends AbstractVerticle {
 						handler.handle(Future.failedFuture(res.cause()));
 						return;
 					}
-					// TODO: Reply handle to PeriodicDataPublisher does not work as expected.
-					var jsonArray = new JsonArray(res.result());
-					handler.handle(Future.succeededFuture(jsonArray));
+					var dbRes = new DbResponse(res.result());
+					handler.handle(Future.succeededFuture(dbRes.json()));
 				}
 		);
 	}
