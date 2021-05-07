@@ -132,7 +132,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 		FindOptions findOptions = new FindOptions()
 				.setSort(new JsonObject().put("_id", -1)).setLimit(1); // last item
 		client.findWithOptions(request.collection(),
-				request.query(),
+				getJsonQueryFromString(request.query()),
 				findOptions, res -> {
 					if (res.failed()) {
 						logger.error("DB Request failed: ", res.cause());
@@ -144,10 +144,10 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				});
 	}
 
-	private void find(DbRequest request, Handler<AsyncResult<JsonArray>> handler) {
+	private void find(DbRequest request, Handler<AsyncResult<JsonObject>> handler) {
 		client.findWithOptions(
 				request.collection(),
-				request.query(),
+				getJsonQueryFromString(request.query()),
 				setFindOptions(request.fields(), request.sort(), request.limit(), request.skip()),
 				res -> {
 					if (res.failed()) {
@@ -178,6 +178,14 @@ public final class MongoDatabaseService extends AbstractVerticle {
 			findOptions.setSort(jsonSort);
 		}
 		return findOptions;
+	}
+
+	private JsonObject getJsonQueryFromString(String query) {
+		if (query.isEmpty()) {
+			return new JsonObject("{}");
+		} else {
+			return new JsonObject(query);
+		}
 	}
 
 	private static String getISO8601StringForDate(Date date) {

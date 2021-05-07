@@ -20,20 +20,20 @@ import java.util.List;
  */
 public record DbRequest(
 		@JsonProperty String collection,
-		@JsonProperty JsonObject query,
+		@JsonProperty String query,
 		@JsonProperty List<String> fields,
 		@JsonProperty List<String> sort,
 		@JsonProperty int limit,
 		@JsonProperty int skip) implements JsonMessage {
 			private DbRequest() {
-				this("", new JsonObject(), Collections.emptyList(), Collections.emptyList(), -1, 0);
+				this("", "", Collections.emptyList(), Collections.emptyList(), -1, 0);
 			}
 
 			public DbRequest(String collection) {
-				this(collection, new JsonObject(), Collections.emptyList(), Collections.emptyList(), -1, 0);
+				this(collection, "", Collections.emptyList(), Collections.emptyList(), -1, 0);
 			}
 
-			public DbRequest(String collection, JsonObject query) {
+			public DbRequest(String collection, String query) {
 				this(collection, query, Collections.emptyList(), Collections.emptyList(), -1, 0);
 			}
 }

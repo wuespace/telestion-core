@@ -6,10 +6,10 @@ import de.wuespace.telestion.api.message.JsonMessage;
 
 public record DataRequest(
 		@JsonProperty String collection,
-		@JsonProperty JsonObject query,
+		@JsonProperty String query,
 		@JsonProperty String operation,
 		@JsonProperty JsonObject operationParams) implements JsonMessage {
 			private DataRequest() {
-				this("", new JsonObject(), "", new JsonObject());
+				this("", "", "", new JsonObject());
 			}
 }

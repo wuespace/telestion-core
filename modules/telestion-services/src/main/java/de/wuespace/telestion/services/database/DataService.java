@@ -139,7 +139,7 @@ public final class DataService extends AbstractVerticle {
 	 * @param query				MongoDB query, can be empty JsonObject if no specific query is needed.
 	 * @param resultHandler		Handles the request to the underlying database. Can be failed or succeeded.
 	 */
-	private void fetchLatestData(String collection, JsonObject query,
+	private void fetchLatestData(String collection, String query,
 			Handler<AsyncResult<JsonObject>> resultHandler) {
 		DbRequest dbRequest = new DbRequest(collection, query);
 		this.requestResultHandler(dbFind, dbRequest, resultHandler);

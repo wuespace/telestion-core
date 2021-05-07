@@ -13,6 +13,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 
 	public PeriodicDataPublisher(String collection, int rate, String outAddress) {
 		this.forcedConfig = new Configuration(
-				collection, new JsonObject(), Collections.emptyList(), Collections.emptyList(), rate, outAddress
+				collection, "", Collections.emptyList(), Collections.emptyList(), rate, outAddress
 		);
 	}
 
@@ -54,17 +55,20 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 
 	private void databaseRequest() {
 		if (timeOfLastDataSet != null) {
-			var dateQuery = new JsonObject().put("$gte", new JsonObject().put("$date", timeOfLastDataSet));
-			dbRequest.query().put("datetime", dateQuery);
+			var dateQuery = new JsonObject()
+				.put("datetime", new JsonObject().put("$gt", new JsonObject().put("$date", timeOfLastDataSet)));
+			dbRequest = getDbRequestFromConfig(dateQuery.toString());
 		}
-		vertx.eventBus().request(db, dbRequest.json(), (Handler<AsyncResult<Message<JsonArray>>>) reply -> {
+		logger.info(dbRequest.query().toString());
+		vertx.eventBus().request(db, dbRequest.json(), (Handler<AsyncResult<Message<JsonObject>>>) reply -> {
 			if (reply.failed()) {
 				logger.error(reply.cause().getMessage());
 				return;
 			}
-			JsonArray jArr = reply.result().body();
+
+			var jArr = reply.result().body().getJsonArray("result");
 			// Set timeOfLastDataSet to the datetime of the last received data
-			timeOfLastDataSet = jArr.getJsonObject(jArr.size()-1).getString("datetime");
+			timeOfLastDataSet = jArr.getJsonObject(jArr.size()-1).getJsonObject("datetime").getString("$date");
 			vertx.eventBus().publish(config.outAddress(), jArr);
 		});
 	}
@@ -81,6 +85,17 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 		);
 	}
 
+	private DbRequest getDbRequestFromConfig(String query) {
+		return new DbRequest(
+				config.collection(),
+				query,
+				config.fields(),
+				config.sort(),
+				-1,
+				0
+		);
+	}
+
 	private static long getRateInMillis(int rate) {
 		BigDecimal bd = new BigDecimal((double) (1 / rate));
 		bd = bd.setScale(3, RoundingMode.HALF_UP);
@@ -89,14 +104,14 @@ public final class PeriodicDataPublisher extends AbstractVerticle {
 
 	private static record Configuration(
 			@JsonProperty String collection,
-			@JsonProperty JsonObject query,
+			@JsonProperty String query,
 			@JsonProperty List<String> fields,
 			@JsonProperty List<String> sort,
 			@JsonProperty int rate,
 			@JsonProperty String outAddress
 	) {
 		private Configuration() {
-			this("", new JsonObject(), Collections.emptyList(), Collections.emptyList(), 0, "");
+			this("", "", Collections.emptyList(), Collections.emptyList(), 0, "");
 		}
 	}
 }
