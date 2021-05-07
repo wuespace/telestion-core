@@ -28,7 +28,10 @@ import org.slf4j.LoggerFactory;
  * TODO: but listens to the same address for DBRequests. The address is the interface to the database implementation,
  * TODO: so that the used DB can be replaced easily by spawning another DBClient.
  * Mongo specific:
- * Data is always saved in their exclusive collection which is always named after their Class.name / MessageType.
+ * Data is always saved in their exclusive collection which is always named after their Class.name.
+ *
+ * @author Jan Tischhöfer
+ * @version 07-05-2021
  */
 public final class MongoDatabaseService extends AbstractVerticle {
 	private final Logger logger = LoggerFactory.getLogger(MongoDatabaseService.class);
@@ -94,15 +97,16 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * Save the received document to the database.
 	 * If a MongoDB-ObjectId is specified data will be upserted, meaning if the id does not exist it will be inserted,
 	 * otherwise it will be updated. Else it will be inserted with a new id.
+	 * Additionally the current date/time is added for future queries regarding date and time.
 	 * If the save was successful the database looks for the newly saved document and publishes it to the database
-	 * outgoing address concatenated with "/Class.name". With this behaviour clients (e.g. Frontend) can listen
+	 * outgoing address concatenated with "/Class.name".
+	 * Through this behaviour clients (e.g. GUI) can listen
 	 * to the outgoing address of a specific data value and will always be provided with the most recent data.
 	 *
 	 * @param document a JsonMessage validated through the JsonMessage.on method
 	 */
 	private void save(JsonMessage document) {
 		var object = document.json();
-		// Put ISO8601Date-String to document before save
 		var dateString = getISO8601StringForDate(new Date());
 		object.put("datetime",	new JsonObject().put("$date", dateString));
 		client.save(document.className(), object, res -> {
@@ -125,8 +129,8 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	/**
 	 * Find the latest entry of the requested data type.
 	 *
-	 * @param request	DbRequest = { class of requested data type, query? }
-	 * @param handler	Result handler, can be failed or succeeded
+	 * @param request	{@link de.wuespace.telestion.services.database.DbRequest}
+	 * @param handler	result handler, can be failed or succeeded
 	 */
 	private void findLatest(DbRequest request, Handler<AsyncResult<JsonObject>> handler) {
 		FindOptions findOptions = new FindOptions()
@@ -144,6 +148,12 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				});
 	}
 
+	/**
+	 * Find all requested entries in the MongoDB.
+	 *
+	 * @param request	query options are defined by {@link de.wuespace.telestion.services.database.DbRequest}.
+	 * @param handler	result handler, can be failed or succeeded.
+	 */
 	private void find(DbRequest request, Handler<AsyncResult<JsonObject>> handler) {
 		client.findWithOptions(
 				request.collection(),
@@ -161,10 +171,28 @@ public final class MongoDatabaseService extends AbstractVerticle {
 		);
 	}
 
+	/**
+	 * Helper function to set the {@link io.vertx.ext.mongo.FindOptions}
+	 * for the {@link io.vertx.ext.mongo.MongoClient#findWithOptions(String, JsonObject, FindOptions)}.
+	 *
+	 * @param fields	@see {@link de.wuespace.telestion.services.database.MongoDatabaseService#setFindOptions(List, List)}.
+	 * @param sort		@see {@link de.wuespace.telestion.services.database.MongoDatabaseService#setFindOptions(List, List)}.
+	 * @param limit		Limits the amount of returned entries. -1 equals all entries found.
+	 * @param skip		Specifies if and how many entries should be skipped.
+	 * @return			{@link io.vertx.ext.mongo.FindOptions} for the MongoClient.
+	 */
 	private FindOptions setFindOptions(List<String> fields, List<String> sort, int limit, int skip) {
 		return setFindOptions(fields, sort).setLimit(limit).setSkip(skip);
 	}
 
+	/**
+	 * Helper function to set the {@link io.vertx.ext.mongo.FindOptions}
+	 * for the {@link io.vertx.ext.mongo.MongoClient#findWithOptions(String, JsonObject, FindOptions)}.
+	 *
+	 * @param fields	List of key Strings in the collection limiting the fields that should be returned.
+	 * @param sort		List of key Strings that the returned data should be sorted by.
+	 * @return			{@link io.vertx.ext.mongo.FindOptions} for the MongoClient.
+	 */
 	private FindOptions setFindOptions(List<String> fields, List<String> sort) {
 		FindOptions findOptions = new FindOptions();
 		if (!fields.isEmpty()) {
@@ -180,14 +208,32 @@ public final class MongoDatabaseService extends AbstractVerticle {
 		return findOptions;
 	}
 
+	/**
+	 * Helper function to parse a query string to a {@link io.vertx.core.json.JsonObject}.
+	 *
+	 * @param query	JSON String - "{"key":"value"}, ..."
+	 * @return {@link io.vertx.core.json.JsonObject} query for
+	 * {@link io.vertx.ext.mongo.MongoClient#findWithOptions(String, JsonObject, FindOptions)}
+	 */
 	private JsonObject getJsonQueryFromString(String query) {
 		if (query.isEmpty()) {
 			return new JsonObject("{}");
 		} else {
-			return new JsonObject(query);
+			try {
+				return new JsonObject(query);
+			} catch (DecodeException e) {
+				logger.error("No valid JSON String: ".concat(e.getMessage()).concat("\nReturning empty JsonObject."));
+				return new JsonObject();
+			}
 		}
 	}
 
+	/**
+	 * Helper function to convert a {@link java.util.Date} to a ISO-8601 Date/Time string.
+	 *
+	 * @param date	{@link java.util.Date} that should be converted.
+	 * @return	ISO-8601 Date/Time string representation
+	 */
 	private static String getISO8601StringForDate(Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("CET"));
