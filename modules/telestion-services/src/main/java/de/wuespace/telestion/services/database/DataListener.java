@@ -17,7 +17,7 @@ public final class DataListener extends AbstractVerticle {
 
 	private final Logger logger = LoggerFactory.getLogger(DataListener.class);
 
-	private final String save = Address.incoming(DataService.class, "save");
+	private final String save = Address.incoming(MongoDatabaseService.class, "save");
 
 	public DataListener() {
 		this.forcedConfig = null;
