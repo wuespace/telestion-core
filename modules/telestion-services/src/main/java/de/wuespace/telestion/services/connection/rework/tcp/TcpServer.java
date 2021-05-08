@@ -16,6 +16,8 @@ import io.vertx.core.net.NetSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,11 +69,16 @@ public final class TcpServer extends AbstractVerticle {
 	@Override
 	public void stop(Promise<Void> stopPromise) throws Exception {
 		if (server != null) {
-			activeCons.values().forEach(net -> net.close(stopPromise));
+			activeCons.values().forEach(net -> net.close(handler -> {
+				if (handler.failed()) {
+					stopPromise.fail(handler.cause());
+				}
+			}));
 			logger.info("Closing Server on {}:{}", config.hostAddress(), config.port());
 			server.close();
 		}
-		stopPromise.complete();
+		// Wait for all Tcp connections to be closed successfully or fail in the process
+		vertx.setTimer(Duration.ofSeconds(2).toMillis(), handler -> stopPromise.tryComplete());
 	}
 
 	/**
