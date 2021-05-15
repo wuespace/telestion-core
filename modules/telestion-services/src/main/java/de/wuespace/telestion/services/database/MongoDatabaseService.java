@@ -6,16 +6,14 @@ import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.services.message.Address;
 import io.vertx.core.*;
 import io.vertx.core.json.DecodeException;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +42,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	private final String inSave = Address.incoming(MongoDatabaseService.class, "save");
 	private final String outSave = Address.outgoing(MongoDatabaseService.class, "save");
 	private final String inFind = Address.incoming(MongoDatabaseService.class, "find");
+	private final String inAgg = Address.incoming(MongoDatabaseService.class, "aggregate");
 
 	/**
 	 * This constructor supplies default options.
@@ -90,6 +89,18 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				});
 			});
 		});
+		vertx.eventBus().consumer(inAgg, request -> {
+			JsonMessage.on(DbRequest.class, request, dbRequest -> {
+				this.aggregate(dbRequest, result -> {
+					if (result.failed()) {
+						request.fail(-1, result.cause().getMessage());
+					}
+					if (result.succeeded()) {
+						request.reply(result.result());
+					}
+				});
+			});
+		});
 	}
 
 	/**
@@ -113,7 +124,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				logger.error("DB Save failed: ", res.cause());
 				return;
 			}
-			String id = res.result();
+			/*String id = res.result();
 			client.find(document.className(), new JsonObject().put("_id", id), rec -> {
 				if (rec.failed()) {
 					logger.error("DB Find failed: ", rec.cause());
@@ -121,7 +132,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 				}
 				DbResponse dbRes = new DbResponse(rec.result());
 				vertx.eventBus().publish(outSave.concat("/").concat(document.className()), dbRes.json());
-			});
+			});*/
 		});
 	}
 
@@ -170,12 +181,52 @@ public final class MongoDatabaseService extends AbstractVerticle {
 		);
 	}
 
+	private void aggregate(DbRequest request, Handler<AsyncResult<JsonObject>> handler) {
+		var command = new JsonObject()
+				.put("aggregate", request.collection())
+				.put("pipeline", new JsonArray());
+		command.getJsonArray("pipeline")
+				.add(new JsonObject()
+						.put("$match", getJsonQueryFromString(request.query())));
+		// For each field in specified collection document you need to define the field and the operations
+		// Outsource in helper function
+		command.getJsonArray("pipeline")
+				.add(new JsonObject()
+						.put("$group", getGroupStageFromFields(request.aggregate())))
+				.add(new JsonObject()
+						.put("$project", new JsonObject()
+								.put("_id", 0)
+								.put("min", "$min")
+								.put("avg", "$avg")
+								.put("max", "$max")
+								.put("last", "$last")
+								.put("time", new JsonObject().put("$toLong", "$time"))));
+		command.put("cursor", new JsonObject());
+		client.runCommand("aggregate", command, result -> {
+			if (result.failed()) {
+				logger.error("Aggregation failed: ", result.cause().getMessage());
+				handler.handle(Future.failedFuture(result.cause()));
+				return;
+			}
+			handler.handle(Future.succeededFuture(result.result()));
+		});
+	}
+
+	private JsonObject getGroupStageFromFields(String field) {
+		var group = new JsonObject().put("_id", "$datetime");
+		// calculate avg/min/max for  field
+		group.put("min", new JsonObject().put("$min", "$" + field));
+		group.put("avg", new JsonObject().put("$avg", "$" + field));
+		group.put("max", new JsonObject().put("$max", "$" + field));
+		group.put("last", new JsonObject().put("$last", "$" + field));
+		group.put("time", new JsonObject().put("$first", "$datetime"));
+		return group;
+	}
+
 	/**
 	 * Helper function to set the {@link io.vertx.ext.mongo.FindOptions}
 	 * for the {@link io.vertx.ext.mongo.MongoClient#findWithOptions(String, JsonObject, FindOptions)}.
 	 *
-	 * @param fields	@see {@link de.wuespace.telestion.services.database.MongoDatabaseService#setFindOptions(List, List)}.
-	 * @param sort		@see {@link de.wuespace.telestion.services.database.MongoDatabaseService#setFindOptions(List, List)}.
 	 * @param limit		Limits the amount of returned entries. -1 equals all entries found.
 	 * @param skip		Specifies if and how many entries should be skipped.
 	 * @return			{@link io.vertx.ext.mongo.FindOptions} for the MongoClient.
@@ -234,8 +285,9 @@ public final class MongoDatabaseService extends AbstractVerticle {
 	 * @return	ISO-8601 Date/Time string representation
 	 */
 	private static String getISO8601StringForDate(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.GERMANY);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("CET"));
+		var dateString = dateFormat.format(date);
 		return dateFormat.format(date);
 	}
 

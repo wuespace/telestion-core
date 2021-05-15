@@ -21,6 +21,7 @@ import java.util.List;
  * @param sort 			List of key Strings that the returned data should be sorted by.
  * @param limit			Limits the amount of returned entries. -1 equals all entries found.
  * @param skip			Specifies how many entries should be skipped. 0 is default, meaning no entries are skipped.
+ * @param aggregate		Field, that should be aggregated.
  * @see <a href="https://docs.mongodb.com/manual/tutorial/query-documents/">MongoDB manual</a> for more information.
  *
  * @author Jan Tischhöfer
@@ -32,16 +33,17 @@ public record DbRequest(
 		@JsonProperty List<String> fields,
 		@JsonProperty List<String> sort,
 		@JsonProperty int limit,
-		@JsonProperty int skip) implements JsonMessage {
-			private DbRequest() {
-				this("", "", Collections.emptyList(), Collections.emptyList(), -1, 0);
-			}
+		@JsonProperty int skip,
+		@JsonProperty String aggregate) implements JsonMessage {
+	private DbRequest() {
+		this("", "", Collections.emptyList(), Collections.emptyList(), -1, 0, "");
+	}
 
-			public DbRequest(String collection) {
-				this(collection, "", Collections.emptyList(), Collections.emptyList(), -1, 0);
-			}
+	public DbRequest(String collection) {
+		this(collection, "", Collections.emptyList(), Collections.emptyList(), -1, 0, "");
+	}
 
-			public DbRequest(String collection, String query) {
-				this(collection, query, Collections.emptyList(), Collections.emptyList(), -1, 0);
-			}
+	public DbRequest(String collection, String query) {
+		this(collection, query, Collections.emptyList(), Collections.emptyList(), -1, 0, "");
+	}
 }
