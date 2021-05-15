@@ -293,7 +293,7 @@ public final class MongoDatabaseService extends AbstractVerticle {
 
 	private static record Configuration(@JsonProperty JsonObject dbConfig, @JsonProperty String dbPoolName) {
 		private Configuration() {
-			this(new JsonObject().put("db_name", "daedalus2").put("useObjectId", true), "d2Pool");
+			this(new JsonObject(), "");
 		}
 	}
 }
