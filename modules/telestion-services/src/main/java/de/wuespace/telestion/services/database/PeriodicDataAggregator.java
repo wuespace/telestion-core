@@ -142,6 +142,7 @@ public final class PeriodicDataAggregator extends AbstractVerticle {
 	}
 
 	private static String getISO8601StringForDate(Date date) {
+		// TODO: fix time zone issues, maybe use newer date implementation
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
 		dateFormat.setTimeZone(TimeZone.getTimeZone("CET"));
 		return dateFormat.format(date);
