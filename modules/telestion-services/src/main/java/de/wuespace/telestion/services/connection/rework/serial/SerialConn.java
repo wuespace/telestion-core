@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * @author Cedric Boes, Jan v. Pichowski
- * @version 2.0
+ * @author Cedric Boes, Jan v. Pichowski, Pablo Klaschka
+ * @version 3.0
  */
 public final class SerialConn extends AbstractVerticle {
 
@@ -28,6 +28,10 @@ public final class SerialConn extends AbstractVerticle {
 
 		serialPort = SerialPort.getCommPort(config.serialPort());
 		serialPort.openPort();
+		if (!serialPort.setBaudRate(config.baudRate())) {
+			logger.error("The selected baud rate of " + config.baudRate() + " is not supported on this platform.");
+		}
+		// TODO: Add more feature-rich implementation using serialPort.setComPortParameters()
 
 		// In
 		vertx.setPeriodic(config.sampleTime(), event -> {
@@ -75,14 +79,15 @@ public final class SerialConn extends AbstractVerticle {
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
 								@JsonProperty String serialPort,
+								@JsonProperty int baudRate,
 								@JsonProperty long sampleTime) implements JsonMessage {
 		@SuppressWarnings("unused")
 		private Configuration() {
-			this(null, null, null, 0L);
+			this(null, null, null, 9600, 0L);
 		}
 
 		public Configuration(String inAddress, String outAddress, String serialPort) {
-			this(inAddress, outAddress, serialPort, 100);
+			this(inAddress, outAddress, serialPort, 9600, 100);
 		}
 	}
 
