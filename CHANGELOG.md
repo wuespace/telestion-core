@@ -1,3 +1,17 @@
+# [1.0.0](https://github.com/wuespace/telestion-core/compare/v0.3.0...v1.0.0) (2021-06-02)
+
+
+* feat(connection)!: Add configuration of baud rate to `SerialConn` verticle ([b2b071a](https://github.com/wuespace/telestion-core/commit/b2b071a7fbb8cd1397eb6a11ee0d0bd1594417e8))
+
+
+### BREAKING CHANGES
+
+* Usages of the `de.wuespace.telestion.services.connection.rework.serial.SerialConn` now requires an additional parameter: `int baudRate`.
+
+To migrate, add this parameter to any application configuration using this verticle. The value used before is `9600`. Therefore, you can use `"baudRate": 9600` to match the old default configuration.
+
+
+
 # [0.3.0](https://github.com/wuespace/telestion-core/compare/v0.2.1...v0.3.0) (2021-05-08)
 
 
