@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew test
 
       - name: Upload Test Report 📠
-        uses: scacap/action-surefire-report@v1.0.9
+        uses: scacap/action-surefire-report@v1.0.12
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
