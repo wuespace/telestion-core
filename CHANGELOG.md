@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/wuespace/telestion-core/compare/v1.0.0...v1.1.0) (2021-06-27)
+
+
+### Features
+
+* **api:** Add new configuration provider which enables default values ([fba74ea](https://github.com/wuespace/telestion-core/commit/fba74eaabf7c084ba316e49590d62894f1c58543))
+
+
+
 # [1.0.0](https://github.com/wuespace/telestion-core/compare/v0.3.0...v1.0.0) (2021-06-02)
 
 
