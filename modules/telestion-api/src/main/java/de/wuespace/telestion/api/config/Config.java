@@ -22,4 +22,20 @@ public final class Config {
 	public static <T> T get(T forcedConfig, JsonObject config, Class<T> type) {
 		return forcedConfig == null ? config.mapTo(type) : forcedConfig;
 	}
+
+	/**
+	 * Selects the right configuration file.
+	 *
+	 * @param forcedConfig  this config will be applied if it is not null
+	 * @param defaultConfig this config contains the default values which replace absent values in the JSON config
+	 * @param jsonConfig    this is common config which represents the config class in json. If fields are not available
+	 *                      they will be set like the default values of the class when the default constructor is called.
+	 * @param type          the type of the config.
+	 * @param <T>           defines the class type of the configuration
+	 * @return the selected configuration
+	 */
+	public static <T> T get(T forcedConfig, T defaultConfig, JsonObject jsonConfig, Class<T> type) {
+		var config = JsonObject.mapFrom(defaultConfig).mergeIn(jsonConfig);
+		return forcedConfig == null ? config.mapTo(type) : forcedConfig;
+	}
 }
