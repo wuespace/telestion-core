@@ -44,7 +44,7 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation "org.mockito:mockito-core:3.+"
 
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.31'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.4'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
