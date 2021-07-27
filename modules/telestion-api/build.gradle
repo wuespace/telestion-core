@@ -63,7 +63,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:3.+"
 
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.4'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.5'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
     implementation "io.vertx:vertx-core:4.1.2"
