@@ -19,51 +19,43 @@ import java.util.List;
 /**
  * EventbusTcpBridge is a verticle which uses SockJS-WebSockets to extend the vertx.eventBus() to an HTTP-Server.
  * <p>
- * It creates <code>Router</code> using vertx, which handles HTTP-Requests coming to the HTTP-Server. The EventBusBridge
- * by default works after the deny-any-principle, which means that any message which is not permitted explicitly will be
- * denied (reply messages are an exception). To permit the desired messages for the frontend to go through you have to
- * configure <code>SockJSBridgeOptions</code> and mount them as a SubRouter to the Router.
+ * It creates <code>Router</code> using vertx, which handles HTTP-Requests coming to the HTTP-Server.
+ * The EventBusBridge by default works after the deny-any-principle, which means that any message
+ * which is not permitted explicitly will be denied (reply messages are an exception).
+ * To permit the desired messages for the frontend to go through you have to configure
+ * <code>SockJSBridgeOptions</code> and mount them as a SubRouter to the Router.
+ * </p>
  * <p>
  * You have to configure the following options:
  * <ul>
- * <li>httpServerOptions - the HttpServerOptions to configure the HTTP-Server</li>
- * <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go through</li>
+ *     <li>httpServerOptions - the HttpServerOptions to configure the HTTP-Server</li>
+ *     <li>defaultSockJSBridgeOptions - the SockJSBridgeOptions to configure rules to allow messages to go through</li>
  * </ul>
  * To do that you have four constructors to initialize the HTTP-Server.
- * </p>
+ *
  * <p>
- * To define rules for messages to be allowed through you have to add <code>new PermittedOptions()</code> to the
- * sockJSBridgeOptions. You can either do that in the third constructor by passing <code>new SockJSBridgeOptions</code>
- * as parameter or modify the defaultSockJSBridgeOptions and add your rules there.
+ *     To define rules for messages to be allowed through you have to add
+ *     <code>new PermittedOptions()</code> to the sockJSBridgeOptions.
+ *     You can either do that in the third constructor by passing <code>new SockJSBridgeOptions</code>
+ *     as parameter or modify the defaultSockJSBridgeOptions and add your rules there.
  * </p>
  * <p>
  * An example looks like this:
+ * <pre>{@code SockJSBridgeOptions defaultSockJSBridgeOptions = new SockJSBridgeOptions()
+ * 	.addInboundPermitted(new PermittedOptions()
+ * 	.setAddress(Address.incoming(<YourClass>.class, "<method>")))
+ * 	.addOutboundPermitted(new PermittedOptions()
+ * 	.setAddress(Address.outgoing(<YourClass>.class, "<method>)));}</pre>
  *
- * <pre>
- * {@code
- *   SockJSBridgeOptions defaultSockJSBridgeOptions = new SockJSBridgeOptions()
- *  .addInboundPermitted(new PermittedOptions()
- *  .setAddress(Address.incoming(<YourClass>.class, "<method>")))
- *  .addOutboundPermitted(new PermittedOptions()
- *  .setAddress(Address.outgoing(<YourClass>.class, "<method>)));
- * }
- * </pre>
- * </p>
  * <p>
- * To support that the one can send data type specific data on the outbound address vertx supports regex.
- * You can add a regex to <code>new PermittedOptions()</code>.
+ *     To support that the one can send data type specific data on the outbound address vertx supports regex.
+ *     You can add a regex to <code>new PermittedOptions()</code>.
  * </p>
  * <p>
  * An example looks like this:
- *
- * <pre>
- * {@code
- * 	SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions()
- * 	.addOutboundPermitted(new PermittedOptions().setAddressRegex("(<Address>)(\/(\S+))?"));
- * }
- * </pre>
+ * <pre>{@code SockJSBridgeOptions sockJSBridgeOptions = new SockJSBridgeOptions()
+ * 	.addOutboundPermitted(new PermittedOptions().setAddressRegex("(<Address>)(\/(\S+))?"));}</pre>
  * Which results in permission granted to all messages to the given address optionally suffixed with e.g. "/className.
- * </p>
  *
  * @see <a href="../../../../../../../README.md">README.md</a> for more information
  */
@@ -147,9 +139,10 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
 	 * @param outboundPermitted permitted eventbus addresses for outbound connections
 	 */
-	@SuppressWarnings({ "preview", "unused" })
+	@SuppressWarnings({"unused"})
 	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
-			@JsonProperty List<String> inboundPermitted, @JsonProperty List<String> outboundPermitted) {
+										@JsonProperty List<String> inboundPermitted,
+										@JsonProperty List<String> outboundPermitted) {
 		private Configuration() {
 			this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
 		}

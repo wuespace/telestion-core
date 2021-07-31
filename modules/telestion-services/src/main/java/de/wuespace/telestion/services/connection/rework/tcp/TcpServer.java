@@ -23,17 +23,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * <b>An implementation of an unencrypted TCP-Server.</b>
  * <p>
- *     Features are:
- *     <ul>
- *         <li>Opening new connections to TCP-Clients</li>
- *         <li>Receiving data from all the open connections</li>
- *         <li>Keep the connections open until either no package gets sent for a certain amount of time (timeout) or
- *         the Client closes the connection</li>
- *         <li>Sending answers back to the Client if the connections are still open</li>
- *     </ul>
+ *     <strong>An implementation of an unencrypted TCP-Server.</strong>
  * </p>
+ *
+ * Features are:
+ * <ul>
+ *     <li>Opening new connections to TCP-Clients</li>
+ *     <li>Receiving data from all the open connections</li>
+ *     <li>Keep the connections open until either no package gets sent for a certain amount of time (timeout) or
+ *         the Client closes the connection</li>
+ *     <li>Sending answers back to the Client if the connections are still open</li>
+ * </ul>
  */
 public final class TcpServer extends AbstractVerticle {
 

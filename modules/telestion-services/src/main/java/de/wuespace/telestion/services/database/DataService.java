@@ -39,8 +39,6 @@ public final class DataService extends AbstractVerticle {
 
 	/**
 	 * This constructor supplies default options.
-	 *
-	 * @param dataTypes				List of all full class names of the data types
 	 * @param dataOperationMap		Map of String->DataOperation for incoming dataRequests
 	 */
 	public DataService(Map<String, DataOperation> dataOperationMap) {

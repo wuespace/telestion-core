@@ -34,10 +34,6 @@ public record SenderData(@JsonProperty byte[] rawData,
 		this(null);
 	}
 
-	/**
-	 *
-	 * @param data
-	 */
 	public static SenderData fromConnectionData(ConnectionData data) {
 		return new SenderData(data.rawData(), data.conDetails());
 	}
