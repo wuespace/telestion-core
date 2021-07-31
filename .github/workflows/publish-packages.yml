@@ -25,8 +25,6 @@ jobs:
     steps:
       - name: Checkout 📥
         uses: actions/checkout@v2.3.4
-        with:
-          submodules: true
 
       - name: Set up JDK 16 💿
         uses: actions/setup-java@v2.1.0
@@ -48,9 +46,6 @@ jobs:
 
       - name: Install dependencies 📚
         run: chmod +x gradlew && ./gradlew
-        # enable, if you need access to the GitHub Maven package registry from other repositories
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.READ_PACKAGES }}
 
       - name: Publish packages 🗜
         run: ./gradlew publish
