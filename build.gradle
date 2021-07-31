@@ -33,3 +33,19 @@ subprojects {
                     "--add-opens", "jdk.management/com.sun.management.internal=ALL-UNNAMED"]
     }
 }
+
+
+
+task alljavadoc(type: Javadoc) {
+    def subProjects = gradle.rootProject.subprojects
+    source subProjects.collect { it.sourceSets.main.allJava }
+    classpath = files(subProjects.collect { it.sourceSets.main.compileClasspath })
+    //options.memberLevel = JavadocMemberLevel.PRIVATE
+    //classpath = configurations.compile
+    destinationDir = file("${buildDir}/docs/javadoc")
+}
+
+configure(alljavadoc) {
+    group = 'documentation'
+    description = 'Generates Javadoc API for all subprojects into one destination.'
+}

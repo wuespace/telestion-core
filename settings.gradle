@@ -1,4 +1,4 @@
-rootProject.name = 'telestion'
+rootProject.name = 'telestion-core'
 
 gradle.ext.sourceCompatibility = '16'
 gradle.ext.targetCompatibility = '16'
