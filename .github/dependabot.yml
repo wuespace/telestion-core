@@ -5,22 +5,26 @@
 
 version: 2
 updates:
-  - package-ecosystem: 'gitsubmodule'
-    directory: '/'
-    schedule:
-      interval: 'daily'
-      time: '04:00'
-    open-pull-requests-limit: 30
-
   - package-ecosystem: 'gradle'
     directory: '/'
     schedule:
-      interval: 'daily'
-      time: '04:00'
-    open-pull-requests-limit: 99
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    open-pull-requests-limit: 10
+    labels:
+      - ':link: dependencies'
+      - ':page_facing_up: java'
 
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
     open-pull-requests-limit: 10
+    labels:
+      - ':link: dependencies'
+      - ':runner: github_actions'
