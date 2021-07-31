@@ -1,15 +1,11 @@
-plugins {
-    id 'java'
-    id 'application'
-    id 'maven-publish'
-}
-
-sourceCompatibility = gradle.sourceCompatibility
-targetCompatibility = gradle.targetCompatibility
-
 application {
     // Define the main class for the application.
-    mainClassName = 'de.wuespace.telestion.application.Application'
+    mainClass.set('de.wuespace.telestion.application.Application')
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {

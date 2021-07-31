@@ -1,16 +1,27 @@
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }
 
 subprojects {
+    apply plugin: 'java'
+    apply plugin: 'application'
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = gradle.sourceCompatibility
+    targetCompatibility = gradle.targetCompatibility
+
     version = System.getenv("VERSION")
     group 'de.wuespace.telestion'
 
+    javadoc {
+        options.addBooleanOption('html5', true)
+    }
+
     tasks.withType(JavaExec) {
         systemProperties System.properties
-        systemProperties "hazelcast.logging.type":"slf4j"
+        systemProperties "hazelcast.logging.type": "slf4j"
 
         // enable modules for hazelcast
         jvmArgs += ["--add-modules", "java.se",
@@ -22,5 +33,3 @@ subprojects {
                     "--add-opens", "jdk.management/com.sun.management.internal=ALL-UNNAMED"]
     }
 }
-
-

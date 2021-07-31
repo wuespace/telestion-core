@@ -9,13 +9,16 @@ targetCompatibility = gradle.targetCompatibility
 
 application {
     // Define the main class for the application.
-    mainClassName = 'de.wuespace.telestion.application.Application'
+    mainClass.set('de.wuespace.telestion.application.Application')
 }
 
-repositories {
-    flatDir {
-        dirs 'lib'
-    }
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    options.addBooleanOption('html5', true)
 }
 
 publishing {
