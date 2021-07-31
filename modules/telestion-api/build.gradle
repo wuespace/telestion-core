@@ -9,7 +9,12 @@ targetCompatibility = gradle.targetCompatibility
 
 application {
     // Define the main class for the application.
-    mainClassName = 'de.wuespace.telestion.application.Application'
+    mainClass.set('de.wuespace.telestion.application.Application')
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
@@ -32,26 +37,6 @@ publishing {
             from components.java
         }
     }
-}
-
-// TODO: We should create a proper manifest like here. This needs some testing...
-/*task createJar(type: Jar) {
-    archiveName = "GradleJarProject.jar"
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',
-        'Implementation-Version': version,
-        'Main-Class': 'me.test.Test'
-    }
-    baseName = project.name
-    from { 
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with jar
-}*/
-
-task publishApi(type: Copy) {
-    from jar // shortcut for createJar.outputs.files
-    into "../telestion-plugin-daedalus2/lib"
 }
 
 dependencies {
