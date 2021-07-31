@@ -1,0 +1,43 @@
+name: Docs
+
+# Events that trigger this workflow
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 📥
+        uses: actions/checkout@v2.3.4
+
+      - name: Restore gradle cache ♻️
+        uses: actions/cache@v2.1.6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 16 💿
+        uses: actions/setup-java@v2.1.0
+        with:
+          distribution: 'zulu'
+          java-version: '16'
+          java-package: jdk
+
+      - name: Build documentation 🛠️
+        run: chmod +x gradlew && ./gradlew alljavadoc
+      - name: Finalize build 🪄
+        run: touch build/docs/javadoc/.nojekyll
+
+      - name: Deploy documentation 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: build/docs/javadoc
+          clean: true
