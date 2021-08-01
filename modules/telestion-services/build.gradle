@@ -1,6 +1,6 @@
 application {
     // Define the main class for the application.
-    mainClass.set('de.wuespace.telestion.application.Application')
+    mainClass.set('de.wuespace.telestion.application.Telestion')
 }
 
 java {
@@ -19,8 +19,6 @@ ext {
 description = 'Services and service components that are re-usable in any Telestion Project Application'
 
 dependencies {
-    // implementation name: 'engine'
-
     implementation project(':modules:telestion-api')
 
     implementation group: 'com.fazecast', name: 'jSerialComm', version: '2.9.1'

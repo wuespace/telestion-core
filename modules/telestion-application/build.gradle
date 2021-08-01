@@ -1,6 +1,6 @@
 application {
     // Define the main class for the application.
-    mainClass.set('de.wuespace.telestion.application.Application')
+    mainClass.set('de.wuespace.telestion.application.Telestion')
 }
 
 java {
