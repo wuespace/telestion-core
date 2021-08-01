@@ -40,8 +40,6 @@ task alljavadoc(type: Javadoc) {
     def subProjects = gradle.rootProject.subprojects
     source subProjects.collect { it.sourceSets.main.allJava }
     classpath = files(subProjects.collect { it.sourceSets.main.compileClasspath })
-    //options.memberLevel = JavadocMemberLevel.PRIVATE
-    //classpath = configurations.compile
     destinationDir = file("${buildDir}/docs/javadoc")
 }
 
