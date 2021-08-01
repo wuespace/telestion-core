@@ -5,10 +5,8 @@ import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
 import de.wuespace.telestion.services.connection.rework.Tuple;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.core.Promise;
+import io.reactivex.annotations.NonNull;
+import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
@@ -18,14 +16,16 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>
- *     <strong>An implementation of an unencrypted TCP-Server.</strong>
+ * <strong>An implementation of an unencrypted TCP-Server.</strong>
  * </p>
  *
+ * <p>
  * Features are:
  * <ul>
  *     <li>Opening new connections to TCP-Clients</li>
@@ -37,78 +37,87 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class TcpServer extends AbstractVerticle {
 
+	/**
+	 * Configuration for this Verticle which can be loaded from a config.<br>
+	 * An optional timeout can be specified which is the consecutive time without any packets incoming or outgoing after
+	 * which a client will be disconnected. Special timeouts can be found in {@link TcpTimeouts}.
+	 *
+	 * @param inAddress     address on which the verticle listens on
+	 * @param outAddress    address on which the verticle publishes
+	 * @param host          host on which the Server-Socket should run
+	 * @param port          port on which the Server-Socket should run
+	 * @param clientTimeout time until timeout
+	 */
+	public final record Configuration(@JsonProperty String inAddress,
+									  @JsonProperty String outAddress,
+									  @JsonProperty String host,
+									  @JsonProperty int port,
+									  @JsonProperty long clientTimeout) implements JsonMessage {
+		private Configuration() {
+			this(null, null, "0.0.0.0", 0, TcpTimeouts.DEFAULT_TIMEOUT);
+		}
+
+		public Configuration(@NonNull String inAddress, @NonNull String outAddress, @NonNull String host, int port) {
+			this(inAddress, outAddress, host, port, TcpTimeouts.DEFAULT_TIMEOUT);
+		}
+	}
+
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
-		config = Config.get(config, config(), Configuration.class);
+		config = Config.get(config, new Configuration(), config(), Configuration.class);
 
 		// Unencrypted -> TODO: Implement functionality for encryption
 		var serverOptions = new NetServerOptions();
-		serverOptions.setHost(config.hostAddress());
+		serverOptions.setHost(config.host());
 		serverOptions.setPort(config.port());
 		serverOptions.setIdleTimeout(config.clientTimeout() == TcpTimeouts.NO_RESPONSES
 				? (int) TcpTimeouts.NO_TIMEOUT : (int) config.clientTimeout());
 		serverOptions.setIdleTimeoutUnit(TimeUnit.MILLISECONDS);
-		activeCons = new HashMap<>();
 
+		activeCons = new HashMap<>();
 		server = vertx.createNetServer(serverOptions);
+
+		// setup
 		server.connectHandler(this::onConnected);
-		server.exceptionHandler(handler -> logger.error("Encountered an unexpected error (Config: {})", config.json(),
-				handler));
-		server.listen(h -> complete(h, startPromise,
-				r -> logger.info("Successfully started. Running on {}:{}", config.hostAddress(), r.actualPort())));
+		server.exceptionHandler(error ->
+				logger.error("Encountered an unexpected error (Config: {})", config.json(), error));
+
+		server.listen(handler -> {
+			if (handler.failed()) {
+				logger.warn("Could not start server on {}:{}", config.host(), config.port());
+				startPromise.fail(handler.cause());
+				return;
+			}
+
+			var port = handler.result().actualPort();
+			logger.info("Successfully started. Running on {}:{}", config.host(), port);
+			startPromise.complete();
+		});
 
 		vertx.eventBus().consumer(config.inAddress, raw -> {
 			if (!JsonMessage.on(TcpData.class, raw, this::handleDispatchedMsg)) {
 				JsonMessage.on(ConnectionData.class, raw, this::handleMsg);
 			}
 		});
-
-		startPromise.complete();
 	}
 
 	@Override
 	public void stop(Promise<Void> stopPromise) throws Exception {
-		if (server != null) {
-			activeCons.values().forEach(net -> net.close(handler -> {
-				if (handler.failed()) {
-					stopPromise.fail(handler.cause());
-				}
-			}));
-			logger.info("Closing Server on {}:{}", config.hostAddress(), config.port());
-			server.close();
-		}
-		// Wait for all Tcp connections to be closed successfully or fail in the process
-		vertx.setTimer(Duration.ofSeconds(2).toMillis(), handler -> stopPromise.tryComplete());
-	}
-
-	/**
-	 * Configuration for this Verticle which can be loaded from a config.<br>
-	 * An optional timeout can be specified which is the consecutive time without any packets incoming or outgoing after
-	 * which a client will be disconnected. Special timeouts can be found in {@link TcpTimeouts}.
-	 *
-	 * @param inAddress		address on which the verticle listens on
-	 * @param outAddress	address on which the verticle publishes
-	 * @param hostAddress	host-address on which the Server-Socket should run
-	 * @param port			port on which the Server-Socket should run
-	 * @param clientTimeout time until timeout
-	 */
-	public record Configuration(@JsonProperty String inAddress,
-								@JsonProperty String outAddress,
-								@JsonProperty String hostAddress,
-								@JsonProperty int port,
-								@JsonProperty long clientTimeout) implements JsonMessage {
-
-		/**
-		 * Used for reflection.
-		 */
-		@SuppressWarnings("unused")
-		private Configuration() {
-			this(null, null, null, 0, 0L);
+		if (server == null) {
+			stopPromise.complete();
+			return;
 		}
 
-		public Configuration(String inAddress, String outAddress, String hostAddress, int port) {
-			this(inAddress, outAddress, hostAddress, port, TcpTimeouts.DEFAULT_TIMEOUT);
-		}
+		logger.info("Closing Server on {}:{}", config.host(), config.port());
+		server.close(handler -> {
+			if (handler.failed()) {
+				logger.warn("Cannot close server on {}:{}", config.host(), config.port());
+				stopPromise.fail(handler.cause());
+				return;
+			}
+
+			stopPromise.complete();
+		});
 	}
 
 	public TcpServer() {
@@ -116,10 +125,6 @@ public final class TcpServer extends AbstractVerticle {
 	}
 
 	public TcpServer(Configuration config) {
-		if (config != null && (config.hostAddress() == null || config.hostAddress().equals(""))) {
-			config = new Configuration(config.inAddress(), config.outAddress(), "localhost", config.port(),
-					config.clientTimeout());
-		}
 		this.config = config;
 	}
 
@@ -132,7 +137,6 @@ public final class TcpServer extends AbstractVerticle {
 		return activeCons.containsKey(key);
 	}
 
-	// @jvpichowski this is similar to TcpClient#onConnected, do you want to put this into one method?
 	private void onConnected(NetSocket netSocket) {
 		var ip = netSocket.remoteAddress().hostAddress();
 		var port = netSocket.remoteAddress().port();
@@ -165,23 +169,6 @@ public final class TcpServer extends AbstractVerticle {
 		});
 	}
 
-	/**
-	 * Completes a promise based on the success of a {@link AsyncResult}. If it was successful a handler will be called.
-	 *
-	 * @param result  the result which is observed
-	 * @param promise the promise which will be completed
-	 * @param handler the handler which will be executed on a successful result
-	 * @param <T>     the type of the result
-	 */
-	private static <T> void complete(AsyncResult<T> result, Promise<?> promise, Handler<T> handler) {
-		if (result.failed()) {
-			promise.fail(result.cause());
-			return;
-		}
-		handler.handle(result.result());
-		promise.tryComplete();
-	}
-
 	private void handleDispatchedMsg(TcpData data) {
 		var details = data.details();
 
@@ -207,9 +194,9 @@ public final class TcpServer extends AbstractVerticle {
 
 	private void handleMsg(ConnectionData data) {
 		var details = data.conDetails();
-		if (details instanceof TcpDetails tcpDet) {
-			handleDispatchedMsg(new TcpData(data.rawData(), tcpDet));
-		} else {	// Shouldn't happen due to Dispatcher
+		if (details instanceof TcpDetails tcpDetails) {
+			handleDispatchedMsg(new TcpData(data.rawData(), tcpDetails));
+		} else {    // Shouldn't happen due to Dispatcher
 			logger.warn("Wrong connection detail type received. Packet will be dropped.");
 			// If there will be ever a logger for broken packets, send this
 		}
@@ -217,7 +204,7 @@ public final class TcpServer extends AbstractVerticle {
 
 	private Configuration config;
 	private NetServer server;
-	private HashMap<Tuple<String, Integer>, NetSocket> activeCons;
+	private Map<Tuple<String, Integer>, NetSocket> activeCons;
 
 	private static final Logger logger = LoggerFactory.getLogger(TcpServer.class);
 }
