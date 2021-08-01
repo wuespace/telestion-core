@@ -9,7 +9,6 @@ de.wuespace.telestion.services.connection.rework
 de.wuespace.telestion.services.connection.rework.serial
 de.wuespace.telestion.services.connection.rework.tcp
 de.wuespace.telestion.services.connection.rework.udp
-de.wuespace.telestion.services.database
 de.wuespace.telestion.services.logging
 de.wuespace.telestion.services.message
 de.wuespace.telestion.services.monitoring
