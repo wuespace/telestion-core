@@ -19,9 +19,9 @@ public class TcpDispatcher extends AbstractVerticle {
 
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
 			if (!JsonMessage.on(SenderData.class, raw, msg -> Arrays.stream(msg.conDetails())
-					.filter(det -> det instanceof TcpDetails)
-					.map(det -> (TcpDetails) det)
-					.forEach(det -> handle(msg.rawData(), det)))) {
+					.filter(details -> details instanceof TcpDetails)
+					.map(details -> (TcpDetails) details)
+					.forEach(details -> handle(msg.rawData(), details)))) {
 				JsonMessage.on(ConnectionData.class, raw, msg -> {
 					if (msg.conDetails() instanceof TcpDetails det) {
 						handle(msg.rawData(), det);
