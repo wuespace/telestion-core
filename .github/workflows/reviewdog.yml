@@ -17,6 +17,7 @@ jobs:
           distribution: 'zulu'
           java-version: '16'
           java-package: jdk
+          cache: 'gradle'
 
       - name: Set up reviewdog 💿
         uses: reviewdog/action-setup@v1.0.3
