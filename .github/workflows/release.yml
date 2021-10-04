@@ -30,7 +30,7 @@ jobs:
 
       - name: Conventional Changelog Action 🎉
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v3.7.1
+        uses: TriPSs/conventional-changelog-action@v3.8.0
         with:
           github-token: ${{ secrets.GH_RELEASE_TOKEN }}
           git-user-name: ${{ github.actor }}
