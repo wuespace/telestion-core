@@ -34,7 +34,7 @@ jobs:
           java-package: jdk
 
       - name: Download build environment 📥
-        uses: dawidd6/action-download-artifact@v2.14.1
+        uses: dawidd6/action-download-artifact@v2.15.0
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           workflow_conclusion: success
