@@ -3,6 +3,7 @@ package de.wuespace.telestion.services.connection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import de.wuespace.telestion.services.connection.legacy.TcpConn;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;

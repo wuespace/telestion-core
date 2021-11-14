@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.services.connection.rework.*;
+import de.wuespace.telestion.services.connection.*;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
