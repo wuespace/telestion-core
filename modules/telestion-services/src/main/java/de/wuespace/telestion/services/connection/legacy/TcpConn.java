@@ -19,7 +19,11 @@ import java.util.List;
  * This class opens a tcp connection. This could either be a tcp client to a host or a host which accepts new clients.
  * It is configured with the file based config pattern. After a connection is established the {@link Participant} is
  * published on the event bus. Incoming messages are published to the event bus too. The connection listens to the event
- * bus and send incoming messages over tcp to the participant. All addresses are defined in the configuration.
+ * bus and send incoming messages over tcp to the participant. All addresses are defined in the configuration.<br>
+ * It is planned to be removed in v0.7.
+ *
+ * @author Jan von Pichowski
+ * @deprecated will be removed in v0.7
  */
 @Deprecated(since = "v0.1.3", forRemoval = true)
 public final class TcpConn extends AbstractVerticle {

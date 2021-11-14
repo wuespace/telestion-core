@@ -15,6 +15,13 @@ import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import com.fazecast.jSerialComm.*;
 
+/**
+ * Implements a serial connection like UART. This module is part of the old connection api which is planned to be
+ * removed in v0.7
+ *
+ * @author Jan von Pichowski
+ * @deprecated will be removed in v0.7
+ */
 @Deprecated(since = "v0.1.3", forRemoval = true)
 public final class SerialConn extends AbstractVerticle {
 
