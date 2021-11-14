@@ -1,14 +1,13 @@
-package de.wuespace.telestion.services.connection.rework.tcp;
+package de.wuespace.telestion.services.connection.tcp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.services.connection.rework.ConnectionData;
-import de.wuespace.telestion.services.connection.rework.Tuple;
+import de.wuespace.telestion.services.connection.ConnectionData;
+import de.wuespace.telestion.services.connection.Tuple;
 import io.reactivex.annotations.NonNull;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
-import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetClient;

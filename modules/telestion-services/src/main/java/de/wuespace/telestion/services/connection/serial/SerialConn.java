@@ -1,11 +1,11 @@
-package de.wuespace.telestion.services.connection.rework.serial;
+package de.wuespace.telestion.services.connection.serial;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fazecast.jSerialComm.SerialPort;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.services.connection.rework.ConnectionData;
-import de.wuespace.telestion.services.connection.rework.SenderData;
+import de.wuespace.telestion.services.connection.ConnectionData;
+import de.wuespace.telestion.services.connection.SenderData;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.slf4j.Logger;

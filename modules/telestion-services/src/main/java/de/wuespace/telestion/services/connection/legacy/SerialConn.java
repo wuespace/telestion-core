@@ -1,4 +1,4 @@
-package de.wuespace.telestion.services.connection;
+package de.wuespace.telestion.services.connection.legacy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.services.monitoring.MessageLogger;

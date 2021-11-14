@@ -1,4 +1,4 @@
-package de.wuespace.telestion.services.connection.rework.udp;
+package de.wuespace.telestion.services.connection.udp;
 
 public class UdpConn {
 	public UdpConn() {

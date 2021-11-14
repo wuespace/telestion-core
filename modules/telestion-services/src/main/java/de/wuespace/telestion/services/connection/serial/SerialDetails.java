@@ -1,7 +1,7 @@
-package de.wuespace.telestion.services.connection.rework.serial;
+package de.wuespace.telestion.services.connection.serial;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.services.connection.rework.ConnectionDetails;
+import de.wuespace.telestion.services.connection.ConnectionDetails;
 
 /**
  *

@@ -1,4 +1,4 @@
-package de.wuespace.telestion.services.connection.rework;
+package de.wuespace.telestion.services.connection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.AbstractVerticle;

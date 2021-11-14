@@ -1,4 +1,4 @@
-package de.wuespace.telestion.services.connection.rework.tcp;
+package de.wuespace.telestion.services.connection.tcp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.message.JsonMessage;
