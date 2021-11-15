@@ -22,7 +22,7 @@ import java.util.List;
  * bus and send incoming messages over tcp to the participant. All addresses are defined in the configuration.<br>
  * It is planned to be removed in v0.7.
  *
- * @author Jan von Pichowski
+ * @author Jan von Pichowski (jvpichowski)
  * @deprecated will be removed in v0.7
  */
 @Deprecated(since = "v0.1.3", forRemoval = true)

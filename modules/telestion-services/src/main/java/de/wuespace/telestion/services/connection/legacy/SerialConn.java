@@ -17,9 +17,9 @@ import com.fazecast.jSerialComm.*;
 
 /**
  * Implements a serial connection like UART. This module is part of the old connection api which is planned to be
- * removed in v0.7
+ * removed in v0.7.
  *
- * @author Jan von Pichowski
+ * @author Jan von Pichowski (jvpichowski)
  * @deprecated will be removed in v0.7
  */
 @Deprecated(since = "v0.1.3", forRemoval = true)
