@@ -3,30 +3,38 @@ package de.wuespace.telestion.services.connection.tcp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.services.connection.ConnectionData;
-import de.wuespace.telestion.services.connection.IpDetails;
-import de.wuespace.telestion.services.connection.SenderData;
+import de.wuespace.telestion.services.connection.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 
+import java.text.BreakIterator;
 import java.util.Arrays;
 
 public class TcpDispatcher extends AbstractVerticle {
 
 	@Override
 	public void start(Promise<Void> startPromise) {
-		config = Config.get(config, config(), Configuration.class);
+		config = Config.get(config, new Configuration(), config(), Configuration.class);
+
+		Broadcaster.register(config.broadcasterId(), config.inAddress());
 
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
 			if (!JsonMessage.on(SenderData.class, raw, msg -> Arrays.stream(msg.conDetails())
 					.filter(details -> details instanceof TcpDetails)
 					.map(details -> (TcpDetails) details)
 					.forEach(details -> handle(msg.rawData(), details)))) {
-				JsonMessage.on(ConnectionData.class, raw, msg -> {
+				if (!JsonMessage.on(ConnectionData.class, raw, msg -> {
 					if (msg.conDetails() instanceof TcpDetails det) {
 						handle(msg.rawData(), det);
 					}
-				});
+				})) {
+					// Broadcasting
+					JsonMessage.on(RawMessage.class, raw, msg -> {
+						Arrays.stream(servers).forEach(s ->
+								vertx.eventBus().publish(s.getConfig().inAddress(), msg.json()));
+						vertx.eventBus().publish(config.outAddress(), msg.json());
+					});
+				}
 			}
 		});
 		startPromise.complete();
@@ -38,13 +46,15 @@ public class TcpDispatcher extends AbstractVerticle {
 	}
 
 	public record Configuration(@JsonProperty String inAddress,
-								@JsonProperty String outAddress) implements JsonMessage {
+								@JsonProperty String outAddress,
+								@JsonProperty int broadcasterId) implements JsonMessage {
 		/**
 		 * For config
 		 */
+		// The broadcasting-registration is usually done in the client and server verticle.
 		@SuppressWarnings("unused")
-		private Configuration() {
-			this(null, null);
+		public Configuration() {
+			this(null, null, Broadcaster.NO_BROADCASTING);
 		}
 	}
 

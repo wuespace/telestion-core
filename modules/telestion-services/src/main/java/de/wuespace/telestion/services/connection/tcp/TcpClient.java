@@ -3,8 +3,10 @@ package de.wuespace.telestion.services.connection.tcp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.services.connection.Broadcaster;
 import de.wuespace.telestion.services.connection.ConnectionData;
 import de.wuespace.telestion.services.connection.IpDetails;
+import de.wuespace.telestion.services.connection.RawMessage;
 import io.reactivex.annotations.NonNull;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
@@ -21,17 +23,14 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public final class TcpClient extends AbstractVerticle {
+public final class TcpClient extends BaseTcpVerticle {
 
 	public final record Configuration(@JsonProperty String inAddress,
 									  @JsonProperty String outAddress,
-									  @JsonProperty long timeout) implements JsonMessage {
-		private Configuration() {
-			this(null, null, TcpTimeouts.DEFAULT_TIMEOUT);
-		}
-
-		public Configuration(@NonNull String inAddress, @NonNull String outAddress) {
-			this(inAddress, outAddress, TcpTimeouts.DEFAULT_TIMEOUT);
+									  @JsonProperty long timeout,
+									  @JsonProperty int broadcasterId) implements JsonMessage {
+		public Configuration() {
+			this(null, null, TcpTimeouts.DEFAULT_TIMEOUT, Broadcaster.DEFAULT_ID);
 		}
 	}
 
@@ -46,12 +45,9 @@ public final class TcpClient extends AbstractVerticle {
 		currentClient = vertx.createNetClient(options);
 		activeClients = new HashMap<>();
 
-		vertx.eventBus().consumer(config.inAddress(), raw -> {
-			if (!JsonMessage.on(TcpData.class, raw, this::handleDispatchedMsg)) {
-				JsonMessage.on(ConnectionData.class, raw, this::handleMsg);
-			}
-		});
+		Broadcaster.register(config.broadcasterId(), config.inAddress());
 
+		vertx.eventBus().consumer(config.inAddress(), handler -> this.consumer(handler, activeClients));
 		startPromise.complete();
 	}
 
@@ -79,7 +75,17 @@ public final class TcpClient extends AbstractVerticle {
 		this.config = config;
 	}
 
-	private void handleDispatchedMsg(TcpData tcpData) {
+	protected void handleMsg(ConnectionData data) {
+		var details = data.conDetails();
+		if (details instanceof TcpDetails tcpDet) {
+			handleDispatchedMsg(new TcpData(data.rawData(), tcpDet));
+		} else {    // Shouldn't happen due to Dispatcher
+			logger.warn("Wrong connection detail type received. Packet will be dropped.");
+			// If there will ever be a logger for broken packets, send this to it
+		}
+	}
+
+	protected void handleDispatchedMsg(TcpData tcpData) {
 		var details = tcpData.details();
 		var key = new IpDetails(details.ip(), details.port());
 
@@ -109,6 +115,8 @@ public final class TcpClient extends AbstractVerticle {
 			}
 
 			logger.debug("Sending data to {}:{}", details.ip(), details.port());
+			// TcpClient.write() is non-blocking and returns a Future which theoretically could be used to monitor the
+			// success of this process if needed in the future. (maybe inform if dropped?)
 			activeClients
 					.get(new IpDetails(details.ip(), details.port()))
 					.write(Buffer.buffer(tcpData.data()));
@@ -148,16 +156,6 @@ public final class TcpClient extends AbstractVerticle {
 			logger.info("Closing remote connection with Server ({}:{})", ip, port);
 			activeClients.remove(key);
 		});
-	}
-
-	private void handleMsg(ConnectionData data) {
-		var details = data.conDetails();
-		if (details instanceof TcpDetails tcpDet) {
-			handleDispatchedMsg(new TcpData(data.rawData(), tcpDet));
-		} else {    // Shouldn't happen due to Dispatcher
-			logger.warn("Wrong connection detail type received. Packet will be dropped.");
-			// If there will be ever a logger for broken packets, send this
-		}
 	}
 
 	private Configuration config;

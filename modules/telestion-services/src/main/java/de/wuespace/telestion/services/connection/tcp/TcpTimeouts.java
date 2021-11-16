@@ -9,7 +9,7 @@ public class TcpTimeouts {
 	public static final long NO_RESPONSES = -1;
 
 	/**
-	 * Never actively close active tcp connection.
+	 * Never actively close active tcp connections.
 	 */
 	public static final long NO_TIMEOUT = 0;
 

@@ -5,14 +5,14 @@ import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Broadcaster extends AbstractVerticle {
 
+	public final static int NO_BROADCASTING = -1;
 	public final static int DEFAULT_ID = 0;
 
 	public final record Configuration(@JsonProperty
@@ -33,6 +33,8 @@ public class Broadcaster extends AbstractVerticle {
 			return;
 		}
 
+		broadcasterMap.put(this.config.id(), this);
+
 		startPromise.complete();
 	}
 
@@ -41,8 +43,20 @@ public class Broadcaster extends AbstractVerticle {
 		stopPromise.complete();
 	}
 
+	/**
+	 * Registers a new address for the broadcaster with the given id if it was previously specified in the config.
+	 *
+	 * @param broadcasterId		0 = default broadcaster, must be >= 0
+	 * @param address			Address on VertX bus it must be sent to
+	 * @return		if registration process was successful
+	 */
 	public static boolean register(int broadcasterId, String address) {
-		if (!broadcasterMap.containsKey(broadcasterId)) {
+		if (broadcasterId == NO_BROADCASTING) {
+			return true;
+		}
+
+		if (!broadcasterMap.containsKey(broadcasterId) || broadcasterId < 0) {
+			logger.error("Setup invalid!");
 			return false;
 		}
 
@@ -52,8 +66,12 @@ public class Broadcaster extends AbstractVerticle {
 		broadcaster.getVertx().eventBus()
 				.consumer(broadcaster.config.inAddress(), raw -> {
 					if (!JsonMessage.on(RawMessage.class, raw, broadcaster::send)) {
-						if (!JsonMessage.on(SenderData.class, raw, broadcaster::send)) {
-							JsonMessage.on(ConnectionData.class, raw, broadcaster::send);
+						if (!JsonMessage.on(SenderData.class,
+								raw,
+								msg -> broadcaster.send(new RawMessage(msg.rawData())))) {
+							JsonMessage.on(ConnectionData.class,
+									raw,
+									msg -> broadcaster.send(new RawMessage(msg.rawData())));
 						}
 					}
 				});
@@ -73,7 +91,7 @@ public class Broadcaster extends AbstractVerticle {
 		this.addressList = new HashSet<>();
 	}
 
-	private void send(JsonMessage msg) {
+	private void send(RawMessage msg) {
 		addressList.forEach(addr -> vertx.eventBus().publish(addr, msg.json()));
 	}
 
@@ -81,4 +99,5 @@ public class Broadcaster extends AbstractVerticle {
 	private final Set<String> addressList;
 
 	private static final Map<Integer, Broadcaster> broadcasterMap = new HashMap<>();
+	private static Logger logger = LoggerFactory.getLogger(Broadcaster.class);
 }

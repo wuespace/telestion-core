@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fazecast.jSerialComm.SerialPort;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.services.connection.Broadcaster;
 import de.wuespace.telestion.services.connection.ConnectionData;
 import de.wuespace.telestion.services.connection.SenderData;
 import io.vertx.core.AbstractVerticle;
@@ -22,7 +23,7 @@ public final class SerialConn extends AbstractVerticle {
 
 	@Override
 	public void start(Promise<Void> startPromise) {
-		config = Config.get(config, config(), Configuration.class);
+		config = Config.get(config, new Configuration(), config(), Configuration.class);
 
 		logger.info("Opening Connection on {}", config.serialPort());
 
@@ -32,6 +33,8 @@ public final class SerialConn extends AbstractVerticle {
 			logger.error("The selected baud rate of " + config.baudRate() + " is not supported on this platform.");
 		}
 		// TODO: Add more feature-rich implementation using serialPort.setComPortParameters()
+
+		Broadcaster.register(config.broadcasterId(), config.inAddress());
 
 		// In
 		vertx.setPeriodic(config.sampleTime(), event -> {
@@ -80,14 +83,11 @@ public final class SerialConn extends AbstractVerticle {
 								@JsonProperty String outAddress,
 								@JsonProperty String serialPort,
 								@JsonProperty int baudRate,
-								@JsonProperty long sampleTime) implements JsonMessage {
+								@JsonProperty long sampleTime,
+								@JsonProperty int broadcasterId) implements JsonMessage {
 		@SuppressWarnings("unused")
-		private Configuration() {
-			this(null, null, null, 9600, 0L);
-		}
-
-		public Configuration(String inAddress, String outAddress, String serialPort) {
-			this(inAddress, outAddress, serialPort, 9600, 100);
+		public Configuration() {
+			this(null, null, null, 9_600, 0L, Broadcaster.NO_BROADCASTING);
 		}
 	}
 

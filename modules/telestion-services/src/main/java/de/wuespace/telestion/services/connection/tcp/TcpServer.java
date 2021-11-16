@@ -3,8 +3,10 @@ package de.wuespace.telestion.services.connection.tcp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.services.connection.Broadcaster;
 import de.wuespace.telestion.services.connection.ConnectionData;
 import de.wuespace.telestion.services.connection.IpDetails;
+import de.wuespace.telestion.services.connection.RawMessage;
 import io.reactivex.annotations.NonNull;
 import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
@@ -35,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *     <li>Sending answers back to the Client if the connections are still open</li>
  * </ul>
  */
-public final class TcpServer extends AbstractVerticle {
+public final class TcpServer extends BaseTcpVerticle {
 
 	/**
 	 * Configuration for this Verticle which can be loaded from a config.<br>
@@ -47,18 +49,21 @@ public final class TcpServer extends AbstractVerticle {
 	 * @param host          host on which the Server-Socket should run
 	 * @param port          port on which the Server-Socket should run
 	 * @param clientTimeout time until timeout
+	 * @param broadcasterId id of the broadcaster you want to use
 	 */
 	public final record Configuration(@JsonProperty String inAddress,
 									  @JsonProperty String outAddress,
 									  @JsonProperty String host,
 									  @JsonProperty int port,
-									  @JsonProperty long clientTimeout) implements JsonMessage {
-		private Configuration() {
-			this(null, null, "0.0.0.0", 0, TcpTimeouts.DEFAULT_TIMEOUT);
-		}
-
-		public Configuration(@NonNull String inAddress, @NonNull String outAddress, @NonNull String host, int port) {
-			this(inAddress, outAddress, host, port, TcpTimeouts.DEFAULT_TIMEOUT);
+									  @JsonProperty long clientTimeout,
+									  @JsonProperty int broadcasterId) implements JsonMessage {
+		public Configuration() {
+			this(null,
+					null,
+					"0.0.0.0",
+					0,
+					TcpTimeouts.DEFAULT_TIMEOUT,
+					Broadcaster.DEFAULT_ID);
 		}
 	}
 
@@ -94,11 +99,9 @@ public final class TcpServer extends AbstractVerticle {
 			startPromise.complete();
 		});
 
-		vertx.eventBus().consumer(config.inAddress, raw -> {
-			if (!JsonMessage.on(TcpData.class, raw, this::handleDispatchedMsg)) {
-				JsonMessage.on(ConnectionData.class, raw, this::handleMsg);
-			}
-		});
+		Broadcaster.register(config.broadcasterId(), config.inAddress());
+
+		vertx.eventBus().consumer(config.inAddress, handler -> this.consumer(handler, activeCons));
 	}
 
 	@Override
@@ -169,7 +172,17 @@ public final class TcpServer extends AbstractVerticle {
 		});
 	}
 
-	private void handleDispatchedMsg(TcpData data) {
+	protected void handleMsg(ConnectionData data) {
+		var details = data.conDetails();
+		if (details instanceof TcpDetails tcpDetails) {
+			handleDispatchedMsg(new TcpData(data.rawData(), tcpDetails));
+		} else {    // Shouldn't happen due to Dispatcher
+			logger.warn("Wrong connection detail type received. Packet will be dropped.");
+			// If there will be ever a logger for broken packets, send this
+		}
+	}
+
+	protected void handleDispatchedMsg(TcpData data) {
 		var details = data.details();
 
 		var element = activeCons.get(new IpDetails(details.ip(), details.port()));
@@ -190,16 +203,6 @@ public final class TcpServer extends AbstractVerticle {
 		}
 
 		element.write(Buffer.buffer(data.data()));
-	}
-
-	private void handleMsg(ConnectionData data) {
-		var details = data.conDetails();
-		if (details instanceof TcpDetails tcpDetails) {
-			handleDispatchedMsg(new TcpData(data.rawData(), tcpDetails));
-		} else {    // Shouldn't happen due to Dispatcher
-			logger.warn("Wrong connection detail type received. Packet will be dropped.");
-			// If there will be ever a logger for broken packets, send this
-		}
 	}
 
 	private Configuration config;
