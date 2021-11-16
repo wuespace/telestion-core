@@ -10,7 +10,7 @@ import io.vertx.core.Promise;
 import java.text.BreakIterator;
 import java.util.Arrays;
 
-public class TcpDispatcher extends AbstractVerticle {
+public final class TcpDispatcher extends AbstractVerticle {
 
 	@Override
 	public void start(Promise<Void> startPromise) {

@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection.tcp;
 
 import java.time.Duration;
 
-public class TcpTimeouts {
+public final class TcpTimeouts {
 	/**
 	 * Close tcp connection after first received packet.
 	 */

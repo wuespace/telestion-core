@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class Broadcaster extends AbstractVerticle {
+public final class Broadcaster extends AbstractVerticle {
 
 	public final static int NO_BROADCASTING = -1;
 	public final static int DEFAULT_ID = 0;

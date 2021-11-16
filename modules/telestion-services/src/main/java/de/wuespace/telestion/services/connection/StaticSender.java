@@ -8,7 +8,7 @@ import io.vertx.core.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StaticSender extends AbstractVerticle {
+public final class StaticSender extends AbstractVerticle {
 
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
