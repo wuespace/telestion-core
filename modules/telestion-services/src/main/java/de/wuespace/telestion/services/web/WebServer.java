@@ -17,7 +17,7 @@ import de.wuespace.telestion.api.config.Config;
  */
 public final class WebServer extends AbstractVerticle {
 
-	private Configuration forcedConfig;
+	private final Configuration forcedConfig;
 
 	/**
  	 * Creating a WebServer on the specified port.
@@ -60,7 +60,7 @@ public final class WebServer extends AbstractVerticle {
 	 *
 	 * @param port the port to bind to
 	 */
-	@SuppressWarnings({ "preview", "unused" })
+	@SuppressWarnings({"unused" })
 	private static record Configuration(@JsonProperty int port) {
 		private Configuration() {
 			this(8080);

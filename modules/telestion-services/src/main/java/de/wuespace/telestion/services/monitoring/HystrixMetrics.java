@@ -38,7 +38,7 @@ public final class HystrixMetrics extends AbstractVerticle {
 		logger.info("Started {} with config {}", HystrixMetrics.class.getSimpleName(), config);
 	}
 
-	@SuppressWarnings({ "preview", "unused" })
+	@SuppressWarnings({"unused" })
 	private static record Configuration(@JsonProperty int port, @JsonProperty String path) {
 		private Configuration() {
 			this(8080, "/hystrix-metrics");
