@@ -3,11 +3,11 @@
  * <p>
  *     Classes from the old connection api.<br>
  *     The old connection api contains the following network interfaces:
- *     <ul>
- *         <li>Serial ({@link de.wuespace.telestion.services.connection.legacy.SerialConn})</li>
- *         <li>Tcp ({@link de.wuespace.telestion.services.connection.legacy.TcpConn})</li>
- *     </ul>
  * </p>
+ * <ul>
+ *     <li>Serial ({@link de.wuespace.telestion.services.connection.legacy.SerialConn})</li>
+ *     <li>Tcp ({@link de.wuespace.telestion.services.connection.legacy.TcpConn})</li>
+ * </ul>
  * <p>
  *     <em>Disclaimer:<br>
  *     Classes within this package are all marked as deprecated and will be removed soon.
