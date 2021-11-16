@@ -1,5 +1,6 @@
 package de.wuespace.telestion.api.config;
 
+import io.reactivex.annotations.NonNull;
 import io.vertx.core.json.JsonObject;
 
 /**
@@ -27,14 +28,15 @@ public final class Config {
 	 * Selects the right configuration file.
 	 *
 	 * @param forcedConfig  this config will be applied if it is not null
-	 * @param defaultConfig this config contains the default values which replace absent values in the JSON config
+	 * @param defaultConfig this config contains the default values which replace absent values in the JSON config;
+	 *                      it must not be <code>null</code>!
 	 * @param jsonConfig    this is common config which represents the config class in json. If fields are not available
 	 *                      they will be set like the default values of the class when the default constructor is called.
 	 * @param <T>           defines the class type of the configuration
 	 * @return the selected configuration
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T get(T forcedConfig, T defaultConfig, JsonObject jsonConfig) {
+	public static <T> T get(T forcedConfig, @NonNull T defaultConfig, JsonObject jsonConfig) {
 		var type = (Class<T>) defaultConfig.getClass();
 		var config = JsonObject.mapFrom(defaultConfig).mergeIn(jsonConfig);
 		return forcedConfig == null ? config.mapTo(type) : forcedConfig;

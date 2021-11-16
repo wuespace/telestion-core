@@ -52,6 +52,7 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
 
     implementation "io.vertx:vertx-core:4.2.1"
+    implementation "io.vertx:vertx-rx-java2:4.2.1"
 }
 
 test {
