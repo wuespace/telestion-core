@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.connection.ConnectionData;
+import de.wuespace.telestion.services.connection.IpDetails;
 import de.wuespace.telestion.services.connection.SenderData;
-import de.wuespace.telestion.services.connection.Tuple;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 
@@ -59,7 +59,7 @@ public class TcpDispatcher extends AbstractVerticle {
 
 	private void handle(byte[] bytes, TcpDetails details) {
 		for (var server : servers) {
-			if (server.isActiveCon(new Tuple<>(details.ip(), details.port()))) {
+			if (server.isActiveCon(new IpDetails(details.ip(), details.port()))) {
 				vertx.eventBus().publish(server.getConfig().inAddress(),
 						new TcpData(bytes, details).json());
 			} else {

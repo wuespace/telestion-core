@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.connection.ConnectionData;
-import de.wuespace.telestion.services.connection.Tuple;
+import de.wuespace.telestion.services.connection.IpDetails;
 import io.reactivex.annotations.NonNull;
 import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
@@ -133,14 +133,14 @@ public final class TcpServer extends AbstractVerticle {
 	}
 
 	// Public for own Dispatcher implementations
-	public boolean isActiveCon(Tuple<String, Integer> key) {
+	public boolean isActiveCon(IpDetails key) {
 		return activeCons.containsKey(key);
 	}
 
 	private void onConnected(NetSocket netSocket) {
 		var ip = netSocket.remoteAddress().hostAddress();
 		var port = netSocket.remoteAddress().port();
-		var key = new Tuple<>(ip, port);
+		var key = new IpDetails(ip, port);
 
 		logger.info("Connection established with {}:{}", ip, port);
 		activeCons.put(key, netSocket);
@@ -172,7 +172,7 @@ public final class TcpServer extends AbstractVerticle {
 	private void handleDispatchedMsg(TcpData data) {
 		var details = data.details();
 
-		var element = activeCons.get(new Tuple<>(details.ip(), details.port()));
+		var element = activeCons.get(new IpDetails(details.ip(), details.port()));
 
 		// Might be useful to send this to the TCP-Client however the config must be varied for this (future update?)
 		if (element == null) {
@@ -204,7 +204,7 @@ public final class TcpServer extends AbstractVerticle {
 
 	private Configuration config;
 	private NetServer server;
-	private Map<Tuple<String, Integer>, NetSocket> activeCons;
+	private Map<IpDetails, NetSocket> activeCons;
 
 	private static final Logger logger = LoggerFactory.getLogger(TcpServer.class);
 }

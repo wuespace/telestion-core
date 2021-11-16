@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.connection.ConnectionData;
-import de.wuespace.telestion.services.connection.Tuple;
+import de.wuespace.telestion.services.connection.IpDetails;
 import io.reactivex.annotations.NonNull;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
@@ -81,7 +81,7 @@ public final class TcpClient extends AbstractVerticle {
 
 	private void handleDispatchedMsg(TcpData tcpData) {
 		var details = tcpData.details();
-		var key = new Tuple<>(details.ip(), details.port());
+		var key = new IpDetails(details.ip(), details.port());
 
 		// Checks if socket already exists.
 		// If not, connects to Server and if successful sends data asynchronously.
@@ -110,7 +110,7 @@ public final class TcpClient extends AbstractVerticle {
 
 			logger.debug("Sending data to {}:{}", details.ip(), details.port());
 			activeClients
-					.get(new Tuple<>(details.ip(), details.port()))
+					.get(new IpDetails(details.ip(), details.port()))
 					.write(Buffer.buffer(tcpData.data()));
 		});
 	}
@@ -123,7 +123,7 @@ public final class TcpClient extends AbstractVerticle {
 	private void onConnected(NetSocket socket) {
 		var ip = socket.remoteAddress().host();
 		var port = socket.remoteAddress().port();
-		var key = new Tuple<>(ip, port);
+		var key = new IpDetails(ip, port);
 
 		activeClients.put(key, socket);
 		logger.info("Connection established ({}:{})", ip, port);
@@ -161,7 +161,7 @@ public final class TcpClient extends AbstractVerticle {
 	}
 
 	private Configuration config;
-	private Map<Tuple<String, Integer>, NetSocket> activeClients;
+	private Map<IpDetails, NetSocket> activeClients;
 	private NetClient currentClient;
 
 	private static final Logger logger = LoggerFactory.getLogger(TcpClient.class);
