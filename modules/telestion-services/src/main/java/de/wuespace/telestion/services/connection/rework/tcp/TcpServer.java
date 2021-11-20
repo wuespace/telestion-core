@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
-import de.wuespace.telestion.services.connection.rework.Tuple;
+import de.wuespace.telestion.api.Tuple;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
