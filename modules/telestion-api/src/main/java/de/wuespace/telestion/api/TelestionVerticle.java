@@ -49,16 +49,12 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * to allow usage of the {@link #getConfig()} and {@link #getDefaultConfig()} methods.
 	 * @return the Configuration Class type
 	 */
+	@SuppressWarnings("unchecked")
 	protected Class<T> getConfigType() {
 		try {
-			logger.debug("Before get className");
 			String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-			logger.debug("getClass(): {}", getClass());
-			logger.debug("getGenericSuperclass(): {}", getClass().getGenericSuperclass());
-			logger.debug("getActualTypeArguments(): {}", (Object) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments());
-			logger.info("Got className {}", className);
 			Class<?> clazz = Class.forName(className);
-			logger.info("Got clazz: {}", clazz);
+			//noinspection unchecked
 			return (Class<T>) clazz;
 		} catch (Exception e) {
 			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
@@ -68,9 +64,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 
 	@Override
 	public final void start(Promise<Void> startPromise) throws Exception {
-		logger.debug("In Vert.x start");
 		updateConfigs();
-		logger.info("Configs updated");
 		// put general startup steps here
 		onStart(startPromise);
 	}
@@ -201,7 +195,6 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * @return the JSON object in the Configuration type format
 	 */
 	private T mapToConfiguration(JsonObject object) {
-		logger.debug("In mapTo");
 		var type = getConfigType();
 		return type != null ? object.mapTo(type) : null;
 	}
