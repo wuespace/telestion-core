@@ -1,45 +1,47 @@
 package de.wuespace.telestion.example;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
+import de.wuespace.telestion.api.TelestionVerticle;
+import de.wuespace.telestion.api.traits.WithEventBus;
+import de.wuespace.telestion.api.traits.WithSharedData;
 import java.time.Duration;
 import java.util.Random;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import de.wuespace.telestion.example.messages.Position;
+import io.vertx.core.shareddata.LocalMap;
 import de.wuespace.telestion.services.message.Address;
 
 /**
  * Test class. <br>
  * Will be removed upon first release.
  */
-public final class RandomPositionPublisher extends AbstractVerticle {
-	private static final Logger logger = LoggerFactory.getLogger(RandomPositionPublisher.class);
+public final class RandomPositionPublisher extends TelestionVerticle implements WithEventBus, WithSharedData {
 	private final Random rand = new Random(555326456);
 
 	@Override
-	public void start(Promise<Void> startPromise) {
+	public void onStart() {
 		vertx.setPeriodic(Duration.ofSeconds(3).toMillis(), timerId -> publishPosition());
-		startPromise.complete();
 	}
 
 	/**
 	 * Publishes random Position around Kiruna.
 	 */
 	private void publishPosition() {
-		var x = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("x", 67.8915);
-		var y = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("y", 21.0836);
-		var z = (double) vertx.sharedData().getLocalMap("randPos").getOrDefault("z", 0.0);
+		LocalMap<Object, Object> randPos = localMap("randPos");
+
+		var x = (double) randPos.getOrDefault("x", 67.8915);
+		var y = (double) randPos.getOrDefault("y", 21.0836);
+		var z = (double) randPos.getOrDefault("z", 0.0);
 
 		final Position pos = new Position(x, y, z);
 
 		x += rand.nextDouble() * 0.02;
 		y += rand.nextDouble() * 0.02;
 		// z += rand.nextDouble()*0.02;
-		vertx.sharedData().getLocalMap("randPos").put("x", x);
-		vertx.sharedData().getLocalMap("randPos").put("y", y);
-		vertx.sharedData().getLocalMap("randPos").put("z", z);
+		randPos.put("x", x);
+		randPos.put("y", y);
+		randPos.put("z", z);
 
-		vertx.eventBus().publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos.json());
+		publish(Address.outgoing(RandomPositionPublisher.class, "MockPos"), pos);
 		logger.debug("Sending current pos: {} on {}", pos, RandomPositionPublisher.class.getName());
 	}
 }
