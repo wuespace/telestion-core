@@ -1,15 +1,18 @@
 package de.wuespace.telestion.example;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
+import de.wuespace.telestion.api.TelestionVerticle;
+import de.wuespace.telestion.api.traits.WithEventBus;
+import de.wuespace.telestion.example.messages.Position;
 import io.vertx.core.Vertx;
+
 import java.time.Duration;
+
 import de.wuespace.telestion.services.message.Address;
 
 /**
  * A class which publishes positions every two seconds. A codec for {@link Position} has to be registered.
  */
-public final class PositionPublisher extends AbstractVerticle {
+public final class PositionPublisher extends TelestionVerticle implements WithEventBus {
 
 	/**
 	 * Internal. Don't use it! TODO remove it.<br>
@@ -29,10 +32,10 @@ public final class PositionPublisher extends AbstractVerticle {
 	}
 
 	@Override
-	public void start(Promise<Void> startPromise) throws Exception {
-		vertx.setPeriodic(Duration.ofSeconds(2).toMillis(), timerId -> {
-			vertx.eventBus().publish(Address.outgoing(this), new Position(0.3, 7.2, 8.0));
-		});
-		startPromise.complete();
+	public void onStart() throws Exception {
+		vertx.setPeriodic(Duration.ofSeconds(2).toMillis(), timerId -> publish(
+						Address.outgoing(this), new Position(0.3, 7.2, 8.0)
+				)
+		);
 	}
 }

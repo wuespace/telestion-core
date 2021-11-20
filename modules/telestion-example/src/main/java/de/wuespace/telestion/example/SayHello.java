@@ -1,69 +1,41 @@
 package de.wuespace.telestion.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.core.AbstractVerticle;
+import de.wuespace.telestion.api.TelestionConfiguration;
+import de.wuespace.telestion.api.TelestionVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+
 import java.time.Duration;
-import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import de.wuespace.telestion.api.config.Config;
 
 /**
  * A class which says hello and shows the usage of configuration files.
  *
  * @author Jan von Pichowski
  */
-public final class SayHello extends AbstractVerticle {
-
-	private static final Logger logger = LoggerFactory.getLogger(SayHello.class);
-	/**
-	 * A random uuid which defines this instance.
-	 */
-	private final UUID uuid = UUID.randomUUID();
-	/**
-	 * The forced configuration defined by the constructor.
-	 */
-	private final Configuration forcedConfig;
-
-	/**
-	 * No forced config is used. The config will be read from the config file or the default values will be used if the
-	 * config file is not available.
-	 */
-	public SayHello() {
-		this.forcedConfig = null;
+public final class SayHello extends TelestionVerticle {
+	public static void main(String[] args) throws InterruptedException {
+		var vertx = Vertx.vertx();
+		System.out.println("Deploying verticle");
+		vertx.deployVerticle(SayHello.class, new DeploymentOptions().setConfig(new Configuration(1, "hello world").json()));
+		System.out.println("after deploy verticle");
 	}
 
-	/**
-	 * The given forced config is used.
-	 *
-	 * @param period  in which they get published
-	 * @param message to be published
-	 */
-	public SayHello(long period, String message) {
-		this.forcedConfig = new Configuration(period, message);
+	public static record Configuration(
+			@JsonProperty long period,
+			@JsonProperty String message
+	) implements TelestionConfiguration {
 	}
 
 	@Override
-	public void start(Promise<Void> startPromise) throws Exception {
-		var config = Config.get(forcedConfig, config(), Configuration.class);
-		vertx.setPeriodic(Duration.ofSeconds(config.period()).toMillis(),
-				timerId -> System.out.println(config.message() + " from " + uuid));
+	public void onStart(Promise<Void> startPromise) {
+		logger.debug("onStart");
+		vertx.setPeriodic(Duration.ofSeconds(getGenericConfig().getInteger("period")).toMillis(),
+				timerId -> System.out.println(getGenericConfig().getString("message") + " from " + deploymentID()));
+		logger.debug("before promise complete");
 		startPromise.complete();
-		logger.info("Started {} with config {}", SayHello.class.getSimpleName(), config);
-	}
-
-	/**
-	 * Define a configuration record.
-	 */
-		private static record Configuration(@JsonProperty long period, @JsonProperty String message) {
-
-		/**
-		 * The default values will be set via the constructor.
-		 */
-		@SuppressWarnings("unused")
-		private Configuration() {
-			this(1, "Hello World");
-		}
+		logger.debug("after promise complete");
+		logger.info("Started {} with config {}", SayHello.class.getSimpleName(), getConfig());
 	}
 }
