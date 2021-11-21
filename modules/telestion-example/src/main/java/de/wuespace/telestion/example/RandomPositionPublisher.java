@@ -19,13 +19,13 @@ public final class RandomPositionPublisher extends TelestionVerticle implements 
 
 	@Override
 	public void onStart() {
-		vertx.setPeriodic(Duration.ofSeconds(3).toMillis(), timerId -> publishPosition());
+		vertx.setPeriodic(Duration.ofSeconds(3).toMillis(), this::publishPosition);
 	}
 
 	/**
 	 * Publishes random Position around Kiruna.
 	 */
-	private void publishPosition() {
+	private void publishPosition(Long timerId) {
 		LocalMap<Object, Object> randPos = localMap("randPos");
 
 		var x = (double) randPos.getOrDefault("x", 67.8915);

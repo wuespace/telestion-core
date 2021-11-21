@@ -19,11 +19,6 @@ public class SimpleCommandHandler extends TelestionVerticle<SimpleCommandHandler
 	}
 
 	@Override
-	protected Class<Configuration> getConfigType() {
-		return Configuration.class;
-	}
-
-	@Override
 	public void onStart() {
 		// with "controller":
 		register(getConfig().inAddress(), this::handleCommand, SimpleCommand.class);

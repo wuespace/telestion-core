@@ -17,11 +17,6 @@ public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration> 
 	) implements TelestionConfiguration {}
 
 	@Override
-	protected Class<Configuration> getConfigType() {
-		return Configuration.class;
-	}
-
-	@Override
 	public void onStart() {
 		// set default config
 		setDefaultConfig(new Configuration(null, "out-here", 42));
