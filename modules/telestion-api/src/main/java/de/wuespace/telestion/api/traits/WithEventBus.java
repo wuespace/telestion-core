@@ -1,6 +1,5 @@
 package de.wuespace.telestion.api.traits;
 
-import de.wuespace.telestion.api.Tuple;
 import de.wuespace.telestion.api.message.JsonMessage;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -92,20 +91,20 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 * @param responseType the type of the response to map to
 	 */
-	default <T extends JsonMessage> Future<Tuple<T, Message<Object>>> request(
+	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
 			String address, JsonObject message, DeliveryOptions options, Class<T> responseType) {
 		return getVertx().eventBus().request(address, message, options)
-				.map(raw -> new Tuple<>(JsonMessage.from(raw.body(), responseType), raw));
+				.map(raw -> new DecodedMessage<>(JsonMessage.from(raw.body(), responseType), raw));
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 * @param responseType the type of the response to map to
 	 */
-	default <T extends JsonMessage> Future<Tuple<T, Message<Object>>> request(
+	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
 			String address, JsonObject message, Class<T> responseType) {
 		return getVertx().eventBus().request(address, message)
-				.map(raw -> new Tuple<>(JsonMessage.from(raw.body(), responseType), raw));
+				.map(raw -> new DecodedMessage<>(JsonMessage.from(raw.body(), responseType), raw));
 	}
 
 	/**
