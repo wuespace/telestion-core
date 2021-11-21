@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
 import de.wuespace.telestion.api.message.JsonMessage;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
-import de.wuespace.telestion.api.Tuple;
+import de.wuespace.telestion.services.connection.rework.Tuple;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
