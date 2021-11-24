@@ -6,7 +6,9 @@ import io.vertx.core.json.JsonObject;
  * A utility class for the selection of configuration files.
  *
  * @author Jan von Pichowski
+ * @deprecated replaced by {@link de.wuespace.telestion.api.verticle.TelestionVerticle}
  */
+@Deprecated(since = "0.6.0", forRemoval = true)
 public final class Config {
 
 	/**
