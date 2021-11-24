@@ -1,4 +1,4 @@
-package de.wuespace.telestion.api;
+package de.wuespace.telestion.api.verticle;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;

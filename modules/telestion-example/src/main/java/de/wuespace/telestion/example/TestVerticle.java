@@ -1,10 +1,10 @@
 package de.wuespace.telestion.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.TelestionConfiguration;
-import de.wuespace.telestion.api.TelestionVerticle;
-import de.wuespace.telestion.api.traits.WithEventBus;
-import de.wuespace.telestion.api.traits.WithSharedData;
+import de.wuespace.telestion.api.verticle.TelestionConfiguration;
+import de.wuespace.telestion.api.verticle.TelestionVerticle;
+import de.wuespace.telestion.api.verticle.traits.WithEventBus;
+import de.wuespace.telestion.api.verticle.traits.WithSharedData;
 import de.wuespace.telestion.example.messages.SimpleMessage;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.eventbus.Message;

@@ -1,6 +1,6 @@
 package de.wuespace.telestion.example;
 
-import de.wuespace.telestion.api.TelestionVerticle;
+import de.wuespace.telestion.api.verticle.TelestionVerticle;
 
 import java.net.InetAddress;
 
