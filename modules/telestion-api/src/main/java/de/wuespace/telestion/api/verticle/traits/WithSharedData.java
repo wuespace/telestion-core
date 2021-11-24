@@ -1,4 +1,4 @@
-package de.wuespace.telestion.api.traits;
+package de.wuespace.telestion.api.verticle.traits;
 
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;

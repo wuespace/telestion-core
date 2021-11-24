@@ -1,8 +1,8 @@
 package de.wuespace.telestion.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.TelestionConfiguration;
-import de.wuespace.telestion.api.TelestionVerticle;
+import de.wuespace.telestion.api.verticle.TelestionConfiguration;
+import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;

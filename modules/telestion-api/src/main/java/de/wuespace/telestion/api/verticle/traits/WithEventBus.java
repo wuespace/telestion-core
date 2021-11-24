@@ -1,4 +1,4 @@
-package de.wuespace.telestion.api.traits;
+package de.wuespace.telestion.api.verticle.traits;
 
 import de.wuespace.telestion.api.message.JsonMessage;
 import io.vertx.core.Future;

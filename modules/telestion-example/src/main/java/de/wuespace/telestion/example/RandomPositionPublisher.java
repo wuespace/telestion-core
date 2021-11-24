@@ -1,8 +1,8 @@
 package de.wuespace.telestion.example;
 
-import de.wuespace.telestion.api.TelestionVerticle;
-import de.wuespace.telestion.api.traits.WithEventBus;
-import de.wuespace.telestion.api.traits.WithSharedData;
+import de.wuespace.telestion.api.verticle.TelestionVerticle;
+import de.wuespace.telestion.api.verticle.traits.WithEventBus;
+import de.wuespace.telestion.api.verticle.traits.WithSharedData;
 import java.time.Duration;
 import java.util.Random;
 
