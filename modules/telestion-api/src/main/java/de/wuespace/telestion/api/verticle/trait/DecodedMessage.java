@@ -1,4 +1,4 @@
-package de.wuespace.telestion.api.verticle.traits;
+package de.wuespace.telestion.api.verticle.trait;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.message.JsonMessage;

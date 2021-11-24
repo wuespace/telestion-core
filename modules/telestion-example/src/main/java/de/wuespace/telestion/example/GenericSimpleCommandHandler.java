@@ -1,7 +1,7 @@
 package de.wuespace.telestion.example;
 
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
-import de.wuespace.telestion.api.verticle.traits.WithEventBus;
+import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 import de.wuespace.telestion.example.messages.SimpleCommand;
 import io.vertx.core.eventbus.Message;
 
