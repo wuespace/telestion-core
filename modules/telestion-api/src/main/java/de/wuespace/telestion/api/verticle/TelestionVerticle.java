@@ -44,9 +44,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
-	 * Get the Configuration Class type from the inheriting class.<p>
-	 * Overwrite this method and return the class type of your Configuration
-	 * to allow usage of the {@link #getConfig()} and {@link #getDefaultConfig()} methods.
+	 * Get the Configuration Class type from the inheriting class.
 	 * @return the Configuration Class type
 	 */
 	@SuppressWarnings("unchecked")
