@@ -27,7 +27,7 @@ public class VerticleDeployer {
 	 * @see Vertx#deployVerticle(Verticle, DeploymentOptions)
 	 * @param configuration the configuration the verticle receives
 	 */
-	public static Future<String> deploy(Vertx vertx, Verticle verticle, JsonMessage configuration) {
+	public static Future<String> deploy(Vertx vertx, Verticle verticle, TelestionConfiguration configuration) {
 		return deploy(vertx, verticle, configuration.json());
 	}
 
