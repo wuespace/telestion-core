@@ -8,6 +8,9 @@ import io.vertx.core.eventbus.Message;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * @author Pablo Klaschka, Ludwig Richter
+ */
 public class GenericSimpleCommandHandler extends TelestionVerticle implements WithEventBus {
 	@Override
 	public void onStart() {

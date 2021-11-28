@@ -13,6 +13,8 @@ import de.wuespace.telestion.services.message.Address;
 /**
  * Test class. <br>
  * Will be removed upon first release.
+ *
+ * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
  */
 public final class RandomPositionPublisher extends TelestionVerticle implements WithEventBus, WithSharedData {
 	private final Random rand = new Random(555326456);

@@ -10,7 +10,11 @@ import io.vertx.core.eventbus.Message;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class SimpleCommandHandler extends TelestionVerticle<SimpleCommandHandler.Configuration> implements WithEventBus {
+/**
+ * @author Pablo Klaschka, Ludwig Richter
+ */
+public class SimpleCommandHandler
+		extends TelestionVerticle<SimpleCommandHandler.Configuration> implements WithEventBus {
 	public record Configuration(
 			@JsonProperty String inAddress,
 			@JsonProperty String pingAddress
@@ -26,7 +30,7 @@ public class SimpleCommandHandler extends TelestionVerticle<SimpleCommandHandler
 		register(getConfig().pingAddress(),
 				(SimpleCommand body, Message<Object> message) ->
 						message.reply(
-								new SimpleCommand("pong", new String[]{ /* Empty feeling */ })
+								new SimpleCommand("pong", new String[]{ /* Empty feeling */})
 						)
 				, SimpleCommand.class
 		);
