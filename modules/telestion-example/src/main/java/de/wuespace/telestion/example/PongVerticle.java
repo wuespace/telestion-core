@@ -3,9 +3,9 @@ package de.wuespace.telestion.example;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
-import de.wuespace.telestion.api.verticle.VerticleDeployer;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 import de.wuespace.telestion.example.messages.SimpleMessage;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
 
@@ -17,8 +17,9 @@ public class PongVerticle extends TelestionVerticle<PongVerticle.Configuration> 
 
 	public static void main(String[] args) {
 		var vertx = Vertx.vertx();
-		VerticleDeployer.deploy(vertx, PingVerticle.class, new PingVerticle.Configuration("ping-address", 2));
-		VerticleDeployer.deploy(vertx, PongVerticle.class, new PongVerticle.Configuration("ping-address"));
+		vertx.deployVerticle(PingVerticle.class, new DeploymentOptions().setConfig(new PingVerticle.Configuration("ping-address", 2).json()));
+		vertx.deployVerticle(PongVerticle.class, new DeploymentOptions().setConfig(new PongVerticle.Configuration("ping-address").json()));
+
 		System.out.println("Verticles deployed");
 	}
 
