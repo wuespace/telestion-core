@@ -1,6 +1,7 @@
 package de.wuespace.telestion.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import io.vertx.core.DeploymentOptions;
@@ -14,7 +15,7 @@ import java.time.Duration;
  *
  * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
  */
-public final class SayHello extends TelestionVerticle {
+public final class SayHello extends TelestionVerticle<GenericConfiguration> {
 	public static void main(String[] args) {
 		var vertx = Vertx.vertx();
 		vertx.deployVerticle(SayHello.class,
@@ -22,7 +23,7 @@ public final class SayHello extends TelestionVerticle {
 	}
 
 	@Override
-	public void onStart(Promise startPromise) {
+	public void onStart(Promise<Void> startPromise) {
 		vertx.setPeriodic(Duration.ofSeconds(getGenericConfig().getInteger("period")).toMillis(),
 				timerId -> logger.info(
 						"{} from {}",

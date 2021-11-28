@@ -1,5 +1,6 @@
 package de.wuespace.telestion.example;
 
+import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 
 import java.time.Duration;
@@ -10,7 +11,7 @@ import java.time.Duration;
  *
  * @author Jan von Pichowski
  */
-public final class HelloWorld extends TelestionVerticle {
+public final class HelloWorld extends TelestionVerticle<GenericConfiguration> {
 	@Override
 	public void onStart() {
 		vertx.setPeriodic(Duration.ofSeconds(5).toMillis(), timerId -> {
