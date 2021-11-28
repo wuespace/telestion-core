@@ -9,6 +9,9 @@ import de.wuespace.telestion.example.messages.SimpleMessage;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.eventbus.Message;
 
+/**
+ * @author Pablo Klaschka, Ludwig Richter
+ */
 public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration> implements WithEventBus, WithSharedData {
 	public record Configuration(
 			@JsonProperty String inAddress,

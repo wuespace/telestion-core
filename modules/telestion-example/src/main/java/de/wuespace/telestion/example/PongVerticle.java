@@ -9,6 +9,9 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
 
+/**
+ * @author Pablo Klaschka, Ludwig Richter
+ */
 public class PongVerticle extends TelestionVerticle<PongVerticle.Configuration> implements WithEventBus {
 	public static record Configuration(
 			@JsonProperty String address

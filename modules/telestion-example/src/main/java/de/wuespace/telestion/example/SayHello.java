@@ -12,7 +12,7 @@ import java.time.Duration;
 /**
  * A class which says hello and shows the usage of configuration files.
  *
- * @author Jan von Pichowski
+ * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
  */
 public final class SayHello extends TelestionVerticle {
 	public static void main(String[] args) {

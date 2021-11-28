@@ -7,6 +7,8 @@ import java.time.Duration;
 /**
  * Test-Class.<br>
  * Will be removed by the first release.
+ *
+ * @author Jan von Pichowski
  */
 public final class HelloWorld extends TelestionVerticle {
 	@Override

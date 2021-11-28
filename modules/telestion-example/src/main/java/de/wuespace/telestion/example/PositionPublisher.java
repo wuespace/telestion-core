@@ -11,6 +11,8 @@ import de.wuespace.telestion.services.message.Address;
 
 /**
  * A class which publishes positions every two seconds. A codec for {@link Position} has to be registered.
+ *
+ * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
  */
 public final class PositionPublisher extends TelestionVerticle implements WithEventBus {
 
