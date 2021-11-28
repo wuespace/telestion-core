@@ -1,5 +1,6 @@
 package de.wuespace.telestion.example;
 
+import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 import de.wuespace.telestion.example.messages.Position;
@@ -14,7 +15,7 @@ import de.wuespace.telestion.services.message.Address;
  *
  * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
  */
-public final class PositionPublisher extends TelestionVerticle implements WithEventBus {
+public final class PositionPublisher extends TelestionVerticle<GenericConfiguration> implements WithEventBus {
 
 	/**
 	 * Internal. Don't use it! TODO remove it.<br>
