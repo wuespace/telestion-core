@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
+import java.text.MessageFormat;
 
 /**
  * An abstract verticle class that you can extend to write your own verticle classes.
@@ -41,7 +42,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	/**
 	 * The default logger instance.
 	 */
-	protected final Logger logger = LoggerFactory.getLogger(getClass());
+	protected Logger logger = LoggerFactory.getLogger(MessageFormat.format("{0}:pending:{1}", TelestionVerticle.class.getName(), hashCode()));
 
 	/**
 	 * Get the Configuration Class type from the inheriting class.
@@ -55,7 +56,8 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 			//noinspection unchecked
 			return (Class<T>) clazz;
 		} catch (Exception e) {
-			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
+			LoggerFactory.getLogger(TelestionVerticle.class)
+					.warn("Cannot get Class type from generic: {}", e.getMessage());
 			return null;
 		}
 	}
@@ -63,6 +65,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	@Override
 	public final void start(Promise<Void> startPromise) throws Exception {
 		updateConfigs();
+		logger = LoggerFactory.getLogger(MessageFormat.format("{0}:{1}", getClass().getName(), deploymentID()));
 		// put general startup steps here
 		onStart(startPromise);
 	}
