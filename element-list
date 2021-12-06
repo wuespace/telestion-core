@@ -1,7 +1,10 @@
 de.wuespace.telestion.api.config
 de.wuespace.telestion.api.message
+de.wuespace.telestion.api.verticle
+de.wuespace.telestion.api.verticle.trait
 de.wuespace.telestion.application
 de.wuespace.telestion.example
+de.wuespace.telestion.example.messages
 de.wuespace.telestion.launcher
 de.wuespace.telestion.services.config
 de.wuespace.telestion.services.connection
