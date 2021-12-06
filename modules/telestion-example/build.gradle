@@ -42,6 +42,7 @@ publishing {
 dependencies {
     implementation project(':modules:telestion-api')
     implementation project(':modules:telestion-services')
+    implementation project(':modules:telestion-test-utils')
 
     implementation 'com.google.guava:guava:31.0.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'

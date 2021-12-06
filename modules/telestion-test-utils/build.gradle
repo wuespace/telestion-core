@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven-publish'
+}
+
+sourceCompatibility = gradle.sourceCompatibility
+targetCompatibility = gradle.targetCompatibility
+
+application {
+    // Define the main class for the application.
+    mainClass.set('de.wuespace.telestion.application.Application')
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/wuespace/telestion-core"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = 'de.wuespace.telestion'
+            artifactId = 'telestion-test-utils'
+            version = System.getenv("VERSION")
+
+            from components.java
+        }
+    }
+}
+
+dependencies {
+    implementation project(':modules:telestion-api')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    implementation "io.vertx:vertx-core:4.2.1"
+}
+
+test {
+    useJUnitPlatform()
+}

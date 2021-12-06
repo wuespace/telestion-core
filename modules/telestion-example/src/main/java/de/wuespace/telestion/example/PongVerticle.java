@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
+import de.wuespace.telestion.deployment.VerticleDeployment;
 import de.wuespace.telestion.example.messages.SimpleMessage;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Pablo Klaschka, Ludwig Richter
@@ -20,10 +23,12 @@ public class PongVerticle extends TelestionVerticle<PongVerticle.Configuration> 
 
 	public static void main(String[] args) {
 		var vertx = Vertx.vertx();
-		vertx.deployVerticle(PingVerticle.class, new DeploymentOptions().setConfig(new PingVerticle.Configuration("ping-address", 2).json()));
-		vertx.deployVerticle(PongVerticle.class, new DeploymentOptions().setConfig(new PongVerticle.Configuration("ping-address").json()));
 
-		System.out.println("Verticles deployed");
+		new VerticleDeployment(vertx)
+				.add(PingVerticle.class, new PingVerticle.Configuration("ping-address", 2))
+				.add(PongVerticle.class, new PongVerticle.Configuration("ping-address"))
+				.deploy()
+				.onSuccess(arg -> staticLogger.info("Verticles deployed"));
 	}
 
 	@Override
@@ -36,4 +41,6 @@ public class PongVerticle extends TelestionVerticle<PongVerticle.Configuration> 
 		logger.info("Send pong");
 		message.reply(new SimpleMessage("pong", "A pong message").json());
 	}
+
+	private static Logger staticLogger = LoggerFactory.getLogger(PongVerticle.class);
 }
