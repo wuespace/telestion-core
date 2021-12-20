@@ -23,27 +23,40 @@ public class PrimitiveTypeParser extends AbstractUtils {
 	 * @param primitiveClass the class of the primitive type to try to parse to
 	 * @param <T>            class representation of the primitive type
 	 * @return the parsed value in the primitive type
-	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known
+	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known or casting goes wrong
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T parse(String raw, Class<T> primitiveClass) throws NoSuchPrimitiveTypeException {
 		if (!mappings.containsKey(primitiveClass)) throw new NoSuchPrimitiveTypeException(primitiveClass);
-		return (T) mappings.get(primitiveClass).apply(raw);
+		try {
+			return primitiveClass.cast(mappings.get(primitiveClass).apply(raw));
+		} catch (ClassCastException e) {
+			throw new NoSuchPrimitiveTypeException(primitiveClass, e);
+		}
 	}
 
 	/**
-	 * Like {@link #parse(String, Class)} but parse integers as unsigned.
+	 * Like {@link #parse(String, Class)} but parse numbers as unsigned.
+	 * <p>
+	 * <em>Note that the current implementation only checks if the transmitted data is an unsigned string.
+	 * After parsing, it will then be cast to the given datatype.
+	 * This might result in a negative value if the number is too big
+	 * (e.g. {@code (int) (2 * Integer.MAX_VALUE)} would result in {@code -2} instead of double the value of an integer;
+	 * this has to do with the underlying bits).</em>
 	 *
 	 * @param raw            the encoded/raw value as string
 	 * @param primitiveClass the class of the primitive type to try to parse to
 	 * @param <T>            class representation of the primitive type
 	 * @return the parsed value in the primitive type
-	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known
+	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known or casting goes wrong
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T parseUnsigned(String raw, Class<T> primitiveClass) throws NoSuchPrimitiveTypeException {
+		// TODO: We might need to improve support for unsigned values in the future at some point...
 		if (!unsignedMappings.containsKey(primitiveClass)) throw new NoSuchPrimitiveTypeException(primitiveClass);
-		return (T) unsignedMappings.get(primitiveClass).apply(raw);
+		try {
+			return primitiveClass.cast(unsignedMappings.get(primitiveClass).apply(raw));
+		} catch (ClassCastException e) {
+			throw new NoSuchPrimitiveTypeException(primitiveClass, e);
+		}
 	}
 
 	/**
@@ -53,12 +66,15 @@ public class PrimitiveTypeParser extends AbstractUtils {
 	 * @param primitiveClass the class of the primitive type
 	 * @param <T>            class representation of the primitive type
 	 * @return the default value for this primitive type
-	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known
+	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known or casting goes wrong
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T getDefault(Class<T> primitiveClass) throws NoSuchPrimitiveTypeException {
 		if (!defaults.containsKey(primitiveClass)) throw new NoSuchPrimitiveTypeException(primitiveClass);
-		return (T) defaults.get(primitiveClass);
+		try {
+			return primitiveClass.cast(defaults.get(primitiveClass));
+		} catch(ClassCastException e) {
+			throw new NoSuchPrimitiveTypeException(primitiveClass, e);
+		}
 	}
 
 	/**
@@ -91,12 +107,29 @@ public class PrimitiveTypeParser extends AbstractUtils {
 		mappings.put(Double.class, Double::parseDouble);
 		mappings.put(String.class, s -> s);
 
+		Function<Double, Double> unsignedFloatingCheck = x -> {
+			if (x < 0.0) {
+				throw new NumberFormatException(
+						"When parsing to an unsigned type the number must not be smaller than 0! (given: %s)"
+								.formatted(x));
+			}
+			return x;
+		};
+
 		// fill unsigned with same content and overwrite primitive types that can be unsigned
 		unsignedMappings.putAll(mappings);
+		unsignedMappings.put(byte.class, Short::parseShort);
+		unsignedMappings.put(Byte.class, Short::parseShort);
+		unsignedMappings.put(short.class, Integer::parseInt);
+		unsignedMappings.put(Short.class, Integer::parseInt);
 		unsignedMappings.put(int.class, Integer::parseUnsignedInt);
 		unsignedMappings.put(Integer.class, Integer::parseUnsignedInt);
 		unsignedMappings.put(long.class, Long::parseUnsignedLong);
 		unsignedMappings.put(Long.class, Long::parseUnsignedLong);
+		unsignedMappings.put(float.class, x -> unsignedFloatingCheck.apply(Double.parseDouble(x)));
+		unsignedMappings.put(Float.class, x -> unsignedFloatingCheck.apply(Double.parseDouble(x)));
+		unsignedMappings.put(double.class, x -> unsignedFloatingCheck.apply(Double.parseDouble(x)));
+		unsignedMappings.put(Double.class, x -> unsignedFloatingCheck.apply(Double.parseDouble(x)));
 
 		defaults.put(byte.class, (byte) 0);
 		defaults.put(Byte.class, (byte) 0);
