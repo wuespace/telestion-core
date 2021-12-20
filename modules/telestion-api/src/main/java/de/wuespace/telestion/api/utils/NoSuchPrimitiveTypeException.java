@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * If that exception occurs, please check if the primitive type parser knows
  * from the given primitive class type before continuing.
  *
- * @author Ludwig Richter
+ * @author Ludwig Richter (@fussel178)
  * @see PrimitiveTypeParser
  */
 public class NoSuchPrimitiveTypeException extends RuntimeException {

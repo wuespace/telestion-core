@@ -15,7 +15,8 @@ import java.lang.reflect.ParameterizedType;
  * and type-safe usage of the configuration JSON object provided by Vert.x.
  *
  * @param <T> the type of your Configuration class
- * @author Cedric Bös, Pablo Klaschka, Jan von Pichowski, Ludwig Richter
+ * @author Cedric Boes (@cb0s), Pablo Klaschka (@pklaschka), Jan von Pichowski (@jvpichowski),
+ * 			Ludwig Richter (@fussel178)
  */
 public abstract class TelestionVerticle<T extends TelestionConfiguration> extends AbstractVerticle {
 	/**

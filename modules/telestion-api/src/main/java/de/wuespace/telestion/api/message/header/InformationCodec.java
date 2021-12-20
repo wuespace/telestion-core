@@ -7,7 +7,7 @@ import de.wuespace.telestion.api.utils.PrimitiveTypeParser;
 import java.util.Objects;
 
 /**
- * @author Ludwig Richter, Cedric Boes
+ * @author Ludwig Richter (@fussel178), Cedric Boes (@cb0s)
  */
 public class InformationCodec extends AbstractUtils {
 	public static String encode(Object value) {

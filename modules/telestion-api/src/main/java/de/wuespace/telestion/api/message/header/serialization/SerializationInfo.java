@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  *
  * @see SerializationUtils
  * @see Information
- * @author Cedric Boes, Ludwig Richter
+ * @author Cedric Boes (@cb0s), Ludwig Richter (@fussel178)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.RECORD_COMPONENT)

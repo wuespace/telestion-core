@@ -13,7 +13,7 @@ import java.lang.reflect.RecordComponent;
  * serialization information before continuing.
  *
  * @see Information
- * @author Ludwig Richter
+ * @author Ludwig Richter (@fussel178)
  */
 public class NoSerializationException extends RuntimeException {
 	private final RecordComponent component;

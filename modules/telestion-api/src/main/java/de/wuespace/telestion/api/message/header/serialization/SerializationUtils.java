@@ -14,7 +14,7 @@ import java.lang.reflect.RecordComponent;
  *
  * @see SerializationInfo
  * @see Information
- * @author Ludwig Richter
+ * @author Ludwig Richter (@fussel178)
  */
 public class SerializationUtils extends AbstractUtils {
 	/**

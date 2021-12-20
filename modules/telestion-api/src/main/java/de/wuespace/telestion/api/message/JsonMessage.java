@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * All subclasses have to be valid json classes. This means that they could be encoded by
  * {@link io.vertx.core.spi.json.JsonCodec} which is backed by {@link io.vertx.core.json.jackson.JacksonCodec}.
  *
- * @author Jan von Pichowski, Cedric Boes
+ * @author Jan von Pichowski (@jvpichowski), Cedric Boes (@cb0s)
  * @version 1.2
  */
 public interface JsonMessage {

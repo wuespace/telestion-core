@@ -4,7 +4,7 @@ package de.wuespace.telestion.api.utils;
  * When class extends AbstractUtils it indicates that the extending class is a utility class which can not be
  * instantiated. There should be no callable constructors which is why the default constructor is also blocked.
  *
- * @author Cedric Boes, Ludwig Richter
+ * @author Cedric Boes (@cb0s), Ludwig Richter (@fussel178)
  */
 public abstract class AbstractUtils {
 	/**

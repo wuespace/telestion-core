@@ -20,7 +20,7 @@ import io.vertx.core.shareddata.LocalMap;
  * }
  * </pre>
  *
- * @author Pablo Klaschka, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178)
  */
 public interface WithSharedData extends Verticle {
 	/**

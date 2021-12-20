@@ -10,7 +10,7 @@ import java.util.function.Function;
  * This utility class offers methods to parse values from a string input to primitive types via their class type.
  * </p>
  *
- * @author Cedric Boes, Ludwig Richter
+ * @author Cedric Boes (@cb0s), Ludwig Richter (@fussel178)
  * @see #parse(String, Class)
  * @see #parseUnsigned(String, Class)
  */
