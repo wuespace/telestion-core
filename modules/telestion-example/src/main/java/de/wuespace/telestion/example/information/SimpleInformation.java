@@ -1,7 +1,7 @@
 package de.wuespace.telestion.example.information;
 
-import de.wuespace.telestion.api.header.Information;
-import de.wuespace.telestion.api.header.serialization.SerializationInfo;
+import de.wuespace.telestion.api.message.header.Information;
+import de.wuespace.telestion.api.message.header.serialization.SerializationInfo;
 import io.vertx.core.MultiMap;
 
 public record SimpleInformation(

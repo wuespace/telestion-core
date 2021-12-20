@@ -1,7 +1,6 @@
 package de.wuespace.telestion.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.header.Information;
 import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
