@@ -1,5 +1,7 @@
 package de.wuespace.telestion.api.verticle.trait;
 
+import de.wuespace.telestion.api.header.Information;
+import de.wuespace.telestion.api.header.InformationUtils;
 import de.wuespace.telestion.api.message.JsonMessage;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -39,10 +41,29 @@ public interface WithEventBus extends Verticle {
 	}
 
 	/**
-	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
+	 * @param information additional information that should be appended to the message headers
+	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
+	 */
+	default void publish(String address, Object message, Information... information) {
+		var headers = InformationUtils.allToHeaders(information);
+		publish(address, message, new DeliveryOptions().setHeaders(headers));
+	}
+
+	/**
+	 * @param message a json message that is converted to a {@link JsonObject} before transmission
+	 * @see #publish(String, Object, DeliveryOptions)
 	 */
 	default void publish(String address, JsonMessage message, DeliveryOptions options) {
 		publish(address, message.json(), options);
+	}
+
+	/**
+	 * @param information additional information that should be appended to the message headers
+	 * @param message     a json message that is converted to a {@link JsonObject} before transmission
+	 * @see #publish(String, Object, Information...)
+	 */
+	default void publish(String address, JsonMessage message, Information... information) {
+		publish(address, message.json(), information);
 	}
 
 	/**
@@ -53,6 +74,7 @@ public interface WithEventBus extends Verticle {
 	}
 
 	/**
+	 * @param message a json message that is converted to a {@link JsonObject} before transmission
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
 	default void publish(String address, JsonMessage message) {
@@ -67,10 +89,29 @@ public interface WithEventBus extends Verticle {
 	}
 
 	/**
+	 * @param information additional information that should be appended to the message headers
+	 * @see #send(String, Object, DeliveryOptions)
+	 */
+	default void send(String address, Object message, Information... information) {
+		var headers = InformationUtils.allToHeaders(information);
+		send(address, message, new DeliveryOptions().setHeaders(headers));
+	}
+
+	/**
+	 * @param message a json message that is converted to a {@link JsonObject} before transmission
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
 	default void send(String address, JsonMessage message, DeliveryOptions options) {
 		send(address, message.json(), options);
+	}
+
+	/**
+	 * @param message     a json message that is converted to a {@link JsonObject} before transmission
+	 * @param information additional information that should be appended to the message headers
+	 * @see #send(String, Object, Information...)
+	 */
+	default void send(String address, JsonMessage message, Information... information) {
+		send(address, message.json(), information);
 	}
 
 	/**
@@ -81,10 +122,25 @@ public interface WithEventBus extends Verticle {
 	}
 
 	/**
+	 * @param message     a json message that is converted to a {@link JsonObject} before transmission
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
 	default void send(String address, JsonMessage message) {
 		send(address, message.json());
+	}
+
+	/**
+	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
+	 */
+	default <T> Future<Message<T>> request(String address, Object request, DeliveryOptions options) {
+		return getVertx().eventBus().request(address, request, options);
+	}
+
+	/**
+	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
+	 */
+	default <T> Future<Message<T>> request(String address, Object request) {
+		return getVertx().eventBus().request(address, request);
 	}
 
 	/**
@@ -93,10 +149,14 @@ public interface WithEventBus extends Verticle {
 	 */
 	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
 			String address, Object request, DeliveryOptions options, Class<T> responseType) {
-		return getVertx().eventBus().request(address, request, options)
+		return request(address, request, options)
 				.map(raw -> new DecodedMessage<>(JsonMessage.from(raw.body(), responseType), raw));
 	}
 
+	/**
+	 * @param responseType the type of the response to map to
+	 * @see #request(String, Object, DeliveryOptions, Class)
+	 */
 	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
 			String address, JsonMessage request, DeliveryOptions options, Class<T> responseType) {
 		return request(address, request.json(), options, responseType);
@@ -108,10 +168,14 @@ public interface WithEventBus extends Verticle {
 	 */
 	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
 			String address, Object request, Class<T> responseType) {
-		return getVertx().eventBus().request(address, request)
+		return request(address, request)
 				.map(raw -> new DecodedMessage<>(((JsonObject) raw.body()).mapTo(responseType), raw));
 	}
 
+	/**
+	 * @param responseType the type of the response to map to
+	 * @see #request(String, Object, Class)
+	 */
 	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
 			String address, JsonMessage request, Class<T> responseType) {
 		return request(address, request.json(), responseType);
@@ -122,9 +186,10 @@ public interface WithEventBus extends Verticle {
 	 *
 	 * @param address the eventbus address name
 	 * @param handler the handler that gets called when a new message arrives at the specified eventbus address
+	 * @param <T>     type of the message
 	 * @see io.vertx.core.eventbus.EventBus#consumer(String, Handler)
 	 */
-	default void register(String address, Handler<Message<Object>> handler) {
+	default <T> void register(String address, Handler<Message<T>> handler) {
 		getVertx().eventBus().consumer(address, handler);
 	}
 
