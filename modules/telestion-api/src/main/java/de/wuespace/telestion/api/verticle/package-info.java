@@ -1,5 +1,5 @@
 /**
- * <h2>Telestion API - Telestion Verticle<h2>
+ * <h2>Telestion API - Telestion Verticle</h2>
  *
  * This package contains different classes helping with Vert.X verticles by providing often used methods which help
  * to improve the developer experience by massively reducing boiler-plate code.
@@ -17,7 +17,7 @@
  * By implementing {@link de.wuespace.telestion.api.verticle.trait traits} the functionality of the
  * {@link de.wuespace.telestion.api.verticle.TelestionVerticle} can be increased even more.
  * <h3>Examples</h3>
- * For examples refer to the {@link de.wuespace.telestion.example de.wuespace.telestion.example-package}.
+ * For examples refer to the {@code de.wuespace.telestion.example-package}.
  * <p>
  * (c) WueSpace e.V.
  *

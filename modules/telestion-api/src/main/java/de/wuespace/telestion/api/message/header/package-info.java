@@ -6,7 +6,7 @@
  * Headers can be used in different scenarios. They are usually used to provide more details to a message which are not
  * part of the message itself. This can be a hint to where it belongs to or timestamps or even where it is supposed to
  * go in the end.<br/>
- * An example can be found in the connection api in the {@link de.wuespace.telestion.services.connection} module.<br/>
+ * An example can be found in the connection api in the {@code de.wuespace.telestion.services.connection} module.<br/>
  * The classes of this package are used to add support for Java-15 Records for headers.
  * <h3>Usage</h3>
  * Headers are extending
@@ -26,7 +26,7 @@
  * proposals for names can be found in {@link de.wuespace.telestion.api.message.header.serialization.CommonNames}.<br/>
  * Those proposals are not mandatory but highly recommended.
  * <h3>Examples</h3>
- * To see how to use this api, refer to the examples from {@link de.wuespace.telestion.example}, namely
+ * To see how to use this api, refer to the examples from {@code de.wuespace.telestion.example}, namely
  * {@code InformationSender} and {@code InformationReceiver} which show how to send and receive headers.
  * <p>
  * (c) WueSpace e.V.
