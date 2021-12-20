@@ -44,7 +44,7 @@ public class InformationSender extends TelestionVerticle<InformationSender.Confi
 		map.put("value2", value2);
 		logger.info("New values for InformationReceiver: {}:{}", value1, value2);
 
-		var info = new SimpleInformation(value1, value2, 'a', null, "Hello World");
+		var info = new SimpleInformation(value1, value2, 'a', null, "Hello World", 4);
 		publish(getConfig().outAddress(), new SimpleMessage("Hello World", "This is a test message"), info);
 		logger.debug("Sent message");
 	}

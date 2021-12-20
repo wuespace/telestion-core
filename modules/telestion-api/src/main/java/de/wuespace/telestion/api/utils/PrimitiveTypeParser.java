@@ -25,11 +25,12 @@ public class PrimitiveTypeParser extends AbstractUtils {
 	 * @return the parsed value in the primitive type
 	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known or casting goes wrong
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T parse(String raw, Class<T> primitiveClass) throws NoSuchPrimitiveTypeException {
 		if (!mappings.containsKey(primitiveClass)) throw new NoSuchPrimitiveTypeException(primitiveClass);
 		try {
-			return primitiveClass.cast(mappings.get(primitiveClass).apply(raw));
-		} catch (ClassCastException e) {
+			return (T) mappings.get(primitiveClass).apply(raw);
+		} catch (NullPointerException | ClassCastException e) {
 			throw new NoSuchPrimitiveTypeException(primitiveClass, e);
 		}
 	}
@@ -49,12 +50,13 @@ public class PrimitiveTypeParser extends AbstractUtils {
 	 * @return the parsed value in the primitive type
 	 * @throws NoSuchPrimitiveTypeException when the given primitive type is not known or casting goes wrong
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T parseUnsigned(String raw, Class<T> primitiveClass) throws NoSuchPrimitiveTypeException {
 		// TODO: We might need to improve support for unsigned values in the future at some point...
 		if (!unsignedMappings.containsKey(primitiveClass)) throw new NoSuchPrimitiveTypeException(primitiveClass);
 		try {
-			return primitiveClass.cast(unsignedMappings.get(primitiveClass).apply(raw));
-		} catch (ClassCastException e) {
+			return (T) unsignedMappings.get(primitiveClass).apply(raw);
+		} catch (NullPointerException | ClassCastException e) {
 			throw new NoSuchPrimitiveTypeException(primitiveClass, e);
 		}
 	}

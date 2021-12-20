@@ -9,7 +9,8 @@ public record SimpleInformation(
 		@SerializationInfo(name = "value2") Integer value2,
 		@SerializationInfo(name = "char1") char char1,
 		@SerializationInfo(name = "char2") Character char2,
-		@SerializationInfo(name = "str") String str
+		@SerializationInfo(name = "str") String str,
+		@SerializationInfo(name = "unsigned-int", defaultValue = "0", isUnsigned = true) int unsignedInt
 ) implements Information {
 	// fromHeaders(MultiMap) is optional but improves the developer experience in our opinion
 	public static SimpleInformation fromHeaders(MultiMap headers) {
