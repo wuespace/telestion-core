@@ -1,4 +1,7 @@
-package de.wuespace.telestion.api.header.serialization;
+package de.wuespace.telestion.api.message.header.serialization;
+
+import de.wuespace.telestion.api.message.header.Information;
+import de.wuespace.telestion.api.message.header.InformationCodec;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,13 +10,13 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that the record component is serializable in a Vert.x message header.
- * It gives the {@link de.wuespace.telestion.api.header.Information Information record}
+ * It gives the {@link Information Information record}
  * additional information about its components
  * like name in the header space or a default value in case there are no information
  * from the message header available.
  *
  * @see SerializationUtils
- * @see de.wuespace.telestion.api.header.Information
+ * @see Information
  * @author Cedric Boes, Ludwig Richter
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -42,7 +45,7 @@ public @interface SerializationInfo {
 	 * Indicates, if the primitive type should pe parsed as unsigned integer when possible.
 	 * Defaults to {@code false}.
 	 *
-	 * @see de.wuespace.telestion.api.header.InformationCodec#decodeUnsigned(String, Class)
+	 * @see InformationCodec#decodeUnsigned(String, Class)
 	 * @return {@code true} if the primitive type should pe parsed as unsigned integer when possible
 	 */
 	boolean isUnsigned() default false;

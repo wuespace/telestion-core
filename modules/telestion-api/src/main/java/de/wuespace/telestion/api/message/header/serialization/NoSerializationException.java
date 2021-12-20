@@ -1,16 +1,18 @@
-package de.wuespace.telestion.api.header.serialization;
+package de.wuespace.telestion.api.message.header.serialization;
+
+import de.wuespace.telestion.api.message.header.Information;
 
 import java.lang.reflect.RecordComponent;
 
 /**
- * Thrown to indicate that the {@link de.wuespace.telestion.api.header.Information Information methods}
+ * Thrown to indicate that the {@link Information Information methods}
  * tried to encode or decode values from or to message headers
  * but the record component has no serialization information.
  *
  * If that exception occurs, please check that all record components have
  * serialization information before continuing.
  *
- * @see de.wuespace.telestion.api.header.Information
+ * @see Information
  * @author Ludwig Richter
  */
 public class NoSerializationException extends RuntimeException {

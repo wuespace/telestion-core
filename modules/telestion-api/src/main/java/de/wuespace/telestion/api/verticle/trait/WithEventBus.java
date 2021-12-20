@@ -1,7 +1,7 @@
 package de.wuespace.telestion.api.verticle.trait;
 
-import de.wuespace.telestion.api.header.Information;
-import de.wuespace.telestion.api.header.InformationUtils;
+import de.wuespace.telestion.api.message.header.Information;
+import de.wuespace.telestion.api.message.header.InformationUtils;
 import de.wuespace.telestion.api.message.JsonMessage;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -12,7 +12,8 @@ import io.vertx.core.json.JsonObject;
 
 /**
  * Allows {@link Verticle} instances to get simplified access to the Vert.x event bus.
- * All methods allow usage with {@link JsonMessage} messages, too.
+ * All methods allow usage with {@link JsonMessage} messages, too, as well as the usage of {@link Information},
+ * if required.
  *
  * <h2>Usage</h2>
  * <pre>
@@ -30,7 +31,8 @@ import io.vertx.core.json.JsonObject;
  * }
  * </pre>
  *
- * @author Pablo Klaschka, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178), Cedric Boes (@cb0s)
+ * @version 1.1
  */
 public interface WithEventBus extends Verticle {
 	/**

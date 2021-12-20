@@ -1,4 +1,4 @@
-package de.wuespace.telestion.api.header;
+package de.wuespace.telestion.api.message.header;
 
 import de.wuespace.telestion.api.utils.AbstractUtils;
 import de.wuespace.telestion.api.utils.NoSuchPrimitiveTypeException;

@@ -1,7 +1,7 @@
-package de.wuespace.telestion.api.header;
+package de.wuespace.telestion.api.message.header;
 
-import de.wuespace.telestion.api.header.serialization.NoSerializationException;
-import de.wuespace.telestion.api.header.serialization.SerializationUtils;
+import de.wuespace.telestion.api.message.header.serialization.NoSerializationException;
+import de.wuespace.telestion.api.message.header.serialization.SerializationUtils;
 import de.wuespace.telestion.api.utils.NoSuchPrimitiveTypeException;
 import io.vertx.core.MultiMap;
 import org.slf4j.Logger;

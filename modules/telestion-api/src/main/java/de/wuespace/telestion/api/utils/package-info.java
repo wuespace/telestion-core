@@ -1,5 +1,5 @@
 /**
- * <h2>Telestion API utilities</h2>
+ * <h2>Telestion API - Utilities</h2>
  *
  * Contains general utility classes for the Telestion ecosystem.
  * <p>

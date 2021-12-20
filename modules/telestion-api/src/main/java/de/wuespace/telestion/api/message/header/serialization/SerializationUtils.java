@@ -1,5 +1,6 @@
-package de.wuespace.telestion.api.header.serialization;
+package de.wuespace.telestion.api.message.header.serialization;
 
+import de.wuespace.telestion.api.message.header.Information;
 import de.wuespace.telestion.api.utils.AbstractUtils;
 
 import java.lang.reflect.RecordComponent;
@@ -12,7 +13,7 @@ import java.lang.reflect.RecordComponent;
  * </p>
  *
  * @see SerializationInfo
- * @see de.wuespace.telestion.api.header.Information
+ * @see Information
  * @author Ludwig Richter
  */
 public class SerializationUtils extends AbstractUtils {

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The base class for all messages which are automatically encoded with the JsonMessageCodec.<br>
+ * The base class for all messages which are automatically encoded with the JsonMessageCodec.<br/>
  * All subclasses have to be valid json classes. This means that they could be encoded by
  * {@link io.vertx.core.spi.json.JsonCodec} which is backed by {@link io.vertx.core.json.jackson.JacksonCodec}.
  *
@@ -21,7 +21,7 @@ public interface JsonMessage {
 	JsonCodec JSON_CODEC = new JacksonCodec();
 	Logger logger = LoggerFactory.getLogger(JsonMessage.class);
 	/**
-	 * This method decodes a {@link JsonMessage} from the event bus.<br>
+	 * This method decodes a {@link JsonMessage} from the event bus.<br/>
 	 * Returns whether decoding was successful or not.
 	 *
 	 * @param clazz   Class of the message-object
@@ -49,7 +49,7 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * This method decodes a {@link JsonMessage} from the event bus.<br>
+	 * This method decodes a {@link JsonMessage} from the event bus.<br/>
 	 * Returns whether decoding was successful or not.
 	 *
 	 * @param clazz   Class of the message-object
