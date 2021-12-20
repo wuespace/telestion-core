@@ -75,26 +75,42 @@ public class PrimitiveTypeParser extends AbstractUtils {
 	private static final HashMap<Class<?>, Object> defaults = new HashMap<>();
 
 	static {
+		mappings.put(byte.class, Byte::parseByte);
 		mappings.put(Byte.class, Byte::parseByte);
+		mappings.put(char.class, s -> s.length() == 1 ? s.charAt(0) : '\0');
 		mappings.put(Character.class, s -> s.length() == 1 ? s.charAt(0) : '\0');
+		mappings.put(short.class, Short::parseShort);
 		mappings.put(Short.class, Short::parseShort);
+		mappings.put(int.class, Integer::parseInt);
 		mappings.put(Integer.class, Integer::parseInt);
+		mappings.put(long.class, Long::parseLong);
 		mappings.put(Long.class, Long::parseLong);
+		mappings.put(float.class, Float::parseFloat);
 		mappings.put(Float.class, Float::parseFloat);
+		mappings.put(double.class, Double::parseDouble);
 		mappings.put(Double.class, Double::parseDouble);
 		mappings.put(String.class, s -> s);
 
 		// fill unsigned with same content and overwrite primitive types that can be unsigned
 		unsignedMappings.putAll(mappings);
+		unsignedMappings.put(int.class, Integer::parseUnsignedInt);
 		unsignedMappings.put(Integer.class, Integer::parseUnsignedInt);
+		unsignedMappings.put(long.class, Long::parseUnsignedLong);
 		unsignedMappings.put(Long.class, Long::parseUnsignedLong);
 
+		defaults.put(byte.class, (byte) 0);
 		defaults.put(Byte.class, (byte) 0);
+		defaults.put(char.class, '\0');
 		defaults.put(Character.class, '\0');
+		defaults.put(short.class, (short) 0);
 		defaults.put(Short.class, (short) 0);
+		defaults.put(int.class, 0);
 		defaults.put(Integer.class, 0);
+		defaults.put(long.class, 0L);
 		defaults.put(Long.class, 0L);
+		defaults.put(float.class, 0.0f);
 		defaults.put(Float.class, 0.0f);
+		defaults.put(double.class, 0.0);
 		defaults.put(Double.class, 0.0);
 		defaults.put(String.class, null);
 	}
