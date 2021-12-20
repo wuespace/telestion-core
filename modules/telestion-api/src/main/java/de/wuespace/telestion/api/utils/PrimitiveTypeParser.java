@@ -93,6 +93,8 @@ public class PrimitiveTypeParser extends AbstractUtils {
 	private static final HashMap<Class<?>, Object> defaults = new HashMap<>();
 
 	static {
+		mappings.put(boolean.class, Boolean::parseBoolean);
+		mappings.put(Boolean.class, Boolean::parseBoolean);
 		mappings.put(byte.class, Byte::parseByte);
 		mappings.put(Byte.class, Byte::parseByte);
 		mappings.put(char.class, s -> s.length() == 1 ? s.charAt(0) : '\0');
@@ -133,6 +135,8 @@ public class PrimitiveTypeParser extends AbstractUtils {
 		unsignedMappings.put(double.class, x -> unsignedFloatingCheck.apply(Double.parseDouble(x)));
 		unsignedMappings.put(Double.class, x -> unsignedFloatingCheck.apply(Double.parseDouble(x)));
 
+		defaults.put(boolean.class, false);
+		defaults.put(Boolean.class, false);
 		defaults.put(byte.class, (byte) 0);
 		defaults.put(Byte.class, (byte) 0);
 		defaults.put(char.class, '\0');
