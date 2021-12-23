@@ -1,9 +1,8 @@
-package de.wuespace.telestion.example.messages;
+package de.wuespace.telestion.examples.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.example.messages.Position;
 
 /**
  * A list message containing multiple {@link Position}.

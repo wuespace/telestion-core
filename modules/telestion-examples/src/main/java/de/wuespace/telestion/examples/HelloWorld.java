@@ -1,4 +1,4 @@
-package de.wuespace.telestion.example;
+package de.wuespace.telestion.examples;
 
 import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;

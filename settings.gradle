@@ -13,5 +13,5 @@ gradle.ext.version = projectInfo.version
 // include your modules here
 include ':modules:telestion-api'
 include ':modules:telestion-application'
-include ':modules:telestion-example'
+include ':modules:telestion-examples'
 include ':modules:telestion-services'

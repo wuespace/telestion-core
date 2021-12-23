@@ -1,4 +1,4 @@
-package de.wuespace.telestion.example;
+package de.wuespace.telestion.examples;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.verticle.GenericConfiguration;

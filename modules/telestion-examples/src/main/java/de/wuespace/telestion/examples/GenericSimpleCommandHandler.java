@@ -1,9 +1,9 @@
-package de.wuespace.telestion.example;
+package de.wuespace.telestion.examples;
 
 import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
-import de.wuespace.telestion.example.messages.SimpleCommand;
+import de.wuespace.telestion.examples.messages.SimpleCommand;
 import io.vertx.core.eventbus.Message;
 
 import java.util.Arrays;

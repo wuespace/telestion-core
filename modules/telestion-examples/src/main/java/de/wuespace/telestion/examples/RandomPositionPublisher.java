@@ -1,4 +1,4 @@
-package de.wuespace.telestion.example;
+package de.wuespace.telestion.examples;
 
 import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
@@ -7,7 +7,7 @@ import de.wuespace.telestion.api.verticle.trait.WithSharedData;
 import java.time.Duration;
 import java.util.Random;
 
-import de.wuespace.telestion.example.messages.Position;
+import de.wuespace.telestion.examples.messages.Position;
 import io.vertx.core.shareddata.LocalMap;
 import de.wuespace.telestion.services.message.Address;
 
