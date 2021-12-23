@@ -65,15 +65,6 @@ publishing {
                         organization = 'WüSpace e. V.'
                         organizationUrl = 'https://www.wuespace.de/'
                     }
-
-                    developer {
-                        id = 'jantischhoefer'
-                        name = 'Jan Tischhöfer'
-                        email = 'jan.tischhoefer@gmail.com'
-                        url = 'https://github.com/jantischhoefer'
-                        organization = 'WüSpace e. V.'
-                        organizationUrl = 'https://www.wuespace.de/'
-                    }
                 }
                 scm {
                     connection = 'scm:git:git://github.com/wuespace/telestion-core.git'
@@ -126,7 +117,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:4.+"
 
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.7'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
 
     implementation "io.vertx:vertx-core:4.2.1"
