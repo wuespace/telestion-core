@@ -7,12 +7,13 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'application'
+    apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
     sourceCompatibility = gradle.sourceCompatibility
     targetCompatibility = gradle.targetCompatibility
 
-    version = System.getenv("VERSION")
+    version = gradle.ext.version
     group 'de.wuespace.telestion'
 
     javadoc {
@@ -34,12 +35,10 @@ subprojects {
     }
 }
 
-
-
 task alljavadoc(type: Javadoc) {
     def subProjects = gradle.rootProject.subprojects
-    source subProjects.collect { it.sourceSets.main.allJava }
-    classpath = files(subProjects.collect { it.sourceSets.main.compileClasspath })
+    source subProjects.collect { Project project -> project.sourceSets.main.allJava }
+    classpath = files(subProjects.collect { Project project -> project.sourceSets.main.compileClasspath })
     destinationDir = file("${buildDir}/docs/javadoc")
 }
 

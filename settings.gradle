@@ -2,7 +2,15 @@ rootProject.name = 'telestion-core'
 
 gradle.ext.sourceCompatibility = '16'
 gradle.ext.targetCompatibility = '16'
+// force signing of artifacts regardless of publish steps
+gradle.ext.forceSign = false
 
+// extract version information from project.json
+def projectFile = file('project.json')
+def projectInfo = new groovy.json.JsonSlurper().parseText(projectFile.text)
+gradle.ext.version = projectInfo.version
+
+// include your modules here
 include ':modules:telestion-api'
 include ':modules:telestion-application'
 include ':modules:telestion-example'
