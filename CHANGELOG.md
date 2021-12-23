@@ -1,3 +1,12 @@
+## [0.6.1](https://github.com/wuespace/telestion-core/compare/v0.6.0...v0.6.1) (2021-12-23)
+
+
+### Bug Fixes
+
+* **deps:** bump logback-classic from 1.2.7 to 1.2.10 ([dcaa0dd](https://github.com/wuespace/telestion-core/commit/dcaa0dd04cc2dd76716bda97cac33136048b6979))
+
+
+
 # [0.6.0](https://github.com/wuespace/telestion-core/compare/v0.5.0...v0.6.0) (2021-12-23)
 
 
