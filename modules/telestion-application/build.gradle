@@ -18,8 +18,8 @@ publishing {
             from components.java
 
             pom {
-                name = 'Telestion API'
-                description = 'The essential components of a Telestion Application'
+                name = 'Telestion Application'
+                description = 'The starting point of a Telestion Project Application'
                 url = 'https://telestion.wuespace.de/'
 
                 licenses {

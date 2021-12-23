@@ -19,7 +19,7 @@ publishing {
 
             pom {
                 name = 'Telestion API'
-                description = 'The essential components of a Telestion Application'
+                description = 'The essential components for a Telestion Project Application'
                 url = 'https://telestion.wuespace.de/'
 
                 licenses {
