@@ -47,3 +47,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_MAVEN_SUBKEY_PASSWORD }}
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
