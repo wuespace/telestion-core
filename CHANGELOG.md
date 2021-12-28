@@ -1,3 +1,13 @@
+## [0.6.2](https://github.com/wuespace/telestion-core/compare/v0.6.1...v0.6.2) (2021-12-28)
+
+
+### Bug Fixes
+
+* **deps:** bump vertx-core from 4.2.1 to 4.2.3 to harden against CVE-2021-45105 ([99ba24b](https://github.com/wuespace/telestion-core/commit/99ba24b6c440b64fa61580c358792fc5c4fc4dc9))
+* **deps:** bump vertx-rx-java2 from 4.2.1 to 4.2.3 to harden against CVE-2021-45105 ([fe81442](https://github.com/wuespace/telestion-core/commit/fe81442743bf3e642abd4deba3db02ae10568ebb))
+
+
+
 ## [0.6.1](https://github.com/wuespace/telestion-core/compare/v0.6.0...v0.6.1) (2021-12-23)
 
 
