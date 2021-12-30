@@ -6,7 +6,9 @@ import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.Objects;
 
 /**
  * An abstract verticle class that you can extend to write your own verticle classes.
@@ -45,6 +47,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 
 	/**
 	 * Get the Configuration Class type from the inheriting class.
+	 *
 	 * @return the Configuration Class type
 	 */
 	@SuppressWarnings("unchecked")
@@ -58,6 +61,35 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * Creates a new Telestion verticle and tries to load the default configuration
+	 * from the specified configuration class.
+	 *
+	 * @param skipDefaultConfigLoading when {@code true} the loading of the default configuration is skipped
+	 */
+	public TelestionVerticle(boolean skipDefaultConfigLoading) {
+		if (skipDefaultConfigLoading) return;
+		var configType = getConfigType();
+		if (Objects.isNull(configType)) return;
+
+		try {
+			var defaultConfig = configType.getConstructor().newInstance();
+			this.defaultConfig = defaultConfig;
+			this.defaultGenericConfig = defaultConfig.json();
+		} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+			// no default configuration on configuration class found, ignoring
+			logger.debug("No default configuration found. Skip loading");
+		}
+	}
+
+	/**
+	 * Same as {@link TelestionVerticle#TelestionVerticle(boolean)}
+	 * but enables loading of default configuration if possible.
+	 */
+	public TelestionVerticle() {
+		this(false);
 	}
 
 	@Override
@@ -84,8 +116,8 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	}
 
 	/**
-	 * @see AbstractVerticle#start(Promise)
 	 * @throws Exception
+	 * @see AbstractVerticle#start(Promise)
 	 */
 	public void onStart(Promise<Void> startPromise) throws Exception {
 		onStart();
@@ -93,15 +125,15 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	}
 
 	/**
-	 * @see AbstractVerticle#start()
 	 * @throws Exception
+	 * @see AbstractVerticle#start()
 	 */
 	public void onStart() throws Exception {
 	}
 
 	/**
-	 * @see AbstractVerticle#stop(Promise)
 	 * @throws Exception
+	 * @see AbstractVerticle#stop(Promise)
 	 */
 	public void onStop(Promise<Void> stopPromise) throws Exception {
 		onStop();
@@ -109,14 +141,15 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	}
 
 	/**
-	 * @see AbstractVerticle#stop()
 	 * @throws Exception
+	 * @see AbstractVerticle#stop()
 	 */
 	public void onStop() throws Exception {
 	}
 
 	/**
 	 * Set the default verticle configuration and update the verticle configuration.
+	 *
 	 * @param defaultConfig the new default verticle configuration
 	 */
 	public void setDefaultConfig(JsonObject defaultConfig) {
@@ -127,6 +160,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 
 	/**
 	 * Set the default verticle configuration and update the verticle configuration.
+	 *
 	 * @param defaultConfig the new default verticle configuration
 	 */
 	public void setDefaultConfig(T defaultConfig) {
@@ -138,6 +172,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	/**
 	 * Get the default verticle configuration in the Configuration type format.<p>
 	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
+	 *
 	 * @return the default verticle configuration
 	 */
 	public T getDefaultConfig() {
@@ -146,6 +181,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 
 	/**
 	 * Get the default verticle configuration in a generic format.
+	 *
 	 * @return the default verticle configuration
 	 */
 	public JsonObject getGenericDefaultConfig() {
@@ -155,6 +191,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	/**
 	 * Get the verticle configuration in the Configuration type format.<p>
 	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
+	 *
 	 * @return the verticle configuration
 	 */
 	public T getConfig() {
@@ -163,6 +200,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 
 	/**
 	 * Get the verticle configuration in a generic format.
+	 *
 	 * @return the verticle configuration
 	 */
 	public JsonObject getGenericConfig() {
@@ -171,6 +209,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 
 	/**
 	 * Block the usage of <code>config()</code> in inheriting classes.
+	 *
 	 * @return the verticle configuration from vertx merged with the default configuration
 	 */
 	@Override
@@ -189,6 +228,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	/**
 	 * Map a generic JSON object to the Configuration type.<p>
 	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
+	 *
 	 * @param object the generic JSON object to map
 	 * @return the JSON object in the Configuration type format
 	 */
