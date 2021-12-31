@@ -55,6 +55,8 @@ public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration> 
 		remoteMap("blub").onComplete(res -> {
 			res.result().put("piep", "piep");
 		});
+
+		defaultLocalMap().put("my-property", "my-value");
 	}
 
 	private void handleStuff(SimpleMessage body, Message<Object> raw) {
