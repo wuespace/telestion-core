@@ -31,6 +31,7 @@ import io.vertx.core.json.JsonObject;
  * @author Pablo Klaschka, Ludwig Richter
  */
 public interface WithEventBus extends Verticle {
+	/* PUBLISH */
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
@@ -59,6 +60,7 @@ public interface WithEventBus extends Verticle {
 		publish(address, message.json());
 	}
 
+	/* SEND */
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
@@ -87,18 +89,19 @@ public interface WithEventBus extends Verticle {
 		send(address, message.json());
 	}
 
+	/* REQUEST */
 	/**
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
-			String address, Object request, DeliveryOptions options, Class<T> responseType) {
-		return getVertx().eventBus().request(address, request, options)
+	default <V extends JsonMessage, T> Future<DecodedMessage<V, T>> request(
+			String address, Object request, DeliveryOptions options, Class<V> responseType) {
+		return getVertx().eventBus().<T>request(address, request, options)
 				.map(raw -> new DecodedMessage<>(JsonMessage.from(raw.body(), responseType), raw));
 	}
 
-	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
-			String address, JsonMessage request, DeliveryOptions options, Class<T> responseType) {
+	default <V extends JsonMessage, T> Future<DecodedMessage<V, T>> request(
+			String address, JsonMessage request, DeliveryOptions options, Class<V> responseType) {
 		return request(address, request.json(), options, responseType);
 	}
 
@@ -106,17 +109,18 @@ public interface WithEventBus extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
-			String address, Object request, Class<T> responseType) {
-		return getVertx().eventBus().request(address, request)
+	default <V extends JsonMessage, T> Future<DecodedMessage<V, T>> request(
+			String address, Object request, Class<V> responseType) {
+		return getVertx().eventBus().<T>request(address, request)
 				.map(raw -> new DecodedMessage<>(((JsonObject) raw.body()).mapTo(responseType), raw));
 	}
 
-	default <T extends JsonMessage> Future<DecodedMessage<T>> request(
-			String address, JsonMessage request, Class<T> responseType) {
+	default <V extends JsonMessage, T> Future<DecodedMessage<V, T>> request(
+			String address, JsonMessage request, Class<V> responseType) {
 		return request(address, request.json(), responseType);
 	}
 
+	/* REGISTER/CONSUME */
 	/**
 	 * Registers a handler onto an eventbus channel.
 	 *
@@ -124,7 +128,7 @@ public interface WithEventBus extends Verticle {
 	 * @param handler the handler that gets called when a new message arrives at the specified eventbus address
 	 * @see io.vertx.core.eventbus.EventBus#consumer(String, Handler)
 	 */
-	default void register(String address, Handler<Message<Object>> handler) {
+	default <T> void register(String address, Handler<Message<T>> handler) {
 		getVertx().eventBus().consumer(address, handler);
 	}
 
@@ -137,8 +141,8 @@ public interface WithEventBus extends Verticle {
 	 * @param type    the json type to map to
 	 * @see io.vertx.core.eventbus.EventBus#consumer(String, Handler)
 	 */
-	default <T extends JsonMessage> void register(String address, MessageHandler<T> handler, Class<T> type) {
-		getVertx().eventBus().consumer(address, message -> JsonMessage.on(type, message, handler::handle));
+	default <V extends JsonMessage> void register(String address, MessageHandler<V> handler, Class<V> type) {
+		register(address, message -> JsonMessage.on(type, message, handler::handle));
 	}
 
 	/**
@@ -150,9 +154,7 @@ public interface WithEventBus extends Verticle {
 	 * @param handler the handler that gets called when a new message arrives at the specified eventbus address
 	 * @param type    the json type to map to
 	 */
-	default <T extends JsonMessage> void register(String address, ExtendedMessageHandler<T> handler, Class<T> type) {
-		getVertx().eventBus().consumer(address,
-				message -> JsonMessage.on(type, message,
-						body -> handler.handle(body, message)));
+	default <V extends JsonMessage, T> void register(String address, ExtendedMessageHandler<V, T> handler, Class<V> type) {
+		this.<T>register(address, message -> JsonMessage.on(type, message, body -> handler.handle(body, message)));
 	}
 }
