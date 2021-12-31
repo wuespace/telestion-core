@@ -80,7 +80,10 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 			this.defaultGenericConfig = defaultConfig.json();
 		} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 			// no default configuration on configuration class found, ignoring
-			logger.debug("No default configuration found. Skip loading");
+			logger.info("No default configuration found for {}. " +
+							"Expected constructor with no arguments to exist on {}. " +
+							"Continuing without default configuration.",
+					getClass().getSimpleName(), getConfigType().getSimpleName());
 		}
 	}
 
