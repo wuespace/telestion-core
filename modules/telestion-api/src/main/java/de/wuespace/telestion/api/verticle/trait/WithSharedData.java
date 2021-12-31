@@ -44,4 +44,33 @@ public interface WithSharedData extends Verticle {
 	default <K, V> Future<AsyncMap<K, V>> remoteMap(String storageSpace) {
 		return getVertx().sharedData().getAsyncMap(storageSpace);
 	}
+
+	/**
+	 * Return the default local map for this specific verticle.
+	 * @param <K> the type of the key
+	 * @param <V> the type of the value
+	 * @return the default local map for this specific verticle
+	 */
+	default <K, V> LocalMap<K, V> defaultLocalMap() {
+		return localMap(defaultStorageKey());
+	}
+
+	/**
+	 * Return the default remote map for this specific verticle.
+	 * @param <K> the type of the key
+	 * @param <V> the type of the value
+	 * @return the default remote map for this specific verticle
+	 */
+	default <K, V> Future<AsyncMap<K, V>> defaultRemoteMap() {
+		return remoteMap(defaultStorageKey());
+	}
+
+	/**
+	 * Return the default storage key for this specific verticle
+	 * used for the {@link #defaultLocalMap()} and {@link #defaultRemoteMap()} verticle storage spaces.
+	 * @return the default storage key for this specific verticle
+	 */
+	default String defaultStorageKey() {
+		return getClass().getName();
+	}
 }
