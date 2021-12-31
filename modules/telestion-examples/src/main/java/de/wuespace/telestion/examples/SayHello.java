@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
+import de.wuespace.telestion.api.verticle.trait.WithTiming;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 
@@ -15,29 +17,35 @@ import java.time.Duration;
  *
  * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
  */
-public final class SayHello extends TelestionVerticle<GenericConfiguration> {
+public final class SayHello extends TelestionVerticle<SayHello.Configuration> implements WithTiming {
 	public static void main(String[] args) {
 		var vertx = Vertx.vertx();
-		vertx.deployVerticle(SayHello.class,
-				new DeploymentOptions().setConfig(new Configuration(1, "hello world").json()));
+		var configuration = new Configuration(1, 10, "hello world");
+		vertx.deployVerticle(SayHello.class, new DeploymentOptions().setConfig(configuration.json()));
+	}
+
+	public record Configuration(
+			@JsonProperty long period,
+			@JsonProperty long duration,
+			@JsonProperty String message
+	) implements TelestionConfiguration {
 	}
 
 	@Override
 	public void onStart(Promise<Void> startPromise) {
-		vertx.setPeriodic(Duration.ofSeconds(getGenericConfig().getInteger("period")).toMillis(),
-				timerId -> logger.info(
-						"{} from {}",
-						getGenericConfig().getString("message"),
-						deploymentID()
-				)
-		);
+		var delay = Duration.ofSeconds(getConfig().period());
+		var duration = Duration.ofSeconds(getConfig().duration());
+		// setup interval
+		var timing = interval(delay, id -> logger.info(
+				"{} from {}",
+				getConfig().message(),
+				deploymentID()
+		));
+
+		// cancel after of some time
+		timeout(duration, id -> timing.cancel());
+
 		startPromise.complete();
 		logger.info("Started {} with config {}", SayHello.class.getSimpleName(), getConfig());
-	}
-
-	public static record Configuration(
-			@JsonProperty long period,
-			@JsonProperty String message
-	) implements TelestionConfiguration {
 	}
 }
