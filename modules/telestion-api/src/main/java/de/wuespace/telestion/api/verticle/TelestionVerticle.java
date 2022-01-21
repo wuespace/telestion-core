@@ -70,9 +70,13 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * @param skipDefaultConfigLoading when {@code true} the loading of the default configuration is skipped
 	 */
 	public TelestionVerticle(boolean skipDefaultConfigLoading) {
-		if (skipDefaultConfigLoading) return;
+		if (skipDefaultConfigLoading) {
+			return;
+		}
 		var configType = getConfigType();
-		if (Objects.isNull(configType)) return;
+		if (Objects.isNull(configType)) {
+			return;
+		}
 
 		try {
 			var defaultConfig = configType.getConstructor().newInstance();
