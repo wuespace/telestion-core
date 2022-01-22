@@ -136,47 +136,55 @@ extends io.vertx.core.Verticle</span></div>
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;message,
  io.vertx.core.eventbus.DeliveryOptions&nbsp;options)</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>void</code></div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T&gt;<br>void</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#register(java.lang.String,de.wuespace.telestion.api.verticle.trait.ExtendedMessageHandler,java.lang.Class)">register</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- <a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;T&gt;&nbsp;handler,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
-<div class="block">Registers a handler onto an eventbus channel.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>void</code></div>
+ <a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;V,&#8203;T&gt;&nbsp;handler,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#register(java.lang.String,de.wuespace.telestion.api.verticle.trait.MessageHandler,java.lang.Class)">register</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- <a href="MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;T&gt;&nbsp;handler,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
-<div class="block">Registers a handler onto an eventbus channel.</div>
-</div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default void</code></div>
+ <a href="MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;V&gt;&nbsp;handler,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T&gt;&nbsp;void</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#register(java.lang.String,io.vertx.core.Handler)">register</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- io.vertx.core.Handler&lt;io.vertx.core.eventbus.Message&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&gt;&nbsp;handler)</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
-<div class="block">Registers a handler onto an eventbus channel.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</code></div>
+ io.vertx.core.Handler&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;&nbsp;handler)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#request(java.lang.String,de.wuespace.telestion.api.message.JsonMessage,io.vertx.core.eventbus.DeliveryOptions,java.lang.Class)">request</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&nbsp;request,
  io.vertx.core.eventbus.DeliveryOptions&nbsp;options,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</code></div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#request(java.lang.String,de.wuespace.telestion.api.message.JsonMessage,java.lang.Class)">request</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&nbsp;request,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T&gt;&nbsp;io.vertx.core.Future&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#request(java.lang.String,java.lang.Object)">request</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T&gt;&nbsp;io.vertx.core.Future&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#request(java.lang.String,java.lang.Object,io.vertx.core.eventbus.DeliveryOptions)">request</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request,
+ io.vertx.core.eventbus.DeliveryOptions&nbsp;options)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#request(java.lang.String,java.lang.Object,io.vertx.core.eventbus.DeliveryOptions,java.lang.Class)">request</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request,
  io.vertx.core.eventbus.DeliveryOptions&nbsp;options,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</code></div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#request(java.lang.String,java.lang.Object,java.lang.Class)">request</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#send(java.lang.String,de.wuespace.telestion.api.message.JsonMessage)">send</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
@@ -306,13 +314,39 @@ extends io.vertx.core.Verticle</span></div>
 </section>
 </li>
 <li>
+<section class="detail" id="request(java.lang.String,java.lang.Object,io.vertx.core.eventbus.DeliveryOptions)">
+<h3>request</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request,
+ io.vertx.core.eventbus.DeliveryOptions&nbsp;options)</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd><code>EventBus.request(String, Object, DeliveryOptions)</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="request(java.lang.String,java.lang.Object)">
+<h3>request</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request)</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd><code>EventBus.request(String, Object)</code></dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="request(java.lang.String,java.lang.Object,io.vertx.core.eventbus.DeliveryOptions,java.lang.Class)">
 <h3>request</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
-<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters-long">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request,
  io.vertx.core.eventbus.DeliveryOptions&nbsp;options,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>responseType</code> - the type of the response to map to</dd>
@@ -322,22 +356,13 @@ extends io.vertx.core.Verticle</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="request(java.lang.String,de.wuespace.telestion.api.message.JsonMessage,io.vertx.core.eventbus.DeliveryOptions,java.lang.Class)">
-<h3>request</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
-<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&nbsp;request,
- io.vertx.core.eventbus.DeliveryOptions&nbsp;options,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="request(java.lang.String,java.lang.Object,java.lang.Class)">
 <h3>request</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
-<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters-long">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;request,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>responseType</code> - the type of the response to map to</dd>
@@ -347,24 +372,44 @@ extends io.vertx.core.Verticle</span></div>
 </section>
 </li>
 <li>
+<section class="detail" id="request(java.lang.String,de.wuespace.telestion.api.message.JsonMessage,io.vertx.core.eventbus.DeliveryOptions,java.lang.Class)">
+<h3>request</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters-long">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&nbsp;request,
+ io.vertx.core.eventbus.DeliveryOptions&nbsp;options,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>responseType</code> - the type of the response to map to</dd>
+<dt>See Also:</dt>
+<dd><code>EventBus.request(String, Object, DeliveryOptions)</code></dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="request(java.lang.String,de.wuespace.telestion.api.message.JsonMessage,java.lang.Class)">
 <h3>request</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
-<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters-long">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</span>&nbsp;<span class="element-name">request</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
  <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&nbsp;request,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;responseType)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;responseType)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>responseType</code> - the type of the response to map to</dd>
+<dt>See Also:</dt>
+<dd><code>EventBus.request(String, Object)</code></dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="register(java.lang.String,io.vertx.core.Handler)">
 <h3>register</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">register</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- io.vertx.core.Handler&lt;io.vertx.core.eventbus.Message&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&gt;&nbsp;handler)</span></div>
-<div class="block">Registers a handler onto an eventbus channel.</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">register</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ io.vertx.core.Handler&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;&nbsp;handler)</span></div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>address</code> - the eventbus address name</dd>
-<dd><code>handler</code> - the handler that gets called when a new message arrives at the specified eventbus address</dd>
 <dt>See Also:</dt>
 <dd><code>EventBus.consumer(String, Handler)</code></dd>
 </dl>
@@ -373,16 +418,12 @@ extends io.vertx.core.Verticle</span></div>
 <li>
 <section class="detail" id="register(java.lang.String,de.wuespace.telestion.api.verticle.trait.MessageHandler,java.lang.Class)">
 <h3>register</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">register</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- <a href="MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;T&gt;&nbsp;handler,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span></div>
-<div class="block">Registers a handler onto an eventbus channel.
- The received messages are mapped to the specified json type before handing over to the handler.</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">register</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;V&gt;&nbsp;handler,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;type)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>address</code> - the eventbus address name</dd>
-<dd><code>handler</code> - the handler that gets called when a new message arrives at the specified eventbus address</dd>
-<dd><code>type</code> - the json type to map to</dd>
+<dd><code>type</code> - the type of received message to map to</dd>
 <dt>See Also:</dt>
 <dd><code>EventBus.consumer(String, Handler)</code></dd>
 </dl>
@@ -391,17 +432,15 @@ extends io.vertx.core.Verticle</span></div>
 <li>
 <section class="detail" id="register(java.lang.String,de.wuespace.telestion.api.verticle.trait.ExtendedMessageHandler,java.lang.Class)">
 <h3>register</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">register</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
- <a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;T&gt;&nbsp;handler,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span></div>
-<div class="block">Registers a handler onto an eventbus channel.
- The received messages are mapped to the specified json type before handing over to the handler.
- The handler gets the plain message object received from the eventbus, too.</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">register</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address,
+ <a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;V,&#8203;T&gt;&nbsp;handler,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;type)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>address</code> - the eventbus address name</dd>
-<dd><code>handler</code> - the handler that gets called when a new message arrives at the specified eventbus address</dd>
-<dd><code>type</code> - the json type to map to</dd>
+<dd><code>type</code> - the type of received message to map to</dd>
+<dt>See Also:</dt>
+<dd><code>EventBus.consumer(String, Handler)</code></dd>
 </dl>
 </section>
 </li>

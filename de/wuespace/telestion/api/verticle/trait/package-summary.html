@@ -62,7 +62,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Interface</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</div>
+<div class="col-first even-row-color"><a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;T&gt;</div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -74,6 +74,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Allows <code>Verticle</code> instances to get simplified access to Vert.x shared data</div>
 </div>
+<div class="col-first even-row-color"><a href="WithTiming.html" title="interface in de.wuespace.telestion.api.verticle.trait">WithTiming</a></div>
+<div class="col-last even-row-color">
+<div class="block">Allows <code>Verticle</code> instances to get simplified access to the Vert.x timing functions
+ like <code>setPeriodic</code>
+ or <code>setTimer</code>.</div>
+</div>
 </div>
 </li>
 <li>
@@ -81,8 +87,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</div>
+<div class="col-first even-row-color"><a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;T extends io.vertx.core.json.JsonObject&gt;</div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="Timing.html" title="class in de.wuespace.telestion.api.verticle.trait">Timing</a></div>
+<div class="col-last odd-row-color">
+<div class="block">Stores information to a specific timing from Vert.x like the timing id or associated Vert.x instance.</div>
+</div>
 </div>
 </li>
 </ul>

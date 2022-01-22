@@ -76,7 +76,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance">io.vertx.core.AbstractVerticle
-<div class="inheritance"><a href="../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">de.wuespace.telestion.api.verticle.TelestionVerticle</a>&lt;<a href="../api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a>&gt;
+<div class="inheritance"><a href="../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">de.wuespace.telestion.api.verticle.TelestionVerticle</a>&lt;<a href="SayHello.Configuration.html" title="class in de.wuespace.telestion.examples">SayHello.Configuration</a>&gt;
 <div class="inheritance">de.wuespace.telestion.examples.SayHello</div>
 </div>
 </div>
@@ -84,11 +84,12 @@ loadScripts(document, 'script');</script>
 <section class="description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>io.vertx.core.Verticle</code></dd>
+<dd><code><a href="../api/verticle/trait/WithTiming.html" title="interface in de.wuespace.telestion.api.verticle.trait">WithTiming</a></code>, <code>io.vertx.core.Verticle</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">SayHello</span>
-<span class="extends-implements">extends <a href="../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="../api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="SayHello.Configuration.html" title="class in de.wuespace.telestion.examples">SayHello.Configuration</a>&gt;
+implements <a href="../api/verticle/trait/WithTiming.html" title="interface in de.wuespace.telestion.api.verticle.trait">WithTiming</a></span></div>
 <div class="block">A class which says hello and shows the usage of configuration files.</div>
 </section>
 <section class="summary">
@@ -162,6 +163,12 @@ loadScripts(document, 'script');</script>
 <div class="inherited-list">
 <h3 id="methods.inherited.from.class.java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods.inherited.from.class.io.vertx.core.Verticle">Methods inherited from interface&nbsp;io.vertx.core.Verticle</h3>
+<code>getVertx, init, start, stop</code></div>
+<div class="inherited-list">
+<h3 id="methods.inherited.from.class.de.wuespace.telestion.api.verticle.trait.WithTiming">Methods inherited from interface&nbsp;de.wuespace.telestion.api.verticle.trait.<a href="../api/verticle/trait/WithTiming.html" title="interface in de.wuespace.telestion.api.verticle.trait">WithTiming</a></h3>
+<code><a href="../api/verticle/trait/WithTiming.html#interval(long,io.vertx.core.Handler)">interval</a>, <a href="../api/verticle/trait/WithTiming.html#interval(java.time.Duration,io.vertx.core.Handler)">interval</a>, <a href="../api/verticle/trait/WithTiming.html#intervalStream(long)">intervalStream</a>, <a href="../api/verticle/trait/WithTiming.html#intervalStream(java.time.Duration)">intervalStream</a>, <a href="../api/verticle/trait/WithTiming.html#timeout(long,io.vertx.core.Handler)">timeout</a>, <a href="../api/verticle/trait/WithTiming.html#timeout(java.time.Duration,io.vertx.core.Handler)">timeout</a>, <a href="../api/verticle/trait/WithTiming.html#timeoutStream(long)">timeoutStream</a>, <a href="../api/verticle/trait/WithTiming.html#timeoutStream(java.time.Duration)">timeoutStream</a></code></div>
 </section>
 </li>
 </ul>
@@ -199,7 +206,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStart</span>&#8203;<span class="parameters">(io.vertx.core.Promise&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&nbsp;startPromise)</span></div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../api/verticle/TelestionVerticle.html#onStart(io.vertx.core.Promise)">onStart</a></code>&nbsp;in class&nbsp;<code><a href="../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="../api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a>&gt;</code></dd>
+<dd><code><a href="../api/verticle/TelestionVerticle.html#onStart(io.vertx.core.Promise)">onStart</a></code>&nbsp;in class&nbsp;<code><a href="../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="SayHello.Configuration.html" title="class in de.wuespace.telestion.examples">SayHello.Configuration</a>&gt;</code></dd>
 <dt>See Also:</dt>
 <dd><code>AbstractVerticle.start(Promise)</code></dd>
 </dl>

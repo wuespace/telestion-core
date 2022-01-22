@@ -115,14 +115,32 @@ extends io.vertx.core.Verticle</span></div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;K,&#8203;
 V&gt;&nbsp;io.vertx.core.shareddata.LocalMap&lt;K,&#8203;V&gt;</code></div>
-<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#localMap(java.lang.String)">localMap</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageSpace)</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#defaultLocalMap()">defaultLocalMap</a></span>()</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
-<div class="block">Return a local map from the specified storage space.</div>
+<div class="block">Return the default local map for this specific verticle.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;K,&#8203;
 V&gt;&nbsp;io.vertx.core.Future&lt;io.vertx.core.shareddata.AsyncMap&lt;K,&#8203;V&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#remoteMap(java.lang.String)">remoteMap</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageSpace)</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#defaultRemoteMap()">defaultRemoteMap</a></span>()</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Return the default remote map for this specific verticle.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#defaultStorageKey()">defaultStorageKey</a></span>()</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Return the default storage key for this specific verticle
+ used for the <a href="#defaultLocalMap()"><code>defaultLocalMap()</code></a> and <a href="#defaultRemoteMap()"><code>defaultRemoteMap()</code></a> verticle storage spaces.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;K,&#8203;
+V&gt;&nbsp;io.vertx.core.shareddata.LocalMap&lt;K,&#8203;V&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#localMap(java.lang.String)">localMap</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageSpace)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Return a local map from the specified storage space.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default &lt;K,&#8203;
+V&gt;&nbsp;io.vertx.core.Future&lt;io.vertx.core.shareddata.AsyncMap&lt;K,&#8203;V&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#remoteMap(java.lang.String)">remoteMap</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageSpace)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
 <div class="block">Return a remote map from the specified storage space.</div>
 </div>
 </div>
@@ -175,6 +193,50 @@ V&gt;</span>
 <dd><code>storageSpace</code> - the storage space of the remote map</dd>
 <dt>Returns:</dt>
 <dd>a future which resolves with the remote map</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="defaultLocalMap()">
+<h3>defaultLocalMap</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;K,&#8203;
+V&gt;</span>
+<span class="return-type">io.vertx.core.shareddata.LocalMap&lt;K,&#8203;V&gt;</span>&nbsp;<span class="element-name">defaultLocalMap</span>()</div>
+<div class="block">Return the default local map for this specific verticle.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>K</code> - the type of the key</dd>
+<dd><code>V</code> - the type of the value</dd>
+<dt>Returns:</dt>
+<dd>the default local map for this specific verticle</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="defaultRemoteMap()">
+<h3>defaultRemoteMap</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;K,&#8203;
+V&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;io.vertx.core.shareddata.AsyncMap&lt;K,&#8203;V&gt;&gt;</span>&nbsp;<span class="element-name">defaultRemoteMap</span>()</div>
+<div class="block">Return the default remote map for this specific verticle.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>K</code> - the type of the key</dd>
+<dd><code>V</code> - the type of the value</dd>
+<dt>Returns:</dt>
+<dd>the default remote map for this specific verticle</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="defaultStorageKey()">
+<h3>defaultStorageKey</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">defaultStorageKey</span>()</div>
+<div class="block">Return the default storage key for this specific verticle
+ used for the <a href="#defaultLocalMap()"><code>defaultLocalMap()</code></a> and <a href="#defaultRemoteMap()"><code>defaultRemoteMap()</code></a> verticle storage spaces.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the default storage key for this specific verticle</dd>
 </dl>
 </section>
 </li>
