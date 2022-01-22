@@ -1,3 +1,20 @@
+# [0.7.0](https://github.com/wuespace/telestion-core/compare/v0.6.2...v0.7.0) (2022-01-22)
+
+
+### Features
+
+* **api:** Add a default local and remote map for every verticle in `WithSharedData` ([0ecaa9b](https://github.com/wuespace/telestion-core/commit/0ecaa9b9e83e982a99497c55a2b4d92046ba3220))
+* **api:** Add automatic loading of the default configuration in `TelestionVerticle` ([a62e37f](https://github.com/wuespace/telestion-core/commit/a62e37f5786c62d152470c74ea3f449934a5ae3f))
+* **api:** Add generic types to request and register methods in `WithEventBus` trait ([6a9d344](https://github.com/wuespace/telestion-core/commit/6a9d34475a2c284b8e7270ca25f61367dd3bf491))
+* **api:** Add Verticle trait that simplifies the access to the timing functions of Vert.x ([c98c6c1](https://github.com/wuespace/telestion-core/commit/c98c6c1f0c405c250949cd69e6eaa3985dcd7aee))
+* **api:** Update log message for no default configuration in `TelestionVerticle` to pass the AWESA principle ([731572e](https://github.com/wuespace/telestion-core/commit/731572e3aa460c6cf38240ce4fd3d9dd6bff259f))
+* **api:** Update request methods in `WithEventBus` trait ([ddb8bda](https://github.com/wuespace/telestion-core/commit/ddb8bda9041950e675e871ad789ed25ab497045c))
+* **examples:** Add example for automatic default configuration loading in `TelestionVerticle` ([40f2d01](https://github.com/wuespace/telestion-core/commit/40f2d012806d98594c94d535f591b9cc4186b3c1))
+* **examples:** Add sample which shows the usage of the `WithTiming` trait ([2d28b89](https://github.com/wuespace/telestion-core/commit/2d28b89cb512ebbf73508dffa507ffa2c524eb50))
+* **examples:** Add simple example in `TestVerticle` to show the usage of the default local map ([126e4cd](https://github.com/wuespace/telestion-core/commit/126e4cdd1171507069d671b9d7b1339daf332f84))
+
+
+
 ## [0.6.2](https://github.com/wuespace/telestion-core/compare/v0.6.1...v0.6.2) (2021-12-28)
 
 
