@@ -90,7 +90,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../examples/GenericSimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">GenericSimpleCommandHandler</a></code>, <code><a href="../../examples/HelloWorld.html" title="class in de.wuespace.telestion.examples">HelloWorld</a></code>, <code><a href="../../examples/PingVerticle.html" title="class in de.wuespace.telestion.examples">PingVerticle</a></code>, <code><a href="../../examples/PongVerticle.html" title="class in de.wuespace.telestion.examples">PongVerticle</a></code>, <code><a href="../../examples/PositionPublisher.html" title="class in de.wuespace.telestion.examples">PositionPublisher</a></code>, <code><a href="../../examples/RandomPositionPublisher.html" title="class in de.wuespace.telestion.examples">RandomPositionPublisher</a></code>, <code><a href="../../examples/SayHello.html" title="class in de.wuespace.telestion.examples">SayHello</a></code>, <code><a href="../../examples/SimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">SimpleCommandHandler</a></code>, <code><a href="../../examples/SystemInfoVerticle.html" title="class in de.wuespace.telestion.examples">SystemInfoVerticle</a></code>, <code><a href="../../examples/TestVerticle.html" title="class in de.wuespace.telestion.examples">TestVerticle</a></code></dd>
+<dd><code><a href="../../examples/DefaultConfigVerticle.html" title="class in de.wuespace.telestion.examples">DefaultConfigVerticle</a></code>, <code><a href="../../examples/GenericSimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">GenericSimpleCommandHandler</a></code>, <code><a href="../../examples/HelloWorld.html" title="class in de.wuespace.telestion.examples">HelloWorld</a></code>, <code><a href="../../examples/PingVerticle.html" title="class in de.wuespace.telestion.examples">PingVerticle</a></code>, <code><a href="../../examples/PongVerticle.html" title="class in de.wuespace.telestion.examples">PongVerticle</a></code>, <code><a href="../../examples/PositionPublisher.html" title="class in de.wuespace.telestion.examples">PositionPublisher</a></code>, <code><a href="../../examples/RandomPositionPublisher.html" title="class in de.wuespace.telestion.examples">RandomPositionPublisher</a></code>, <code><a href="../../examples/SayHello.html" title="class in de.wuespace.telestion.examples">SayHello</a></code>, <code><a href="../../examples/SimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">SimpleCommandHandler</a></code>, <code><a href="../../examples/SystemInfoVerticle.html" title="class in de.wuespace.telestion.examples">SystemInfoVerticle</a></code>, <code><a href="../../examples/TestVerticle.html" title="class in de.wuespace.telestion.examples">TestVerticle</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">TelestionVerticle&lt;T extends <a href="TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle">TelestionConfiguration</a>&gt;</span>
@@ -131,7 +131,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E()">TelestionVerticle</a></span>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Same as <a href="#%3Cinit%3E(boolean)"><code>TelestionVerticle(boolean)</code></a>
+ but enables loading of default configuration if possible.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(boolean)">TelestionVerticle</a></span>&#8203;(boolean&nbsp;skipDefaultConfigLoading)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Creates a new Telestion verticle and tries to load the default configuration
+ from the specified configuration class.</div>
+</div>
 </div>
 </section>
 </li>
@@ -246,9 +254,23 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="&lt;init&gt;(boolean)">
+<h3>TelestionVerticle</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TelestionVerticle</span>&#8203;<span class="parameters">(boolean&nbsp;skipDefaultConfigLoading)</span></div>
+<div class="block">Creates a new Telestion verticle and tries to load the default configuration
+ from the specified configuration class.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>skipDefaultConfigLoading</code> - when <code>true</code> the loading of the default configuration is skipped</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>TelestionVerticle</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TelestionVerticle</span>()</div>
+<div class="block">Same as <a href="#%3Cinit%3E(boolean)"><code>TelestionVerticle(boolean)</code></a>
+ but enables loading of default configuration if possible.</div>
 </section>
 </li>
 </ul>
