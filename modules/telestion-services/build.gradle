@@ -134,7 +134,7 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
 
     implementation "io.vertx:vertx-web:4.2.3"
-    implementation "io.vertx:vertx-core:4.2.3"
+    implementation "io.vertx:vertx-core:4.2.4"
     implementation "io.vertx:vertx-hazelcast:4.2.3"
 // implementation "io.vertx:vertx-infinispan:3.9.2"
     implementation "io.vertx:vertx-health-check:4.2.3"
