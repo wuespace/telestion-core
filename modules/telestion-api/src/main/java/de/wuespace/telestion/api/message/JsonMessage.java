@@ -1,6 +1,7 @@
 package de.wuespace.telestion.api.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public interface JsonMessage {
 	JsonCodec JSON_CODEC = new JacksonCodec();
 	Logger logger = LoggerFactory.getLogger(JsonMessage.class);
+
 	/**
 	 * This method decodes a {@link JsonMessage} from the event bus.<br>
 	 * Returns whether decoding was successful or not.
@@ -50,6 +52,24 @@ public interface JsonMessage {
 
 	/**
 	 * This method decodes a {@link JsonMessage} from the event bus.<br>
+	 * It returns a future, which resolves, if the message was successfully decoded,
+	 * and rejects, if something went wrong during decoding.
+	 *
+	 * @param clazz   Class of the message-object
+	 * @param msgBody {@link Message#body() msg-body} of the sent message
+	 * @param <T>     Generic type for the {@link Future}
+	 * @return a future which resolves when the decoding was successful
+	 */
+	static <T extends JsonMessage> Future<T> on(Class<T> clazz, Object msgBody) {
+		return Future.future(promise -> {
+			if (!on(clazz, msgBody, promise::complete)) {
+				promise.fail("Cannot decode message.");
+			}
+		});
+	}
+
+	/**
+	 * This method decodes a {@link JsonMessage} from the event bus.<br>
 	 * Returns whether decoding was successful or not.
 	 *
 	 * @param clazz   Class of the message-object
@@ -60,6 +80,20 @@ public interface JsonMessage {
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {
 		return on(clazz, msg.body(), handler);
+	}
+
+	/**
+	 * This method decodes a {@link JsonMessage} from the event bus.<br>
+	 * It returns a future, which resolves, if the message was successfully decoded,
+	 * and rejects, if something went wrong during decoding.
+	 *
+	 * @param clazz Class of the message-object
+	 * @param msg   sent message
+	 * @param <T>   Generic type for the {@link Future}
+	 * @return a future which resolves when the decoding was successful
+	 */
+	static <T extends JsonMessage> Future<T> on(Class<T> clazz, Message<?> msg) {
+		return on(clazz, msg.body());
 	}
 
 	/**
