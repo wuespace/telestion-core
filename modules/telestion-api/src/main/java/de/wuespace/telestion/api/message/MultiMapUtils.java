@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Utilities for the {@link MultiMap Vert.x multimap}.
  *
- * @author Ludwig Richter (fussel178)
+ * @author Ludwig Richter (@fussel178)
  */
 public class MultiMapUtils {
 

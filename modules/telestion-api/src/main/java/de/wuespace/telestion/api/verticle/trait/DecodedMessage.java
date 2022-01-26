@@ -23,7 +23,7 @@ public record DecodedMessage<V extends JsonMessage, T extends JsonObject>(
 ) implements JsonMessage {
 
 	/**
-	 * Returns a future which succeeds with the {@code messageFuture}'s body as {@link JsonMessage}.
+	 * Returns a {@link Future} which succeeds with the {@code messageFuture}'s body as {@link JsonMessage}.
 	 * Fails if the {@code messageFuture}'s body cannot be mapped to the {@link JsonMessage} type
 	 * or the {@code messageFuture} fails.
 	 *
@@ -31,7 +31,7 @@ public record DecodedMessage<V extends JsonMessage, T extends JsonObject>(
 	 * @param messageFuture the future that returns the received message
 	 * @param <V>           the type of {@link JsonMessage} to map to
 	 * @param <T>           the type of the body of the {@link Message Vert.x message}
-	 * @return a future which succeeds with the {@code messageFuture}'s body as {@link JsonMessage}
+	 * @return a new {@link Future} which succeeds with the {@code messageFuture}'s body as {@link JsonMessage}
 	 * @see JsonMessage#on(Class, Message)
 	 */
 	public static <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> compose(
@@ -41,14 +41,14 @@ public record DecodedMessage<V extends JsonMessage, T extends JsonObject>(
 	}
 
 	/**
-	 * Return a future which succeeds with the {@link Message Vert.x message}'s body as {@link JsonMessage}.
+	 * Return a {@link Future} which succeeds with the {@link Message Vert.x message}'s body as {@link JsonMessage}.
 	 * Fails if the {@link Message Vert.x message}'s body cannot be mapped to the {@link JsonMessage} type.
 	 *
 	 * @param clazz   the class type of the {@link JsonMessage} to map to
 	 * @param message the {@link Message Vert.x message}
 	 * @param <V>     the type of {@link JsonMessage} to map to
 	 * @param <T>     the type of the body of the {@link Message Vert.x message}
-	 * @return a new future which returns a {@link DecodedMessage} with the message's contents
+	 * @return a new {@link Future} which returns a {@link DecodedMessage} with the message's contents
 	 * @see JsonMessage#on(Class, Message)
 	 */
 	public static <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> on(
