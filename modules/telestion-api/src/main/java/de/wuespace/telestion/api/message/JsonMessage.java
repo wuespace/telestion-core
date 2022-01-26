@@ -51,12 +51,12 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * This method decodes a {@link JsonMessage} from the event bus.<br>
-	 * It returns a future, which resolves, if the message was successfully decoded,
-	 * and rejects, if something went wrong during decoding.
+	 * This method decodes a {@link JsonMessage}.<br>
+	 * It returns a future which resolves if the message was successfully decoded,
+	 * and rejects if something went wrong during decoding.
 	 *
-	 * @param clazz   Class of the message-object
-	 * @param msgBody {@link Message#body() msg-body} of the sent message
+	 * @param clazz   Class of the message object
+	 * @param msgBody {@link Message#body() msg-body} of the message
 	 * @param <T>     Generic type for the {@link Future}
 	 * @return a future which resolves when the decoding was successful
 	 */
@@ -83,12 +83,12 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * This method decodes a {@link JsonMessage} from the event bus.<br>
-	 * It returns a future, which resolves, if the message was successfully decoded,
-	 * and rejects, if something went wrong during decoding.
+	 * This method decodes a {@link JsonMessage}.<br>
+	 * It returns a future which resolves if the message was successfully decoded,
+	 * and rejects if something went wrong during decoding.
 	 *
-	 * @param clazz Class of the message-object
-	 * @param msg   sent message
+	 * @param clazz Class of the message object
+	 * @param msg   message
 	 * @param <T>   Generic type for the {@link Future}
 	 * @return a future which resolves when the decoding was successful
 	 */
