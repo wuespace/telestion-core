@@ -3,6 +3,8 @@ package de.wuespace.telestion.api.message;
 import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Function;
@@ -12,17 +14,11 @@ import java.util.stream.Stream;
  * <h2>Description</h2>
  *
  * <p>
- * Header information are useful to attach simple information to messages
- * that should be transferred over the Vert.x event bus.
+ * The {@link HeaderInformation} class wraps APIs to attach information to messages
+ * to transfer them over the {@link io.vertx.core.eventbus.EventBus Vert.x event bus}.
  * <p>
- * This implementation extends the already existing functionality
- * of the {@link Message Vert.x message} {@link MultiMap headers}
+ * This implementation extends the already existing functionality of the {@link MultiMap Vert.x message headers}
  * to allow storing and retrieving of other basic data types than {@link String}.
- * <p>
- * There are numerous interfaces that simplifies the usage with the existing features of Vert.x
- * and better support through the {@link de.wuespace.telestion.api.verticle.trait.WithEventBus WithEventBus trait}
- * for {@link io.vertx.core.Verticle Vert.x verticles}
- * and especially the {@link de.wuespace.telestion.api.verticle.TelestionVerticle TelestionVerticle}.
  *
  * <h2>Usage</h2>
  * <pre>
@@ -50,34 +46,35 @@ import java.util.stream.Stream;
  * </pre>
  *
  * @author Cedric Boes (@cb0s), Ludwig Richter (@fussel178)
+ * @see de.wuespace.telestion.api.verticle.trait.WithEventBus
  */
 public class HeaderInformation {
 
 	/**
-	 * Merges an array of header information into one header information object.
+	 * Merges an array of {@link HeaderInformation} objects into one {@link HeaderInformation} object.
 	 *
-	 * @param information multiple header information that should be merged into one
-	 * @return the merged header information
+	 * @param information multiple {@link HeaderInformation} objects you want to merge
+	 * @return the merged {@link HeaderInformation} object
 	 */
 	public static HeaderInformation merge(HeaderInformation... information) {
 		return merge(Arrays.stream(information));
 	}
 
 	/**
-	 * Merges a list of header information into one header information object.
+	 * Merges a list of {@link HeaderInformation} objects into one {@link HeaderInformation} object.
 	 *
-	 * @param list multiple header information that should be merged into one
-	 * @return the merged header information
+	 * @param list multiple {@link HeaderInformation} objects you want to merge
+	 * @return the merged {@link HeaderInformation} object
 	 */
 	public static HeaderInformation merge(List<HeaderInformation> list) {
 		return merge(list.stream());
 	}
 
 	/**
-	 * Merges a stream of header information into one header information object.
+	 * Merges a stream of {@link HeaderInformation} objects into one {@link HeaderInformation} object.
 	 *
-	 * @param stream a stream that contains multiple header information that should be merged into one
-	 * @return the merged header information
+	 * @param stream a stream that contains multiple {@link HeaderInformation} objects you want to merge
+	 * @return the merged {@link HeaderInformation} object
 	 */
 	public static HeaderInformation merge(Stream<HeaderInformation> stream) {
 		var headers = stream.map(HeaderInformation::getHeaders);
@@ -85,37 +82,41 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Creates new header information from existing {@link MultiMap Vert.x headers}.
+	 * Creates a new {@link HeaderInformation} object from existing {@link MultiMap Vert.x headers}.
 	 *
-	 * @param headers the basic {@link MultiMap Vert.x headers} that should be wrapped into the header information
-	 * @return new header information with the wrapped {@link MultiMap Vert.x headers}
+	 * @param headers the {@link MultiMap Vert.x headers} you want to wrap into the {@link HeaderInformation} object
+	 * @return a new {@link HeaderInformation} object with the wrapped {@link MultiMap Vert.x headers}
 	 */
 	public static HeaderInformation from(MultiMap headers) {
 		return new HeaderInformation(headers);
 	}
 
 	/**
-	 * Creates new header information from existing {@link Message Vert.x message}.
+	 * Creates a new {@link HeaderInformation} object from a {@link Message Vert.x message}.
 	 *
-	 * @param message the received {@link Message Vert.x message} which contains the received headers
-	 * @return new header information with the received headers from the {@link Message Vert.x message}
+	 * @param message the {@link Message Vert.x message} that contains the {@link MultiMap Vert.x headers}
+	 *                you want to wrap into the {@link HeaderInformation} object
+	 * @return a new {@link HeaderInformation} object with the {@link MultiMap Vert.x headers}
+	 * from the {@link Message Vert.x message}
 	 */
 	public static HeaderInformation from(Message<?> message) {
 		return new HeaderInformation(message);
 	}
 
 	/**
-	 * Creates new header information from existing {@link DeliveryOptions}.
+	 * Creates a new {@link HeaderInformation} object from {@link DeliveryOptions}.
 	 *
-	 * @param options existing {@link DeliveryOptions} which contain the basic {@link MultiMap Vert.x headers}
-	 * @return new header information with the headers from the {@link DeliveryOptions}
+	 * @param options {@link DeliveryOptions} that contain the {@link MultiMap Vert.x headers}
+	 *                you want to wrap into the {@link HeaderInformation} object
+	 * @return a new {@link HeaderInformation} object with the {@link MultiMap Vert.x headers}
+	 * from the {@link DeliveryOptions}
 	 */
 	public static HeaderInformation from(DeliveryOptions options) {
 		return new HeaderInformation(options);
 	}
 
 	/**
-	 * Creates new header information with empty headers.
+	 * Creates a new {@link HeaderInformation} object with empty headers.
 	 *
 	 * @see MultiMap#caseInsensitiveMultiMap()
 	 */
@@ -124,61 +125,61 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Creates new header information with the provided {@link MultiMap Vert.x headers}.
+	 * Creates a new {@link HeaderInformation} object with the provided {@link MultiMap Vert.x headers}.
 	 *
-	 * @param headers the basic {@link MultiMap Vert.x headers} that should be wrapped inside the header information
+	 * @param headers the {@link MultiMap Vert.x headers} that you want to wrap inside
+	 *                the {@link HeaderInformation} object
 	 */
 	public HeaderInformation(MultiMap headers) {
 		this.headers = headers;
 	}
 
 	/**
-	 * Creates new header information with the headers from the given {@link Message Vert.x message}.
+	 * Creates a new {@link HeaderInformation} object with the headers from the {@link Message Vert.x message}.
 	 *
-	 * @param message the {@link Message Vert.x message} that contains the basic {@link MultiMap Vert.x headers}
-	 *                which should be wrapped inside the header information
+	 * @param message the {@link Message Vert.x message} that contains the {@link MultiMap Vert.x headers}
+	 *                which you want to wrap inside the {@link HeaderInformation} object
 	 */
 	public HeaderInformation(Message<?> message) {
 		this(message.headers());
 	}
 
 	/**
-	 * Creates new header information with the headers from the given {@link DeliveryOptions}.
+	 * Creates a new {@link HeaderInformation} object with the headers from the {@link DeliveryOptions}.
 	 *
-	 * @param options the {@link DeliveryOptions} that contain the basic {@link MultiMap Vert.x headers}
-	 *                which should be wrapped inside the header information
+	 * @param options the {@link DeliveryOptions} that contain the {@link MultiMap Vert.x headers}
+	 *                which you want to wrap inside the {@link HeaderInformation} object
 	 */
 	public HeaderInformation(DeliveryOptions options) {
 		this(options.getHeaders());
 	}
 
 	/**
-	 * Returns the wrapped basic {@link MultiMap Vert.x headers} ready to use in {@link DeliveryOptions}
+	 * Returns the wrapped {@link MultiMap Vert.x headers} ready to use in {@link DeliveryOptions}
 	 * or the {@link de.wuespace.telestion.api.verticle.trait.WithEventBus WithEventBus} verticle trait.
 	 *
-	 * @return the wrapped basic {@link MultiMap Vert.x headers}
+	 * @return the wrapped {@link MultiMap Vert.x headers}
 	 */
 	public MultiMap getHeaders() {
 		return headers;
 	}
 
 	/**
-	 * Attaches the wrapped basic {@link MultiMap Vert.x headers} to the given {@link DeliveryOptions}
+	 * Attaches the wrapped {@link MultiMap Vert.x headers} to the {@link DeliveryOptions}
 	 * and return them again for further usage.
 	 *
-	 * @param options the {@link DeliveryOptions} on which the wrapped basic {@link MultiMap Vert.x headers}
-	 *                should be attached
-	 * @return the given {@link DeliveryOptions} for further usage
+	 * @param options the {@link DeliveryOptions} that receive the wrapped {@link MultiMap Vert.x headers}
+	 * @return the {@link DeliveryOptions} for further usage
 	 */
 	public DeliveryOptions attach(DeliveryOptions options) {
 		return options.setHeaders(headers);
 	}
 
 	/**
-	 * Creates new and empty {@link DeliveryOptions} and attaches the wrapped basic {@link MultiMap Vert.x headers}
+	 * Creates new and empty {@link DeliveryOptions} and attaches the wrapped {@link MultiMap Vert.x headers}
 	 * to them.
 	 *
-	 * @return the new {@link DeliveryOptions} with the attached basic {@link MultiMap Vert.x headers}
+	 * @return the new {@link DeliveryOptions} with the attached {@link MultiMap Vert.x headers}
 	 */
 	public DeliveryOptions toOptions() {
 		return attach(new DeliveryOptions());
@@ -189,11 +190,11 @@ public class HeaderInformation {
 	///
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers}.
-	 * If no value in the key slot is found, an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link String}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<String> get(String key) {
@@ -201,12 +202,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers}.
-	 * If no value in the key slot is found, the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link String}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 * @return the value in the key slot or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public String get(String key, String defaultValue) {
@@ -214,12 +215,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a byte.
-	 * If no value in the key slot is found or the value cannot be converted to a byte,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Byte}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as a byte wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Byte> getByte(String key) {
@@ -227,14 +227,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a byte.
-	 * If no value in the key slot is found ir the value cannot be converted to a byte,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Byte}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as a byte or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public byte getByte(String key, byte defaultValue) {
@@ -242,12 +240,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as an integer.
-	 * If no value in the key slot is found or the value cannot be converted to an integer,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Integer}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as an integer wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Integer> getInt(String key) {
@@ -255,14 +252,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as an integer.
-	 * If no value in the key slot is found ir the value cannot be converted to an integer,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Integer}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as an integer or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public int getInt(String key, int defaultValue) {
@@ -270,12 +265,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a long.
-	 * If no value in the key slot is found or the value cannot be converted to a long,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Long}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as a long wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Long> getLong(String key) {
@@ -283,14 +277,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a long.
-	 * If no value in the key slot is found ir the value cannot be converted to a long,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Long}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as a long or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public long getLong(String key, long defaultValue) {
@@ -298,12 +290,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a float.
-	 * If no value in the key slot is found or the value cannot be converted to a float,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Float}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as a float wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Float> getFloat(String key) {
@@ -311,14 +302,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a float.
-	 * If no value in the key slot is found ir the value cannot be converted to a float,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Float}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as a float or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public float getFloat(String key, float defaultValue) {
@@ -326,12 +315,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a double.
-	 * If no value in the key slot is found or the value cannot be converted to a double,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Double}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as a double wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Double> getDouble(String key) {
@@ -339,14 +327,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a double.
-	 * If no value in the key slot is found ir the value cannot be converted to a double,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Double}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as a double or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public double getDouble(String key, double defaultValue) {
@@ -354,12 +340,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a character.
-	 * If no value in the key slot is found or the value cannot be converted to a character,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Character}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as a character wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Character> getChar(String key) {
@@ -367,14 +352,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a character.
-	 * If no value in the key slot is found ir the value cannot be converted to a character,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Character}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as a character or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public char getChar(String key, char defaultValue) {
@@ -382,12 +365,11 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a boolean.
-	 * If no value in the key slot is found or the value cannot be converted to a boolean,
-	 * an {@link Optional#empty() empty Optional} is returned instead.
+	 * Returns the first stored value assigned to the key as {@link Boolean}.
+	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the value as a boolean wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Boolean> getBoolean(String key) {
@@ -395,14 +377,12 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the current value of the given key in the {@link MultiMap Vert.x headers} as a character.
-	 * If no value in the key slot is found ir the value cannot be converted to a character,
-	 * the default value is used instead.
+	 * Returns the first stored value assigned to the key as {@link Boolean}.
+	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value in the key slot is found
-	 *                     or the value in the key slot is not parsable
-	 * @return the value in the key slot as a character or the default value if the key slot is empty
+	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
 	public boolean getBoolean(String key, boolean defaultValue) {
@@ -410,10 +390,10 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns a list of all stored values in the specified key slot of the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns a list of all stored values assigned to the key as a list of {@link String Strings}.
 	 *
 	 * @param key the key to which the values are assigned
-	 * @return the stored values as a list or an empty list if no values are stored
+	 * @return all stored values as a list of {@link String Strings}
 	 * @see MultiMap#getAll(String)
 	 */
 	public List<String> getAll(String key) {
@@ -425,290 +405,114 @@ public class HeaderInformation {
 	///
 
 	/**
-	 * Adds multiple strings to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link String} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new strings that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link String} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, String... values) {
-		return add(key, List.of(values));
+		return add(key, Arrays.stream(values));
 	}
 
 	/**
-	 * Adds multiple characters to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Character} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new characters that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Character} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Character... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Adds multiple integers to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Integer} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new integers that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Integer} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Integer... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Adds multiple longs to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Long} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new longs that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Long} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Long... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Adds multiple shorts to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Short} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new shorts that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Short} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Short... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Adds multiple bytes to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Byte} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new bytes that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Byte} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Byte... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Adds multiple doubles to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Double} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new doubles that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Double} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Double... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Adds multiple booleans to the specified key slot of the {@link MultiMap Vert.x headers}.
+	 * Appends multiple {@link Boolean} values assigned to the key.
 	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new booleans that should be added to the key slot
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Boolean} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
 	public HeaderInformation add(String key, Boolean... values) {
-		return add(key, Stream.of(values).map(String::valueOf).toList());
+		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
 	/**
-	 * Intermediate step to add a list of strings to the wrapped {@link MultiMap Vert.x headers}.
+	 * Intermediate step to append a stream of strings to the wrapped {@link MultiMap Vert.x headers}.
 	 */
-	private HeaderInformation add(String key, List<String> list) {
-		headers.add(key, list);
-		return this;
-	}
-
-	///
-	/// SET METHODS
-	///
-
-	/**
-	 * Sets multiple strings in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new strings that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, String... values) {
-		return set(key, List.of(values));
-	}
-
-	/**
-	 * Sets multiple characters in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new characters that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Character... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple integers in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new integers that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Integer... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple longs in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new longs that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Long... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple shorts in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new shorts that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Short... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple bytes in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new bytes that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Byte... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple doubles in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new doubles that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Double... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple floats in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new floats that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Float... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Sets multiple booleans in the specified key slot of the {@link MultiMap Vert.x headers}
-	 * and replaces potentially existing values.
-	 *
-	 * @param key    the key to which the value is assigned
-	 * @param values the new booleans that should be replaced in the key slot
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Boolean... values) {
-		return set(key, Stream.of(values).map(String::valueOf).toList());
-	}
-
-	/**
-	 * Intermediate step to set a list of strings in the wrapped {@link MultiMap Vert.x headers}.
-	 */
-	private HeaderInformation set(String key, List<String> values) {
-		headers.set(key, values);
-		return this;
-	}
-
-	///
-	/// OTHER METHODS FROM MULTIMAP
-	///
-
-	/**
-	 * Replaces all key slots of the wrapped {@link MultiMap Vert.x headers} with the specified ones.
-	 * All other existing key slots are cleared.
-	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
-	 *
-	 * @param headers the {@link MultiMap Vert.x headers} that contains the new key slots and associated values
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#setAll(MultiMap)
-	 */
-	public HeaderInformation setAll(MultiMap headers) {
-		this.headers.setAll(headers);
+	private HeaderInformation add(String key, Stream<String> stream) {
+		headers.add(key, stream.toList());
 		return this;
 	}
 
 	/**
-	 * Replaces all key slots of the wrapped {@link MultiMap Vert.x headers} with the specified ones.
-	 * All other existing key slots are cleared.
-	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 * Appends all values assigned to their keys from the {@link MultiMap} to already existing values.
 	 *
-	 * @param headers a {@link Map} that contains the new key slots and associated values
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#setAll(Map)
-	 */
-	public HeaderInformation setAll(Map<String, String> headers) {
-		this.headers.setAll(headers);
-		return this;
-	}
-
-	/**
-	 * Replaces all key slots of the wrapped {@link MultiMap Vert.x headers}
-	 * with the wrapped {@link MultiMap Vert.x headers} of the specified instance.
-	 * All other existing key slots are cleared.
-	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
-	 *
-	 * @param information the other {@link HeaderInformation} instance that contains the new key slots
-	 *                    and associated values
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see HeaderInformation#setAll(MultiMap)
-	 */
-	public HeaderInformation setAll(HeaderInformation information) {
-		return setAll(information.headers);
-	}
-
-	/**
-	 * Adds all key slots and values of the specified {@link MultiMap Vert.x headers}
-	 * to the wrapped {@link MultiMap Vert.x headers}.
-	 *
-	 * @param headers the {@link MultiMap Vert.x headers} that contain the new key slots and values
+	 * @param headers the {@link MultiMap} that contain the new values
+	 *                which you want to append to the existing values
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#addAll(MultiMap)
 	 */
@@ -718,9 +522,10 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Adds all key slots and values of the specified {@link Map} to the wrapped {@link MultiMap Vert.x headers}.
+	 * Appends all values assigned to their keys from the {@link Map} to already existing values.
 	 *
-	 * @param headers the {@link Map} that contain the new key slots and values
+	 * @param headers the {@link Map} that contain the new values
+	 *                which you want to append to the existing values
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#addAll(Map)
 	 */
@@ -730,11 +535,10 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Adds all key slots and values of the specified {@link HeaderInformation} instance
-	 * to the wrapped {@link MultiMap Vert.x headers}.
+	 * Appends all values assigned to their keys from the {@link HeaderInformation} object to already existing values.
 	 *
-	 * @param information the other {@link HeaderInformation} instance that contains the new key slots
-	 *                    and associated values
+	 * @param information the {@link HeaderInformation} object that contain the new values
+	 *                    which you want to append to the existing values
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#addAll(MultiMap)
 	 */
@@ -742,20 +546,197 @@ public class HeaderInformation {
 		return addAll(information.headers);
 	}
 
+	///
+	/// SET METHODS
+	///
+
 	/**
-	 * Removes all values from the specified key slot on the wrapped {@link MultiMap Vert.x headers}.
+	 * Replaces multiple {@link String} values with the old allocation assigned to the key .
 	 *
-	 * @param name the key to which the values are assigned
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link String} values that you want to replace with the old allocation
 	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#remove(String)
+	 * @see MultiMap#set(String, Iterable)
 	 */
-	public HeaderInformation remove(String name) {
-		headers.remove(name);
+	public HeaderInformation set(String key, String... values) {
+		return set(key, Arrays.stream(values));
+	}
+
+	/**
+	 * Replaces multiple {@link Character} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Character} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Character... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Integer} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Integer} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Integer... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Long} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Long} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Long... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Short} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Short} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Short... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Byte} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Byte} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Byte... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Double} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Double} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Double... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Float} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Float} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Float... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Replaces multiple {@link Boolean} values with the old allocation assigned to the key.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Boolean} values that you want to replace with the old allocation
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#set(String, Iterable)
+	 */
+	public HeaderInformation set(String key, Boolean... values) {
+		return set(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
+	 * Intermediate step to replace a stream of strings with the old allocation
+	 * in the wrapped {@link MultiMap Vert.x headers}.
+	 */
+	private HeaderInformation set(String key, Stream<String> stream) {
+		headers.set(key, stream.toList());
 		return this;
 	}
 
 	/**
-	 * Clears all key slots and values from the wrapped {@link MultiMap Vert.x headers}.
+	 * Replaces all values assigned to their keys with the content of the {@link MultiMap}.
+	 * All remaining values are cleared.
+	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 *
+	 * @param headers the {@link MultiMap} that contains the new values assigned to their keys
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#setAll(MultiMap)
+	 */
+	public HeaderInformation setAll(MultiMap headers) {
+		this.headers.setAll(headers);
+		return this;
+	}
+
+	/**
+	 * Replaces all values assigned to their keys with the content of the {@link Map}.
+	 * All remaining values are cleared.
+	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 *
+	 * @param headers the {@link Map} that contains the new values assigned to their keys
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#setAll(Map)
+	 */
+	public HeaderInformation setAll(Map<String, String> headers) {
+		this.headers.setAll(headers);
+		return this;
+	}
+
+	/**
+	 * Replaces all values assigned to their keys with the content of the {@link HeaderInformation} object.
+	 * All other existing key slots are cleared.
+	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 *
+	 * @param information the {@link HeaderInformation} object that contains the new values assigned to their keys
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see HeaderInformation#setAll(MultiMap)
+	 */
+	public HeaderInformation setAll(HeaderInformation information) {
+		return setAll(information.headers);
+	}
+
+	///
+	/// OTHER METHODS FROM MULTIMAP
+	///
+
+	/**
+	 * Returns {@code true}, if at least one value is assigned to the key.
+	 * If no value is assigned, {@code false} is returned instead.
+	 *
+	 * @param key the key to which the value can be assigned
+	 * @return {@code true}, if at least one value is assigned to the key
+	 */
+	public boolean contains(String key) {
+		return headers.contains(key);
+	}
+
+	/**
+	 * Removes all values assigned to the key.
+	 *
+	 * @param key the key to which the values are assigned
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#remove(String)
+	 */
+	public HeaderInformation remove(String key) {
+		headers.remove(key);
+		return this;
+	}
+
+	/**
+	 * Clears all values assigned to their keys.
 	 *
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#clear()
@@ -766,9 +747,9 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns the number of currently used key slots in the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns the number of all keys which have values assigned to.
 	 *
-	 * @return the number of used key slots in the {@link MultiMap Vert.x headers}
+	 * @return the number of all keys which have values assigned to
 	 * @see MultiMap#size()
 	 */
 	public int size() {
@@ -776,9 +757,9 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns an immutable set of all keys currently used in the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns an immutable set of all keys which have values assigned to.
 	 *
-	 * @return an immutable set of all keys in the wrapped {@link MultiMap Vert.x headers}
+	 * @return an immutable set of all keys which have values assigned to
 	 * @see MultiMap#names()
 	 */
 	public Set<String> names() {
@@ -786,9 +767,9 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Returns {@code true}, if the wrapped {@link MultiMap Vert.x headers} has no entries.
+	 * Returns {@code true}, if the wrapped {@link MultiMap Vert.x headers} have no entries.
 	 *
-	 * @return returns {@code true} if the wrapped {@link MultiMap Vert.x headers} has no entries
+	 * @return returns {@code true} if the wrapped {@link MultiMap Vert.x headers} have no entries
 	 * @see MultiMap#isEmpty()
 	 */
 	public boolean isEmpty() {
@@ -801,9 +782,11 @@ public class HeaderInformation {
 	 */
 	private final MultiMap headers;
 
+	private static final Logger logger = LoggerFactory.getLogger(HeaderInformation.class);
+
 	/**
 	 * Wraps the specified function into a {@link NumberFormatException} try-catch block
-	 * to prevent exception breakout in the parsing steps above.
+	 * to prevent exception breakout in the parsing steps.
 	 * If the value cannot be parsed, {@code null} is returned instead.
 	 *
 	 * @param func the function that can throw a {@link NumberFormatException} during parsing
