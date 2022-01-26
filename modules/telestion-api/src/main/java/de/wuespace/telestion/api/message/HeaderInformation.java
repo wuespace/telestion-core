@@ -504,7 +504,15 @@ public class HeaderInformation {
 	 * Intermediate step to append a stream of strings to the wrapped {@link MultiMap Vert.x headers}.
 	 */
 	private HeaderInformation add(String key, Stream<String> stream) {
-		headers.add(key, stream.toList());
+		var list = stream.toList();
+
+		if (contains(key)) {
+			var existing = getAll(key);
+			logger.warn("The header information object already contains values assigned to that key. " +
+					"Key: {}, Before: {}, Now: {}", key, existing, Stream.of(existing, list).toList());
+		}
+
+		headers.add(key, list);
 		return this;
 	}
 
@@ -663,7 +671,15 @@ public class HeaderInformation {
 	 * in the wrapped {@link MultiMap Vert.x headers}.
 	 */
 	private HeaderInformation set(String key, Stream<String> stream) {
-		headers.set(key, stream.toList());
+		var list = stream.toList();
+
+		if (contains(key)) {
+			var existing = getAll(key);
+			logger.warn("The header information object already contains values assigned to that key. " +
+					"Key: {}, Before: {}, Now: {}", key, existing, list);
+		}
+
+		headers.set(key, list);
 		return this;
 	}
 
