@@ -194,7 +194,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<String> get(String key) {
@@ -206,7 +206,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -219,7 +219,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Byte> getByte(String key) {
@@ -231,7 +231,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -244,7 +244,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Integer> getInt(String key) {
@@ -256,7 +256,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -269,7 +269,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Long> getLong(String key) {
@@ -281,7 +281,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -294,7 +294,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Float> getFloat(String key) {
@@ -306,7 +306,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -319,7 +319,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Double> getDouble(String key) {
@@ -331,7 +331,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -344,7 +344,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Character> getChar(String key) {
@@ -356,7 +356,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -369,7 +369,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
 	 *
 	 * @param key the key to which the value is assigned
-	 * @return the first stored value wrapped inside a {@link Optional} for better {@code null} type safety
+	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Boolean> getBoolean(String key) {
@@ -381,7 +381,7 @@ public class HeaderInformation {
 	 * If no value is assigned to the key, the default value is used instead.
 	 *
 	 * @param key          the key to which the value is assigned
-	 * @param defaultValue the value which are returned if no value is assigned to the key
+	 * @param defaultValue the value which is returned if no value is assigned to the key
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
@@ -406,6 +406,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link String} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link String} values that you want to append to the key
@@ -418,6 +419,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Character} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Character} values that you want to append to the key
@@ -430,6 +432,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Integer} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Integer} values that you want to append to the key
@@ -442,6 +445,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Long} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Long} values that you want to append to the key
@@ -454,6 +458,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Short} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Short} values that you want to append to the key
@@ -466,6 +471,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Byte} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Byte} values that you want to append to the key
@@ -478,6 +484,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Double} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Double} values that you want to append to the key
@@ -490,6 +497,7 @@ public class HeaderInformation {
 
 	/**
 	 * Appends multiple {@link Boolean} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Boolean} values that you want to append to the key
@@ -502,6 +510,11 @@ public class HeaderInformation {
 
 	/**
 	 * Intermediate step to append a stream of strings to the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns a reference to {@code this} for fluent design.
+	 *
+	 * @param key      the key to which the values should be assigned
+	 * @param stream   stream of values to assign to the given key
+	 * @return a reference to {@code this}, so the API can be used fluently
 	 */
 	private HeaderInformation add(String key, Stream<String> stream) {
 		var list = stream.toList();
@@ -518,8 +531,9 @@ public class HeaderInformation {
 
 	/**
 	 * Appends all values assigned to their keys from the {@link MultiMap} to already existing values.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
-	 * @param headers the {@link MultiMap} that contain the new values
+	 * @param headers the {@link MultiMap} that contains the new values
 	 *                which you want to append to the existing values
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#addAll(MultiMap)
@@ -531,8 +545,9 @@ public class HeaderInformation {
 
 	/**
 	 * Appends all values assigned to their keys from the {@link Map} to already existing values.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
-	 * @param headers the {@link Map} that contain the new values
+	 * @param headers the {@link Map} that contains the new values
 	 *                which you want to append to the existing values
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#addAll(Map)
@@ -544,8 +559,9 @@ public class HeaderInformation {
 
 	/**
 	 * Appends all values assigned to their keys from the {@link HeaderInformation} object to already existing values.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
-	 * @param information the {@link HeaderInformation} object that contain the new values
+	 * @param information the {@link HeaderInformation} object that contains the new values
 	 *                    which you want to append to the existing values
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#addAll(MultiMap)
@@ -559,7 +575,8 @@ public class HeaderInformation {
 	///
 
 	/**
-	 * Replaces multiple {@link String} values with the old allocation assigned to the key .
+	 * Replaces multiple {@link String} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link String} values that you want to replace with the old allocation
@@ -572,6 +589,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Character} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Character} values that you want to replace with the old allocation
@@ -584,6 +602,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Integer} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Integer} values that you want to replace with the old allocation
@@ -596,6 +615,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Long} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Long} values that you want to replace with the old allocation
@@ -608,6 +628,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Short} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Short} values that you want to replace with the old allocation
@@ -620,6 +641,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Byte} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Byte} values that you want to replace with the old allocation
@@ -632,6 +654,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Double} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Double} values that you want to replace with the old allocation
@@ -644,6 +667,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Float} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Float} values that you want to replace with the old allocation
@@ -656,6 +680,7 @@ public class HeaderInformation {
 
 	/**
 	 * Replaces multiple {@link Boolean} values with the old allocation assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
 	 * @param values the new {@link Boolean} values that you want to replace with the old allocation
@@ -669,6 +694,11 @@ public class HeaderInformation {
 	/**
 	 * Intermediate step to replace a stream of strings with the old allocation
 	 * in the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns a reference to {@code this} for fluent design.
+	 *
+	 * @param key      the key to the values which should be replaced
+	 * @param stream   stream of values which replace the current values assigned to the given key
+	 * @return a reference to {@code this}, so the API can be used fluently
 	 */
 	private HeaderInformation set(String key, Stream<String> stream) {
 		var list = stream.toList();
@@ -686,7 +716,8 @@ public class HeaderInformation {
 	/**
 	 * Replaces all values assigned to their keys with the content of the {@link MultiMap}.
 	 * All remaining values are cleared.
-	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.<br>
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param headers the {@link MultiMap} that contains the new values assigned to their keys
 	 * @return a reference to {@code this}, so the API can be used fluently
@@ -700,7 +731,8 @@ public class HeaderInformation {
 	/**
 	 * Replaces all values assigned to their keys with the content of the {@link Map}.
 	 * All remaining values are cleared.
-	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.<br>
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param headers the {@link Map} that contains the new values assigned to their keys
 	 * @return a reference to {@code this}, so the API can be used fluently
@@ -714,7 +746,8 @@ public class HeaderInformation {
 	/**
 	 * Replaces all values assigned to their keys with the content of the {@link HeaderInformation} object.
 	 * All other existing key slots are cleared.
-	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.
+	 * It is effectively an entire replacement of the entire {@link MultiMap} instance.<br>
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param information the {@link HeaderInformation} object that contains the new values assigned to their keys
 	 * @return a reference to {@code this}, so the API can be used fluently
@@ -741,6 +774,7 @@ public class HeaderInformation {
 
 	/**
 	 * Removes all values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key the key to which the values are assigned
 	 * @return a reference to {@code this}, so the API can be used fluently
@@ -753,6 +787,7 @@ public class HeaderInformation {
 
 	/**
 	 * Clears all values assigned to their keys.
+	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#clear()
@@ -785,7 +820,7 @@ public class HeaderInformation {
 	/**
 	 * Returns {@code true}, if the wrapped {@link MultiMap Vert.x headers} have no entries.
 	 *
-	 * @return returns {@code true} if the wrapped {@link MultiMap Vert.x headers} have no entries
+	 * @return {@code true} if the wrapped {@link MultiMap Vert.x headers} have no entries
 	 * @see MultiMap#isEmpty()
 	 */
 	public boolean isEmpty() {
