@@ -23,14 +23,14 @@ public interface JsonMessage {
 	Logger logger = LoggerFactory.getLogger(JsonMessage.class);
 
 	/**
-	 * This method decodes a {@link JsonMessage} from the event bus.<br>
-	 * Returns whether decoding was successful or not.
+	 * This method decodes a {@link JsonMessage}.<br>
+	 * Returns {@code true}, if the conversion was successful.
 	 *
-	 * @param clazz   Class of the message-object
-	 * @param msgBody {@link Message#body() msg-body} of the sent message
+	 * @param clazz   Class of the message object
+	 * @param msgBody {@link Message#body() msg-body} of the message
 	 * @param handler handler for the message
 	 * @param <T>     Generic type for the {@link Handler}
-	 * @return whether decoding was successful
+	 * @return {@code true}, if the conversion was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Object msgBody, Handler<T> handler) {
 		if (msgBody instanceof JsonObject jsonObject && jsonObject.containsKey("className")) {
@@ -69,14 +69,14 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * This method decodes a {@link JsonMessage} from the event bus.<br>
-	 * Returns whether decoding was successful or not.
+	 * This method decodes a {@link JsonMessage}.<br>
+	 * Returns {@code true}, if the conversion was successful.
 	 *
-	 * @param clazz   Class of the message-object
-	 * @param msg     sent message
+	 * @param clazz   Class of the message object
+	 * @param msg     message
 	 * @param handler handler for the message
 	 * @param <T>     type of the {@link Message}
-	 * @return whether decoding was successful
+	 * @return {@code true}, if the conversion was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> clazz, Message<?> msg, Handler<T> handler) {
 		return on(clazz, msg.body(), handler);
