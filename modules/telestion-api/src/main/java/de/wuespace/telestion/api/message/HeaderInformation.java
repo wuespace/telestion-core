@@ -512,8 +512,8 @@ public class HeaderInformation {
 	 * Intermediate step to append a stream of strings to the wrapped {@link MultiMap Vert.x headers}.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
-	 * @param key      the key to which the values should be assigned
-	 * @param stream   stream of values to assign to the given key
+	 * @param key    the key to which the values should be assigned
+	 * @param stream stream of values to assign to the given key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 */
 	private HeaderInformation add(String key, Stream<String> stream) {
@@ -522,7 +522,8 @@ public class HeaderInformation {
 		if (contains(key)) {
 			var existing = getAll(key);
 			logger.warn("The header information object already contains values assigned to that key. " +
-					"Key: {}, Before: {}, Now: {}", key, existing, Stream.of(existing, list).toList());
+							"Appending new values to existing values. Key: {}, Before: {}, Now: {}",
+					key, existing, Stream.of(existing, list).toList());
 		}
 
 		headers.add(key, list);
@@ -696,8 +697,8 @@ public class HeaderInformation {
 	 * in the wrapped {@link MultiMap Vert.x headers}.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
-	 * @param key      the key to the values which should be replaced
-	 * @param stream   stream of values which replace the current values assigned to the given key
+	 * @param key    the key to the values which should be replaced
+	 * @param stream stream of values which replace the current values assigned to the given key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 */
 	private HeaderInformation set(String key, Stream<String> stream) {
@@ -706,7 +707,7 @@ public class HeaderInformation {
 		if (contains(key)) {
 			var existing = getAll(key);
 			logger.warn("The header information object already contains values assigned to that key. " +
-					"Key: {}, Before: {}, Now: {}", key, existing, list);
+					"Overriding existing values with new values. Key: {}, Before: {}, Now: {}", key, existing, list);
 		}
 
 		headers.set(key, list);
