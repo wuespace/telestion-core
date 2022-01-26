@@ -16,33 +16,33 @@ import java.util.stream.Stream;
 public class MultiMapUtils {
 
 	/**
-	 * Merges an array of multi-maps into one multimap
+	 * Merges an array of multi-maps into one multi-map
 	 * with the {@link MultiMap#addAll(MultiMap) addAll} function.
 	 *
-	 * @param maps multiple multi-maps that should be merged into one
-	 * @return a new multimap with the merged content of the other multi-maps
+	 * @param maps multi-maps that you want to merge
+	 * @return a new multi-map with the merged content of the other multi-maps
 	 */
 	public static MultiMap merge(MultiMap... maps) {
 		return merge(Arrays.stream(maps));
 	}
 
 	/**
-	 * Merges a list of multi-maps into one multimap
+	 * Merges a list of multi-maps into one multi-map
 	 * with the {@link MultiMap#addAll(MultiMap) addAll} function.
 	 *
-	 * @param list multiple multi-maps that should be merged into one
-	 * @return a new multimap with the merged content of the other multi-maps
+	 * @param list multi-maps that you want to merge
+	 * @return a new multi-map with the merged content of the other multi-maps
 	 */
 	public static MultiMap merge(List<MultiMap> list) {
 		return merge(list.stream());
 	}
 
 	/**
-	 * Merges a stream of multi-maps into one multimap
+	 * Merges a stream of multi-maps into one multi-map
 	 * with the {@link MultiMap#addAll(MultiMap) addAll} function.
 	 *
-	 * @param stream a stream that contains multi-maps that should be merged into one
-	 * @return a new multimap with the merged content of the other multi-maps
+	 * @param stream a stream that contains the multi-maps that you want to merge
+	 * @return a new multi-map with the merged content of the other multi-maps
 	 */
 	public static MultiMap merge(Stream<MultiMap> stream) {
 		var finalMap = MultiMap.caseInsensitiveMultiMap();
@@ -51,7 +51,7 @@ public class MultiMapUtils {
 	}
 
 	/**
-	 * Extracts the {@link MultiMap Vert.x headers} from the received {@link Message}.
+	 * Extracts the {@link MultiMap Vert.x headers} from the {@link Message}.
 	 *
 	 * @param message the {@link Message} that contains the {@link MultiMap Vert.x headers}
 	 * @return the extracted {@link MultiMap Vert.x headers}
@@ -61,7 +61,7 @@ public class MultiMapUtils {
 	}
 
 	/**
-	 * Extracts the {@link MultiMap Vert.x headers} from the specified {@link DeliveryOptions}.
+	 * Extracts the {@link MultiMap Vert.x headers} from the {@link DeliveryOptions}.
 	 *
 	 * @param options the {@link DeliveryOptions} that contain the {@link MultiMap Vert.x headers}
 	 * @return the extracted {@link MultiMap Vert.x headers}
