@@ -1,3 +1,12 @@
+## [0.7.1](https://github.com/wuespace/telestion-core/compare/v0.7.0...v0.7.1) (2022-01-28)
+
+
+### Bug Fixes
+
+* **deps:** Remove unused dependency ([e66bb84](https://github.com/wuespace/telestion-core/commit/e66bb843c95a967af55f942c68856bc5977dd040))
+
+
+
 # [0.7.0](https://github.com/wuespace/telestion-core/compare/v0.6.2...v0.7.0) (2022-01-22)
 
 
