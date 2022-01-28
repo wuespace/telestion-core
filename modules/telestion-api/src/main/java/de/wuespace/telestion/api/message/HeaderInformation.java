@@ -521,7 +521,7 @@ public class HeaderInformation {
 
 		if (contains(key)) {
 			var existing = getAll(key);
-			logger.warn("The header information object already contains values assigned to that key. " +
+			logger.debug("The header information object already contains values assigned to that key. " +
 							"Appending new values to existing values. Key: {}, Before: {}, Now: {}",
 					key, existing, Stream.of(existing, list).toList());
 		}
@@ -706,7 +706,7 @@ public class HeaderInformation {
 
 		if (contains(key)) {
 			var existing = getAll(key);
-			logger.warn("The header information object already contains values assigned to that key. " +
+			logger.debug("The header information object already contains values assigned to that key. " +
 					"Overriding existing values with new values. Key: {}, Before: {}, Now: {}", key, existing, list);
 		}
 
