@@ -4,6 +4,7 @@ de.wuespace.telestion.api.verticle
 de.wuespace.telestion.api.verticle.trait
 de.wuespace.telestion.application
 de.wuespace.telestion.examples
+de.wuespace.telestion.examples.header
 de.wuespace.telestion.examples.messages
 de.wuespace.telestion.launcher
 de.wuespace.telestion.services.config

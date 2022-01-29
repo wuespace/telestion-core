@@ -81,6 +81,14 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="description">
 <dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>V</code> - the type of <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> to map to</dd>
+<dd><code>T</code> - the type of the body of the <code>Vert.x message</code></dd>
+<dt>Record Components:</dt>
+<dd><code><span id="param-message">message</span></code> - the <code>Vert.x message</code></dd>
+<dd><code><span id="param-body">body</span></code> - the decoded body of the <code>Vert.x message</code></dd>
+</dl>
+<dl class="notes">
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></code></dd>
 </dl>
@@ -88,6 +96,11 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">DecodedMessage&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;T extends io.vertx.core.json.JsonObject&gt;</span>(<a href="DecodedMessage.html" title="type parameter in DecodedMessage">V</a> extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&nbsp;body, io.vertx.core.eventbus.Message&lt;<a href="DecodedMessage.html" title="type parameter in DecodedMessage">T</a> extends io.vertx.core.json.JsonObject&gt;&nbsp;message)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a>
 implements <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></span></div>
+<div class="block">A wrapper for a <code>Vert.x message</code> and its body as <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd><a href="../../message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message)"><code>JsonMessage.on(Class, Message)</code></a></dd>
+</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -121,7 +134,7 @@ implements <a href="../../message/JsonMessage.html" title="interface in de.wuesp
 <section class="method-summary" id="method.summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -130,22 +143,36 @@ implements <a href="../../message/JsonMessage.html" title="interface in de.wuesp
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="DecodedMessage.html" title="type parameter in DecodedMessage">V</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#body()">body</a></span>()</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
-<div class="block">Returns the value of the <code>body</code> record component.</div>
+<div class="block">Returns the value of the <a href="#param-body"><code>body</code></a> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code>static &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#compose(java.lang.Class,io.vertx.core.Future)">compose</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;clazz,
+ io.vertx.core.Future&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;&nbsp;messageFuture)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">
+<div class="block">Returns a <code>Future</code> which succeeds with the <code>messageFuture</code>'s body as <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">Indicates whether some other object is "equal to" this one.</div>
 </div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#hashCode()">hashCode</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#hashCode()">hashCode</a></span>()</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">Returns a hash code value for this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>io.vertx.core.eventbus.Message&lt;<a href="DecodedMessage.html" title="type parameter in DecodedMessage">T</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#message()">message</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
-<div class="block">Returns the value of the <code>message</code> record component.</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>io.vertx.core.eventbus.Message&lt;<a href="DecodedMessage.html" title="type parameter in DecodedMessage">T</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#message()">message</a></span>()</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Returns the value of the <a href="#param-message"><code>message</code></a> record component.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code>static &lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;<br>io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.eventbus.Message)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;clazz,
+ io.vertx.core.eventbus.Message&lt;T&gt;&nbsp;message)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">
+<div class="block">Return a <code>Future</code> which succeeds with the <code>Vert.x message</code>'s body as <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#toString()">toString</a></span>()</code></div>
@@ -180,8 +207,8 @@ implements <a href="../../message/JsonMessage.html" title="interface in de.wuesp
 <div class="block">Creates an instance of a <code>DecodedMessage</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>body</code> - the value for the <code>body</code> record component</dd>
-<dd><code>message</code> - the value for the <code>message</code> record component</dd>
+<dd><code>body</code> - the value for the <a href="#param-body"><code>body</code></a> record component</dd>
+<dd><code>message</code> - the value for the <a href="#param-message"><code>message</code></a> record component</dd>
 </dl>
 </section>
 </li>
@@ -193,6 +220,53 @@ implements <a href="../../message/JsonMessage.html" title="interface in de.wuesp
 <section class="method-details" id="method.detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="compose(java.lang.Class,io.vertx.core.Future)">
+<h3>compose</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters-long">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</span>&nbsp;<span class="element-name">compose</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;clazz,
+ io.vertx.core.Future&lt;io.vertx.core.eventbus.Message&lt;T&gt;&gt;&nbsp;messageFuture)</span></div>
+<div class="block">Returns a <code>Future</code> which succeeds with the <code>messageFuture</code>'s body as <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.
+ Fails if the <code>messageFuture</code>'s body cannot be mapped to the <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> type
+ or the <code>messageFuture</code> fails.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>V</code> - the type of <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> to map to</dd>
+<dd><code>T</code> - the type of the body of the <code>Vert.x message</code></dd>
+<dt>Parameters:</dt>
+<dd><code>clazz</code> - the class type of the <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> to map to</dd>
+<dd><code>messageFuture</code> - the future that returns the received message</dd>
+<dt>Returns:</dt>
+<dd>a new <code>Future</code> which succeeds with the <code>messageFuture</code>'s body as <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>See Also:</dt>
+<dd><a href="../../message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message)"><code>JsonMessage.on(Class, Message)</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,io.vertx.core.eventbus.Message)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="type-parameters-long">&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;
+T extends io.vertx.core.json.JsonObject&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;<a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a>&lt;V,&#8203;T&gt;&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;V&gt;&nbsp;clazz,
+ io.vertx.core.eventbus.Message&lt;T&gt;&nbsp;message)</span></div>
+<div class="block">Return a <code>Future</code> which succeeds with the <code>Vert.x message</code>'s body as <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.
+ Fails if the <code>Vert.x message</code>'s body cannot be mapped to the <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> type.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>V</code> - the type of <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> to map to</dd>
+<dd><code>T</code> - the type of the body of the <code>Vert.x message</code></dd>
+<dt>Parameters:</dt>
+<dd><code>clazz</code> - the class type of the <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> to map to</dd>
+<dd><code>message</code> - the <code>Vert.x message</code></dd>
+<dt>Returns:</dt>
+<dd>a new <code>Future</code> which returns a <a href="DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait"><code>DecodedMessage</code></a> with the message's contents</dd>
+<dt>See Also:</dt>
+<dd><a href="../../message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message)"><code>JsonMessage.on(Class, Message)</code></a></dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
@@ -238,10 +312,10 @@ implements <a href="../../message/JsonMessage.html" title="interface in de.wuesp
 <section class="detail" id="body()">
 <h3>body</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="DecodedMessage.html" title="type parameter in DecodedMessage">V</a></span>&nbsp;<span class="element-name">body</span>()</div>
-<div class="block">Returns the value of the <code>body</code> record component.</div>
+<div class="block">Returns the value of the <a href="#param-body"><code>body</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the value of the <code>body</code> record component</dd>
+<dd>the value of the <a href="#param-body"><code>body</code></a> record component</dd>
 </dl>
 </section>
 </li>
@@ -249,10 +323,10 @@ implements <a href="../../message/JsonMessage.html" title="interface in de.wuesp
 <section class="detail" id="message()">
 <h3>message</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.vertx.core.eventbus.Message&lt;<a href="DecodedMessage.html" title="type parameter in DecodedMessage">T</a>&gt;</span>&nbsp;<span class="element-name">message</span>()</div>
-<div class="block">Returns the value of the <code>message</code> record component.</div>
+<div class="block">Returns the value of the <a href="#param-message"><code>message</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the value of the <code>message</code> record component</dd>
+<dd>the value of the <a href="#param-message"><code>message</code></a> record component</dd>
 </dl>
 </section>
 </li>
