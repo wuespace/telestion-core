@@ -17,7 +17,8 @@ import java.util.Objects;
  * and type-safe usage of the configuration JSON object provided by Vert.x.
  *
  * @param <T> the type of your Configuration class
- * @author Cedric Bös, Pablo Klaschka, Jan von Pichowski, Ludwig Richter
+ * @author Cedric Bös (@cb0s), Pablo Klaschka (@pklaschka), Jan von Pichowski (@jvpichowski),
+ * Ludwig Richter (@fussel178)
  */
 public abstract class TelestionVerticle<T extends TelestionConfiguration> extends AbstractVerticle {
 	/**
@@ -123,8 +124,16 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	}
 
 	/**
-	 * @throws Exception
-	 * @see AbstractVerticle#start(Promise)
+	 * Starts the verticle.
+	 * <p>
+	 * This is called by Vert.x when the verticle instance is deployed. Please don't call it yourself.
+	 * <p>
+	 * If your verticle needs a start routine which takes some time to finish,
+	 * then complete the start promise some time later.
+	 * <p>
+	 * This is the asynchronous part to the {@link #onStart()} method.
+	 *
+	 * @param startPromise a promise which should be called when verticle start is complete
 	 */
 	public void onStart(Promise<Void> startPromise) throws Exception {
 		onStart();
@@ -132,15 +141,28 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	}
 
 	/**
-	 * @throws Exception
-	 * @see AbstractVerticle#start()
+	 * Starts the verticle.
+	 * <p>
+	 * This is called by Vert.x when the verticle instance is deployed. Please don't call it yourself.
+	 * <p>
+	 * If your verticle only does synchronous start tasks, use this method.
+	 * <p>
+	 * This is the synchronous part to the {@link #onStart(Promise)} method.
 	 */
 	public void onStart() throws Exception {
 	}
 
 	/**
-	 * @throws Exception
-	 * @see AbstractVerticle#stop(Promise)
+	 * Stops the verticle.
+	 * <p>
+	 * This is called by Vert.x when the verticle instance is un-deployed. Please don't call it yourself.
+	 * <p>
+	 * If your verticle needs a stop routine which takes some time to finish,
+	 * then complete the stop promise some time later.
+	 * <p>
+	 * This is the asynchronous part to the {@link #onStop()} method.
+	 *
+	 * @param stopPromise a promise which should be called when verticle stop is complete
 	 */
 	public void onStop(Promise<Void> stopPromise) throws Exception {
 		onStop();
@@ -148,8 +170,13 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	}
 
 	/**
-	 * @throws Exception
-	 * @see AbstractVerticle#stop()
+	 * Stops the verticle.
+	 * <p>
+	 * This is called by Vert.x when the verticle instance is un-deployed. Please don't call it yourself.
+	 * <p>
+	 * If your verticle only does synchronous stop tasks, use this method.
+	 * <p>
+	 * This is the synchronous part to the {@link #onStop(Promise)} method.
 	 */
 	public void onStop() throws Exception {
 	}
