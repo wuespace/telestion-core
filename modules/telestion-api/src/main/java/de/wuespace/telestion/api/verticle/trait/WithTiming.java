@@ -24,7 +24,7 @@ import java.time.Duration;
  * }
  * </pre>
  *
- * @author Ludwig Richter
+ * @author Ludwig Richter (@fussel178)
  */
 public interface WithTiming extends Verticle {
 
