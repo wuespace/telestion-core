@@ -7,7 +7,7 @@ import io.vertx.core.Vertx;
  * @param vertx the associated Vert.x instance
  * @param id the id of the timing
  *
- * @author Ludwig Richter
+ * @author Ludwig Richter (@fussel178)
  */
 public record Timing(Vertx vertx, long id) {
 	/**
