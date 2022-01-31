@@ -4,7 +4,7 @@
  * This package contains different traits to enhance the functionality of
  * {@link de.wuespace.telestion.api.verticle.TelestionVerticle} even further.
  * <p>
- * Traits contain default methods, which are "short-cuts" for the most-used Vert.X features in the Telestion Ecosystem.
+ * Traits contain default methods, which are "short-cuts" for the most-used Vert.x features in the Telestion Ecosystem.
  * <p>
  * To use them, a {@link de.wuespace.telestion.api.verticle.TelestionVerticle} must simply implement one of the traits.
  * <p>

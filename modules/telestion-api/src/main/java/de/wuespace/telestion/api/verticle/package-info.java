@@ -1,17 +1,17 @@
 /**
  * <h2>Telestion API - Telestion Verticle</h2>
  *
- * This package contains different classes helping with Vert.x verticles by providing often used methods which help
+ * This package contains different classes helping with Vert.x verticles by providing commonly used methods which help
  * to improve the developer experience by massively reducing boiler-plate code.
  * <h3>Usage</h3>
  * Verticles within a Telestion Project should extend {@link de.wuespace.telestion.api.verticle.TelestionVerticle}.
  * It provides different core functionality like more clean start() and stop() methods.
  * <p>
- * A Verticle usually needs a Configuration class. They must be created manually - the convention is to create a Record
+ * A Verticle usually needs an implementation of {@link de.wuespace.telestion.api.verticle.TelestionConfiguration}. They must be created manually - the convention is to create a Record
  * in the same class called Configuration. By inferring the generics of the
- * {@link de.wuespace.telestion.api.verticle.TelestionVerticle} with this Configuration, the loading code for
+ * {@link de.wuespace.telestion.api.verticle.TelestionVerticle} with this {@code Configuration}, the loading code for
  * configurations gets reduced massively.<br/>
- * When using no Configuration it is recommended to use {@link de.wuespace.telestion.api.verticle.GenericConfiguration}
+ * When using no {@code Configuration} it is recommended to use {@link de.wuespace.telestion.api.verticle.GenericConfiguration}
  * which is telling the implementation, that a configuration is not needed.
  * <p>
  * By implementing {@link de.wuespace.telestion.api.verticle.trait traits} the functionality of the
