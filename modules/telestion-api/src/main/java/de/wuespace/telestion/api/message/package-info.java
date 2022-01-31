@@ -10,7 +10,7 @@
  * {@link de.wuespace.telestion.api.message.HeaderInformation} add support for message headers. They can be
  * used to include data unrelated to the data itself of a message.
  * <p>
- * It is heavily recommended to use {@link de.wuespace.telestion.api.verticle.trait.WithEventBus}, it contains different
+ * It is heavily recommended to use Telestion traits like {@link de.wuespace.telestion.api.verticle.trait.WithEventBus}, it contains different
  * helper methods for message serialization.
  * <p>
  * (c) WueSpace e.V.
