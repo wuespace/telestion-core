@@ -118,9 +118,15 @@ loadScripts(document, 'script');</script>
 <div class="block">EventbusTcpBridge is a verticle which uses SockJS-WebSockets to extend the vertx.eventBus() to an HTTP-Server.</div>
 </div>
 <div class="col-first even-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/api/verticle/trait/ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;<a href="de/wuespace/telestion/api/verticle/trait/ExtendedMessageHandler.html" title="type parameter in ExtendedMessageHandler">V</a> extends <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;<a href="de/wuespace/telestion/api/verticle/trait/ExtendedMessageHandler.html" title="type parameter in ExtendedMessageHandler">T</a>&gt;</div>
-<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">&nbsp;</div>
+<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">
+<div class="block">An event handler which accepts the decoded body of the message
+ and the message itself and returns nothing.</div>
+</div>
 <div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="block">The type of configuration for a <a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> that you use
+ to indicate that the verticle does not have a strictly typed configuration.</div>
+</div>
 <div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/GenericSimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">GenericSimpleCommandHandler</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
 <div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message">HeaderInformation</a></div>
@@ -146,7 +152,10 @@ loadScripts(document, 'script');</script>
 <div class="block">A generic org.telestion.launcher.launcher class which deploys <code>Verticles</code>.</div>
 </div>
 <div class="col-first even-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/api/verticle/trait/MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;<a href="de/wuespace/telestion/api/verticle/trait/MessageHandler.html" title="type parameter in MessageHandler">T</a> extends <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</div>
-<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">&nbsp;</div>
+<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">
+<div class="block">An event handler which accepts the decoded body of the message
+ and returns nothing.</div>
+</div>
 <div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/monitoring/MessageLogger.html" title="class in de.wuespace.telestion.services.monitoring">MessageLogger</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A verticle which logs the message traffic.</div>

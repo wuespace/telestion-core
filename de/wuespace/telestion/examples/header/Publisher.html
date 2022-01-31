@@ -149,7 +149,9 @@ implements <a href="../../api/verticle/trait/WithTiming.html" title="interface i
 <div class="col-last even-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onStart()">onStart</a></span>()</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Starts the verticle.</div>
+</div>
 </div>
 </div>
 </div>
@@ -206,11 +208,17 @@ implements <a href="../../api/verticle/trait/WithTiming.html" title="interface i
 <section class="detail" id="onStart()">
 <h3>onStart</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStart</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../api/verticle/TelestionVerticle.html#onStart()">TelestionVerticle</a></code></span></div>
+<div class="block">Starts the verticle.
+ <p>
+ This is called by Vert.x when the verticle instance is deployed. Please don't call it yourself.
+ <p>
+ If your verticle only does synchronous start tasks, use this method.
+ <p>
+ This is the synchronous part to the <a href="../../api/verticle/TelestionVerticle.html#onStart(io.vertx.core.Promise)"><code>TelestionVerticle.onStart(Promise)</code></a> method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../api/verticle/TelestionVerticle.html#onStart()">onStart</a></code>&nbsp;in class&nbsp;<code><a href="../../api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="Publisher.Configuration.html" title="class in de.wuespace.telestion.examples.header">Publisher.Configuration</a>&gt;</code></dd>
-<dt>See Also:</dt>
-<dd><code>AbstractVerticle.start()</code></dd>
 </dl>
 </section>
 </li>

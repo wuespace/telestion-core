@@ -55,6 +55,24 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">de.wuespace.telestion.api.verticle.trait</span></div>
+<section class="package-description" id="package.description">
+<div class="block"><h2>Telestion API - Telestion Verticle Traits</h2>
+
+ This package contains different traits to enhance the functionality of
+ <a href="../TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> even further.
+ <p>
+ Traits contain default methods, which are "short-cuts" for the most-used Vert.x features in the Telestion Ecosystem.
+ <p>
+ To use them, a <a href="../TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> must simply implement one of the traits.
+ <p>
+ Refer to the examples in <code>de.wuespace.telestion.example</code>.
+ <p>
+ (c) WueSpace e.V.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd><a href="../package-summary.html"><code>de.wuespace.telestion.api.verticle</code></a></dd>
+</dl>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -63,9 +81,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Interface</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">ExtendedMessageHandler</a>&lt;V extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;T&gt;</div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">An event handler which accepts the decoded body of the message
+ and the message itself and returns nothing.</div>
+</div>
 <div class="col-first odd-row-color"><a href="MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait">MessageHandler</a>&lt;T extends <a href="../../message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">An event handler which accepts the decoded body of the message
+ and returns nothing.</div>
+</div>
 <div class="col-first even-row-color"><a href="WithEventBus.html" title="interface in de.wuespace.telestion.api.verticle.trait">WithEventBus</a></div>
 <div class="col-last even-row-color">
 <div class="block">Allows <code>Verticle</code> instances to get simplified access to the Vert.x event bus.</div>

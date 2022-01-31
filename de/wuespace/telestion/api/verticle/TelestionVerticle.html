@@ -186,16 +186,24 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onStart()">onStart</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Starts the verticle.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onStart(io.vertx.core.Promise)">onStart</a></span>&#8203;(io.vertx.core.Promise&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&nbsp;startPromise)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Starts the verticle.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onStop()">onStop</a></span>()</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Stops the verticle.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onStop(io.vertx.core.Promise)">onStop</a></span>&#8203;(io.vertx.core.Promise&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&nbsp;stopPromise)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="block">Stops the verticle.</div>
+</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#setDefaultConfig(io.vertx.core.json.JsonObject)">setDefaultConfig</a></span>&#8203;(io.vertx.core.json.JsonObject&nbsp;defaultConfig)</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
@@ -353,11 +361,19 @@ loadScripts(document, 'script');</script>
 <h3>onStart</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStart</span>&#8203;<span class="parameters">(io.vertx.core.Promise&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&nbsp;startPromise)</span>
              throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<div class="block">Starts the verticle.
+ <p>
+ This is called by Vert.x when the verticle instance is deployed. Please don't call it yourself.
+ <p>
+ If your verticle needs a start routine which takes some time to finish,
+ then complete the start promise some time later.
+ <p>
+ This is the asynchronous part to the <a href="#onStart()"><code>onStart()</code></a> method.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>startPromise</code> - a promise which should be called when verticle start is complete</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
-<dt>See Also:</dt>
-<dd><code>AbstractVerticle.start(Promise)</code></dd>
 </dl>
 </section>
 </li>
@@ -366,11 +382,16 @@ loadScripts(document, 'script');</script>
 <h3>onStart</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStart</span>()
              throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<div class="block">Starts the verticle.
+ <p>
+ This is called by Vert.x when the verticle instance is deployed. Please don't call it yourself.
+ <p>
+ If your verticle only does synchronous start tasks, use this method.
+ <p>
+ This is the synchronous part to the <a href="#onStart(io.vertx.core.Promise)"><code>onStart(Promise)</code></a> method.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
-<dt>See Also:</dt>
-<dd><code>AbstractVerticle.start()</code></dd>
 </dl>
 </section>
 </li>
@@ -379,11 +400,19 @@ loadScripts(document, 'script');</script>
 <h3>onStop</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStop</span>&#8203;<span class="parameters">(io.vertx.core.Promise&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&nbsp;stopPromise)</span>
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<div class="block">Stops the verticle.
+ <p>
+ This is called by Vert.x when the verticle instance is un-deployed. Please don't call it yourself.
+ <p>
+ If your verticle needs a stop routine which takes some time to finish,
+ then complete the stop promise some time later.
+ <p>
+ This is the asynchronous part to the <a href="#onStop()"><code>onStop()</code></a> method.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>stopPromise</code> - a promise which should be called when verticle stop is complete</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
-<dt>See Also:</dt>
-<dd><code>AbstractVerticle.stop(Promise)</code></dd>
 </dl>
 </section>
 </li>
@@ -392,11 +421,16 @@ loadScripts(document, 'script');</script>
 <h3>onStop</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onStop</span>()
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<div class="block">Stops the verticle.
+ <p>
+ This is called by Vert.x when the verticle instance is un-deployed. Please don't call it yourself.
+ <p>
+ If your verticle only does synchronous stop tasks, use this method.
+ <p>
+ This is the synchronous part to the <a href="#onStop(io.vertx.core.Promise)"><code>onStop(Promise)</code></a> method.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
-<dt>See Also:</dt>
-<dd><code>AbstractVerticle.stop()</code></dd>
 </dl>
 </section>
 </li>

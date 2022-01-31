@@ -371,13 +371,21 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates an instance of a <code>Data</code> record class.</div>
 </dd>
 <dt><a href="de/wuespace/telestion/api/config/package-summary.html">de.wuespace.telestion.api.config</a> - package de.wuespace.telestion.api.config</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Telestion API - Config</div>
+</dd>
 <dt><a href="de/wuespace/telestion/api/message/package-summary.html">de.wuespace.telestion.api.message</a> - package de.wuespace.telestion.api.message</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Telestion API - Message</div>
+</dd>
 <dt><a href="de/wuespace/telestion/api/verticle/package-summary.html">de.wuespace.telestion.api.verticle</a> - package de.wuespace.telestion.api.verticle</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Telestion API - Telestion Verticle</div>
+</dd>
 <dt><a href="de/wuespace/telestion/api/verticle/trait/package-summary.html">de.wuespace.telestion.api.verticle.trait</a> - package de.wuespace.telestion.api.verticle.trait</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Telestion API - Telestion Verticle Traits</div>
+</dd>
 <dt><a href="de/wuespace/telestion/application/package-summary.html">de.wuespace.telestion.application</a> - package de.wuespace.telestion.application</dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/wuespace/telestion/examples/package-summary.html">de.wuespace.telestion.examples</a> - package de.wuespace.telestion.examples</dt>
@@ -643,7 +651,10 @@ loadScripts(document, 'script');</script>
 <div class="block">This constructor supplies default options and uses the defaultSockJSBridgeOptions for the applied rules.</div>
 </dd>
 <dt><a href="de/wuespace/telestion/api/verticle/trait/ExtendedMessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait"><span class="type-name-link">ExtendedMessageHandler</span></a>&lt;<a href="de/wuespace/telestion/api/verticle/trait/ExtendedMessageHandler.html" title="type parameter in ExtendedMessageHandler">V</a> extends <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>,&#8203;<a href="de/wuespace/telestion/api/verticle/trait/ExtendedMessageHandler.html" title="type parameter in ExtendedMessageHandler">T</a>&gt; - Interface in <a href="de/wuespace/telestion/api/verticle/trait/package-summary.html">de.wuespace.telestion.api.verticle.trait</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">An event handler which accepts the decoded body of the message
+ and the message itself and returns nothing.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:F">F</h2>
 <dl class="index">
@@ -693,7 +704,10 @@ loadScripts(document, 'script');</script>
 <h2 class="title" id="I:G">G</h2>
 <dl class="index">
 <dt><a href="de/wuespace/telestion/api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle"><span class="type-name-link">GenericConfiguration</span></a> - Record Class in <a href="de/wuespace/telestion/api/verticle/package-summary.html">de.wuespace.telestion.api.verticle</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">The type of configuration for a <a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> that you use
+ to indicate that the verticle does not have a strictly typed configuration.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/verticle/GenericConfiguration.html#%3Cinit%3E()">GenericConfiguration()</a></span> - Constructor for record class de.wuespace.telestion.api.verticle.<a href="de/wuespace/telestion/api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>GenericConfiguration</code> record class.</div>
@@ -1238,7 +1252,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the value of the <code>message</code> record component.</div>
 </dd>
 <dt><a href="de/wuespace/telestion/api/verticle/trait/MessageHandler.html" title="interface in de.wuespace.telestion.api.verticle.trait"><span class="type-name-link">MessageHandler</span></a>&lt;<a href="de/wuespace/telestion/api/verticle/trait/MessageHandler.html" title="type parameter in MessageHandler">T</a> extends <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt; - Interface in <a href="de/wuespace/telestion/api/verticle/trait/package-summary.html">de.wuespace.telestion.api.verticle.trait</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">An event handler which accepts the decoded body of the message
+ and returns nothing.</div>
+</dd>
 <dt><a href="de/wuespace/telestion/services/monitoring/MessageLogger.html" title="class in de.wuespace.telestion.services.monitoring"><span class="type-name-link">MessageLogger</span></a> - Class in <a href="de/wuespace/telestion/services/monitoring/package-summary.html">de.wuespace.telestion.services.monitoring</a></dt>
 <dd>
 <div class="block">A verticle which logs the message traffic.</div>
@@ -1304,7 +1321,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a <code>Future</code> which succeeds with the <code>Vert.x message</code>'s body as <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html#onStart()">onStart()</a></span> - Method in class de.wuespace.telestion.api.verticle.<a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Starts the verticle.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/DefaultConfigVerticle.html#onStart()">onStart()</a></span> - Method in class de.wuespace.telestion.examples.<a href="de/wuespace/telestion/examples/DefaultConfigVerticle.html" title="class in de.wuespace.telestion.examples">DefaultConfigVerticle</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/GenericSimpleCommandHandler.html#onStart()">onStart()</a></span> - Method in class de.wuespace.telestion.examples.<a href="de/wuespace/telestion/examples/GenericSimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">GenericSimpleCommandHandler</a></dt>
@@ -1334,13 +1353,19 @@ loadScripts(document, 'script');</script>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/TestVerticle.html#onStart()">onStart()</a></span> - Method in class de.wuespace.telestion.examples.<a href="de/wuespace/telestion/examples/TestVerticle.html" title="class in de.wuespace.telestion.examples">TestVerticle</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html#onStart(io.vertx.core.Promise)">onStart(Promise&lt;Void&gt;)</a></span> - Method in class de.wuespace.telestion.api.verticle.<a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Starts the verticle.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/SayHello.html#onStart(io.vertx.core.Promise)">onStart(Promise&lt;Void&gt;)</a></span> - Method in class de.wuespace.telestion.examples.<a href="de/wuespace/telestion/examples/SayHello.html" title="class in de.wuespace.telestion.examples">SayHello</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html#onStop()">onStop()</a></span> - Method in class de.wuespace.telestion.api.verticle.<a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Stops the verticle.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html#onStop(io.vertx.core.Promise)">onStop(Promise&lt;Void&gt;)</a></span> - Method in class de.wuespace.telestion.api.verticle.<a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Stops the verticle.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/header/Publisher.Configuration.html#outAddress()">outAddress()</a></span> - Method in record class de.wuespace.telestion.examples.header.<a href="de/wuespace/telestion/examples/header/Publisher.Configuration.html" title="class in de.wuespace.telestion.examples.header">Publisher.Configuration</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>outAddress</code> record component.</div>

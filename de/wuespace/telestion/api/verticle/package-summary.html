@@ -55,6 +55,34 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">de.wuespace.telestion.api.verticle</span></div>
+<section class="package-description" id="package.description">
+<div class="block"><h2>Telestion API - Telestion Verticle</h2>
+
+ This package contains different classes helping with Vert.x verticles by providing commonly used methods which help
+ to improve the developer experience by massively reducing boiler-plate code.
+ <h3>Usage</h3>
+ Verticles within a Telestion Project should extend <a href="TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a>.
+ It provides different core functionality like more clean start() and stop() methods.
+ <p>
+ A Verticle usually needs an implementation of <a href="TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle"><code>TelestionConfiguration</code></a>. They must be created manually - the convention is to create a Record
+ in the same class called Configuration. By inferring the generics of the
+ <a href="TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> with this <code>Configuration</code>, the loading code for
+ configurations gets reduced massively.<br/>
+ When using no <code>Configuration</code> it is recommended to use <a href="GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle"><code>GenericConfiguration</code></a>
+ which is telling the implementation, that a configuration is not needed.
+ <p>
+ By implementing <a href="trait/package-summary.html"><code>traits</code></a> the functionality of the
+ <a href="TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> can be increased even more.
+ <h3>Examples</h3>
+ For examples refer to the <code>de.wuespace.telestion.example-package</code>.
+ <p>
+ (c) WueSpace e.V.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd><code>de.wuespace.telestion.api</code>, 
+<a href="trait/package-summary.html"><code>de.wuespace.telestion.api.verticle.trait</code></a></dd>
+</dl>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -74,7 +102,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">The type of configuration for a <a href="TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> that you use
+ to indicate that the verticle does not have a strictly typed configuration.</div>
+</div>
 <div class="col-first odd-row-color"><a href="TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;T extends <a href="TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle">TelestionConfiguration</a>&gt;</div>
 <div class="col-last odd-row-color">
 <div class="block">An abstract verticle class that you can extend to write your own verticle classes.</div>
