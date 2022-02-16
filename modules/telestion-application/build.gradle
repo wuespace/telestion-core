@@ -1,8 +1,3 @@
-application {
-    // Define the main class for the application.
-    mainClass.set('de.wuespace.telestion.application.Application')
-}
-
 java {
     withJavadocJar()
     withSourcesJar()
@@ -109,8 +104,6 @@ signing {
 }
 
 dependencies {
-    implementation project(':modules:telestion-services')
-
     implementation 'com.google.guava:guava:31.0.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
@@ -123,7 +116,6 @@ dependencies {
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
 
     implementation "io.vertx:vertx-core:4.2.4"
-    implementation "io.vertx:vertx-config:4.2.4"
 }
 
 test {
