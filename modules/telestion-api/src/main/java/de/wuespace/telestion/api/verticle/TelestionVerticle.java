@@ -1,5 +1,6 @@
 package de.wuespace.telestion.api.verticle;
 
+import de.wuespace.telestion.api.DefaultConfigurable;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
@@ -20,7 +21,9 @@ import java.util.Objects;
  * @author Cedric Bös (@cb0s), Pablo Klaschka (@pklaschka), Jan von Pichowski (@jvpichowski),
  * Ludwig Richter (@fussel178)
  */
-public abstract class TelestionVerticle<T extends TelestionConfiguration> extends AbstractVerticle {
+public abstract class TelestionVerticle<T extends TelestionConfiguration> extends AbstractVerticle
+		implements DefaultConfigurable<T> {
+
 	/**
 	 * The default verticle configuration in a generic format.
 	 */
@@ -181,70 +184,42 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	public void onStop() throws Exception {
 	}
 
-	/**
-	 * Set the default verticle configuration and update the verticle configuration.
-	 *
-	 * @param defaultConfig the new default verticle configuration
-	 */
+	@Override
 	public void setDefaultConfig(JsonObject defaultConfig) {
 		this.defaultGenericConfig = defaultConfig;
 		this.defaultConfig = mapToConfiguration(defaultConfig);
 		updateConfigs();
 	}
 
-	/**
-	 * Set the default verticle configuration and update the verticle configuration.
-	 *
-	 * @param defaultConfig the new default verticle configuration
-	 */
+	@Override
 	public void setDefaultConfig(T defaultConfig) {
 		this.defaultConfig = defaultConfig;
 		this.defaultGenericConfig = defaultConfig.json();
 		updateConfigs();
 	}
 
-	/**
-	 * Get the default verticle configuration in the Configuration type format.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @return the default verticle configuration
-	 */
+	@Override
 	public T getDefaultConfig() {
 		return defaultConfig;
 	}
 
-	/**
-	 * Get the default verticle configuration in a generic format.
-	 *
-	 * @return the default verticle configuration
-	 */
+	@Override
 	public JsonObject getGenericDefaultConfig() {
 		return defaultGenericConfig;
 	}
 
-	/**
-	 * Get the verticle configuration in the Configuration type format.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @return the verticle configuration
-	 */
+	@Override
 	public T getConfig() {
 		return config;
 	}
 
-	/**
-	 * Get the verticle configuration in a generic format.
-	 *
-	 * @return the verticle configuration
-	 */
+	@Override
 	public JsonObject getGenericConfig() {
 		return genericConfig;
 	}
 
 	/**
-	 * Block the usage of <code>config()</code> in inheriting classes.
-	 *
-	 * @return the verticle configuration from vertx merged with the default configuration
+	 * Please use {@link #getConfig()} or {@link #getGenericConfig()} instead.
 	 */
 	@Override
 	public final JsonObject config() {
