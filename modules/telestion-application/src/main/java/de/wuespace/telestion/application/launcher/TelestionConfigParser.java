@@ -73,7 +73,7 @@ public class TelestionConfigParser {
 	}
 
 	/**
-	 * <h2>Description</h2>
+	 * <h4>Description</h4>
 	 * Parses the loader configurations on the {@link #LOADERS_KEY loaders JSON property} and creates them.
 	 * <p>
 	 * There are two supported configuration types:
@@ -83,7 +83,7 @@ public class TelestionConfigParser {
 	 *     configuration options that are passed to the {@link Loader} upon creation.</li>
 	 * </ul>
 	 *
-	 * <h2>Configuration example</h2>
+	 * <h4>Configuration example</h4>
 	 *
 	 * {@code telestion.json}:
 	 * <pre>
