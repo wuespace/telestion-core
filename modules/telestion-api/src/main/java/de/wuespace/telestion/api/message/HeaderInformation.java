@@ -1,5 +1,6 @@
 package de.wuespace.telestion.api.message;
 
+import de.wuespace.telestion.utils.MultiMapUtils;
 import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;

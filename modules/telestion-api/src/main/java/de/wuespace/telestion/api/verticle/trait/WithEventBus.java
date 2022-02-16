@@ -2,7 +2,7 @@ package de.wuespace.telestion.api.verticle.trait;
 
 import de.wuespace.telestion.api.message.HeaderInformation;
 import de.wuespace.telestion.api.message.JsonMessage;
-import de.wuespace.telestion.api.message.MultiMapUtils;
+import de.wuespace.telestion.utils.MultiMapUtils;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
