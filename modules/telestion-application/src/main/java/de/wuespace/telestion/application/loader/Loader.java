@@ -76,7 +76,7 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	 * The selector receives the loader and a promise for the event handler of the loader.
 	 * It "specifies" the event handler that should be called.
 	 *
-	 * <h2>Usage</h2>
+	 * <h4>Usage</h4>
 	 * <pre>
 	 * {@code
 	 * Loader.call(loaders, Loader::onBeforeVertxStartup)

@@ -23,6 +23,7 @@ package de.wuespace.telestion.application.deployment;
  *         <td>{@link #CLASS_NAME}</td>
  *         <td>a classname of binary name of a verticle class</td>
  *     </tr>
+ *     <caption>Associated deployment types and available information in the {@link Deployment}</caption>
  * </table>
  *
  * @author Ludwig Richter (@fussel178)
