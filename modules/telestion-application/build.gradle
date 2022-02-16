@@ -118,6 +118,7 @@ dependencies {
     implementation "io.vertx:vertx-core:4.2.4"
 
     implementation project(":modules:telestion-api")
+    implementation project(":modules:telestion-utils")
 }
 
 test {
