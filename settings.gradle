@@ -5,10 +5,8 @@ gradle.ext.targetCompatibility = '16'
 // force signing of artifacts regardless of publish steps
 gradle.ext.forceSign = false
 
-// extract version information from project.json
-def projectFile = file('project.json')
-def projectInfo = new groovy.json.JsonSlurper().parseText(projectFile.text)
-gradle.ext.version = projectInfo.version
+// extract version information from version.txt
+gradle.ext.version = file('version.txt').text.trim()
 
 // include your modules here
 include ':modules:telestion-api'

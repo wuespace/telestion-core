@@ -1,72 +1,49 @@
-# Before testing this workflow, please create a personal access token with following scopes:
-# - repo
-# - workflow
-# - write:packages
-# - delete:packages
-# - user:email
-# and name it "GH_RELEASE_TOKEN".
-#
-# Please take a short look at the conventional commits specification before using this action:
-# https://www.conventionalcommits.org/en/v1.0.0/
-#
-# ******** NOTE ********
-# If your repository default branch is **NOT** restricted,
-# please use the default release workflow instead.
 name: Release
 
 # Events that trigger this workflow
-on: [workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  conventional-release:
-    name: Conventional Commit Release
+  release-please:
+    name: Release Please
     runs-on: ubuntu-latest
     steps:
+      - name: Run Release Please 🎉
+        id: release
+        uses: google-github-actions/release-please-action@v3.0.0
+        with:
+          release-type: simple
+          package-name: telestion-core
+
       - name: Checkout 📥
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v2.4.0
         with:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Conventional Changelog Action 🎉
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@v3.10.0
+      - name: Set up JDK 16 💿
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-java@v2.5.0
         with:
-          github-token: ${{ secrets.GH_RELEASE_TOKEN }}
-          git-user-name: ${{ github.actor }}
-          git-user-email: '${{ github.actor }}@users.noreply.github.com'
-          release-count: '0'
-          version-file: './project.json'
-          skip-on-empty: 'false'
+          distribution: 'zulu'
+          java-version: '16'
+          java-package: jdk
 
-      - name: Create Release 🪡
-        id: create_release
-        uses: actions/create-release@v1.1.4
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+      - name: Install dependencies 📚
+        if: ${{ steps.release.outputs.release_created }}
+        run: chmod +x gradlew && ./gradlew
+
+      - name: Publish packages 🗜
+        if: ${{ steps.release.outputs.release_created }}
+        run: ./gradlew publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
-        with:
-          tag_name: ${{ steps.changelog.outputs.tag }}
-          release_name: ${{ steps.changelog.outputs.tag }}
-          body: ${{ steps.changelog.outputs.clean_changelog }}
-
-      - name: Create build environment 🗜
-        run: |
-          echo "tag=${TAG}" >> ./.build-env
-          echo "version=${VERSION}" >> ./.build-env
-          echo "skipped=${SKIPPED}" >> ./.build-env
-          echo "upload_url=${UPLOAD_URL}" >> ./.build-env
-          echo "html_url=${HTML_URL}" >> ./.build-env
-        env:
-          TAG: ${{ steps.changelog.outputs.tag }}
-          VERSION: ${{ steps.changelog.outputs.version }}
-          SKIPPED: ${{ steps.changelog.outputs.skipped }}
-          UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
-          HTML_URL: ${{ steps.create_release.outputs.html_url }}
-
-      - name: Upload build environment 📤
-        uses: actions/upload-artifact@v2.3.1
-        with:
-          name: build-env
-          path: './.build-env'
-          retention-days: 1
+          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.GPG_MAVEN_SUBKEYID }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_MAVEN_SUBKEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_MAVEN_SUBKEY_PASSWORD }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
