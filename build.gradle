@@ -35,6 +35,10 @@ subprojects {
     }
 
     jar {
+        metaInf {
+            from("$projectDir/../../LICENSE")
+        }
+
         afterEvaluate {
             manifest {
 
