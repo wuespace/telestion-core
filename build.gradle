@@ -33,6 +33,136 @@ subprojects {
                     "--add-opens", "java.management/sun.management=ALL-UNNAMED",
                     "--add-opens", "jdk.management/com.sun.management.internal=ALL-UNNAMED"]
     }
+
+    jar {
+        afterEvaluate {
+            manifest {
+
+                var description = Objects.nonNull(project.description) ? project.description : 'No description'
+                var specTitle = project.extensions.extraProperties.has('prettyName')
+                        ? project.extensions.extraProperties.get('prettyName')
+                        : 'Telestion Module'
+
+                attributes(
+                        'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                        'Created-By': "Gradle ${gradle.gradleVersion}",
+                        'Build-Jdk': "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                        'Build-Jdk-Spec': "${System.properties['java.version']}",
+                        'Build-OS': "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}",
+                        'Specification-Title': specTitle,
+                        'Specification-Version': project.version,
+                        'Specification-Vendor': 'WueSpace e.V.',
+                        'Implementation-Title': project.name,
+                        'Implementation-Version': project.version,
+                        'Implementation-Vendor': 'de.wuespace.telestion',
+                        'X-Compile-Target-JDK': gradle.ext.targetCompatibility,
+                        'X-Compile-Source-JDK': gradle.ext.sourceCompatibility,
+                        'Description': description
+                )
+            }
+        }
+    }
+
+    publishing {
+        afterEvaluate {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+
+                    pom {
+                        name = project.name
+                        description = project.description
+                        url = 'https://telestion.wuespace.de/'
+
+                        licenses {
+                            license {
+                                name = 'MIT License'
+                                url = 'https://opensource.org/licenses/mit-license.php'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id = 'jvpichowski'
+                                name = 'Jan von Pichovski'
+                                email = 'janvonpichowski@gmail.com'
+                                url = 'https://github.com/jvpichowski'
+                                organization = 'WüSpace e. V.'
+                                organizationUrl = 'https://www.wuespace.de/'
+                            }
+
+                            developer {
+                                id = 'cb0s'
+                                name = 'Cedric Bös'
+                                email = 'cedric.boes@online.de'
+                                url = 'https://github.com/cb0s'
+                                organization = 'WüSpace e. V.'
+                                organizationUrl = 'https://www.wuespace.de/'
+                            }
+
+                            developer {
+                                id = 'fussel178'
+                                name = 'Ludwig Richter'
+                                email = 'riluzm@posteo.de'
+                                url = 'https://github.com/fussel178'
+                                organization = 'WüSpace e. V.'
+                                organizationUrl = 'https://www.wuespace.de/'
+                            }
+
+                            developer {
+                                id = 'pklaschka'
+                                name = 'Pablo Klaschka'
+                                email = 'contact@pabloklaschka.de'
+                                url = 'https://github.com/pklaschka'
+                                organization = 'WüSpace e. V.'
+                                organizationUrl = 'https://www.wuespace.de/'
+                            }
+                        }
+
+                        scm {
+                            connection = 'scm:git:git://github.com/wuespace/telestion-core.git'
+                            developerConnection = 'scm:git:ssh://git@github.com:wuespace/telestion-core.git'
+                            url = 'https://github.com/wuespace/telestion-core/tree/main'
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+                credentials {
+                    username = System.getenv('OSSRH_USERNAME')
+                    password = System.getenv('OSSRH_PASSWORD')
+                }
+            }
+
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/wuespace/telestion-core"
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
+
+    signing {
+        afterEvaluate {
+            required { gradle.forceSign || gradle.taskGraph.hasTask('publish') }
+            // get key + key-id + password
+            def signingKeyId = findProperty('signingKeyId') as String
+            def signingKey = findProperty('signingKey') as String
+            def signingPassword = findProperty('signingPassword') as String
+            // decrypt key
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+            // sign
+            sign publishing.publications.maven
+        }
+    }
 }
 
 task alljavadoc(type: Javadoc) {

@@ -12,110 +12,11 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-
-            pom {
-                name = 'Telestion Services'
-                description = 'Services and service components that are re-usable in any Telestion Project Application'
-                url = 'https://telestion.wuespace.de/'
-
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://opensource.org/licenses/mit-license.php'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'jvpichowski'
-                        name = 'Jan von Pichovski'
-                        email = 'janvonpichowski@gmail.com'
-                        url = 'https://github.com/jvpichowski'
-                        organization = 'WüSpace e. V.'
-                        organizationUrl = 'https://www.wuespace.de/'
-                    }
-
-                    developer {
-                        id = 'cb0s'
-                        name = 'Cedric Bös'
-                        email = 'cedric.boes@online.de'
-                        url = 'https://github.com/cb0s'
-                        organization = 'WüSpace e. V.'
-                        organizationUrl = 'https://www.wuespace.de/'
-                    }
-
-                    developer {
-                        id = 'fussel178'
-                        name = 'Ludwig Richter'
-                        email = 'riluzm@posteo.de'
-                        url = 'https://github.com/fussel178'
-                        organization = 'WüSpace e. V.'
-                        organizationUrl = 'https://www.wuespace.de/'
-                    }
-
-                    developer {
-                        id = 'pklaschka'
-                        name = 'Pablo Klaschka'
-                        email = 'contact@pabloklaschka.de'
-                        url = 'https://github.com/pklaschka'
-                        organization = 'WüSpace e. V.'
-                        organizationUrl = 'https://www.wuespace.de/'
-                    }
-
-                    developer {
-                        id = 'jantischhoefer'
-                        name = 'Jan Tischhöfer'
-                        email = 'jan.tischhoefer@gmail.com'
-                        url = 'https://github.com/jantischhoefer'
-                        organization = 'WüSpace e. V.'
-                        organizationUrl = 'https://www.wuespace.de/'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/wuespace/telestion-core.git'
-                    developerConnection = 'scm:git:ssh://git@github.com:wuespace/telestion-core.git'
-                    url = 'https://github.com/wuespace/telestion-core/tree/main'
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-
-            credentials {
-                username = System.getenv('OSSRH_USERNAME')
-                password = System.getenv('OSSRH_PASSWORD')
-            }
-        }
-
-        maven {
-            name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/wuespace/telestion-core"
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
+ext {
+    prettyName = 'Telestion Services'
 }
 
-signing {
-    required { gradle.forceSign || gradle.taskGraph.hasTask('publish') }
-    // get key + key-id + password
-    def signingKeyId = findProperty('signingKeyId') as String
-    def signingKey = findProperty('signingKey') as String
-    def signingPassword = findProperty('signingPassword') as String
-    // decrypt key
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-    // sign
-    sign publishing.publications.maven
-}
+description = 'Services and service components that are re-usable in any Telestion Project Application'
 
 dependencies {
     // implementation name: 'engine'
