@@ -274,9 +274,9 @@ public class TelestionLauncher implements ConfigDeploymentLauncher<JsonObject> {
 	 * Logs the package version to the console.
 	 */
 	private static void printVersion() {
-		var version = TelestionLauncher.class.getPackage().getImplementationVersion();
-		if (Objects.isNull(version)) version = "X.X.X";
-		logger.info("Starting TelestionLauncher v{}", version);
+		var version = TelestionLauncher.class.getPackage().getSpecificationVersion();
+		version = Objects.requireNonNullElse(version, "X.X.X");
+		logger.info("Telestion v{}", version);
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(TelestionLauncher.class);
