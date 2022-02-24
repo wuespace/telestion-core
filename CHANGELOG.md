@@ -24,6 +24,29 @@
 
 
 
+## [0.8.0](https://github.com/wuespace/telestion-core/compare/v0.7.1...v0.8.0) (2022-02-24)
+
+
+### Features
+
+* **api:** Add a Vert.x `MultiMap` wrapper which provides better basic type support and some conversion and extraction features for a better coding experience with Vert.x headers. ([efc3886](https://github.com/wuespace/telestion-core/commit/efc38864db7f2a5d29227d9b3fbe2c212a410787))
+* **api:** Add support for `HeaderInformation` in the `WithEventBus` verticle trait with many new overloaded methods for a better coding experience. ([9bc61d3](https://github.com/wuespace/telestion-core/commit/9bc61d32f450159ed9e5617749448702889c0fe1))
+* **api:** Add utility methods for the Vert.x `MultiMap`. ([17c24a7](https://github.com/wuespace/telestion-core/commit/17c24a7e15ff52511114a22a27f7f5548a84bd4d))
+* **api:** Add warnings to `HeaderInformation` add and set methods if there are already values assigned to the key. ([347bad1](https://github.com/wuespace/telestion-core/commit/347bad1bf15f154e52301fb3f86de19fc3e0ce9c))
+* **api:** Deprecate `GenericConfiguration` type ([88ab9a1](https://github.com/wuespace/telestion-core/commit/88ab9a1304f5001f229ad9bab811c6a4d18e0f18))
+* **api:** Introduce `NoConfiguration` to indicate that a verticle doesn't accept any configuration ([fc322ec](https://github.com/wuespace/telestion-core/commit/fc322ec39f47562e99a92a736c7ba94095f5cd59))
+* **api:** Introduce `UntypedConfiguration` to indicate that a verticle doesn't have a strictly typed configuration ([9970457](https://github.com/wuespace/telestion-core/commit/99704571112930b18e2101d99a707c522a267638))
+* **api:** Make warnings on add and set in `HeaderInformation` more specific ([a7c018d](https://github.com/wuespace/telestion-core/commit/a7c018d7c0a6295430a14d3e9e473a133d3da7aa))
+* **api:** Provide an additional flavor of the `JsonMessage` method, which maps a `JsonObject` to a `JsonMessage`. It returns a `Future` that can resolve with the value or reject. ([d36c9f8](https://github.com/wuespace/telestion-core/commit/d36c9f847db9c699e071928b1dbea43afa2fc0a8))
+* **examples:** Add examples which show the usage of the `HeaderInformation` API. ([636def2](https://github.com/wuespace/telestion-core/commit/636def23ebb530168164596a256308e43a867aca))
+* **examples:** Update all verticles that use the deprecated `GenericConfiguration` type ([82ba9a9](https://github.com/wuespace/telestion-core/commit/82ba9a97c65eb5279d1fa817502eba68d5053295))
+* Reduce log level in `add` and `set` methods ([6e48342](https://github.com/wuespace/telestion-core/commit/6e4834228984bda3666eea9d67c9d9cb7917dddd))
+
+
+### Bug Fixes
+
+* **api:** Add ignore properties annotation to `GenericConfiguration` to ignore unknown properties and not throw instead ([0acd655](https://github.com/wuespace/telestion-core/commit/0acd655b984365e6c4c591c86a5f6ba03fdfc167))
+
 ## [0.6.2](https://github.com/wuespace/telestion-core/compare/v0.6.1...v0.6.2) (2021-12-28)
 
 
@@ -158,6 +181,3 @@
 ### Features
 
 * Add release action based on Conventional commits ([a500839](https://github.com/wuespace/telestion-core/commit/a50083983290ffe80825306bf13e5f932ac86c7f))
-
-
-
