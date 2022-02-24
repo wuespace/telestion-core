@@ -10,9 +10,11 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.eventbus.Message;
 
 /**
- * @author Pablo Klaschka, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178)
  */
-public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration> implements WithEventBus, WithSharedData {
+public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration>
+		implements WithEventBus, WithSharedData {
+
 	public record Configuration(
 			@JsonProperty String inAddress,
 			@JsonProperty String outAddress,

@@ -11,10 +11,10 @@ import io.vertx.core.Vertx;
 import java.time.Duration;
 
 /**
- * @author Pablo Klaschka, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178)
  */
 public class PingVerticle extends TelestionVerticle<PingVerticle.Configuration> implements WithEventBus {
-	public static record Configuration(
+	public record Configuration(
 			@JsonProperty String address,
 			@JsonProperty int interval
 	) implements TelestionConfiguration {

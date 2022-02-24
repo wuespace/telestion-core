@@ -12,9 +12,8 @@ import java.time.Duration;
  * A very simple verticle which should present the usage of automatic loading
  * of the default configuration in a Telestion verticle.
  *
- * @author Ludwig Richter
+ * @author Ludwig Richter (@fussel178)
  */
-@SuppressWarnings("unused")
 public class DefaultConfigVerticle extends TelestionVerticle<DefaultConfigVerticle.Configuration> {
 
 	public record Configuration(

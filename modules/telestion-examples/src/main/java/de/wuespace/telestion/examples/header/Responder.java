@@ -8,7 +8,6 @@ import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-@SuppressWarnings("unused")
 public class Responder extends TelestionVerticle<Responder.Configuration> implements WithEventBus {
 
 	public static void main(String[] args) {

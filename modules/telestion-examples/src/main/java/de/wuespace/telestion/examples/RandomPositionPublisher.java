@@ -1,6 +1,6 @@
 package de.wuespace.telestion.examples;
 
-import de.wuespace.telestion.api.verticle.GenericConfiguration;
+import de.wuespace.telestion.api.verticle.NoConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 import de.wuespace.telestion.api.verticle.trait.WithSharedData;
@@ -15,9 +15,11 @@ import de.wuespace.telestion.services.message.Address;
  * Test class. <br>
  * Will be removed upon first release.
  *
- * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Jan von Pichowski (@jvpichowski), Ludwig Richter (@fussel178)
  */
-public final class RandomPositionPublisher extends TelestionVerticle<GenericConfiguration> implements WithEventBus, WithSharedData {
+public final class RandomPositionPublisher extends TelestionVerticle<NoConfiguration>
+		implements WithEventBus, WithSharedData {
+
 	private final Random rand = new Random(555326456);
 
 	@Override

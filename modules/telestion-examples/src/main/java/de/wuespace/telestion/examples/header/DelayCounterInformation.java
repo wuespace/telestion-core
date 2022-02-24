@@ -5,7 +5,6 @@ import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
 
-@SuppressWarnings("unused")
 public class DelayCounterInformation extends HeaderInformation {
 
 	public static final String DELAY_KEY = "delay";
