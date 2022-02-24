@@ -123,9 +123,9 @@ loadScripts(document, 'script');</script>
  and the message itself and returns nothing.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/GenericConfiguration.html" title="class in de.wuespace.telestion.api.verticle">GenericConfiguration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
-<div class="block">The type of configuration for a <a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> that you use
- to indicate that the verticle does not have a strictly typed configuration.</div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">Deprecated.
+<div class="deprecation-comment">Use <a href="de/wuespace/telestion/api/verticle/UntypedConfiguration.html" title="class in de.wuespace.telestion.api.verticle"><code>UntypedConfiguration</code></a> to indicate generic, untyped configuration or <a href="de/wuespace/telestion/api/verticle/NoConfiguration.html" title="class in de.wuespace.telestion.api.verticle"><code>NoConfiguration</code></a>
+ to indicate no configuration options instead.</div>
 </div>
 <div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/GenericSimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">GenericSimpleCommandHandler</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
@@ -168,165 +168,175 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">Utilities for the <code>Vert.x multimap</code>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PingVerticle.html" title="class in de.wuespace.telestion.examples">PingVerticle</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PingVerticle.Configuration.html" title="class in de.wuespace.telestion.examples">PingVerticle.Configuration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PongVerticle.html" title="class in de.wuespace.telestion.examples">PongVerticle</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PongVerticle.Configuration.html" title="class in de.wuespace.telestion.examples">PongVerticle.Configuration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/Position.html" title="class in de.wuespace.telestion.examples.messages">Position</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/NoConfiguration.html" title="class in de.wuespace.telestion.api.verticle">NoConfiguration</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="block">The type of configuration for a <a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> that you use
+ to indicate that the verticle doesn't accept any configuration.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PingVerticle.html" title="class in de.wuespace.telestion.examples">PingVerticle</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PingVerticle.Configuration.html" title="class in de.wuespace.telestion.examples">PingVerticle.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PongVerticle.html" title="class in de.wuespace.telestion.examples">PongVerticle</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PongVerticle.Configuration.html" title="class in de.wuespace.telestion.examples">PongVerticle.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/Position.html" title="class in de.wuespace.telestion.examples.messages">Position</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">Data class which contains a position.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PositionPublisher.html" title="class in de.wuespace.telestion.examples">PositionPublisher</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/PositionPublisher.html" title="class in de.wuespace.telestion.examples">PositionPublisher</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A class which publishes positions every two seconds.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/Positions.html" title="class in de.wuespace.telestion.examples.messages">Positions</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/Positions.html" title="class in de.wuespace.telestion.examples.messages">Positions</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A list message containing multiple <a href="de/wuespace/telestion/examples/messages/Position.html" title="class in de.wuespace.telestion.examples.messages"><code>Position</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Publisher.html" title="class in de.wuespace.telestion.examples.header">Publisher</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Publisher.Configuration.html" title="class in de.wuespace.telestion.examples.header">Publisher.Configuration</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Publisher.html" title="class in de.wuespace.telestion.examples.header">Publisher</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/RandomPositionPublisher.html" title="class in de.wuespace.telestion.examples">RandomPositionPublisher</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Publisher.Configuration.html" title="class in de.wuespace.telestion.examples.header">Publisher.Configuration</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/RandomPositionPublisher.html" title="class in de.wuespace.telestion.examples">RandomPositionPublisher</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">Test class.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/RawMessage.html" title="class in de.wuespace.telestion.services.connection.rework">RawMessage</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Receiver.html" title="class in de.wuespace.telestion.examples.header">Receiver</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/RawMessage.html" title="class in de.wuespace.telestion.services.connection.rework">RawMessage</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Receiver.html" title="class in de.wuespace.telestion.services.connection.rework">Receiver</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Receiver.html" title="class in de.wuespace.telestion.examples.header">Receiver</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Receiver.Configuration.html" title="class in de.wuespace.telestion.examples.header">Receiver.Configuration</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Receiver.html" title="class in de.wuespace.telestion.services.connection.rework">Receiver</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Receiver.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework">Receiver.Configuration</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Receiver.Configuration.html" title="class in de.wuespace.telestion.examples.header">Receiver.Configuration</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Requester.html" title="class in de.wuespace.telestion.examples.header">Requester</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Receiver.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework">Receiver.Configuration</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Requester.Configuration.html" title="class in de.wuespace.telestion.examples.header">Requester.Configuration</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Requester.html" title="class in de.wuespace.telestion.examples.header">Requester</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Responder.html" title="class in de.wuespace.telestion.examples.header">Responder</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Requester.Configuration.html" title="class in de.wuespace.telestion.examples.header">Requester.Configuration</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Responder.Configuration.html" title="class in de.wuespace.telestion.examples.header">Responder.Configuration</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Responder.html" title="class in de.wuespace.telestion.examples.header">Responder</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/services/util/SafeCloseable.html" title="interface in de.wuespace.telestion.services.util">SafeCloseable</a></div>
-<div class="col-last odd-row-color all-classes-table-tab1 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/Responder.Configuration.html" title="class in de.wuespace.telestion.examples.header">Responder.Configuration</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/services/util/SafeCloseable.html" title="interface in de.wuespace.telestion.services.util">SafeCloseable</a></div>
+<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">
 <div class="block">A <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/Closeable.html" title="class or interface in java.io" class="external-link"><code>Closeable</code></a> which does not throw <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOExceptions</code></a>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SayHello.html" title="class in de.wuespace.telestion.examples">SayHello</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SayHello.html" title="class in de.wuespace.telestion.examples">SayHello</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A class which says hello and shows the usage of configuration files.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SayHello.Configuration.html" title="class in de.wuespace.telestion.examples">SayHello.Configuration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Sender.html" title="class in de.wuespace.telestion.services.connection.rework">Sender</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SayHello.Configuration.html" title="class in de.wuespace.telestion.examples">SayHello.Configuration</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Sender.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework">Sender.Configuration</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Sender.html" title="class in de.wuespace.telestion.services.connection.rework">Sender</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/SenderData.html" title="class in de.wuespace.telestion.services.connection.rework">SenderData</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Sender.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework">Sender.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/SenderData.html" title="class in de.wuespace.telestion.services.connection.rework">SenderData</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">
      Data-Object for the data which must be sent over a network-connection.<br>
      Apart from containing the raw data from the stream, also
      connection-details are contained, which allow to determine the target where to send the data to.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/serial/SerialConn.html" title="class in de.wuespace.telestion.services.connection.rework.serial">SerialConn</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/SerialConn.html" title="class in de.wuespace.telestion.services.connection">SerialConn</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">Deprecated, for removal: This API element is subject to removal in a future version.</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/serial/SerialConn.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.serial">SerialConn.Configuration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/SerialData.html" title="class in de.wuespace.telestion.services.connection">SerialData</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">Deprecated, for removal: This API element is subject to removal in a future version.</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/serial/SerialDetails.html" title="class in de.wuespace.telestion.services.connection.rework.serial">SerialDetails</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/SimpleCommand.html" title="class in de.wuespace.telestion.examples.messages">SimpleCommand</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/serial/SerialConn.html" title="class in de.wuespace.telestion.services.connection.rework.serial">SerialConn</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">SimpleCommandHandler</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SimpleCommandHandler.Configuration.html" title="class in de.wuespace.telestion.examples">SimpleCommandHandler.Configuration</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/SimpleMessage.html" title="class in de.wuespace.telestion.examples.messages">SimpleMessage</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/StaticSender.html" title="class in de.wuespace.telestion.services.connection.rework">StaticSender</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/StaticSender.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework">StaticSender.Configuration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SystemInfoVerticle.html" title="class in de.wuespace.telestion.examples">SystemInfoVerticle</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpClient.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpClient</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpClient.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpClient.Configuration</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/TcpConn.html" title="class in de.wuespace.telestion.services.connection">TcpConn</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/SerialConn.html" title="class in de.wuespace.telestion.services.connection">SerialConn</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">Deprecated, for removal: This API element is subject to removal in a future version.</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/TcpConn.Data.html" title="class in de.wuespace.telestion.services.connection">TcpConn.Data</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/serial/SerialConn.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.serial">SerialConn.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/SerialData.html" title="class in de.wuespace.telestion.services.connection">SerialData</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">Deprecated, for removal: This API element is subject to removal in a future version.</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/serial/SerialDetails.html" title="class in de.wuespace.telestion.services.connection.rework.serial">SerialDetails</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/SimpleCommand.html" title="class in de.wuespace.telestion.examples.messages">SimpleCommand</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SimpleCommandHandler.html" title="class in de.wuespace.telestion.examples">SimpleCommandHandler</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SimpleCommandHandler.Configuration.html" title="class in de.wuespace.telestion.examples">SimpleCommandHandler.Configuration</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/messages/SimpleMessage.html" title="class in de.wuespace.telestion.examples.messages">SimpleMessage</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/StaticSender.html" title="class in de.wuespace.telestion.services.connection.rework">StaticSender</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/StaticSender.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework">StaticSender.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/SystemInfoVerticle.html" title="class in de.wuespace.telestion.examples">SystemInfoVerticle</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpClient.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpClient</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpClient.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpClient.Configuration</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/TcpConn.html" title="class in de.wuespace.telestion.services.connection">TcpConn</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">Deprecated, for removal: This API element is subject to removal in a future version.</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/TcpConn.Data.html" title="class in de.wuespace.telestion.services.connection">TcpConn.Data</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A chunk of data which is transmitted with the <a href="de/wuespace/telestion/services/connection/TcpConn.html" title="class in de.wuespace.telestion.services.connection"><code>TcpConn</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/TcpConn.Participant.html" title="class in de.wuespace.telestion.services.connection">TcpConn.Participant</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/TcpConn.Participant.html" title="class in de.wuespace.telestion.services.connection">TcpConn.Participant</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A participant of the <a href="de/wuespace/telestion/services/connection/TcpConn.html" title="class in de.wuespace.telestion.services.connection"><code>TcpConn</code></a>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpData.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpData</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpDetails.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpDetails</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpData.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpData</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpDispatcher.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpDispatcher</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpDetails.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpDetails</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpDispatcher.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpDispatcher.Configuration</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpDispatcher.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpDispatcher</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpServer.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpServer</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpDispatcher.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpDispatcher.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpServer.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpServer</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">
      <strong>An implementation of an unencrypted TCP-Server.</strong></div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpServer.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpServer.Configuration</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpServer.Configuration.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpServer.Configuration</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">Configuration for this Verticle which can be loaded from a config.<br>
  An optional timeout can be specified which is the consecutive time without any packets incoming or outgoing after
  which a client will be disconnected.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpTimeouts.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpTimeouts</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/application/Telestion.html" title="class in de.wuespace.telestion.application">Telestion</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/tcp/TcpTimeouts.html" title="class in de.wuespace.telestion.services.connection.rework.tcp">TcpTimeouts</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/application/Telestion.html" title="class in de.wuespace.telestion.application">Telestion</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">This is going to be the Telestion application.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/api/verticle/TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle">TelestionConfiguration</a></div>
-<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/api/verticle/TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle">TelestionConfiguration</a></div>
+<div class="col-last odd-row-color all-classes-table-tab1 all-classes-table">
 <div class="block">The base class for all Telestion Verticle configurations.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="type parameter in TelestionVerticle">T</a> extends <a href="de/wuespace/telestion/api/verticle/TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle">TelestionConfiguration</a>&gt;</div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle">TelestionVerticle</a>&lt;<a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="type parameter in TelestionVerticle">T</a> extends <a href="de/wuespace/telestion/api/verticle/TelestionConfiguration.html" title="interface in de.wuespace.telestion.api.verticle">TelestionConfiguration</a>&gt;</div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">An abstract verticle class that you can extend to write your own verticle classes.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/TestVerticle.html" title="class in de.wuespace.telestion.examples">TestVerticle</a></div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/TestVerticle.Configuration.html" title="class in de.wuespace.telestion.examples">TestVerticle.Configuration</a></div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/TestVerticle.html" title="class in de.wuespace.telestion.examples">TestVerticle</a></div>
 <div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/TimeInformation.html" title="class in de.wuespace.telestion.examples.header">TimeInformation</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/TestVerticle.Configuration.html" title="class in de.wuespace.telestion.examples">TestVerticle.Configuration</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/trait/Timing.html" title="class in de.wuespace.telestion.api.verticle.trait">Timing</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/examples/header/TimeInformation.html" title="class in de.wuespace.telestion.examples.header">TimeInformation</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/trait/Timing.html" title="class in de.wuespace.telestion.api.verticle.trait">Timing</a></div>
+<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">Stores information to a specific timing from Vert.x like the timing id or associated Vert.x instance.</div>
 </div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Tuple.html" title="class in de.wuespace.telestion.services.connection.rework">Tuple</a>&lt;<a href="de/wuespace/telestion/services/connection/rework/Tuple.html" title="type parameter in Tuple">T1</a>,&#8203;<a href="de/wuespace/telestion/services/connection/rework/Tuple.html" title="type parameter in Tuple">T2</a>&gt;</div>
-<div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/Tuple.html" title="class in de.wuespace.telestion.services.connection.rework">Tuple</a>&lt;<a href="de/wuespace/telestion/services/connection/rework/Tuple.html" title="type parameter in Tuple">T1</a>,&#8203;<a href="de/wuespace/telestion/services/connection/rework/Tuple.html" title="type parameter in Tuple">T2</a>&gt;</div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
 <div class="block">A simple implementation of a Value-Pair whose values are linked together without any key - value relationship.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/udp/UdpConn.html" title="class in de.wuespace.telestion.services.connection.rework.udp">UdpConn</a></div>
-<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/udp/UdpDetails.html" title="class in de.wuespace.telestion.services.connection.rework.udp">UdpDetails</a></div>
+<div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/udp/UdpConn.html" title="class in de.wuespace.telestion.services.connection.rework.udp">UdpConn</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/services/util/UnsafePredicate.html" title="interface in de.wuespace.telestion.services.util">UnsafePredicate</a>&lt;<a href="de/wuespace/telestion/services/util/UnsafePredicate.html" title="type parameter in UnsafePredicate">T</a>&gt;</div>
-<div class="col-last odd-row-color all-classes-table-tab1 all-classes-table">
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/connection/rework/udp/UdpDetails.html" title="class in de.wuespace.telestion.services.connection.rework.udp">UdpDetails</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table-tab1 all-classes-table"><a href="de/wuespace/telestion/services/util/UnsafePredicate.html" title="interface in de.wuespace.telestion.services.util">UnsafePredicate</a>&lt;<a href="de/wuespace/telestion/services/util/UnsafePredicate.html" title="type parameter in UnsafePredicate">T</a>&gt;</div>
+<div class="col-last even-row-color all-classes-table-tab1 all-classes-table">
 <div class="block">A UnsafePredicate is a <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link"><code>Predicate</code></a> which allows exceptions to be thrown.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/api/verticle/UntypedConfiguration.html" title="class in de.wuespace.telestion.api.verticle">UntypedConfiguration</a></div>
+<div class="col-last odd-row-color all-classes-table-tab2 all-classes-table">
+<div class="block">The type of configuration for a <a href="de/wuespace/telestion/api/verticle/TelestionVerticle.html" title="class in de.wuespace.telestion.api.verticle"><code>TelestionVerticle</code></a> that you use
+ to indicate that the verticle does not have a strictly typed configuration.</div>
 </div>
 <div class="col-first even-row-color all-classes-table-tab2 all-classes-table"><a href="de/wuespace/telestion/services/config/VerticleConfig.html" title="class in de.wuespace.telestion.services.config">VerticleConfig</a></div>
 <div class="col-last even-row-color all-classes-table-tab2 all-classes-table">
