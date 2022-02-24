@@ -4,6 +4,15 @@ allprojects {
     }
 }
 
+// ignore "modules" module
+gradle.taskGraph.whenReady {
+    gradle.taskGraph.allTasks.each {
+        if(it.project.name == "modules") {
+            it.onlyIf {false}
+        }
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'application'
