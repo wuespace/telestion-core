@@ -24,6 +24,13 @@
 
 
 
+### [0.8.1](https://github.com/wuespace/telestion-core/compare/v0.8.0...v0.8.1) (2022-02-24)
+
+
+### Bug Fixes
+
+* Fix Gradle accidentally publishing the implicitly created "modules" module ([1cf9d41](https://github.com/wuespace/telestion-core/commit/1cf9d41af09f6771c0afaad72e7e22cc3babf28e))
+
 ## [0.8.0](https://github.com/wuespace/telestion-core/compare/v0.7.1...v0.8.0) (2022-02-24)
 
 
