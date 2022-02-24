@@ -1,7 +1,7 @@
 package de.wuespace.telestion.examples;
 
-import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
+import de.wuespace.telestion.api.verticle.UntypedConfiguration;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 import de.wuespace.telestion.examples.messages.SimpleCommand;
 import io.vertx.core.eventbus.Message;
@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * @author Pablo Klaschka, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178)
  */
-public class GenericSimpleCommandHandler extends TelestionVerticle<GenericConfiguration> implements WithEventBus {
+public class GenericSimpleCommandHandler extends TelestionVerticle<UntypedConfiguration> implements WithEventBus {
 	@Override
 	public void onStart() {
 		// with "controller":

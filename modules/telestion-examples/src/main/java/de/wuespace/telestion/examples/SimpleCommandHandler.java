@@ -11,10 +11,11 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * @author Pablo Klaschka, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178)
  */
-public class SimpleCommandHandler
-		extends TelestionVerticle<SimpleCommandHandler.Configuration> implements WithEventBus {
+public class SimpleCommandHandler extends TelestionVerticle<SimpleCommandHandler.Configuration>
+		implements WithEventBus {
+
 	public record Configuration(
 			@JsonProperty String inAddress,
 			@JsonProperty String pingAddress

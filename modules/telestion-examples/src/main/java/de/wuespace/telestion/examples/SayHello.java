@@ -1,12 +1,10 @@
 package de.wuespace.telestion.examples;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.verticle.GenericConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithTiming;
 import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 
@@ -15,7 +13,7 @@ import java.time.Duration;
 /**
  * A class which says hello and shows the usage of configuration files.
  *
- * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Jan von Pichowski (@jvpichowski), Ludwig Richter (@fussel178)
  */
 public final class SayHello extends TelestionVerticle<SayHello.Configuration> implements WithTiming {
 	public static void main(String[] args) {

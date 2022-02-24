@@ -6,7 +6,6 @@ import de.wuespace.telestion.api.verticle.TelestionConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 
-@SuppressWarnings("unused")
 public class Receiver extends TelestionVerticle<Receiver.Configuration> implements WithEventBus {
 
 	public static void main(String[] args) {

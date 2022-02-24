@@ -1,6 +1,6 @@
 package de.wuespace.telestion.examples;
 
-import de.wuespace.telestion.api.verticle.GenericConfiguration;
+import de.wuespace.telestion.api.verticle.NoConfiguration;
 import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import de.wuespace.telestion.api.verticle.trait.WithEventBus;
 import de.wuespace.telestion.examples.messages.Position;
@@ -13,9 +13,9 @@ import de.wuespace.telestion.services.message.Address;
 /**
  * A class which publishes positions every two seconds. A codec for {@link Position} has to be registered.
  *
- * @author Pablo Klaschka, Jan von Pichowski, Ludwig Richter
+ * @author Pablo Klaschka (@pklaschka), Jan von Pichowski (@jvpichowski), Ludwig Richter (@fussel178)
  */
-public final class PositionPublisher extends TelestionVerticle<GenericConfiguration> implements WithEventBus {
+public final class PositionPublisher extends TelestionVerticle<NoConfiguration> implements WithEventBus {
 
 	/**
 	 * Internal. Don't use it! TODO remove it.<br>
