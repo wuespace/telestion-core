@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  *
  * @author Pablo Klaschka (@pklaschka), Ludwig Richter (@fussel178)
  * @see TelestionVerticle#getConfig()
- * @deprecated Use {@link UntypedConfiguration} instead.
+ * @deprecated Use {@link UntypedConfiguration} to indicate generic, untyped configuration or {@link NoConfiguration}
+ * to indicate no configuration options instead. To build your own typed configuration options, implement
+ * {@link TelestionConfiguration}.
  */
 @Deprecated(since = "0.8.0")
 @JsonIgnoreProperties(ignoreUnknown = true)
