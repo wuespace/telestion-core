@@ -259,7 +259,8 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	 * Use this event if you want to run steps before a verticle deploys.
 	 * <p>
 	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
-	 * an error during execution. A failed promise <strong>prevents</strong> the verticle from deploying.
+	 * an error during execution. A failed promise <strong>only prevents</strong> this specific deployment
+	 * from deploying.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
 	 * <p>
@@ -299,7 +300,8 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	 * Use this event if you want to run steps before a verticle un-deploys.
 	 * <p>
 	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
-	 * an error during execution. A failed promise <strong>prevents</strong> the verticle from un-deploying.
+	 * an error during execution. A failed promise <strong>only prevents</strong> this specific deployment
+	 * from un-deploying.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
 	 * <p>
@@ -319,7 +321,7 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	 * Use this event if you want to run steps after a verticle un-deploys.
 	 * <p>
 	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
-	 * an error during execution. A failed promise <strong>prevents</strong> the verticle from un-deploying.
+	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
 	 * <p>
