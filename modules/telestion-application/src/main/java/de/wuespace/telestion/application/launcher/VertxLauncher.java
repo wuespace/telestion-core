@@ -4,7 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 
 /**
- * An extended version of the {@link Launcher}.
+ * An extended version of the {@link Launcher} type.
  * <p>
  * This launcher controls and runs a {@link Vertx} instance configured with {@link VertxOptions}.
  *

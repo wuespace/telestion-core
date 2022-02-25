@@ -10,7 +10,7 @@ import static java.lang.Thread.sleep;
  * A {@link Launcher} is the first part of the launch process in Telestion.
  * <p>
  * It starts other processes like {@link de.wuespace.telestion.application.loader.Loader Loaders}
- * or {@link io.vertx.core.Verticle verticles}, configure {@link io.vertx.core.Vertx} instances or run external code.
+ * or {@link io.vertx.core.Verticle verticles}, configures {@link io.vertx.core.Vertx} instances or runs external code.
  * <p>
  * A launcher has a {@link #start() start} and {@link #stop() stop} method to start and stop it.
  *

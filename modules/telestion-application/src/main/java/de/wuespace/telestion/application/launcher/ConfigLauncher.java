@@ -3,7 +3,7 @@ package de.wuespace.telestion.application.launcher;
 import java.nio.file.Path;
 
 /**
- * An extended version of the {@link Launcher}.
+ * An extended version of the {@link Launcher} type.
  * <p>
  * This launcher uses a configuration file to configure itself.
  *
