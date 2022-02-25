@@ -5,7 +5,7 @@ import de.wuespace.telestion.application.loader.Loader;
 import java.util.List;
 
 /**
- * An extended version of the {@link VertxLauncher}.
+ * An extended version of the {@link VertxLauncher} type.
  * <p>
  * The launcher uses {@link Loader Loaders} to run user defined hooks on Launcher and
  * {@link io.vertx.core.Vertx Vertx} events.

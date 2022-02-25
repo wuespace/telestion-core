@@ -1,7 +1,8 @@
 package de.wuespace.telestion.application.launcher;
 
 /**
- * This launcher combines the functionality of a {@link ConfigLauncher} and a {@link DeploymentLauncher}.
+ * This launcher type combines the functionality of a {@link ConfigLauncher} type
+ * and a {@link DeploymentLauncher} type.
  *
  * @author Ludwig Richter (@fussel178)
  */

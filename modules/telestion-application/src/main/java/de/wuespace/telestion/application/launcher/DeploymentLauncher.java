@@ -8,7 +8,7 @@ import io.vertx.core.Verticle;
 import java.util.List;
 
 /**
- * An extended version of the {@link LoaderLauncher}.
+ * An extended version of the {@link LoaderLauncher} type.
  * <p>
  * It provides support for deploying {@link Verticle Verticles} onto the {@link io.vertx.core.Vertx Vertx} instance
  * of the {@link VertxLauncher}. A {@link Deployment} is used to represent the running
