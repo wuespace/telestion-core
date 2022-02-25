@@ -52,20 +52,20 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 					"classname, install required packages and try again.").formatted(className), e.getException());
 		} catch (InvocationTargetException e) {
 			throw new InvocationTargetException(e.getTargetException(), ("The loader %s cannot be created because " +
-					"the constructor throws an exception during instantiation. Please check your loaders " +
+					"the constructor throws an exception during instantiation. Please check your loader's " +
 					"constructor, fix the breaking code and try again.").formatted(className));
 		} catch (InstantiationException e) {
 			throw new InstantiationException(("Abstract loaders aren't supported. Please extend the \"Loader\" " +
 					"class in loader %s, add the sub class to the configuration and try again.").formatted(className));
 		} catch (IllegalAccessException e) {
 			throw new IllegalAccessException(("The class loader cannot instantiate the loader %s because " +
-					"the constructor is inaccessible. Please add at least one public constructor with no arguments " +
+					"the constructor is inaccessible. Please add a public constructor with no arguments " +
 					"to continue.").formatted(className));
 		} catch (NoSuchMethodException e) {
 			throw new NoSuchMethodException("The loader %s does not contain a constructor. Please add one to continue."
 					.formatted(className));
 		} catch (ClassCastException e) {
-			throw new ClassCastException(("The given class behind the classname %s is not a loader. Please implement " +
+			throw new ClassCastException(("The given class behind the classname %s isn't a loader. Please implement " +
 					"the \"Loader\" interface in your loader and try again.").formatted(className));
 		}
 	}
@@ -130,12 +130,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void init(ConfigDeploymentLauncher<? extends JsonObject> launcher);
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} initializes itself, but before it parses
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} initializes itself, but before it parses
 	 * the {@link io.vertx.core.VertxOptions VertxOptions} from the main configuration.
 	 * <p>
-	 * Use this event if you want to run initialization steps that aren't depend on Vertx options or an instance.
+	 * Use this event if you want to run initialization steps that don't depend on Vertx options or an instance.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -150,13 +150,13 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onInit(Promise<Void> startPromise) throws Exception;
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} parses the
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} parses the
 	 * {@link io.vertx.core.VertxOptions VertxOptions}, but before it creates the
 	 * {@link io.vertx.core.Vertx Vertx} instance.
 	 * <p>
 	 * Use this event if you want to run startup steps that depend on the Vertx options but not on a running instance.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -171,12 +171,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onBeforeVertxStartup(Promise<Void> startPromise) throws Exception;
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} creates a
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} creates a
 	 * {@link io.vertx.core.Vertx Vertx} instance and is ready to complete the startup process.
 	 * <p>
 	 * Use this event if you want to run startup steps that depend on a running Vertx instance.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -191,12 +191,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onAfterVertxStartup(Promise<Void> startPromise) throws Exception;
 
 	/**
-	 * Gets called, before the {@link ConfigDeploymentLauncher Launcher} closes the running
+	 * Gets called before the {@link ConfigDeploymentLauncher Launcher} closes the running
 	 * {@link io.vertx.core.Vertx Vertx} instance.
 	 * <p>
 	 * Use this event if you want to run shutdown steps that depend on a running Vertx instance.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -211,14 +211,14 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onBeforeVertxShutdown(Promise<Void> stopPromise) throws Exception;
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} closes the
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} closes the
 	 * {@link io.vertx.core.Vertx Vertx} instance, but before it removes the instance and the related
 	 * {@link io.vertx.core.VertxOptions VertxOptions}.
 	 * <p>
-	 * Use this event if you want to run shutdown steps that aren't depend on a running Vertx instance but running
-	 * before the exit step.
+	 * Use this event if you want to run shutdown steps that don't depend on a running Vertx instance but you want
+	 * it to run before the exit step.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -233,12 +233,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onAfterVertxShutdown(Promise<Void> stopPromise) throws Exception;
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} removes the {@link io.vertx.core.Vertx Vertx}
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} removes the {@link io.vertx.core.Vertx Vertx}
 	 * instance and {@link io.vertx.core.VertxOptions VertxOptions} and is ready to complete the shutdown process.
 	 * <p>
 	 * Use this event if you want to run shutdown steps that should run directly before the launcher stops.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -253,12 +253,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onExit(Promise<Void> stopPromise) throws Exception;
 
 	/**
-	 * Gets called, before the {@link ConfigDeploymentLauncher Launcher} deploys a new
+	 * Gets called before the {@link ConfigDeploymentLauncher Launcher} deploys a new
 	 * {@link io.vertx.core.Verticle Verticle}.
 	 * <p>
 	 * Use this event if you want to run steps before a verticle deploys.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution. A failed promise <strong>prevents</strong> the verticle from deploying.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -273,12 +273,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onBeforeVerticleDeploy(Promise<Void> completePromise, Deployment deployment) throws Exception;
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} deploys a new
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} deploys a new
 	 * {@link io.vertx.core.Verticle Verticle}.
 	 * <p>
 	 * Use this event if you want to run steps after a verticle deploys.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -293,12 +293,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onAfterVerticleDeploy(Promise<Void> completePromise, Deployment deployment) throws Exception;
 
 	/**
-	 * Gets called, before the {@link ConfigDeploymentLauncher Launcher} un-deploys a running
+	 * Gets called before the {@link ConfigDeploymentLauncher Launcher} un-deploys a running
 	 * {@link io.vertx.core.Verticle Verticle}.
 	 * <p>
 	 * Use this event if you want to run steps before a verticle un-deploys.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution. A failed promise <strong>prevents</strong> the verticle from un-deploying.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -313,12 +313,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onBeforeVerticleUndeploy(Promise<Void> completePromise, Deployment deployment) throws Exception;
 
 	/**
-	 * Gets called, after the {@link ConfigDeploymentLauncher Launcher} un-deploys a running
+	 * Gets called after the {@link ConfigDeploymentLauncher Launcher} un-deploys a running
 	 * {@link io.vertx.core.Verticle Verticle}.
 	 * <p>
 	 * Use this event if you want to run steps after a verticle un-deploys.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution. A failed promise <strong>prevents</strong> the verticle from un-deploying.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
@@ -333,12 +333,12 @@ public interface Loader<T extends LoaderConfiguration> extends DefaultConfigurab
 	void onAfterVerticleUndeploy(Promise<Void> completePromise, Deployment deployment) throws Exception;
 
 	/**
-	 * Gets called, when the running {@link io.vertx.core.Vertx Vertx} instance in the
+	 * Gets called when the running {@link io.vertx.core.Vertx Vertx} instance in the
 	 * {@link ConfigDeploymentLauncher Launcher} encounters an uncaught exception.
 	 * <p>
 	 * Use this event if you want to run steps on uncaught exception on the Vertx instance.
 	 * <p>
-	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounter
+	 * The passed promise should resolve when this loader finishes its execution and fail if the loader encounters
 	 * an error during execution.
 	 * <p>
 	 * The launcher calls this event handler. <strong>Don't call it by yourself.</strong>
