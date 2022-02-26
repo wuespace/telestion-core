@@ -8,21 +8,18 @@ import org.junit.jupiter.api.Test;
 
 public class JsonMessageTest {
 
-	@Test
-	void testOn() {
-		TestMessage msg = new TestMessage();
-		assertThat(JsonMessage.on(TestMessage.class, msg.json(), m -> {
-			assertThat(m, is(msg));
-		}), is(true));
-		assertThat(JsonMessage.on(JsonMessage.class, msg.json(), m -> {
-			assertThat(m, is(msg));
-		}), is(true));
-	}
-
-		private static record TestMessage(@JsonProperty float param1) implements JsonMessage {
-		private TestMessage() {
+	public record TestMessage(@JsonProperty float param1) implements JsonMessage {
+		public TestMessage() {
 			this(0);
 		}
 	}
 
+	@Test
+	void testOn() {
+		TestMessage msg = new TestMessage();
+
+		assertThat(JsonMessage.on(TestMessage.class, msg.toJsonObject(), m -> {
+			assertThat(m, is(msg));
+		}), is(true));
+	}
 }
