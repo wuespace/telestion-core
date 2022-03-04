@@ -50,11 +50,11 @@ public interface JsonMessage {
 	 * @return {@code true} when the conversion was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> type, Buffer json, Handler<T> handler,
-											  Handler<DecodeException> exceptionHandler) {
+											  Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(json, type));
 			return true;
-		} catch (DecodeException e) {
+		} catch (DecodeException | IllegalArgumentException e) {
 			logger.warn("Cannot convert buffer to JsonMessage {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
@@ -73,11 +73,11 @@ public interface JsonMessage {
 	 * @return {@code true} when the conversion was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> type, String json, Handler<T> handler,
-											  Handler<DecodeException> exceptionHandler) {
+											  Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(json, type));
 			return true;
-		} catch (DecodeException e) {
+		} catch (DecodeException | IllegalArgumentException e) {
 			logger.warn("Cannot convert JSON string to JsonMessage {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
@@ -96,11 +96,11 @@ public interface JsonMessage {
 	 * @return {@code true} when the conversion was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> type, Object json, Handler<T> handler,
-											  Handler<DecodeException> exceptionHandler) {
+											  Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(json, type));
 			return true;
-		} catch (DecodeException e) {
+		} catch (DecodeException | IllegalArgumentException e) {
 			logger.warn("Cannot convert Object to JsonMessage {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
@@ -119,11 +119,11 @@ public interface JsonMessage {
 	 * @return {@code true} when the conversion was successful
 	 */
 	static <T extends JsonMessage> boolean on(Class<T> type, Message<?> message, Handler<T> handler,
-											  Handler<DecodeException> exceptionHandler) {
+											  Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(message, type));
 			return true;
-		} catch (DecodeException e) {
+		} catch (DecodeException | IllegalArgumentException e) {
 			logger.warn("Cannot convert Vertx Message to JsonMessage {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
