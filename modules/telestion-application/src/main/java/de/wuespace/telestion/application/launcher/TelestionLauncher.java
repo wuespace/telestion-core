@@ -18,12 +18,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Reference implementation of a {@link ConfigLauncher} and {@link DeploymentLauncher}.
+ * <h2>Description</h2>
+ * The Telestion Launcher is a {@link ConfigLauncher} and {@link DeploymentLauncher}.
+ * It implements the default Telestion startup behavior and
+ * should be used as the starting point of your application.
  * <p>
- * It loads the configuration from {@code $PWD/telestion.json} by default, parses it with the
+ * The Launcher loads the main configuration from {@code $PWD/conf/telestion.json} by default, parses it with the
  * {@link TelestionConfigParser} and runs all {@link Loader Loaders} configured in the {@code telestion.json}.
- * <p>
- * Use this launcher in your {@code build.gradle} as main class:
+ *
+ * <h2>Usage</h2>
+ * Use this launcher as main class in your {@code build.gradle}:
  * <pre>
  * {@code
  * // [...]
@@ -46,7 +50,7 @@ import java.util.Objects;
 public class TelestionLauncher implements ConfigDeploymentLauncher<JsonObject> {
 
 	/**
-	 * Default path to the main configuration file of the {@link TelestionLauncher}.
+	 * Default {@link Path} to the main configuration file of the {@link TelestionLauncher}.
 	 */
 	public static final Path DEFAULT_MAIN_CONFIG_PATH = Path.of("conf", "telestion.json");
 
@@ -202,9 +206,7 @@ public class TelestionLauncher implements ConfigDeploymentLauncher<JsonObject> {
 	}
 
 	/**
-	 * Initializes a registered {@link Loader Loaders} in this {@link TelestionLauncher} instance.
-	 * <p>
-	 * It returns a {@link Future} which resolves when all loaders are initialized.
+	 * Initializes all registered {@link Loader Loaders} in this {@link TelestionLauncher} instance.
 	 *
 	 * @return a future which resolves on successful loader initialization
 	 */
@@ -215,12 +217,10 @@ public class TelestionLauncher implements ConfigDeploymentLauncher<JsonObject> {
 	}
 
 	/**
-	 * Creates a new {@link Vertx} instance with the {@link #vertxOptions} from the {@link TelestionLauncher} instance.
-	 * <p>
-	 * A future returns the instance when it resolves.
+	 * Creates a new {@link Vertx} instance with the parsed {@link #vertxOptions}.
 	 *
 	 * @param isClustered when {@code true} the Vertx instance should be clustered
-	 * @return a future which resolves with the Vertx instance
+	 * @return a {@link Future} which resolves with the Vertx instance
 	 */
 	private Future<Vertx> createVertxInstance(boolean isClustered) {
 		logger.debug("Create Vertx instance");
@@ -241,7 +241,7 @@ public class TelestionLauncher implements ConfigDeploymentLauncher<JsonObject> {
 	/**
 	 * Clears the {@link #vertx} instance from the {@link TelestionLauncher} instance.
 	 *
-	 * @return a future which resolves when the {@link #vertx} instance clears
+	 * @return a {@link Future} which resolves when the {@link #vertx} instance clears
 	 */
 	private Future<Void> clearVertxInstance() {
 		logger.debug("Clear Vertx instance");

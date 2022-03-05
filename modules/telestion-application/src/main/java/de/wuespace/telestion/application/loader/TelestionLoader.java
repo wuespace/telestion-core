@@ -12,9 +12,23 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
 /**
- * An abstract reference implementation of a {@link Loader}.
- * <p>
- * Use this as a starting point for your own loader.
+ * <h2>Description</h2>
+ * The Telestion Loader is class that implements all required {@link Loader} methods.
+ * This provides you a good starting point for your own Loader.
+ * Simply overwrite the event handlers you need and do your startup or shutdown steps.
+ *
+ * <h2>Usage</h2>
+ * A very simple Loader could look like:
+ * <pre>
+ * {@code
+ * public class LoggerLoader extends TelestionLoader<NoConfiguration> {
+ *     @Override
+ *     public void onAfterVertxStartup() throws Exception {
+ *         logger.info("Vertx has started!");
+ *     }
+ * }
+ * }
+ * </pre>
  *
  * @param <T> the type of the loader configuration
  * @author Ludwig Richter (@fussel178)
@@ -85,12 +99,13 @@ public abstract class TelestionLoader<T extends LoaderConfiguration> implements 
 	@SuppressWarnings("unchecked")
 	protected Class<T> getConfigType() {
 		try {
+			// get classname for loader configuration
 			String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-			Class<?> clazz = Class.forName(className);
-			//noinspection unchecked
-			return (Class<T>) clazz;
+			// noinspection unchecked
+			return (Class<T>) Class.forName(className);
 		} catch (Exception e) {
-			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
+			logger.warn("Cannot get Class for Loader Configuration. The use of raw Telestion Loaders is discouraged. " +
+					"Please add at least a \"NoConfiguration\" or a \"UntypedConfiguration\" specialization to your Loader.", e);
 			return null;
 		}
 	}
