@@ -48,6 +48,9 @@ public class VerticleLoader extends AbstractVerticleLoader<VerticleLoader.Config
 
 	@Override
 	public void onAfterVertxStartup(Promise<Void> startPromise) throws Exception {
+		// We use the main Launcher configuration as argument for the onConfiguration method
+		// provided by the AbstractVerticleLoader. This method reads the main configuration,
+		// parses the VerticleConfigurations and deploys the specified verticles.
 		onConfiguration(launcher.getMainConfiguration()).onComplete(startPromise);
 	}
 }
