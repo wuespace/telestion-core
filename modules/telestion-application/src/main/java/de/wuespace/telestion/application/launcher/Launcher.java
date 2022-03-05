@@ -4,8 +4,6 @@ import io.vertx.core.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.lang.Thread.sleep;
-
 /**
  * A {@link Launcher} is the first part of the launch process in Telestion.
  * <p>
@@ -23,7 +21,7 @@ public interface Launcher {
 	/**
 	 * <h4>Description</h4>
 	 * Starts the {@link Launcher} and registers a {@link Runtime#addShutdownHook(Thread) shutdownHook}
-	 * on the JVM runtime to gracefully stop the launcher if the JVM is gracefully stopped.
+	 * on the JVM runtime to gracefully stop the launcher once the JVM gracefully stops.
 	 *
 	 * <h4>Usage</h4>
 	 * Use this method in the main method of your launcher:
@@ -45,14 +43,20 @@ public interface Launcher {
 		// define thread for shutdown hook on JVM runtime
 		Thread stopHook = new Thread(() -> {
 			try {
-				var future = launcher.stop()
+				var lock = new Object();
+
+				launcher.stop()
 						.onSuccess(stopResult -> logger.info("TelestionLauncher successfully stopped"))
 						.onFailure(cause -> logger.error("TelestionLauncher stopped with errors:", cause))
-						.onFailure(cause -> System.exit(1));
+						.onFailure(cause -> System.exit(1))
+						.onComplete(result -> {
+							synchronized (lock) {
+								lock.notifyAll();
+							}
+						});
 
-				while (!future.isComplete()) {
-					//noinspection BusyWait
-					sleep(200);
+				synchronized (lock) {
+					lock.wait();
 				}
 			} catch (Exception e) {
 				logger.error("TelestionLauncher stopped with errors:", e);
