@@ -85,12 +85,13 @@ public abstract class TelestionLoader<T extends LoaderConfiguration> implements 
 	@SuppressWarnings("unchecked")
 	protected Class<T> getConfigType() {
 		try {
+			// get classname for loader configuration
 			String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-			Class<?> clazz = Class.forName(className);
-			//noinspection unchecked
-			return (Class<T>) clazz;
+			// noinspection unchecked
+			return (Class<T>) Class.forName(className);
 		} catch (Exception e) {
-			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
+			logger.warn("Cannot get Class for Loader Configuration. The use of raw Telestion Loaders is discouraged. " +
+					"Please add at least a \"NoConfiguration\" or a \"UntypedConfiguration\" specialization to your Loader.", e);
 			return null;
 		}
 	}
