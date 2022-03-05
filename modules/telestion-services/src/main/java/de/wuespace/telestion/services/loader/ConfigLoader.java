@@ -47,6 +47,11 @@ import io.vertx.core.Promise;
  */
 public class ConfigLoader extends AbstractVerticleLoader<ConfigLoader.Configuration> {
 
+	/**
+	 * Configuration for the {@link ConfigLoader}.
+	 *
+	 * @param verticlesProperty the property name which points to the verticle configuration
+	 */
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public record Configuration(
 			@JsonProperty String verticlesProperty
