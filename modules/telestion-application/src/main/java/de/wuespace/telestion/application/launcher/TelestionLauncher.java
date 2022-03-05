@@ -18,12 +18,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Reference implementation of a {@link ConfigLauncher} and {@link DeploymentLauncher}.
- * <p>
- * It loads the configuration from {@code $PWD/telestion.json} by default, parses it with the
+ * <h2>Description</h2>
+ * The Telestion Launcher is a {@link ConfigLauncher} and {@link DeploymentLauncher}.
+ * It implements the default Telestion startup behavior and
+ * should be used as the starting point of your application.
+ *
+ * The Launcher loads the main configuration from {@code $PWD/conf/telestion.json} by default, parses it with the
  * {@link TelestionConfigParser} and runs all {@link Loader Loaders} configured in the {@code telestion.json}.
- * <p>
- * Use this launcher in your {@code build.gradle} as main class:
+ *
+ * <h2>Usage</h2>
+ * Use this launcher as main class in your {@code build.gradle}:
  * <pre>
  * {@code
  * // [...]
