@@ -18,7 +18,7 @@ import static java.lang.Thread.sleep;
  */
 public interface Launcher {
 
-	static Logger logger = LoggerFactory.getLogger(Launcher.class);
+	Logger logger = LoggerFactory.getLogger(Launcher.class);
 
 	/**
 	 * <h4>Description</h4>
