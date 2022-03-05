@@ -4,7 +4,7 @@ import de.wuespace.telestion.api.message.JsonMessage;
 
 /**
  * The base class for all {@link Loader Loader} configurations.
- * It extends {@link JsonMessage} so all configurations are also valid json classes.
+ * It extends {@link JsonMessage} so all configurations are also valid JSON classes.
  *
  * @author Ludwig Richter (@fussel178)
  */
