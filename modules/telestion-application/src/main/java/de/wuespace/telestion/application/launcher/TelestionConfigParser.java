@@ -25,19 +25,19 @@ import java.util.Objects;
 public class TelestionConfigParser {
 
 	/**
-	 * The name of the JSON property which points the {@link Vertx#isClustered()}  is clustered option}
+	 * The name of the JSON property which points to the {@link Vertx#isClustered() is clustered option}
 	 * in the Telestion configuration.
 	 */
 	public static final String IS_CLUSTERED_KEY = "isClustered";
 
 	/**
-	 * The name of the JSON property which points the {@link VertxOptions Vert.x options}
+	 * The name of the JSON property which points to the {@link VertxOptions Vert.x options}
 	 * in the Telestion configuration.
 	 */
 	public static final String VERTX_OPTIONS_KEY = "vertxOptions";
 
 	/**
-	 * The name of the JSON property which points to {@link Loader loaders} that should be loaded
+	 * The name of the JSON property which points to the {@link Loader loaders} that should be loaded
 	 * by the {@link TelestionLauncher} in the Telestion configuration.
 	 */
 	public static final String LOADERS_KEY = "loaders";
@@ -74,7 +74,8 @@ public class TelestionConfigParser {
 
 	/**
 	 * <h4>Description</h4>
-	 * Parses the loader configurations on the {@link #LOADERS_KEY loaders JSON property} and creates them.
+	 * Parses and instantiates a list of {@link Loader Loaders} from the raw configuration and returns them.
+	 * The key which is used during extraction is {@link #LOADERS_KEY}.
 	 * <p>
 	 * There are two supported configuration types:
 	 * <ul>
@@ -84,7 +85,7 @@ public class TelestionConfigParser {
 	 * </ul>
 	 *
 	 * <h4>Configuration example</h4>
-	 *
+	 * <p>
 	 * {@code telestion.json}:
 	 * <pre>
 	 * {@code
@@ -126,8 +127,8 @@ public class TelestionConfigParser {
 	}
 
 	/**
-	 * Parses the {@link VertxOptions Vert.x options} on the {@link #VERTX_OPTIONS_KEY Vert.x options JSON property}
-	 * and returns them.
+	 * Parses the {@link VertxOptions} from the raw configuration and returns them.
+	 * The key which is used during extraction is {@link #VERTX_OPTIONS_KEY}.
 	 *
 	 * @return the parsed {@link VertxOptions Vert.x options}
 	 */
@@ -137,12 +138,29 @@ public class TelestionConfigParser {
 		return new VertxOptions(vertxOptionsConfig);
 	}
 
+	/**
+	 * Parses the {@link Vertx#isClustered()} from the raw configuration and returns it.
+	 * The key which is used during extraction is {@link #IS_CLUSTERED_KEY}.
+	 *
+	 * @return the parsed {@link Vertx#isClustered()} option
+	 */
 	public boolean parseIsClustered() {
 		var isClustered = configuration.getBoolean(IS_CLUSTERED_KEY, false);
 		logger.debug("Is clustered configuration: {}", isClustered);
 		return isClustered;
 	}
 
+	/**
+	 * Receives a {@link Loader} entry from the {@link Loader Loaders} configuration, tries to determine
+	 * the configuration type (either basic or extended) and creates an instance of the specified loader.
+	 * <p>
+	 * If the extended configuration variant is used, the loader additionally receives the parsed configuration.
+	 * The keys that are used during extraction are {@link #EXTENDED_LOADER_CLASSNAME_KEY}
+	 * and {@link #EXTENDED_LOADER_CONFIG_KEY}.
+	 *
+	 * @param entry the {@link Loader} entry from the {@link Loader Loaders} configuration
+	 * @return the instantiated loader
+	 */
 	private Loader<?> parseLoaderConfig(Object entry)
 			throws IllegalArgumentException, ClassNotFoundException, InvocationTargetException, InstantiationException,
 			IllegalAccessException, NoSuchMethodException {
