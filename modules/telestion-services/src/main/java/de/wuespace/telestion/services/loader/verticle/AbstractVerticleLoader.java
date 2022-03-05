@@ -30,7 +30,7 @@ public abstract class AbstractVerticleLoader<T extends VerticleLoaderConfigurati
 	public static final String DEFAULT_VERTICLES_PROPERTY = "verticles";
 
 	/**
-	 * Gets called, when the loader receive verticles configuration.
+	 * Gets called, when the loader receives verticle configurations.
 	 *
 	 * @param configuration the retrieved configuration
 	 * @return a future which resolves when all verticles are deployed
