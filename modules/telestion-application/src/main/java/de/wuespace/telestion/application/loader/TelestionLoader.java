@@ -12,9 +12,23 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
 /**
- * An abstract reference implementation of a {@link Loader}.
- * <p>
- * Use this as a starting point for your own loader.
+ * <h2>Description</h2>
+ * The Telestion Loader is class that implements all required {@link Loader} methods.
+ * This provides you a good starting point for your own Loader.
+ * Simply overwrite the event handlers you need and do your startup or shutdown steps.
+ *
+ * <h2>Usage</h2>
+ * A very simple Loader could look like:
+ * <pre>
+ * {@code
+ * public class LoggerLoader extends TelestionLoader<NoConfiguration> {
+ *     @Override
+ *     public void onAfterVertxStartup() throws Exception {
+ *         logger.info("Vertx has started!");
+ *     }
+ * }
+ * }
+ * </pre>
  *
  * @param <T> the type of the loader configuration
  * @author Ludwig Richter (@fussel178)
