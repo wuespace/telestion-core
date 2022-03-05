@@ -220,7 +220,7 @@ public class TelestionLauncher implements ConfigDeploymentLauncher<JsonObject> {
 	 * A future returns the instance when it resolves.
 	 *
 	 * @param isClustered when {@code true} the Vertx instance should be clustered
-	 * @return a future which resolves with the Vertx instance
+	 * @return a {@link Future} which resolves with the Vertx instance
 	 */
 	private Future<Vertx> createVertxInstance(boolean isClustered) {
 		logger.debug("Create Vertx instance");
