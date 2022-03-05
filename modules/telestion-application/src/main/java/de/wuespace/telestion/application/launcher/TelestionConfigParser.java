@@ -55,7 +55,7 @@ public class TelestionConfigParser {
 	public static final String EXTENDED_LOADER_CONFIG_KEY = "config";
 
 	/**
-	 * The received {@link JsonObject} containing the raw Telestion configuration received upon creation.
+	 * The received {@link JsonObject} containing the raw configuration received upon creation.
 	 */
 	private final JsonObject configuration;
 
@@ -64,9 +64,9 @@ public class TelestionConfigParser {
 	}
 
 	/**
-	 * Get the {@link JsonObject} containing the raw Telestion configuration received upon creation.
+	 * Get the {@link JsonObject} containing the raw configuration received upon creation.
 	 *
-	 * @return the {@link JsonObject} containing the raw Telestion configuration
+	 * @return the {@link JsonObject} containing the raw configuration
 	 */
 	public JsonObject getConfiguration() {
 		return configuration;
