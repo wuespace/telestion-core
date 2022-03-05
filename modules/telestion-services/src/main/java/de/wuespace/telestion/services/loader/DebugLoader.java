@@ -1,7 +1,7 @@
 package de.wuespace.telestion.services.loader;
 
 import de.wuespace.telestion.application.deployment.Deployment;
-import de.wuespace.telestion.application.loader.GenericLoaderConfiguration;
+import de.wuespace.telestion.application.loader.NoConfiguration;
 import de.wuespace.telestion.application.loader.TelestionLoader;
 
 /**
@@ -25,7 +25,7 @@ import de.wuespace.telestion.application.loader.TelestionLoader;
  *
  * @author Ludwig Richter (@fussel178)
  */
-public class DebugLoader extends TelestionLoader<GenericLoaderConfiguration> {
+public class DebugLoader extends TelestionLoader<NoConfiguration> {
 
 	@Override
 	public void onInit() {
