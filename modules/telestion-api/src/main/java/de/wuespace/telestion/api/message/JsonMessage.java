@@ -277,7 +277,8 @@ public interface JsonMessage {
 	///////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * @deprecated Use {@link #toJsonObject()} instead.
+	 * @deprecated Use {@link #toJsonObject()} to get a JSON object representation of this message
+	 * or use {@link #toJsonString()} to get a JSON string.
 	 */
 	@Deprecated(since = "0.9.0")
 	default JsonObject json() throws IllegalArgumentException {
