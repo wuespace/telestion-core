@@ -623,6 +623,7 @@ public class JsonMessageTest {
 	void shouldEncodeAndDecodeAMessageViaAJsonObject() {
 		var encoded = VALID_TEST_MESSAGE.toJsonObject();
 		assertThat(JsonMessage.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
+		// should also decode to another test message type with the same parameters
 		assertThat(JsonMessage.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
 	}
 
@@ -630,6 +631,7 @@ public class JsonMessageTest {
 	void shouldEncodeAndDecodeAMessageViaAJsonString() {
 		var encoded = VALID_TEST_MESSAGE.toJsonString();
 		assertThat(JsonMessage.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
+		// should also decode to another test message type with the same parameters
 		assertThat(JsonMessage.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
 	}
 
@@ -637,8 +639,11 @@ public class JsonMessageTest {
 	void shouldEncodeAndDecodeAMessageViaABuffer() {
 		var encoded = VALID_TEST_MESSAGE.toJsonBuffer();
 		assertThat(JsonMessage.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
+		// should also decode to another test message type with the same parameters
 		assertThat(JsonMessage.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
 	}
+
+	// "Invalid" means the parsing should fail due to incompatible parameters types
 
 	public static class ValidPojoMessage {
 		public float param;
