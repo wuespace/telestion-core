@@ -12,6 +12,11 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
+test {
+    // use camel case display name generator by default
+    systemProperty("junit.jupiter.displayname.generator.default", "de.wuespace.telestion.api.CamelCase")
+}
+
 ext {
     prettyName = 'Telestion API'
 }
