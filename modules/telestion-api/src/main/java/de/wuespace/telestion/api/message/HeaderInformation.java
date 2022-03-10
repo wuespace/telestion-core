@@ -828,6 +828,25 @@ public class HeaderInformation {
 		return headers.isEmpty();
 	}
 
+	@Override
+	public String toString() {
+		return "%s[headers=%s]".formatted(getClass().getName(), headers);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) return false;
+		if (this == o) return true;
+		if (o.getClass() != getClass()) return false;
+		var that = (HeaderInformation) o;
+		return headers.equals(that.headers);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(headers);
+	}
+
 	/**
 	 * The wrapped {@link MultiMap Vert.x headers} instance that is manipulated
 	 * through the exposed {@link HeaderInformation} APIs.
