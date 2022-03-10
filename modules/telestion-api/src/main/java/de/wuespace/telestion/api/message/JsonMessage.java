@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
  */
 public interface JsonMessage {
 
-	///
-	/// ASYNCHRONOUS DECODING SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// asynchronous decoding section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Asynchronous version of {@link #from(Buffer, Class)}.
@@ -68,7 +68,8 @@ public interface JsonMessage {
 	 * @param json             the JSON {@link String} that contains the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
-	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException} occurred during conversion
+	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException}
+	 *                         occurred during conversion
 	 * @param <T>              the type of the target {@link JsonMessage}
 	 * @return {@code true} when the conversion was successful
 	 */
@@ -91,7 +92,8 @@ public interface JsonMessage {
 	 * @param json             the plain {@link Object} that contains the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
-	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException} occurred during conversion
+	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException}
+	 *                         occurred during conversion
 	 * @param <T>              the type of the target {@link JsonMessage}
 	 * @return {@code true} when the conversion was successful
 	 */
@@ -114,7 +116,8 @@ public interface JsonMessage {
 	 * @param message          the message whose body contains the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
-	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException} occurred during conversion
+	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException}
+	 *                         occurred during conversion
 	 * @param <T>              the type of the target {@link JsonMessage}
 	 * @return {@code true} when the conversion was successful
 	 */
@@ -164,7 +167,8 @@ public interface JsonMessage {
 
 	/**
 	 * Like {@link #on(Class, Buffer, Handler, Handler)} but returns a {@link Future} which resolves
-	 * when the conversion completes successfully or fails when a {@link DecodeException} or an {@link IllegalArgumentException} occurs during conversion.
+	 * when the conversion completes successfully or fails when a {@link DecodeException} or an
+	 * {@link IllegalArgumentException} occurs during conversion.
 	 *
 	 * @return a future that represents the conversion state
 	 */
@@ -174,7 +178,8 @@ public interface JsonMessage {
 
 	/**
 	 * Like {@link #on(Class, String, Handler, Handler)} but returns a {@link Future} which resolves
-	 * when the conversion completes successfully or fails when a {@link DecodeException} or an {@link IllegalArgumentException} occurs during conversion.
+	 * when the conversion completes successfully or fails when a {@link DecodeException} or an
+	 * {@link IllegalArgumentException} occurs during conversion.
 	 *
 	 * @return a future that represents the conversion state
 	 */
@@ -184,7 +189,8 @@ public interface JsonMessage {
 
 	/**
 	 * Like {@link #on(Class, Object, Handler, Handler)} but returns a {@link Future} which resolves
-	 * when the conversion completes successfully or fails when a {@link DecodeException} or an {@link IllegalArgumentException} occurs during conversion.
+	 * when the conversion completes successfully or fails when a {@link DecodeException} or an
+	 * {@link IllegalArgumentException} occurs during conversion.
 	 *
 	 * @return a future that represents the conversion state
 	 */
@@ -202,9 +208,9 @@ public interface JsonMessage {
 		return Future.future(promise -> on(type, message, promise::complete, promise::fail));
 	}
 
-	///
-	/// SYNCHRONOUS DECODING SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// synchronous decoding section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Constructs a {@link JsonMessage} from a buffer which contains an encoded JSON string.
@@ -266,9 +272,9 @@ public interface JsonMessage {
 		return from(message.body(), type);
 	}
 
-	///
-	/// SYNCHRONOUS ENCODING SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// synchronous encoding section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @deprecated Use {@link #toJsonObject()} instead.
@@ -329,9 +335,9 @@ public interface JsonMessage {
 		return toJsonBuffer(false);
 	}
 
-	///
-	/// OTHERS SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// others section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Returns the simple class name of the implementing subclass.
