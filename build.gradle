@@ -7,8 +7,8 @@ allprojects {
 // ignore "modules" module
 gradle.taskGraph.whenReady {
     gradle.taskGraph.allTasks.each {
-        if(it.project.name == "modules") {
-            it.onlyIf {false}
+        if (it.project.name == "modules") {
+            it.onlyIf { false }
         }
     }
 }
@@ -43,26 +43,26 @@ subprojects {
                     "--add-opens", "jdk.management/com.sun.management.internal=ALL-UNNAMED"]
     }
 
+    // defaults for projects not overwriting these values
+    ext {
+        prettyName = 'Telestion Module'
+    }
+    description = 'No description'
+
     jar {
         metaInf {
-            from("$projectDir/../../LICENSE")
+            from("$rootDir/LICENSE")
         }
 
-        afterEvaluate {
+        afterEvaluate { project ->
             manifest {
-
-                var description = Objects.nonNull(project.description) ? project.description : 'No description'
-                var specTitle = project.extensions.extraProperties.has('prettyName')
-                        ? project.extensions.extraProperties.get('prettyName')
-                        : 'Telestion Module'
-
                 attributes(
                         'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
                         'Created-By': "Gradle ${gradle.gradleVersion}",
                         'Build-Jdk': "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
                         'Build-Jdk-Spec': "${System.properties['java.version']}",
                         'Build-OS': "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}",
-                        'Specification-Title': specTitle,
+                        'Specification-Title': project.prettyName,
                         'Specification-Version': project.version,
                         'Specification-Vendor': 'WueSpace e.V.',
                         'Implementation-Title': project.name,
@@ -70,14 +70,14 @@ subprojects {
                         'Implementation-Vendor': 'de.wuespace.telestion',
                         'X-Compile-Target-JDK': gradle.ext.targetCompatibility,
                         'X-Compile-Source-JDK': gradle.ext.sourceCompatibility,
-                        'Description': description
+                        'Description': project.description
                 )
             }
         }
     }
 
     publishing {
-        afterEvaluate {
+        afterEvaluate { project ->
             publications {
                 maven(MavenPublication) {
                     from components.java
