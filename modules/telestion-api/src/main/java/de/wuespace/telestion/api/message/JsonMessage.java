@@ -42,7 +42,7 @@ public interface JsonMessage {
 	 * Asynchronous version of {@link #from(Buffer, Class)}.
 	 *
 	 * @param type             the class of the target {@link JsonMessage}
-	 * @param json             the buffer that contents contain the necessary information to construct
+	 * @param json             the buffer whose contents contain the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
 	 * @param exceptionHandler gets called when a {@link DecodeException} occurred during conversion
@@ -68,7 +68,7 @@ public interface JsonMessage {
 	 * @param json             the JSON {@link String} that contains the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
-	 * @param exceptionHandler gets called when a {@link DecodeException} occurred during conversion
+	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException} occurred during conversion
 	 * @param <T>              the type of the target {@link JsonMessage}
 	 * @return {@code true} when the conversion was successful
 	 */
@@ -91,7 +91,7 @@ public interface JsonMessage {
 	 * @param json             the plain {@link Object} that contains the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
-	 * @param exceptionHandler gets called when a {@link DecodeException} occurred during conversion
+	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException} occurred during conversion
 	 * @param <T>              the type of the target {@link JsonMessage}
 	 * @return {@code true} when the conversion was successful
 	 */
@@ -111,10 +111,10 @@ public interface JsonMessage {
 	 * Asynchronous version of {@link #from(Message, Class)}.
 	 *
 	 * @param type             the class of the target {@link JsonMessage}
-	 * @param message          the message which body contains the necessary information to construct
+	 * @param message          the message whose body contains the necessary information to construct
 	 *                         the specified {@link JsonMessage}
 	 * @param handler          gets called when the conversion was successful
-	 * @param exceptionHandler gets called when a {@link DecodeException} occurred during conversion
+	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException} occurred during conversion
 	 * @param <T>              the type of the target {@link JsonMessage}
 	 * @return {@code true} when the conversion was successful
 	 */
@@ -164,7 +164,7 @@ public interface JsonMessage {
 
 	/**
 	 * Like {@link #on(Class, Buffer, Handler, Handler)} but returns a {@link Future} which resolves
-	 * when the conversion completes successfully or fails when a {@link DecodeException} occurs during conversion.
+	 * when the conversion completes successfully or fails when a {@link DecodeException} or an {@link IllegalArgumentException} occurs during conversion.
 	 *
 	 * @return a future that represents the conversion state
 	 */
@@ -174,7 +174,7 @@ public interface JsonMessage {
 
 	/**
 	 * Like {@link #on(Class, String, Handler, Handler)} but returns a {@link Future} which resolves
-	 * when the conversion completes successfully or fails when a {@link DecodeException} occurs during conversion.
+	 * when the conversion completes successfully or fails when a {@link DecodeException} or an {@link IllegalArgumentException} occurs during conversion.
 	 *
 	 * @return a future that represents the conversion state
 	 */
@@ -184,7 +184,7 @@ public interface JsonMessage {
 
 	/**
 	 * Like {@link #on(Class, Object, Handler, Handler)} but returns a {@link Future} which resolves
-	 * when the conversion completes successfully or fails when a {@link DecodeException} occurs during conversion.
+	 * when the conversion completes successfully or fails when a {@link DecodeException} or an {@link IllegalArgumentException} occurs during conversion.
 	 *
 	 * @return a future that represents the conversion state
 	 */
@@ -292,7 +292,7 @@ public interface JsonMessage {
 	/**
 	 * Constructs a {@link String} containing the properties of the {@link JsonMessage} as JSON values.
 	 *
-	 * @param pretty when {@code true} the JSON output is properly formatted
+	 * @param pretty if {@code true} the JSON output is properly formatted
 	 * @return a JSON string representing the {@link JsonMessage}
 	 * @throws EncodeException if the {@link JsonMessage} containing properties that cannot be represented
 	 *                         by JSON values
@@ -312,7 +312,7 @@ public interface JsonMessage {
 	/**
 	 * Constructs a {@link Buffer} containing the properties of the {@link JsonMessage} as JSON values
 	 *
-	 * @param pretty when {@code true} the JSON output is properly formatted
+	 * @param pretty if {@code true} the JSON output is properly formatted
 	 * @return a buffer representing the {@link JsonMessage}
 	 * @throws EncodeException if the {@link JsonMessage} containing properties that cannot be represented
 	 *                         by JSON values
