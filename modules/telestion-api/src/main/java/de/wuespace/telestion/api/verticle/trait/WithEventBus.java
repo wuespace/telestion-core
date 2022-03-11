@@ -36,9 +36,9 @@ import io.vertx.core.json.JsonObject;
  */
 public interface WithEventBus extends Verticle {
 
-	///
-	/// PUBLISH SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// publish section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
@@ -92,14 +92,14 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
 	default void publish(String address, JsonMessage message) {
-		publish(address, message.json());
+		publish(address, message.toJsonObject());
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
 	default void publish(String address, JsonMessage message, DeliveryOptions options) {
-		publish(address, message.json(), options);
+		publish(address, message.toJsonObject(), options);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
 	default void publish(String address, JsonMessage message, DeliveryOptions options, MultiMap... headers) {
-		publish(address, message.json(), options, headers);
+		publish(address, message.toJsonObject(), options, headers);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
 	default void publish(String address, JsonMessage message, DeliveryOptions options, HeaderInformation... headers) {
-		publish(address, message.json(), options, headers);
+		publish(address, message.toJsonObject(), options, headers);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
 	default void publish(String address, JsonMessage message, MultiMap... headers) {
-		publish(address, message.json(), headers);
+		publish(address, message.toJsonObject(), headers);
 	}
 
 	/**
@@ -131,12 +131,12 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
 	default void publish(String address, JsonMessage message, HeaderInformation... headers) {
-		publish(address, message.json(), headers);
+		publish(address, message.toJsonObject(), headers);
 	}
 
-	///
-	/// SEND SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// send section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
@@ -190,14 +190,14 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
 	default void send(String address, JsonMessage message) {
-		send(address, message.json());
+		send(address, message.toJsonObject());
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
 	default void send(String address, JsonMessage message, DeliveryOptions options) {
-		send(address, message.json(), options);
+		send(address, message.toJsonObject(), options);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
 	default void send(String address, JsonMessage message, DeliveryOptions options, MultiMap... headers) {
-		send(address, message.json(), options, headers);
+		send(address, message.toJsonObject(), options, headers);
 	}
 
 	/**
@@ -213,7 +213,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
 	default void send(String address, JsonMessage message, DeliveryOptions options, HeaderInformation... headers) {
-		send(address, message.json(), options, headers);
+		send(address, message.toJsonObject(), options, headers);
 	}
 
 	/**
@@ -221,7 +221,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
 	default void send(String address, JsonMessage message, MultiMap... headers) {
-		send(address, message.json(), headers);
+		send(address, message.toJsonObject(), headers);
 	}
 
 	/**
@@ -229,12 +229,12 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
 	default void send(String address, JsonMessage message, HeaderInformation... headers) {
-		send(address, message.json(), headers);
+		send(address, message.toJsonObject(), headers);
 	}
 
-	///
-	/// REQUEST SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// request section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
@@ -296,14 +296,14 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
 	default <T> Future<Message<T>> request(String address, JsonMessage message) {
-		return request(address, message.json());
+		return request(address, message.toJsonObject());
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
 	default <T> Future<Message<T>> request(String address, JsonMessage message, DeliveryOptions options) {
-		return request(address, message.json(), options);
+		return request(address, message.toJsonObject(), options);
 	}
 
 	/**
@@ -315,7 +315,7 @@ public interface WithEventBus extends Verticle {
 			JsonMessage message,
 			DeliveryOptions options,
 			MultiMap... requestHeaders) {
-		return request(address, message.json(), options, requestHeaders);
+		return request(address, message.toJsonObject(), options, requestHeaders);
 	}
 
 	/**
@@ -327,7 +327,7 @@ public interface WithEventBus extends Verticle {
 			JsonMessage message,
 			DeliveryOptions options,
 			HeaderInformation... requestHeaders) {
-		return request(address, message.json(), options, requestHeaders);
+		return request(address, message.toJsonObject(), options, requestHeaders);
 	}
 
 	/**
@@ -335,7 +335,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
 	default <T> Future<Message<T>> request(String address, JsonMessage message, MultiMap... requestHeaders) {
-		return request(address, message.json(), requestHeaders);
+		return request(address, message.toJsonObject(), requestHeaders);
 	}
 
 	/**
@@ -343,7 +343,7 @@ public interface WithEventBus extends Verticle {
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
 	default <T> Future<Message<T>> request(String address, JsonMessage message, HeaderInformation... requestHeaders) {
-		return request(address, message.json(), requestHeaders);
+		return request(address, message.toJsonObject(), requestHeaders);
 	}
 
 	/**
@@ -431,7 +431,7 @@ public interface WithEventBus extends Verticle {
 			String address,
 			JsonMessage request,
 			Class<V> responseType) {
-		return request(address, request.json(), responseType);
+		return request(address, request.toJsonObject(), responseType);
 	}
 
 	/**
@@ -443,7 +443,7 @@ public interface WithEventBus extends Verticle {
 			JsonMessage request,
 			Class<V> responseType,
 			DeliveryOptions options) {
-		return request(address, request.json(), responseType, options);
+		return request(address, request.toJsonObject(), responseType, options);
 	}
 
 	/**
@@ -457,7 +457,7 @@ public interface WithEventBus extends Verticle {
 			Class<V> responseType,
 			DeliveryOptions options,
 			MultiMap... requestHeaders) {
-		return request(address, request.json(), responseType, options, requestHeaders);
+		return request(address, request.toJsonObject(), responseType, options, requestHeaders);
 	}
 
 	/**
@@ -471,7 +471,7 @@ public interface WithEventBus extends Verticle {
 			Class<V> responseType,
 			DeliveryOptions options,
 			HeaderInformation... requestHeaders) {
-		return request(address, request.json(), responseType, options, requestHeaders);
+		return request(address, request.toJsonObject(), responseType, options, requestHeaders);
 	}
 
 	/**
@@ -484,7 +484,7 @@ public interface WithEventBus extends Verticle {
 			JsonMessage request,
 			Class<V> responseType,
 			MultiMap... requestHeaders) {
-		return request(address, request.json(), responseType, requestHeaders);
+		return request(address, request.toJsonObject(), responseType, requestHeaders);
 	}
 
 	/**
@@ -497,12 +497,12 @@ public interface WithEventBus extends Verticle {
 			JsonMessage request,
 			Class<V> responseType,
 			HeaderInformation... requestHeaders) {
-		return request(address, request.json(), responseType, requestHeaders);
+		return request(address, request.toJsonObject(), responseType, requestHeaders);
 	}
 
-	///
-	/// REGISTER SECTION
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// register section
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#consumer(String, Handler)
