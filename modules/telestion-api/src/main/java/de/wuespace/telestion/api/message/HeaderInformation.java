@@ -50,6 +50,10 @@ import java.util.stream.Stream;
  */
 public class HeaderInformation {
 
+	///////////////////////////////////////////////////////////////////////////
+	// utilities
+	///////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Merges an array of {@link HeaderInformation} objects into one {@link HeaderInformation} object.
 	 *
@@ -115,6 +119,10 @@ public class HeaderInformation {
 		return new HeaderInformation(options);
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+	// constructors
+	///////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Creates a new {@link HeaderInformation} object with empty headers.
 	 *
@@ -154,6 +162,10 @@ public class HeaderInformation {
 		this(options.getHeaders());
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+	// export methods
+	///////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Returns the wrapped {@link MultiMap Vert.x headers} ready to use in {@link DeliveryOptions}
 	 * or the {@link de.wuespace.telestion.api.verticle.trait.WithEventBus WithEventBus} verticle trait.
@@ -185,9 +197,9 @@ public class HeaderInformation {
 		return attach(new DeliveryOptions());
 	}
 
-	///
-	/// GET METHODS
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// getters
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Returns the first stored value assigned to the key as {@link String}.
@@ -400,9 +412,9 @@ public class HeaderInformation {
 		return headers.getAll(key);
 	}
 
-	///
-	/// ADD METHODS
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// adders
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Appends multiple {@link String} values assigned to the key.
@@ -418,15 +430,15 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Appends multiple {@link Character} values assigned to the key.
+	 * Appends multiple {@link Byte} values assigned to the key.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Character} values that you want to append to the key
+	 * @param values the new {@link Byte} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
-	public HeaderInformation add(String key, Character... values) {
+	public HeaderInformation add(String key, Byte... values) {
 		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
@@ -457,28 +469,15 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Appends multiple {@link Short} values assigned to the key.
-	 * Returns a reference to {@code this} for fluent design.
+	 * Appends multiple {@link Float} values assigned to the key.
+	 * Return a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Short} values that you want to append to the key
+	 * @param values the new {@link Float} values that you want to append to the key
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#add(String, Iterable)
 	 */
-	public HeaderInformation add(String key, Short... values) {
-		return add(key, Arrays.stream(values).map(String::valueOf));
-	}
-
-	/**
-	 * Appends multiple {@link Byte} values assigned to the key.
-	 * Returns a reference to {@code this} for fluent design.
-	 *
-	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Byte} values that you want to append to the key
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#add(String, Iterable)
-	 */
-	public HeaderInformation add(String key, Byte... values) {
+	public HeaderInformation add(String key, Float... values) {
 		return add(key, Arrays.stream(values).map(String::valueOf));
 	}
 
@@ -496,6 +495,19 @@ public class HeaderInformation {
 	}
 
 	/**
+	 * Appends multiple {@link Character} values assigned to the key.
+	 * Returns a reference to {@code this} for fluent design.
+	 *
+	 * @param key    the key to which the values are assigned
+	 * @param values the new {@link Character} values that you want to append to the key
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 * @see MultiMap#add(String, Iterable)
+	 */
+	public HeaderInformation add(String key, Character... values) {
+		return add(key, Arrays.stream(values).map(String::valueOf));
+	}
+
+	/**
 	 * Appends multiple {@link Boolean} values assigned to the key.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
@@ -506,28 +518,6 @@ public class HeaderInformation {
 	 */
 	public HeaderInformation add(String key, Boolean... values) {
 		return add(key, Arrays.stream(values).map(String::valueOf));
-	}
-
-	/**
-	 * Intermediate step to append a stream of strings to the wrapped {@link MultiMap Vert.x headers}.
-	 * Returns a reference to {@code this} for fluent design.
-	 *
-	 * @param key    the key to which the values should be assigned
-	 * @param stream stream of values to assign to the given key
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 */
-	private HeaderInformation add(String key, Stream<String> stream) {
-		var list = stream.toList();
-
-		if (contains(key)) {
-			var existing = getAll(key);
-			logger.debug("The header information object already contains values assigned to that key. " +
-							"Appending new values to existing values. Key: {}, Before: {}, Now: {}",
-					key, existing, Stream.of(existing, list).toList());
-		}
-
-		headers.add(key, list);
-		return this;
 	}
 
 	/**
@@ -571,9 +561,9 @@ public class HeaderInformation {
 		return addAll(information.headers);
 	}
 
-	///
-	/// SET METHODS
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// setters
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Replaces multiple {@link String} values with the old allocation assigned to the key.
@@ -589,15 +579,15 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Replaces multiple {@link Character} values with the old allocation assigned to the key.
+	 * Replaces multiple {@link Byte} values with the old allocation assigned to the key.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Character} values that you want to replace with the old allocation
+	 * @param values the new {@link Byte} values that you want to replace with the old allocation
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#set(String, Iterable)
 	 */
-	public HeaderInformation set(String key, Character... values) {
+	public HeaderInformation set(String key, Byte... values) {
 		return set(key, Arrays.stream(values).map(String::valueOf));
 	}
 
@@ -628,28 +618,15 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Replaces multiple {@link Short} values with the old allocation assigned to the key.
+	 * Replaces multiple {@link Float} values with the old allocation assigned to the key.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Short} values that you want to replace with the old allocation
+	 * @param values the new {@link Float} values that you want to replace with the old allocation
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#set(String, Iterable)
 	 */
-	public HeaderInformation set(String key, Short... values) {
-		return set(key, Arrays.stream(values).map(String::valueOf));
-	}
-
-	/**
-	 * Replaces multiple {@link Byte} values with the old allocation assigned to the key.
-	 * Returns a reference to {@code this} for fluent design.
-	 *
-	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Byte} values that you want to replace with the old allocation
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 * @see MultiMap#set(String, Iterable)
-	 */
-	public HeaderInformation set(String key, Byte... values) {
+	public HeaderInformation set(String key, Float... values) {
 		return set(key, Arrays.stream(values).map(String::valueOf));
 	}
 
@@ -667,15 +644,15 @@ public class HeaderInformation {
 	}
 
 	/**
-	 * Replaces multiple {@link Float} values with the old allocation assigned to the key.
+	 * Replaces multiple {@link Character} values with the old allocation assigned to the key.
 	 * Returns a reference to {@code this} for fluent design.
 	 *
 	 * @param key    the key to which the values are assigned
-	 * @param values the new {@link Float} values that you want to replace with the old allocation
+	 * @param values the new {@link Character} values that you want to replace with the old allocation
 	 * @return a reference to {@code this}, so the API can be used fluently
 	 * @see MultiMap#set(String, Iterable)
 	 */
-	public HeaderInformation set(String key, Float... values) {
+	public HeaderInformation set(String key, Character... values) {
 		return set(key, Arrays.stream(values).map(String::valueOf));
 	}
 
@@ -690,28 +667,6 @@ public class HeaderInformation {
 	 */
 	public HeaderInformation set(String key, Boolean... values) {
 		return set(key, Arrays.stream(values).map(String::valueOf));
-	}
-
-	/**
-	 * Intermediate step to replace a stream of strings with the old allocation
-	 * in the wrapped {@link MultiMap Vert.x headers}.
-	 * Returns a reference to {@code this} for fluent design.
-	 *
-	 * @param key    the key to the values which should be replaced
-	 * @param stream stream of values which replace the current values assigned to the given key
-	 * @return a reference to {@code this}, so the API can be used fluently
-	 */
-	private HeaderInformation set(String key, Stream<String> stream) {
-		var list = stream.toList();
-
-		if (contains(key)) {
-			var existing = getAll(key);
-			logger.debug("The header information object already contains values assigned to that key. " +
-					"Overriding existing values with new values. Key: {}, Before: {}, Now: {}", key, existing, list);
-		}
-
-		headers.set(key, list);
-		return this;
 	}
 
 	/**
@@ -758,9 +713,9 @@ public class HeaderInformation {
 		return setAll(information.headers);
 	}
 
-	///
-	/// OTHER METHODS FROM MULTIMAP
-	///
+	///////////////////////////////////////////////////////////////////////////
+	// multimap methods
+	///////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Returns {@code true}, if at least one value is assigned to the key.
@@ -847,13 +802,59 @@ public class HeaderInformation {
 		return Objects.hash(headers);
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+	// private
+	///////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * The wrapped {@link MultiMap Vert.x headers} instance that is manipulated
 	 * through the exposed {@link HeaderInformation} APIs.
 	 */
 	private final MultiMap headers;
 
-	private static final Logger logger = LoggerFactory.getLogger(HeaderInformation.class);
+	/**
+	 * Intermediate step to append a stream of strings to the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns a reference to {@code this} for fluent design.
+	 *
+	 * @param key    the key to which the values should be assigned
+	 * @param stream stream of values to assign to the given key
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 */
+	private HeaderInformation add(String key, Stream<String> stream) {
+		var list = stream.toList();
+
+		if (contains(key)) {
+			var existing = getAll(key);
+			logger.debug("The header information object already contains values assigned to that key. " +
+							"Appending new values to existing values. Key: {}, Before: {}, Now: {}",
+					key, existing, Stream.of(existing, list).toList());
+		}
+
+		headers.add(key, list);
+		return this;
+	}
+
+	/**
+	 * Intermediate step to replace a stream of strings with the old allocation
+	 * in the wrapped {@link MultiMap Vert.x headers}.
+	 * Returns a reference to {@code this} for fluent design.
+	 *
+	 * @param key    the key to the values which should be replaced
+	 * @param stream stream of values which replace the current values assigned to the given key
+	 * @return a reference to {@code this}, so the API can be used fluently
+	 */
+	private HeaderInformation set(String key, Stream<String> stream) {
+		var list = stream.toList();
+
+		if (contains(key)) {
+			var existing = getAll(key);
+			logger.debug("The header information object already contains values assigned to that key. " +
+					"Overriding existing values with new values. Key: {}, Before: {}, Now: {}", key, existing, list);
+		}
+
+		headers.set(key, list);
+		return this;
+	}
 
 	/**
 	 * Wraps the specified function into a {@link NumberFormatException} try-catch block
@@ -874,4 +875,6 @@ public class HeaderInformation {
 			}
 		};
 	}
+
+	private static final Logger logger = LoggerFactory.getLogger(HeaderInformation.class);
 }
