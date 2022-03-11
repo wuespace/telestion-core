@@ -686,23 +686,23 @@ public class JsonMessageTest {
 	public record AnotherTestMessage(@JsonProperty float param) implements JsonMessage {
 	}
 
-	public static final float VALID_PARAM = 0.0f;
+	public final float VALID_PARAM = 0.0f;
 
-	public static final boolean INVALID_PARAM = true;
+	public final boolean INVALID_PARAM = true;
 
-	public static final ValidPojoMessage VALID_POJO = new ValidPojoMessage(VALID_PARAM);
+	public final ValidPojoMessage VALID_POJO = new ValidPojoMessage(VALID_PARAM);
 
-	public static final InvalidPojoMessage INVALID_POJO = new InvalidPojoMessage(INVALID_PARAM);
+	public final InvalidPojoMessage INVALID_POJO = new InvalidPojoMessage(INVALID_PARAM);
 
-	public static final JsonObject VALID_JSON_OBJECT = new JsonObject().put("param", VALID_PARAM);
+	public final JsonObject VALID_JSON_OBJECT = new JsonObject().put("param", VALID_PARAM);
 
-	public static final JsonObject INVALID_JSON_OBJECT = new JsonObject().put("binary", INVALID_PARAM);
+	public final JsonObject INVALID_JSON_OBJECT = new JsonObject().put("binary", INVALID_PARAM);
 
-	public static final Message<Object> VALID_EVENTBUS_MESSAGE = new MockMessage<>(null, VALID_JSON_OBJECT);
+	public final Message<Object> VALID_EVENTBUS_MESSAGE = new MockMessage<>(null, VALID_JSON_OBJECT);
 
-	public static final Message<Object> INVALID_EVENTBUS_MESSAGE = new MockMessage<>(null, INVALID_JSON_OBJECT);
+	public final Message<Object> INVALID_EVENTBUS_MESSAGE = new MockMessage<>(null, INVALID_JSON_OBJECT);
 
-	public static final TestMessage VALID_TEST_MESSAGE = new TestMessage(VALID_PARAM);
+	public final TestMessage VALID_TEST_MESSAGE = new TestMessage(VALID_PARAM);
 
-	public static final AnotherTestMessage VALID_ANOTHER_TEST_MESSAGE = new AnotherTestMessage(VALID_PARAM);
+	public final AnotherTestMessage VALID_ANOTHER_TEST_MESSAGE = new AnotherTestMessage(VALID_PARAM);
 }
