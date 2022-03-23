@@ -85,9 +85,22 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">JsonMessage</span></div>
-<div class="block">The base class for all messages which are automatically encoded with the JsonMessageCodec.<br>
+<div class="block"><h2>Description</h2>
+ The base class for all messages which are automatically encoded with the JsonMessageCodec.
+ <p>
  All subclasses have to be valid json classes. This means that they could be encoded by
- <code>JsonCodec</code> which is backed by <code>JacksonCodec</code>.</div>
+ <code>JsonCodec</code> which is backed by <code>JacksonCodec</code>.
+
+ <h2>Usage</h2>
+ <pre>
+ <code>
+ public record TimeMessage(
+     @JsonProperty long receiveTime,
+     @JsonProperty long sendTime
+ ) implements JsonMessage {
+ }
+ </code>
+ </pre></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -100,12 +113,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static io.vertx.core.spi.json.JsonCodec</code></div>
-<div class="col-second even-row-color"><code><span class="member-name-link"><a href="#JSON_CODEC">JSON_CODEC</a></span></code></div>
+<div class="col-first even-row-color"><code>static org.slf4j.Logger</code></div>
+<div class="col-second even-row-color"><code><span class="member-name-link"><a href="#logger">logger</a></span></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static org.slf4j.Logger</code></div>
-<div class="col-second odd-row-color"><code><span class="member-name-link"><a href="#logger">logger</a></span></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -114,7 +124,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method.summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -123,56 +133,155 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#className()">className</a></span>()</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
-<div class="block">Returns the simple class name of the subclass.</div>
+<div class="block">Returns the simple class name of the implementing subclass.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>T</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#from(io.vertx.core.buffer.Buffer,java.lang.Class)">from</a></span>&#8203;(io.vertx.core.buffer.Buffer&nbsp;json,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a buffer which contains an encoded JSON string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>T</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#from(io.vertx.core.eventbus.Message,java.lang.Class)">from</a></span>&#8203;(io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a Vert.x EventBus <code>Message</code> body.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>T</code></div>
 <div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#from(java.lang.Object,java.lang.Class)">from</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json,
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
 <div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
-<div class="block">Creates a message from the given json representation.</div>
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a plain <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>T</code></div>
 <div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#from(java.lang.String,java.lang.Class)">from</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
  <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</code></div>
 <div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
-<div class="block">Creates a message from the given json representation.</div>
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a JSON <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default io.vertx.core.json.JsonObject</code></div>
-<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#json()">json</a></span>()</code></div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab6 method-summary-table-tab5 method-summary-table"><code>default io.vertx.core.json.JsonObject</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab6 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#json()">json</a></span>()</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab6 method-summary-table-tab5 method-summary-table">
+<div class="block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="#toJsonObject()"><code>toJsonObject()</code></a> to get a JSON object representation of this message
+ or use <a href="#toJsonString()"><code>toJsonString()</code></a> to get a JSON string.</div>
+</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.buffer.Buffer&nbsp;json)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Buffer, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.buffer.Buffer&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Buffer, Handler, Handler)</code></a> but without an exception handler.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.buffer.Buffer&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Asynchronous version of <a href="#from(io.vertx.core.buffer.Buffer,java.lang.Class)"><code>from(Buffer, Class)</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;T&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.eventbus.Message)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Message, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> occurs during conversion.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Message, Handler, Handler)</code></a> but without an exception handler.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Asynchronous version of <a href="#from(io.vertx.core.eventbus.Message,java.lang.Class)"><code>from(Message, Class)</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.Object)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Object, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Object, Handler, Handler)</code></a> but without an exception handler.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Asynchronous version of <a href="#from(java.lang.Object,java.lang.Class)"><code>from(Object, Class)</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;T&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.String)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, String, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.String,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, String, Handler, Handler)</code></a> but without an exception handler.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Asynchronous version of <a href="#from(java.lang.String,java.lang.Class)"><code>from(String, Class)</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default io.vertx.core.buffer.Buffer</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#toJsonBuffer()">toJsonBuffer</a></span>()</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Like <a href="#toJsonBuffer(boolean)"><code>toJsonBuffer(boolean)</code></a> but with space efficient JSON output.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default io.vertx.core.buffer.Buffer</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#toJsonBuffer(boolean)">toJsonBuffer</a></span>&#8203;(boolean&nbsp;pretty)</code></div>
 <div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
-<div class="block">Returns the Json-representation of the message.</div>
+<div class="block">Constructs a <code>Buffer</code> containing the properties of the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> as JSON values</div>
 </div>
-<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;T&gt;</code></div>
-<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.eventbus.Message)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;msg)</code></div>
-<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- It returns a future which resolves if the message was successfully decoded,
- and rejects if something went wrong during decoding.</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default io.vertx.core.json.JsonObject</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#toJsonObject()">toJsonObject</a></span>()</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Constructs a <code>JsonObject</code> from the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;msg,
- io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- Returns <code>true</code>, if the conversion was successful.</div>
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#toJsonString()">toJsonString</a></span>()</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Like <a href="#toJsonString(boolean)"><code>toJsonString(boolean)</code></a> but with space efficient JSON output.</div>
 </div>
-<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>io.vertx.core.Future&lt;T&gt;</code></div>
-<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.Object)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;msgBody)</code></div>
-<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- It returns a future which resolves if the message was successfully decoded,
- and rejects if something went wrong during decoding.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static &lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;<br>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler)">on</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;msgBody,
- io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- Returns <code>true</code>, if the conversion was successful.</div>
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code>default <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table"><code><span class="member-name-link"><a href="#toJsonString(boolean)">toJsonString</a></span>&#8203;(boolean&nbsp;pretty)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab5 method-summary-table">
+<div class="block">Constructs a <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> containing the properties of the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> as JSON values.</div>
 </div>
 </div>
 </div>
@@ -189,12 +298,6 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="JSON_CODEC">
-<h3>JSON_CODEC</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">io.vertx.core.spi.json.JsonCodec</span>&nbsp;<span class="element-name">JSON_CODEC</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="logger">
 <h3>logger</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">org.slf4j.Logger</span>&nbsp;<span class="element-name">logger</span></div>
@@ -209,22 +312,159 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="on(java.lang.Class,java.lang.Object,io.vertx.core.Handler)">
+<section class="detail" id="on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)">
 <h3>on</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;msgBody,
- io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</span></div>
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- Returns <code>true</code>, if the conversion was successful.</div>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.buffer.Buffer&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</span></div>
+<div class="block">Asynchronous version of <a href="#from(io.vertx.core.buffer.Buffer,java.lang.Class)"><code>from(Buffer, Class)</code></a>.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>T</code> - Generic type for the <code>Handler</code></dd>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Parameters:</dt>
-<dd><code>clazz</code> - Class of the message object</dd>
-<dd><code>msgBody</code> - <code>msg-body</code> of the message</dd>
-<dd><code>handler</code> - handler for the message</dd>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>json</code> - the buffer whose contents contain the necessary information to construct
+                         the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>handler</code> - gets called when the conversion was successful</dd>
+<dd><code>exceptionHandler</code> - gets called when a <code>DecodeException</code> occurred during conversion</dd>
 <dt>Returns:</dt>
-<dd><code>true</code>, if the conversion was successful</dd>
+<dd><code>true</code> when the conversion was successful</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</span></div>
+<div class="block">Asynchronous version of <a href="#from(java.lang.String,java.lang.Class)"><code>from(String, Class)</code></a>.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>json</code> - the JSON <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> that contains the necessary information to construct
+                         the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>handler</code> - gets called when the conversion was successful</dd>
+<dd><code>exceptionHandler</code> - gets called when a <code>DecodeException</code> or an <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>
+                         occurred during conversion</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> when the conversion was successful</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</span></div>
+<div class="block">Asynchronous version of <a href="#from(java.lang.Object,java.lang.Class)"><code>from(Object, Class)</code></a>.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>json</code> - the plain <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a> that contains the necessary information to construct
+                         the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>handler</code> - gets called when the conversion was successful</dd>
+<dd><code>exceptionHandler</code> - gets called when a <code>DecodeException</code> or an <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>
+                         occurred during conversion</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> when the conversion was successful</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler,
+ io.vertx.core.Handler&lt;<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a>&gt;&nbsp;exceptionHandler)</span></div>
+<div class="block">Asynchronous version of <a href="#from(io.vertx.core.eventbus.Message,java.lang.Class)"><code>from(Message, Class)</code></a>.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>message</code> - the message whose body contains the necessary information to construct
+                         the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>handler</code> - gets called when the conversion was successful</dd>
+<dd><code>exceptionHandler</code> - gets called when a <code>DecodeException</code> or an <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>
+                         occurred during conversion</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> when the conversion was successful</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.buffer.Buffer&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Buffer, Handler, Handler)</code></a> but without an exception handler.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,java.lang.String,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, String, Handler, Handler)</code></a> but without an exception handler.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,java.lang.Object,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Object, Handler, Handler)</code></a> but without an exception handler.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message,
+ io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Message, Handler, Handler)</code></a> but without an exception handler.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,io.vertx.core.buffer.Buffer)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;T&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.buffer.Buffer&nbsp;json)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Buffer, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a future that represents the conversion state</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="on(java.lang.Class,java.lang.String)">
+<h3>on</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
+<span class="return-type">io.vertx.core.Future&lt;T&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, String, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a future that represents the conversion state</dd>
 </dl>
 </section>
 </li>
@@ -232,39 +472,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="on(java.lang.Class,java.lang.Object)">
 <h3>on</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
-<span class="return-type">io.vertx.core.Future&lt;T&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;msgBody)</span></div>
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- It returns a future which resolves if the message was successfully decoded,
- and rejects if something went wrong during decoding.</div>
+<span class="return-type">io.vertx.core.Future&lt;T&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Object, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
 <dl class="notes">
-<dt>Type Parameters:</dt>
-<dd><code>T</code> - Generic type for the <code>Future</code></dd>
-<dt>Parameters:</dt>
-<dd><code>clazz</code> - Class of the message object</dd>
-<dd><code>msgBody</code> - <code>msg-body</code> of the message</dd>
 <dt>Returns:</dt>
-<dd>a future which resolves when the decoding was successful</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler)">
-<h3>on</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;msg,
- io.vertx.core.Handler&lt;T&gt;&nbsp;handler)</span></div>
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- Returns <code>true</code>, if the conversion was successful.</div>
-<dl class="notes">
-<dt>Type Parameters:</dt>
-<dd><code>T</code> - type of the <code>Message</code></dd>
-<dt>Parameters:</dt>
-<dd><code>clazz</code> - Class of the message object</dd>
-<dd><code>msg</code> - message</dd>
-<dd><code>handler</code> - handler for the message</dd>
-<dt>Returns:</dt>
-<dd><code>true</code>, if the conversion was successful</dd>
+<dd>a future that represents the conversion state</dd>
 </dl>
 </section>
 </li>
@@ -272,19 +487,35 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="on(java.lang.Class,io.vertx.core.eventbus.Message)">
 <h3>on</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>
-<span class="return-type">io.vertx.core.Future&lt;T&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
- io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;msg)</span></div>
-<div class="block">This method decodes a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- It returns a future which resolves if the message was successfully decoded,
- and rejects if something went wrong during decoding.</div>
+<span class="return-type">io.vertx.core.Future&lt;T&gt;</span>&nbsp;<span class="element-name">on</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message)</span></div>
+<div class="block">Like <a href="#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)"><code>on(Class, Message, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> occurs during conversion.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a future that represents the conversion state</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="from(io.vertx.core.buffer.Buffer,java.lang.Class)">
+<h3>from</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">from</span>&#8203;<span class="parameters">(io.vertx.core.buffer.Buffer&nbsp;json,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span>
+                               throws <span class="exceptions">io.vertx.core.json.DecodeException</span></div>
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a buffer which contains an encoded JSON string.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>T</code> - Generic type for the <code>Future</code></dd>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Parameters:</dt>
-<dd><code>clazz</code> - Class of the message object</dd>
-<dd><code>msg</code> - message</dd>
+<dd><code>json</code> - the buffer that contents contain the necessary information to construct
+             the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Returns:</dt>
-<dd>a future which resolves when the decoding was successful</dd>
+<dd>the decoded message</dd>
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.DecodeException</code> - if the buffer contents does not contain the necessary information to successfully
+                         construct the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 </dl>
 </section>
 </li>
@@ -292,16 +523,21 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="from(java.lang.String,java.lang.Class)">
 <h3>from</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">from</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span></div>
-<div class="block">Creates a message from the given json representation.</div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span>
+                               throws <span class="exceptions">io.vertx.core.json.DecodeException</span></div>
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a JSON <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a>.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>T</code> - type of the <code>Message</code></dd>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Parameters:</dt>
-<dd><code>json</code> - source</dd>
-<dd><code>type</code> - class of the message</dd>
+<dd><code>json</code> - the JSON <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> that contains the necessary information to construct
+             the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Returns:</dt>
-<dd>decoded message object</dd>
+<dd>the decoded message</dd>
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.DecodeException</code> - if the JSON string does not contain the necessary information to successfully
+                         construct the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 </dl>
 </section>
 </li>
@@ -309,16 +545,136 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="from(java.lang.Object,java.lang.Class)">
 <h3>from</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">from</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;json,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span></div>
-<div class="block">Creates a message from the given json representation.</div>
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span>
+                               throws <span class="exceptions">io.vertx.core.json.DecodeException</span></div>
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a plain <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a>.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>T</code> - type of the <code>Message</code></dd>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Parameters:</dt>
-<dd><code>json</code> - source which must be a String</dd>
-<dd><code>type</code> - class of the message</dd>
+<dd><code>json</code> - the plain <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a> that contains the necessary information to construct
+             the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
 <dt>Returns:</dt>
-<dd>decoded message object</dd>
+<dd>the decoded message</dd>
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.DecodeException</code> - if the plain object does not contain the necessary information to successfully
+                         construct the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="from(io.vertx.core.eventbus.Message,java.lang.Class)">
+<h3>from</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">from</span>&#8203;<span class="parameters">(io.vertx.core.eventbus.Message&lt;?&gt;&nbsp;message,
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type)</span>
+                               throws <span class="exceptions">io.vertx.core.json.DecodeException</span></div>
+<div class="block">Constructs a <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a Vert.x EventBus <code>Message</code> body.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - the type of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Parameters:</dt>
+<dd><code>message</code> - the message which body contains the necessary information to construct
+                the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dd><code>type</code> - the class of the target <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Returns:</dt>
+<dd>the decoded message</dd>
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.DecodeException</code> - if the raw message body does not contain the necessary information to successfully
+                         construct the specified <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="json()">
+<h3>json</h3>
+<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Deprecated.html#since()" title="class or interface in java.lang" class="external-link">since</a>="0.9.0")
+</span><span class="modifiers">default</span>&nbsp;<span class="return-type">io.vertx.core.json.JsonObject</span>&nbsp;<span class="element-name">json</span>()
+                                    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="#toJsonObject()"><code>toJsonObject()</code></a> to get a JSON object representation of this message
+ or use <a href="#toJsonString()"><code>toJsonString()</code></a> to get a JSON string.</div>
+</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toJsonObject()">
+<h3>toJsonObject</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">io.vertx.core.json.JsonObject</span>&nbsp;<span class="element-name">toJsonObject</span>()
+                                            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
+<div class="block">Constructs a <code>JsonObject</code> from the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the constructed JSON object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the JSON object cannot represent the type of
+                                  any <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> property</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toJsonString(boolean)">
+<h3>toJsonString</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toJsonString</span>&#8203;<span class="parameters">(boolean&nbsp;pretty)</span>
+                     throws <span class="exceptions">io.vertx.core.json.EncodeException</span></div>
+<div class="block">Constructs a <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> containing the properties of the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> as JSON values.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pretty</code> - if <code>true</code> the JSON output is properly formatted</dd>
+<dt>Returns:</dt>
+<dd>a JSON string representing the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.EncodeException</code> - if the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> containing properties that cannot be represented
+                         by JSON values</dd>
+<dt>See Also:</dt>
+<dd><code>JacksonCodec.toString(Object, boolean)</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toJsonString()">
+<h3>toJsonString</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toJsonString</span>()
+                     throws <span class="exceptions">io.vertx.core.json.EncodeException</span></div>
+<div class="block">Like <a href="#toJsonString(boolean)"><code>toJsonString(boolean)</code></a> but with space efficient JSON output.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.EncodeException</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toJsonBuffer(boolean)">
+<h3>toJsonBuffer</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">io.vertx.core.buffer.Buffer</span>&nbsp;<span class="element-name">toJsonBuffer</span>&#8203;<span class="parameters">(boolean&nbsp;pretty)</span>
+                                          throws <span class="exceptions">io.vertx.core.json.EncodeException</span></div>
+<div class="block">Constructs a <code>Buffer</code> containing the properties of the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> as JSON values</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pretty</code> - if <code>true</code> the JSON output is properly formatted</dd>
+<dt>Returns:</dt>
+<dd>a buffer representing the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a></dd>
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.EncodeException</code> - if the <a href="JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> containing properties that cannot be represented
+                         by JSON values</dd>
+<dt>See Also:</dt>
+<dd><code>JacksonCodec.toBuffer(Object, boolean)</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toJsonBuffer()">
+<h3>toJsonBuffer</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">io.vertx.core.buffer.Buffer</span>&nbsp;<span class="element-name">toJsonBuffer</span>()
+                                          throws <span class="exceptions">io.vertx.core.json.EncodeException</span></div>
+<div class="block">Like <a href="#toJsonBuffer(boolean)"><code>toJsonBuffer(boolean)</code></a> but with space efficient JSON output.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code>io.vertx.core.json.EncodeException</code></dd>
 </dl>
 </section>
 </li>
@@ -326,21 +682,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="className()">
 <h3>className</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">className</span>()</div>
-<div class="block">Returns the simple class name of the subclass.</div>
+<div class="block">Returns the simple class name of the implementing subclass.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>simple class name of subclass</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="json()">
-<h3>json</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">io.vertx.core.json.JsonObject</span>&nbsp;<span class="element-name">json</span>()</div>
-<div class="block">Returns the Json-representation of the message.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>json representation of message</dd>
 </dl>
 </section>
 </li>

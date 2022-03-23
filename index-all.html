@@ -164,7 +164,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#className()">className()</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">Returns the simple class name of the subclass.</div>
+<div class="block">Returns the simple class name of the implementing subclass.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/HeaderInformation.html#clear()">clear()</a></span> - Method in class de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message">HeaderInformation</a></dt>
 <dd>
@@ -667,6 +667,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:F">F</h2>
 <dl class="index">
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#from(io.vertx.core.buffer.Buffer,java.lang.Class)">from(Buffer, Class&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Constructs a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a buffer which contains an encoded JSON string.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/HeaderInformation.html#from(io.vertx.core.eventbus.DeliveryOptions)">from(DeliveryOptions)</a></span> - Static method in class de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message">HeaderInformation</a></dt>
 <dd>
 <div class="block">Creates a new <a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message"><code>HeaderInformation</code></a> object from <code>DeliveryOptions</code>.</div>
@@ -691,6 +695,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/header/TimeInformation.html#from(io.vertx.core.eventbus.Message)">from(Message&lt;?&gt;)</a></span> - Static method in class de.wuespace.telestion.examples.header.<a href="de/wuespace/telestion/examples/header/TimeInformation.html" title="class in de.wuespace.telestion.examples.header">TimeInformation</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#from(io.vertx.core.eventbus.Message,java.lang.Class)">from(Message&lt;?&gt;, Class&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Constructs a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a Vert.x EventBus <code>Message</code> body.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/HeaderInformation.html#from(io.vertx.core.MultiMap)">from(MultiMap)</a></span> - Static method in class de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message">HeaderInformation</a></dt>
 <dd>
 <div class="block">Creates a new <a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message"><code>HeaderInformation</code></a> object from existing <code>Vert.x headers</code>.</div>
@@ -701,11 +709,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#from(java.lang.Object,java.lang.Class)">from(Object, Class&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">Creates a message from the given json representation.</div>
+<div class="block">Constructs a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a plain <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><code>Object</code></a>.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#from(java.lang.String,java.lang.Class)">from(String, Class&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">Creates a message from the given json representation.</div>
+<div class="block">Constructs a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> from a JSON <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a>.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/services/connection/rework/SenderData.html#fromConnectionData(de.wuespace.telestion.services.connection.rework.ConnectionData)">fromConnectionData(ConnectionData)</a></span> - Static method in record class de.wuespace.telestion.services.connection.rework.<a href="de/wuespace/telestion/services/connection/rework/SenderData.html" title="class in de.wuespace.telestion.services.connection.rework">SenderData</a></dt>
 <dd>&nbsp;</dd>
@@ -1150,22 +1158,22 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#json()">json()</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">Returns the Json-representation of the message.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span>
+<div class="deprecation-comment">Use <a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonObject()"><code>JsonMessage.toJsonObject()</code></a> to get a JSON object representation of this message
+ or use <a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonString()"><code>JsonMessage.toJsonString()</code></a> to get a JSON string.</div>
+</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/services/config/VerticleConfig.html#json()">json()</a></span> - Method in record class de.wuespace.telestion.services.config.<a href="de/wuespace/telestion/services/config/VerticleConfig.html" title="class in de.wuespace.telestion.services.config">VerticleConfig</a></dt>
 <dd>
 <div class="block">The whole verticle configuration is stored in a JsonObject.</div>
 </dd>
-<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#JSON_CODEC">JSON_CODEC</a></span> - Static variable in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
-<dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/services/config/VerticleConfig.html#jsonConfig()">jsonConfig()</a></span> - Method in record class de.wuespace.telestion.services.config.<a href="de/wuespace/telestion/services/config/VerticleConfig.html" title="class in de.wuespace.telestion.services.config">VerticleConfig</a></dt>
 <dd>
 <div class="block">The config is a JsonObject which is defined by the verticle.</div>
 </dd>
 <dt><a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><span class="type-name-link">JsonMessage</span></a> - Interface in <a href="de/wuespace/telestion/api/message/package-summary.html">de.wuespace.telestion.api.message</a></dt>
 <dd>
-<div class="block">The base class for all messages which are automatically encoded with the JsonMessageCodec.<br>
- All subclasses have to be valid json classes.</div>
+<div class="block">Description</div>
 </dd>
 </dl>
 <h2 class="title" id="I:L">L</h2>
@@ -1325,27 +1333,60 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.buffer.Buffer)">on(Class&lt;T&gt;, Buffer)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, Buffer, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler)">on(Class&lt;T&gt;, Buffer, Handler&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, Buffer, Handler, Handler)</code></a> but without an exception handler.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.buffer.Buffer,io.vertx.core.Handler,io.vertx.core.Handler)">on(Class&lt;T&gt;, Buffer, Handler&lt;T&gt;, Handler&lt;RuntimeException&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Asynchronous version of <a href="de/wuespace/telestion/api/message/JsonMessage.html#from(io.vertx.core.buffer.Buffer,java.lang.Class)"><code>JsonMessage.from(Buffer, Class)</code></a>.</div>
+</dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message)">on(Class&lt;T&gt;, Message&lt;?&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">This method decodes a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- It returns a future which resolves if the message was successfully decoded,
- and rejects if something went wrong during decoding.</div>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, Message, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> occurs during conversion.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler)">on(Class&lt;T&gt;, Message&lt;?&gt;, Handler&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">This method decodes a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- Returns <code>true</code>, if the conversion was successful.</div>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, Message, Handler, Handler)</code></a> but without an exception handler.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message,io.vertx.core.Handler,io.vertx.core.Handler)">on(Class&lt;T&gt;, Message&lt;?&gt;, Handler&lt;T&gt;, Handler&lt;RuntimeException&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Asynchronous version of <a href="de/wuespace/telestion/api/message/JsonMessage.html#from(io.vertx.core.eventbus.Message,java.lang.Class)"><code>JsonMessage.from(Message, Class)</code></a>.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.Object)">on(Class&lt;T&gt;, Object)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">This method decodes a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- It returns a future which resolves if the message was successfully decoded,
- and rejects if something went wrong during decoding.</div>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, Object, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler)">on(Class&lt;T&gt;, Object, Handler&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
 <dd>
-<div class="block">This method decodes a <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.<br>
- Returns <code>true</code>, if the conversion was successful.</div>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, Object, Handler, Handler)</code></a> but without an exception handler.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.Object,io.vertx.core.Handler,io.vertx.core.Handler)">on(Class&lt;T&gt;, Object, Handler&lt;T&gt;, Handler&lt;RuntimeException&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Asynchronous version of <a href="de/wuespace/telestion/api/message/JsonMessage.html#from(java.lang.Object,java.lang.Class)"><code>JsonMessage.from(Object, Class)</code></a>.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.String)">on(Class&lt;T&gt;, String)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, String, Handler, Handler)</code></a> but returns a <code>Future</code> which resolves
+ when the conversion completes successfully or fails when a <code>DecodeException</code> or an
+ <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a> occurs during conversion.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.String,io.vertx.core.Handler)">on(Class&lt;T&gt;, String, Handler&lt;T&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)"><code>JsonMessage.on(Class, String, Handler, Handler)</code></a> but without an exception handler.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#on(java.lang.Class,java.lang.String,io.vertx.core.Handler,io.vertx.core.Handler)">on(Class&lt;T&gt;, String, Handler&lt;T&gt;, Handler&lt;RuntimeException&gt;)</a></span> - Static method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Asynchronous version of <a href="de/wuespace/telestion/api/message/JsonMessage.html#from(java.lang.String,java.lang.Class)"><code>JsonMessage.from(String, Class)</code></a>.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/verticle/trait/DecodedMessage.html#on(java.lang.Class,io.vertx.core.eventbus.Message)">on(Class&lt;V&gt;, Message&lt;T&gt;)</a></span> - Static method in record class de.wuespace.telestion.api.verticle.trait.<a href="de/wuespace/telestion/api/verticle/trait/DecodedMessage.html" title="class in de.wuespace.telestion.api.verticle.trait">DecodedMessage</a></dt>
 <dd>
@@ -2158,6 +2199,26 @@ loadScripts(document, 'script');</script>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/examples/messages/SimpleMessage.html#title()">title()</a></span> - Method in record class de.wuespace.telestion.examples.messages.<a href="de/wuespace/telestion/examples/messages/SimpleMessage.html" title="class in de.wuespace.telestion.examples.messages">SimpleMessage</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>title</code> record component.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonBuffer()">toJsonBuffer()</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonBuffer(boolean)"><code>JsonMessage.toJsonBuffer(boolean)</code></a> but with space efficient JSON output.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonBuffer(boolean)">toJsonBuffer(boolean)</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Constructs a <code>Buffer</code> containing the properties of the <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> as JSON values</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonObject()">toJsonObject()</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Constructs a <code>JsonObject</code> from the <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a>.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonString()">toJsonString()</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Like <a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonString(boolean)"><code>JsonMessage.toJsonString(boolean)</code></a> but with space efficient JSON output.</div>
+</dd>
+<dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/JsonMessage.html#toJsonString(boolean)">toJsonString(boolean)</a></span> - Method in interface de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message">JsonMessage</a></dt>
+<dd>
+<div class="block">Constructs a <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> containing the properties of the <a href="de/wuespace/telestion/api/message/JsonMessage.html" title="interface in de.wuespace.telestion.api.message"><code>JsonMessage</code></a> as JSON values.</div>
 </dd>
 <dt><span class="member-name-link"><a href="de/wuespace/telestion/api/message/HeaderInformation.html#toOptions()">toOptions()</a></span> - Method in class de.wuespace.telestion.api.message.<a href="de/wuespace/telestion/api/message/HeaderInformation.html" title="class in de.wuespace.telestion.api.message">HeaderInformation</a></dt>
 <dd>
