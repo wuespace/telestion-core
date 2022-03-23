@@ -220,7 +220,7 @@ public interface JsonMessage {
 	 * @param type the class of the target {@link JsonMessage}
 	 * @param <T>  the type of the target {@link JsonMessage}
 	 * @return the decoded message
-	 * @throws DecodeException if the buffer contents does not contain the necessary information to successfully
+	 * @throws DecodeException if the buffer contents do not contain the necessary information to successfully
 	 *                         construct the specified {@link JsonMessage}
 	 */
 	static <T extends JsonMessage> T from(Buffer json, Class<T> type) throws DecodeException {
@@ -310,7 +310,7 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * Like {@link #toJsonString(boolean)} but with space efficient JSON output.
+	 * Like {@link #toJsonString(boolean)}, but with space efficient JSON output.
 	 */
 	default String toJsonString() throws EncodeException {
 		return toJsonString(false);
@@ -330,7 +330,7 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * Like {@link #toJsonBuffer(boolean)} but with space efficient JSON output.
+	 * Like {@link #toJsonBuffer(boolean)}, but with space efficient JSON output.
 	 */
 	default Buffer toJsonBuffer() throws EncodeException {
 		return toJsonBuffer(false);
