@@ -22,7 +22,7 @@ dependencies {
     implementation project(':modules:telestion-api')
     implementation project(':modules:telestion-services')
 
-    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation 'com.google.guava:guava:31.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
@@ -30,7 +30,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:4.+"
 
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
 
     implementation "io.vertx:vertx-web:4.2.5"
@@ -38,7 +38,6 @@ dependencies {
     implementation "io.vertx:vertx-hazelcast:4.2.5"
 // implementation "io.vertx:vertx-infinispan:3.9.2"
     implementation "io.vertx:vertx-health-check:4.2.5"
-    implementation "io.vertx:vertx-http-service-factory:4.2.5"
     implementation "io.vertx:vertx-rx-java2:4.2.5"
     implementation "io.vertx:vertx-config:4.2.5"
     implementation "io.vertx:vertx-service-factory:4.2.5"
