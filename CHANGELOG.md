@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.9.0](https://github.com/wuespace/telestion-core/compare/v0.8.1...v0.9.0) (2022-03-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** The encoded messages don't longer contain the `"classname"` property that stores the classname of the encoded message.
+* **api:** The encoded messages don't longer contain the `"classname"` property that stores the classname of the encoded message.
+
+### Features
+
+* **api:** Add compare methods to `HeaderInformation` ([f32de29](https://github.com/wuespace/telestion-core/commit/f32de29f21525aa2fa2b687b864823d8aa660ad7))
+* **api:** Improve `JsonMessage` to decode and encode more data types synchronously and asynchronously ([77896c2](https://github.com/wuespace/telestion-core/commit/77896c243a7138702829bfbfe2dda64e42f64b8a))
+* **api:** Improve `JsonMessage` to decode and encode more data types synchronously and asynchronously ([dc000b4](https://github.com/wuespace/telestion-core/commit/dc000b44c13ca511c0af986037085e05dbf4890a))
+* **api:** Move from `.json()` to `.toJsonObject()` in `WithEventBus` trait ([81c4d09](https://github.com/wuespace/telestion-core/commit/81c4d092229d8853f208f1f889b718791282b1fb))
+* **api:** Move from `.json()` to `.toJsonObject()` in `WithEventBus` trait ([88b49dc](https://github.com/wuespace/telestion-core/commit/88b49dc1b45f0e9077b90e0ab17ee44507ca4ce2))
+* **api:** Update `JsonMessage` unit test ([8f78d07](https://github.com/wuespace/telestion-core/commit/8f78d07094307e5617da90b1de6e4bc938fcabb5))
+* **api:** Update `JsonMessage` unit test ([8cd53da](https://github.com/wuespace/telestion-core/commit/8cd53da4ce3b0e9979da0b5dbfb72729cb9161a7))
+
+
+### Bug Fixes
+
+* **api:** Fix `JsonMessage` asynchronous methods don't catch all possible thrown exceptions during decoding ([d40074e](https://github.com/wuespace/telestion-core/commit/d40074ea27cf84cede90087c78a7e8c36d3fae88))
+* **api:** Fix `JsonMessage` asynchronous methods don't catch all possible thrown exceptions during decoding ([d754a88](https://github.com/wuespace/telestion-core/commit/d754a88a77a2b61d29cf0b85937d89dba4b1d100))
+
+
+### Miscellaneous Chores
+
+* release 0.9.0 ([1d8be86](https://github.com/wuespace/telestion-core/commit/1d8be868f778b10757c6356840eae55ff1872434))
+
 ### [0.8.1](https://github.com/wuespace/telestion-core/compare/v0.8.0...v0.8.1) (2022-02-24)
 
 
