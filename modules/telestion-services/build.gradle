@@ -43,7 +43,7 @@ dependencies {
     implementation "io.vertx:vertx-config:4.2.6"
     implementation "io.vertx:vertx-service-factory:4.2.6"
     implementation "io.vertx:vertx-mongo-client:4.2.6"
-    implementation "io.vertx:vertx-circuit-breaker:4.2.6"
+    implementation "io.vertx:vertx-circuit-breaker:4.2.7"
 
     testImplementation "io.vertx:vertx-junit5:4.2.6"
 }
