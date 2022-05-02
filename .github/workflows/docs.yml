@@ -27,7 +27,7 @@ jobs:
         run: touch build/docs/javadoc/.nojekyll
 
       - name: Deploy documentation 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.3.2
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
           folder: build/docs/javadoc
