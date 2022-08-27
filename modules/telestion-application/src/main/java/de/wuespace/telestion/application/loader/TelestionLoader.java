@@ -13,9 +13,9 @@ import java.util.Objects;
 
 /**
  * <h2>Description</h2>
- * The Telestion Loader is class that implements all required {@link Loader} methods.
- * This provides you a good starting point for your own Loader.
- * Simply overwrite the event handlers you need and do your startup or shutdown steps.
+ * The Telestion Loader is a class that implements all required {@link Loader} methods.
+ * This provides you a good starting point for your Loader.
+ * Overwrite the event handlers you need and do your startup or shutdown steps.
  *
  * <h2>Usage</h2>
  * A very simple Loader could look like:
@@ -65,7 +65,7 @@ public abstract class TelestionLoader<T extends LoaderConfiguration> implements 
 
 	/**
 	 * Map a generic JSON object to the Configuration type.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
+	 * Returns <code>null</code> if no type via {@link #getConfigType()} is given.
 	 *
 	 * @param object the generic JSON object to map
 	 * @return the JSON object in the Configuration type format
@@ -76,7 +76,7 @@ public abstract class TelestionLoader<T extends LoaderConfiguration> implements 
 	}
 
 	/**
-	 * Merges in the raw configuration into the default configuration
+	 * Merges the raw configuration into the default configuration
 	 * and updates both raw and type-safe configuration.
 	 *
 	 * @param rawConfig the raw configuration to merge into the default configuration
@@ -133,7 +133,7 @@ public abstract class TelestionLoader<T extends LoaderConfiguration> implements 
 	}
 
 	/**
-	 * Same as {@link TelestionLoader#TelestionLoader(boolean)} but enables loading of default configuration
+	 * Same as {@link TelestionLoader#TelestionLoader(boolean)}, but enables loading of default configuration
 	 * if possible.
 	 */
 	public TelestionLoader() {
