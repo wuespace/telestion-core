@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.0](https://github.com/wuespace/telestion-core/compare/v0.9.0...v1.0.0) (2022-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove `Configuration` and `VerticleConfig` from services module and add them to the application module.
+* **services:** Remove `ConfigurableApplication` because it implements the same behaviour as the `Telestion` class in the application module, and is not used at the moment.
+* **application:** Remove the `Application` class from the application module because it is empty
+* **config:** The deprecated `config.json` is no longer available
+
+### Features
+
+* **application:** Remove empty `Application` class ([6885c58](https://github.com/wuespace/telestion-core/commit/6885c58b31567217f8498ac43fa0a73cf274de9e))
+* **config:** Remove unneeded global `config.json` ([439aa8a](https://github.com/wuespace/telestion-core/commit/439aa8a336ca7248b56c1b007ae01deb466df94a))
+* Move `Configuration` and `VerticleConfig` data types to application module ([93bae37](https://github.com/wuespace/telestion-core/commit/93bae37626bdefab7ce5dc1d9b6e45dd8161ce22))
+* **services:** Remove `ConfigurableApplication` ([a40cdb2](https://github.com/wuespace/telestion-core/commit/a40cdb21387191810443914c88bd46e47f0bf1fe))
+
 ## [0.9.0](https://github.com/wuespace/telestion-core/compare/v0.8.1...v0.9.0) (2022-03-23)
 
 
