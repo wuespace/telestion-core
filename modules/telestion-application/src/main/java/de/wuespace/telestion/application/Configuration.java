@@ -1,4 +1,4 @@
-package de.wuespace.telestion.services.config;
+package de.wuespace.telestion.application;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
