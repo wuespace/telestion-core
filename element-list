@@ -7,7 +7,6 @@ de.wuespace.telestion.examples
 de.wuespace.telestion.examples.header
 de.wuespace.telestion.examples.messages
 de.wuespace.telestion.launcher
-de.wuespace.telestion.services.config
 de.wuespace.telestion.services.connection
 de.wuespace.telestion.services.connection.rework
 de.wuespace.telestion.services.connection.rework.serial
