@@ -21,7 +21,7 @@ jobs:
 
       - name: Checkout 📥
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.2.0
         with:
           persist-credentials: false
           fetch-depth: 0
