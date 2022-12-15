@@ -33,7 +33,7 @@ dependencies {
     implementation "io.vertx:vertx-health-check:4.3.4"
     implementation "io.vertx:vertx-rx-java2:4.2.7"
     implementation "io.vertx:vertx-config:4.3.6"
-    implementation "io.vertx:vertx-service-factory:4.2.7"
+    implementation "io.vertx:vertx-service-factory:4.3.6"
     implementation "io.vertx:vertx-mongo-client:4.3.6"
     implementation "io.vertx:vertx-circuit-breaker:4.2.7"
 
