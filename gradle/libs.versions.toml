@@ -1,0 +1,43 @@
+## Note:
+##
+## Add dependencies that you want to use in this definition.
+## You can access these after a gradle sync via:
+##
+## dependencies {
+##     implementation(libs.vertx.web)
+## }
+##
+## Dependencies that come from the same vendor and are version linked (have the same version)
+## should use namefully version references (see below for an example).
+##
+## Renovate processes this file and update all dependencies in regular intervals. (see renovate.json)
+##
+## More information on sharing dependency versions:
+## https://docs.gradle.org/current/userguide/platforms.html#sec:sharing-catalogs
+
+[versions]
+vertx = "4.3.4"
+jackson = "2.14.1"
+junit-jupiter = "5.8.2"
+hamcrest = "2.2"
+
+[libraries]
+# production dependencies
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "1.7.36" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.4.5" }
+logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version = "7.1.1" }
+jackson-core = { group = "com.fasterxml.jackson.core", name = "jackson-core", version.ref = "jackson" }
+jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
+jackson-annotations = { group = "com.fasterxml.jackson.core", name = "jackson-annotations", version.ref = "jackson" }
+vertx-core = { group = "io.vertx", name = "vertx-core", version.ref = "vertx" }
+vertx-web = { group = "io.vertx", name = "vertx-web", version.ref = "vertx" }
+vertx-config = { group = "io.vertx", name = "vertx-config", version.ref = "vertx" }
+vertx-circuitbreaker = { group = "io.vertx", name = "vertx-circuit-breaker", version.ref = "vertx" }
+jserialcomm = { group = "com.fazecast", name = "jSerialComm", version = "2.9.3" }
+# testing dependencies
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+hamcrest-core = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
+hamcrest-library = { group = "org.hamcrest", name = "hamcrest-library", version.ref = "hamcrest" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version = "4.+" }
+vertx-junit5 = { group = "io.vertx", name = "vertx-junit5", version.ref = "vertx" }
