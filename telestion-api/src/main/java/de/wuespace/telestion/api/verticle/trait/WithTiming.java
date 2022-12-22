@@ -24,7 +24,7 @@ import java.time.Duration;
  * }
  * </pre>
  *
- * @author Ludwig Richter (@fussel178)
+ * @author Ludwig Richter (@fussel178), Pablo Klaschka (@pklaschka)
  */
 public interface WithTiming extends Verticle {
 
@@ -33,30 +33,30 @@ public interface WithTiming extends Verticle {
 	 * but returns a special handler which cancels the interval when called.
 	 * @return a handler which cancels the interval when called
 	 */
-	default Timing interval(long delay, Handler<Long> handler) {
-		var id = getVertx().setPeriodic(delay, handler);
+	default Timing interval(long milliseconds, Handler<Long> handler) {
+		var id = getVertx().setPeriodic(milliseconds, handler);
 		return new Timing(getVertx(), id);
 	}
 
 	/**
 	 * Like {@link #interval(long, Handler)}, but accepts a {@link Duration}.
 	 */
-	default Timing interval(Duration delay, Handler<Long> handler) {
-		return interval(delay.toMillis(), handler);
+	default Timing interval(Duration period, Handler<Long> handler) {
+		return interval(period.toMillis(), handler);
 	}
 
 	/**
 	 * @see io.vertx.core.Vertx#periodicStream(long)
 	 */
-	default TimeoutStream intervalStream(long delay) {
-		return getVertx().periodicStream(delay);
+	default TimeoutStream intervalStream(long milliseconds) {
+		return getVertx().periodicStream(milliseconds);
 	}
 
 	/**
 	 * Like {@link #intervalStream(long)}, but accepts a {@link Duration}.
 	 */
-	default TimeoutStream intervalStream(Duration delay) {
-		return intervalStream(delay.toMillis());
+	default TimeoutStream intervalStream(Duration period) {
+		return intervalStream(period.toMillis());
 	}
 
 	/**
@@ -64,8 +64,8 @@ public interface WithTiming extends Verticle {
 	 * but returns a special handler which cancels the timeout when called.
 	 * @return a handler which cancels the timeout when called
 	 */
-	default Timing timeout(long delay, Handler<Long> handler) {
-		var id = getVertx().setTimer(delay, handler);
+	default Timing timeout(long milliseconds, Handler<Long> handler) {
+		var id = getVertx().setTimer(milliseconds, handler);
 		return new Timing(getVertx(), id);
 	}
 
@@ -79,8 +79,8 @@ public interface WithTiming extends Verticle {
 	/**
 	 * @see io.vertx.core.Vertx#timerStream(long)
 	 */
-	default TimeoutStream timeoutStream(long delay) {
-		return getVertx().timerStream(delay);
+	default TimeoutStream timeoutStream(long milliseconds) {
+		return getVertx().timerStream(milliseconds);
 	}
 
 	/**
