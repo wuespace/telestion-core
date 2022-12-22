@@ -16,33 +16,33 @@ import java.util.stream.Stream;
 public class MultiMapUtils {
 
 	/**
-	 * Merges an array of multi-maps into one multi-map
+	 * Merges an array of multi-maps into one multimap
 	 * with the {@link MultiMap#addAll(MultiMap) addAll} function.
 	 *
 	 * @param maps multi-maps that you want to merge
-	 * @return a new multi-map with the merged content of the other multi-maps
+	 * @return a new multimap with the merged content of the other multi-maps
 	 */
 	public static MultiMap merge(MultiMap... maps) {
 		return merge(Arrays.stream(maps));
 	}
 
 	/**
-	 * Merges a list of multi-maps into one multi-map
+	 * Merges a list of multi-maps into one multimap
 	 * with the {@link MultiMap#addAll(MultiMap) addAll} function.
 	 *
 	 * @param list multi-maps that you want to merge
-	 * @return a new multi-map with the merged content of the other multi-maps
+	 * @return a new multimap with the merged content of the other multi-maps
 	 */
 	public static MultiMap merge(List<MultiMap> list) {
 		return merge(list.stream());
 	}
 
 	/**
-	 * Merges a stream of multi-maps into one multi-map
+	 * Merges a stream of multi-maps into one multimap
 	 * with the {@link MultiMap#addAll(MultiMap) addAll} function.
 	 *
 	 * @param stream a stream that contains the multi-maps that you want to merge
-	 * @return a new multi-map with the merged content of the other multi-maps
+	 * @return a new multimap with the merged content of the other multi-maps
 	 */
 	public static MultiMap merge(Stream<MultiMap> stream) {
 		var finalMap = MultiMap.caseInsensitiveMultiMap();

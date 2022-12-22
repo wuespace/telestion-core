@@ -48,7 +48,7 @@ import java.util.stream.Stream;
  * @author Cedric Boes (@cb0s), Ludwig Richter (@fussel178)
  * @see de.wuespace.telestion.api.verticle.trait.WithEventBus
  */
-public class HeaderInformation {
+public class HeaderInformation implements MultiMap {
 
 	///////////////////////////////////////////////////////////////////////////
 	// utilities
@@ -201,6 +201,16 @@ public class HeaderInformation {
 	// getters
 	///////////////////////////////////////////////////////////////////////////
 
+	@Override
+	public String get(CharSequence name) {
+		return headers.get(name);
+	}
+
+	@Override
+	public String get(String name) {
+		return headers.get(name);
+	}
+
 	/**
 	 * Returns the first stored value assigned to the key as {@link String}.
 	 * If no value is assigned to the key, an {@link Optional#empty() empty Optional} is returned instead.
@@ -209,7 +219,7 @@ public class HeaderInformation {
 	 * @return the first stored value wrapped inside an {@link Optional} for better {@code null} type safety
 	 * @see MultiMap#get(String)
 	 */
-	public Optional<String> get(String key) {
+	public Optional<String> getString(String key) {
 		return Optional.ofNullable(headers.get(key));
 	}
 
@@ -222,8 +232,8 @@ public class HeaderInformation {
 	 * @return the first stored value or the default value if no value is assigned to the key
 	 * @see MultiMap#get(String)
 	 */
-	public String get(String key, String defaultValue) {
-		return get(key).orElse(defaultValue);
+	public String getString(String key, String defaultValue) {
+		return getString(key).orElse(defaultValue);
 	}
 
 	/**
@@ -235,7 +245,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Byte> getByte(String key) {
-		return get(key).map(safeParse(Byte::parseByte));
+		return getString(key).map(safeParse(Byte::parseByte));
 	}
 
 	/**
@@ -260,7 +270,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Integer> getInt(String key) {
-		return get(key).map(safeParse(Integer::parseInt));
+		return getString(key).map(safeParse(Integer::parseInt));
 	}
 
 	/**
@@ -285,7 +295,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Long> getLong(String key) {
-		return get(key).map(safeParse(Long::parseLong));
+		return getString(key).map(safeParse(Long::parseLong));
 	}
 
 	/**
@@ -310,7 +320,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Float> getFloat(String key) {
-		return get(key).map(safeParse(Float::parseFloat));
+		return getString(key).map(safeParse(Float::parseFloat));
 	}
 
 	/**
@@ -335,7 +345,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Double> getDouble(String key) {
-		return get(key).map(safeParse(Double::parseDouble));
+		return getString(key).map(safeParse(Double::parseDouble));
 	}
 
 	/**
@@ -360,7 +370,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Character> getChar(String key) {
-		return get(key).map(value -> value.length() == 1 ? value.charAt(0) : null);
+		return getString(key).map(value -> value.length() == 1 ? value.charAt(0) : null);
 	}
 
 	/**
@@ -385,7 +395,7 @@ public class HeaderInformation {
 	 * @see MultiMap#get(String)
 	 */
 	public Optional<Boolean> getBoolean(String key) {
-		return get(key).map(Boolean::parseBoolean);
+		return getString(key).map(Boolean::parseBoolean);
 	}
 
 	/**
@@ -410,6 +420,11 @@ public class HeaderInformation {
 	 */
 	public List<String> getAll(String key) {
 		return headers.getAll(key);
+	}
+
+	@Override
+	public List<String> getAll(CharSequence name) {
+		return headers.getAll(name);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -546,6 +561,26 @@ public class HeaderInformation {
 	public HeaderInformation addAll(Map<String, String> headers) {
 		this.headers.addAll(headers);
 		return this;
+	}
+
+	@Override
+	public MultiMap set(String name, String value) {
+		return headers.set(name, value);
+	}
+
+	@Override
+	public MultiMap set(CharSequence name, CharSequence value) {
+		return headers.set(name, value);
+	}
+
+	@Override
+	public MultiMap set(String name, Iterable<String> values) {
+		return headers.set(name, values);
+	}
+
+	@Override
+	public MultiMap set(CharSequence name, Iterable<CharSequence> values) {
+		return headers.set(name, values);
 	}
 
 	/**
@@ -728,6 +763,11 @@ public class HeaderInformation {
 		return headers.contains(key);
 	}
 
+	@Override
+	public boolean contains(CharSequence name) {
+		return headers.contains(name);
+	}
+
 	/**
 	 * Removes all values assigned to the key.
 	 * Returns a reference to {@code this} for fluent design.
@@ -739,6 +779,11 @@ public class HeaderInformation {
 	public HeaderInformation remove(String key) {
 		headers.remove(key);
 		return this;
+	}
+
+	@Override
+	public MultiMap remove(CharSequence name) {
+		return headers.remove(name);
 	}
 
 	/**
@@ -771,6 +816,26 @@ public class HeaderInformation {
 	 */
 	public Set<String> names() {
 		return headers.names();
+	}
+
+	@Override
+	public MultiMap add(String name, String value) {
+		return headers.add(name, value);
+	}
+
+	@Override
+	public MultiMap add(CharSequence name, CharSequence value) {
+		return headers.add(name, value);
+	}
+
+	@Override
+	public MultiMap add(String name, Iterable<String> values) {
+		return headers.add(name, values);
+	}
+
+	@Override
+	public MultiMap add(CharSequence name, Iterable<CharSequence> values) {
+		return headers.add(name, values);
 	}
 
 	/**
@@ -877,4 +942,9 @@ public class HeaderInformation {
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(HeaderInformation.class);
+
+	@Override
+	public Iterator<Map.Entry<String, String>> iterator() {
+		return headers.iterator();
+	}
 }
