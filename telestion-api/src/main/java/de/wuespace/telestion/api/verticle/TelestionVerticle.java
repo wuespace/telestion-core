@@ -82,7 +82,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 		try {
 			var defaultConfig = configType.getConstructor().newInstance();
 			this.defaultConfig = defaultConfig;
-			this.defaultGenericConfig = defaultConfig.json();
+			this.defaultGenericConfig = defaultConfig.toJsonObject();
 		} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 			// no default configuration on configuration class found, ignoring
 			logger.info("No default configuration found for {}. " +
@@ -199,7 +199,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 */
 	public void setDefaultConfig(T defaultConfig) {
 		this.defaultConfig = defaultConfig;
-		this.defaultGenericConfig = defaultConfig.json();
+		this.defaultGenericConfig = defaultConfig.toJsonObject();
 		updateConfigs();
 	}
 
