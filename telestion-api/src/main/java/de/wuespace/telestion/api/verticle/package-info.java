@@ -11,8 +11,9 @@
  * in the same class called Configuration. By inferring the generics of the
  * {@link de.wuespace.telestion.api.verticle.TelestionVerticle} with this {@code Configuration}, the loading code for
  * configurations gets reduced massively.<br/>
- * When using no {@code Configuration} it is recommended to use {@link de.wuespace.telestion.api.verticle.GenericConfiguration}
+ * When using no {@code Configuration} it is recommended to use {@link de.wuespace.telestion.api.verticle.NoConfiguration}
  * which is telling the implementation, that a configuration is not needed.
+ * If you need to use dynamic or untyped configuration parameters, use {@link de.wuespace.telestion.api.verticle.UntypedConfiguration}.
  * <p>
  * By implementing {@link de.wuespace.telestion.api.verticle.trait traits} the functionality of the
  * {@link de.wuespace.telestion.api.verticle.TelestionVerticle} can be increased even more.
