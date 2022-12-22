@@ -6,7 +6,7 @@ import io.vertx.core.shareddata.AsyncMap;
 import io.vertx.core.shareddata.LocalMap;
 
 /**
- * Allows {@link Verticle} instances to get simplified access to Vert.x shared data
+ * Allows {@link Verticle} instances to get simplified access to Vert.x shared data.
  *
  * <h2>Usage</h2>
  * <pre>
@@ -52,7 +52,7 @@ public interface WithSharedData extends Verticle {
 	 * @return the default local map for this specific verticle
 	 */
 	default <K, V> LocalMap<K, V> defaultLocalMap() {
-		return localMap(defaultStorageKey());
+		return localMap("@@__PRIVATE/" + getClass().getName());
 	}
 
 	/**
@@ -62,15 +62,6 @@ public interface WithSharedData extends Verticle {
 	 * @return the default remote map for this specific verticle
 	 */
 	default <K, V> Future<AsyncMap<K, V>> defaultRemoteMap() {
-		return remoteMap(defaultStorageKey());
-	}
-
-	/**
-	 * Return the default storage key for this specific verticle
-	 * used for the {@link #defaultLocalMap()} and {@link #defaultRemoteMap()} verticle storage spaces.
-	 * @return the default storage key for this specific verticle
-	 */
-	default String defaultStorageKey() {
-		return getClass().getName();
+		return remoteMap("@@__PRIVATE/" + getClass().getName());
 	}
 }
