@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <h2>Description</h2>
- * The base class for all messages which are automatically encoded with the JsonMessageCodec.
+ * The base class for all records which are automatically encoded with the JsonMessageCodec.
  * <p>
  * All subclasses have to be valid json classes. This means that they could be encoded by
  * {@link JsonCodec} which is backed by {@link io.vertx.core.json.jackson.JacksonCodec JacksonCodec}.
@@ -25,14 +25,14 @@ import org.slf4j.LoggerFactory;
  * public record TimeMessage(
  *     @JsonProperty long receiveTime,
  *     @JsonProperty long sendTime
- * ) implements JsonMessage {
+ * ) implements JsonRecord {
  * }
  * }
  * </pre>
  *
- * @author Jan von Pichowski (@jvpichowski), Cedric Boes (@cb0s), Ludwig Richter (@fussel178)
+ * @author Jan von Pichowski (@jvpichowski), Cedric Boes (@cb0s), Ludwig Richter (@fussel178), Pablo Klaschka (@pklaschka)
  */
-public interface JsonMessage {
+public interface JsonRecord {
 
 	///////////////////////////////////////////////////////////////////////////
 	// asynchronous decoding section
@@ -41,21 +41,21 @@ public interface JsonMessage {
 	/**
 	 * Asynchronous version of {@link #from(Buffer, Class)}.
 	 *
-	 * @param type             the class of the target {@link JsonMessage}
+	 * @param type             the class of the target {@link JsonRecord}
 	 * @param json             the buffer whose contents contain the necessary information to construct
-	 *                         the specified {@link JsonMessage}
+	 *                         the specified {@link JsonRecord}
 	 * @param handler          gets called when the conversion was successful
 	 * @param exceptionHandler gets called when a {@link DecodeException} occurred during conversion
-	 * @param <T>              the type of the target {@link JsonMessage}
+	 * @param <T>              the type of the target {@link JsonRecord}
 	 * @return {@code true} when the conversion was successful
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, Buffer json, Handler<T> handler,
-											  Handler<RuntimeException> exceptionHandler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, Buffer json, Handler<T> handler,
+											 Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(json, type));
 			return true;
 		} catch (DecodeException | IllegalArgumentException e) {
-			logger.warn("Cannot convert buffer to JsonMessage {}:", type.getName(), e);
+			logger.warn("Cannot convert buffer to JSON record {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
 		}
@@ -64,22 +64,22 @@ public interface JsonMessage {
 	/**
 	 * Asynchronous version of {@link #from(String, Class)}.
 	 *
-	 * @param type             the class of the target {@link JsonMessage}
+	 * @param type             the class of the target {@link JsonRecord}
 	 * @param json             the JSON {@link String} that contains the necessary information to construct
-	 *                         the specified {@link JsonMessage}
+	 *                         the specified {@link JsonRecord}
 	 * @param handler          gets called when the conversion was successful
 	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException}
 	 *                         occurred during conversion
-	 * @param <T>              the type of the target {@link JsonMessage}
+	 * @param <T>              the type of the target {@link JsonRecord}
 	 * @return {@code true} when the conversion was successful
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, String json, Handler<T> handler,
-											  Handler<RuntimeException> exceptionHandler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, String json, Handler<T> handler,
+											 Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(json, type));
 			return true;
 		} catch (DecodeException | IllegalArgumentException e) {
-			logger.warn("Cannot convert JSON string to JsonMessage {}:", type.getName(), e);
+			logger.warn("Cannot convert JSON string to JSON record {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
 		}
@@ -88,22 +88,22 @@ public interface JsonMessage {
 	/**
 	 * Asynchronous version of {@link #from(Object, Class)}.
 	 *
-	 * @param type             the class of the target {@link JsonMessage}
+	 * @param type             the class of the target {@link JsonRecord}
 	 * @param json             the plain {@link Object} that contains the necessary information to construct
-	 *                         the specified {@link JsonMessage}
+	 *                         the specified {@link JsonRecord}
 	 * @param handler          gets called when the conversion was successful
 	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException}
 	 *                         occurred during conversion
-	 * @param <T>              the type of the target {@link JsonMessage}
+	 * @param <T>              the type of the target {@link JsonRecord}
 	 * @return {@code true} when the conversion was successful
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, Object json, Handler<T> handler,
-											  Handler<RuntimeException> exceptionHandler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, Object json, Handler<T> handler,
+											 Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(json, type));
 			return true;
 		} catch (DecodeException | IllegalArgumentException e) {
-			logger.warn("Cannot convert Object to JsonMessage {}:", type.getName(), e);
+			logger.warn("Cannot convert Object to JSON record {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
 		}
@@ -112,22 +112,22 @@ public interface JsonMessage {
 	/**
 	 * Asynchronous version of {@link #from(Message, Class)}.
 	 *
-	 * @param type             the class of the target {@link JsonMessage}
+	 * @param type             the class of the target {@link JsonRecord}
 	 * @param message          the message whose body contains the necessary information to construct
-	 *                         the specified {@link JsonMessage}
+	 *                         the specified {@link JsonRecord}
 	 * @param handler          gets called when the conversion was successful
 	 * @param exceptionHandler gets called when a {@link DecodeException} or an {@link IllegalArgumentException}
 	 *                         occurred during conversion
-	 * @param <T>              the type of the target {@link JsonMessage}
+	 * @param <T>              the type of the target {@link JsonRecord}
 	 * @return {@code true} when the conversion was successful
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, Message<?> message, Handler<T> handler,
-											  Handler<RuntimeException> exceptionHandler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, Message<?> message, Handler<T> handler,
+											 Handler<RuntimeException> exceptionHandler) {
 		try {
 			handler.handle(from(message, type));
 			return true;
 		} catch (DecodeException | IllegalArgumentException e) {
-			logger.warn("Cannot convert Vertx Message to JsonMessage {}:", type.getName(), e);
+			logger.warn("Cannot convert Vertx Message to JSON record {}:", type.getName(), e);
 			exceptionHandler.handle(e);
 			return false;
 		}
@@ -136,7 +136,7 @@ public interface JsonMessage {
 	/**
 	 * Like {@link #on(Class, Buffer, Handler, Handler)} but without an exception handler.
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, Buffer json, Handler<T> handler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, Buffer json, Handler<T> handler) {
 		return on(type, json, handler, e -> {
 		});
 	}
@@ -144,7 +144,7 @@ public interface JsonMessage {
 	/**
 	 * Like {@link #on(Class, String, Handler, Handler)} but without an exception handler.
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, String json, Handler<T> handler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, String json, Handler<T> handler) {
 		return on(type, json, handler, e -> {
 		});
 	}
@@ -152,7 +152,7 @@ public interface JsonMessage {
 	/**
 	 * Like {@link #on(Class, Object, Handler, Handler)} but without an exception handler.
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, Object json, Handler<T> handler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, Object json, Handler<T> handler) {
 		return on(type, json, handler, e -> {
 		});
 	}
@@ -160,7 +160,7 @@ public interface JsonMessage {
 	/**
 	 * Like {@link #on(Class, Message, Handler, Handler)} but without an exception handler.
 	 */
-	static <T extends JsonMessage> boolean on(Class<T> type, Message<?> message, Handler<T> handler) {
+	static <T extends JsonRecord> boolean on(Class<T> type, Message<?> message, Handler<T> handler) {
 		return on(type, message, handler, e -> {
 		});
 	}
@@ -172,7 +172,7 @@ public interface JsonMessage {
 	 *
 	 * @return a future that represents the conversion state
 	 */
-	static <T extends JsonMessage> Future<T> on(Class<T> type, Buffer json) {
+	static <T extends JsonRecord> Future<T> on(Class<T> type, Buffer json) {
 		return Future.future(promise -> on(type, json, promise::complete, promise::fail));
 	}
 
@@ -183,7 +183,7 @@ public interface JsonMessage {
 	 *
 	 * @return a future that represents the conversion state
 	 */
-	static <T extends JsonMessage> Future<T> on(Class<T> type, String json) {
+	static <T extends JsonRecord> Future<T> on(Class<T> type, String json) {
 		return Future.future(promise -> on(type, json, promise::complete, promise::fail));
 	}
 
@@ -194,7 +194,7 @@ public interface JsonMessage {
 	 *
 	 * @return a future that represents the conversion state
 	 */
-	static <T extends JsonMessage> Future<T> on(Class<T> type, Object json) {
+	static <T extends JsonRecord> Future<T> on(Class<T> type, Object json) {
 		return Future.future(promise -> on(type, json, promise::complete, promise::fail));
 	}
 
@@ -204,7 +204,7 @@ public interface JsonMessage {
 	 *
 	 * @return a future that represents the conversion state
 	 */
-	static <T extends JsonMessage> Future<T> on(Class<T> type, Message<?> message) {
+	static <T extends JsonRecord> Future<T> on(Class<T> type, Message<?> message) {
 		return Future.future(promise -> on(type, message, promise::complete, promise::fail));
 	}
 
@@ -213,62 +213,62 @@ public interface JsonMessage {
 	///////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Constructs a {@link JsonMessage} from a buffer which contains an encoded JSON string.
+	 * Constructs a {@link JsonRecord} from a buffer which contains an encoded JSON string.
 	 *
 	 * @param json the buffer that contents contain the necessary information to construct
-	 *             the specified {@link JsonMessage}
-	 * @param type the class of the target {@link JsonMessage}
-	 * @param <T>  the type of the target {@link JsonMessage}
+	 *             the specified {@link JsonRecord}
+	 * @param type the class of the target {@link JsonRecord}
+	 * @param <T>  the type of the target {@link JsonRecord}
 	 * @return the decoded message
 	 * @throws DecodeException if the buffer contents does not contain the necessary information to successfully
-	 *                         construct the specified {@link JsonMessage}
+	 *                         construct the specified {@link JsonRecord}
 	 */
-	static <T extends JsonMessage> T from(Buffer json, Class<T> type) throws DecodeException {
+	static <T extends JsonRecord> T from(Buffer json, Class<T> type) throws DecodeException {
 		return Json.CODEC.fromBuffer(json, type);
 	}
 
 	/**
-	 * Constructs a {@link JsonMessage} from a JSON {@link String}.
+	 * Constructs a {@link JsonRecord} from a JSON {@link String}.
 	 *
 	 * @param json the JSON {@link String} that contains the necessary information to construct
-	 *             the specified {@link JsonMessage}
-	 * @param type the class of the target {@link JsonMessage}
-	 * @param <T>  the type of the target {@link JsonMessage}
+	 *             the specified {@link JsonRecord}
+	 * @param type the class of the target {@link JsonRecord}
+	 * @param <T>  the type of the target {@link JsonRecord}
 	 * @return the decoded message
 	 * @throws DecodeException if the JSON string does not contain the necessary information to successfully
-	 *                         construct the specified {@link JsonMessage}
+	 *                         construct the specified {@link JsonRecord}
 	 */
-	static <T extends JsonMessage> T from(String json, Class<T> type) throws DecodeException {
+	static <T extends JsonRecord> T from(String json, Class<T> type) throws DecodeException {
 		return Json.CODEC.fromString(json, type);
 	}
 
 	/**
-	 * Constructs a {@link JsonMessage} from a plain {@link Object}.
+	 * Constructs a {@link JsonRecord} from a plain {@link Object}.
 	 *
 	 * @param json the plain {@link Object} that contains the necessary information to construct
-	 *             the specified {@link JsonMessage}
-	 * @param type the class of the target {@link JsonMessage}
-	 * @param <T>  the type of the target {@link JsonMessage}
+	 *             the specified {@link JsonRecord}
+	 * @param type the class of the target {@link JsonRecord}
+	 * @param <T>  the type of the target {@link JsonRecord}
 	 * @return the decoded message
 	 * @throws DecodeException if the plain object does not contain the necessary information to successfully
-	 *                         construct the specified {@link JsonMessage}
+	 *                         construct the specified {@link JsonRecord}
 	 */
-	static <T extends JsonMessage> T from(Object json, Class<T> type) throws DecodeException {
+	static <T extends JsonRecord> T from(Object json, Class<T> type) throws DecodeException {
 		return Json.CODEC.fromValue(json, type);
 	}
 
 	/**
-	 * Constructs a {@link JsonMessage} from a Vert.x EventBus {@link Message} body.
+	 * Constructs a {@link JsonRecord} from a Vert.x EventBus {@link Message} body.
 	 *
 	 * @param message the message which body contains the necessary information to construct
-	 *                the specified {@link JsonMessage}
-	 * @param type    the class of the target {@link JsonMessage}
-	 * @param <T>     the type of the target {@link JsonMessage}
+	 *                the specified {@link JsonRecord}
+	 * @param type    the class of the target {@link JsonRecord}
+	 * @param <T>     the type of the target {@link JsonRecord}
 	 * @return the decoded message
 	 * @throws DecodeException if the raw message body does not contain the necessary information to successfully
-	 *                         construct the specified {@link JsonMessage}
+	 *                         construct the specified {@link JsonRecord}
 	 */
-	static <T extends JsonMessage> T from(Message<?> message, Class<T> type) throws DecodeException {
+	static <T extends JsonRecord> T from(Message<?> message, Class<T> type) throws DecodeException {
 		return from(message.body(), type);
 	}
 
@@ -286,22 +286,22 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * Constructs a {@link JsonObject} from the {@link JsonMessage}.
+	 * Constructs a {@link JsonObject} from the {@link JsonRecord}.
 	 *
 	 * @return the constructed JSON object
 	 * @throws IllegalArgumentException if the JSON object cannot represent the type of
-	 *                                  any {@link JsonMessage} property
+	 *                                  any {@link JsonRecord} property
 	 */
 	default JsonObject toJsonObject() throws IllegalArgumentException {
 		return JsonObject.mapFrom(this);
 	}
 
 	/**
-	 * Constructs a {@link String} containing the properties of the {@link JsonMessage} as JSON values.
+	 * Constructs a {@link String} containing the properties of the {@link JsonRecord} as JSON values.
 	 *
 	 * @param pretty if {@code true} the JSON output is properly formatted
-	 * @return a JSON string representing the {@link JsonMessage}
-	 * @throws EncodeException if the {@link JsonMessage} containing properties that cannot be represented
+	 * @return a JSON string representing the {@link JsonRecord}
+	 * @throws EncodeException if the {@link JsonRecord} containing properties that cannot be represented
 	 *                         by JSON values
 	 * @see io.vertx.core.json.jackson.JacksonCodec#toString(Object, boolean)
 	 */
@@ -317,11 +317,11 @@ public interface JsonMessage {
 	}
 
 	/**
-	 * Constructs a {@link Buffer} containing the properties of the {@link JsonMessage} as JSON values
+	 * Constructs a {@link Buffer} containing the properties of the {@link JsonRecord} as JSON values
 	 *
 	 * @param pretty if {@code true} the JSON output is properly formatted
-	 * @return a buffer representing the {@link JsonMessage}
-	 * @throws EncodeException if the {@link JsonMessage} containing properties that cannot be represented
+	 * @return a buffer representing the {@link JsonRecord}
+	 * @throws EncodeException if the {@link JsonRecord} containing properties that cannot be represented
 	 *                         by JSON values
 	 * @see io.vertx.core.json.jackson.JacksonCodec#toBuffer(Object, boolean)
 	 */
@@ -349,5 +349,5 @@ public interface JsonMessage {
 		return getClass().getName();
 	}
 
-	Logger logger = LoggerFactory.getLogger(JsonMessage.class);
+	Logger logger = LoggerFactory.getLogger(JsonRecord.class);
 }

@@ -1,7 +1,7 @@
 package de.wuespace.telestion.api.verticle.trait;
 
 import de.wuespace.telestion.api.message.HeaderInformation;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import de.wuespace.telestion.api.message.MultiMapUtils;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonObject;
 
 /**
  * Allows {@link Verticle} instances to get simplified access to the Vert.x event bus.
- * These traits support automatic conversion of different message types like {@link JsonMessage}
+ * These traits support automatic conversion of different message types like {@link JsonRecord}
  * and automatic attachment of {@link MultiMap} or {@link HeaderInformation} to sent messages on the event bus.
  *
  * <h2>Usage</h2>
@@ -91,14 +91,14 @@ public interface WithEventBus extends Verticle {
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
-	default void publish(String address, JsonMessage message) {
+	default void publish(String address, JsonRecord message) {
 		publish(address, message.toJsonObject());
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
-	default void publish(String address, JsonMessage message, DeliveryOptions options) {
+	default void publish(String address, JsonRecord message, DeliveryOptions options) {
 		publish(address, message.toJsonObject(), options);
 	}
 
@@ -106,7 +106,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
-	default void publish(String address, JsonMessage message, DeliveryOptions options, MultiMap... headers) {
+	default void publish(String address, JsonRecord message, DeliveryOptions options, MultiMap... headers) {
 		publish(address, message.toJsonObject(), options, headers);
 	}
 
@@ -114,7 +114,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object, DeliveryOptions)
 	 */
-	default void publish(String address, JsonMessage message, DeliveryOptions options, HeaderInformation... headers) {
+	default void publish(String address, JsonRecord message, DeliveryOptions options, HeaderInformation... headers) {
 		publish(address, message.toJsonObject(), options, headers);
 	}
 
@@ -122,7 +122,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
-	default void publish(String address, JsonMessage message, MultiMap... headers) {
+	default void publish(String address, JsonRecord message, MultiMap... headers) {
 		publish(address, message.toJsonObject(), headers);
 	}
 
@@ -130,7 +130,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#publish(String, Object)
 	 */
-	default void publish(String address, JsonMessage message, HeaderInformation... headers) {
+	default void publish(String address, JsonRecord message, HeaderInformation... headers) {
 		publish(address, message.toJsonObject(), headers);
 	}
 
@@ -189,14 +189,14 @@ public interface WithEventBus extends Verticle {
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
-	default void send(String address, JsonMessage message) {
+	default void send(String address, JsonRecord message) {
 		send(address, message.toJsonObject());
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
-	default void send(String address, JsonMessage message, DeliveryOptions options) {
+	default void send(String address, JsonRecord message, DeliveryOptions options) {
 		send(address, message.toJsonObject(), options);
 	}
 
@@ -204,7 +204,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
-	default void send(String address, JsonMessage message, DeliveryOptions options, MultiMap... headers) {
+	default void send(String address, JsonRecord message, DeliveryOptions options, MultiMap... headers) {
 		send(address, message.toJsonObject(), options, headers);
 	}
 
@@ -212,7 +212,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object, DeliveryOptions)
 	 */
-	default void send(String address, JsonMessage message, DeliveryOptions options, HeaderInformation... headers) {
+	default void send(String address, JsonRecord message, DeliveryOptions options, HeaderInformation... headers) {
 		send(address, message.toJsonObject(), options, headers);
 	}
 
@@ -220,7 +220,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
-	default void send(String address, JsonMessage message, MultiMap... headers) {
+	default void send(String address, JsonRecord message, MultiMap... headers) {
 		send(address, message.toJsonObject(), headers);
 	}
 
@@ -228,7 +228,7 @@ public interface WithEventBus extends Verticle {
 	 * @param headers the headers that should be sent with the message
 	 * @see io.vertx.core.eventbus.EventBus#send(String, Object)
 	 */
-	default void send(String address, JsonMessage message, HeaderInformation... headers) {
+	default void send(String address, JsonRecord message, HeaderInformation... headers) {
 		send(address, message.toJsonObject(), headers);
 	}
 
@@ -295,14 +295,14 @@ public interface WithEventBus extends Verticle {
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <T> Future<Message<T>> request(String address, JsonMessage message) {
+	default <T> Future<Message<T>> request(String address, JsonRecord message) {
 		return request(address, message.toJsonObject());
 	}
 
 	/**
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <T> Future<Message<T>> request(String address, JsonMessage message, DeliveryOptions options) {
+	default <T> Future<Message<T>> request(String address, JsonRecord message, DeliveryOptions options) {
 		return request(address, message.toJsonObject(), options);
 	}
 
@@ -312,7 +312,7 @@ public interface WithEventBus extends Verticle {
 	 */
 	default <T> Future<Message<T>> request(
 			String address,
-			JsonMessage message,
+			JsonRecord message,
 			DeliveryOptions options,
 			MultiMap... requestHeaders) {
 		return request(address, message.toJsonObject(), options, requestHeaders);
@@ -324,7 +324,7 @@ public interface WithEventBus extends Verticle {
 	 */
 	default <T> Future<Message<T>> request(
 			String address,
-			JsonMessage message,
+			JsonRecord message,
 			DeliveryOptions options,
 			HeaderInformation... requestHeaders) {
 		return request(address, message.toJsonObject(), options, requestHeaders);
@@ -334,7 +334,7 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <T> Future<Message<T>> request(String address, JsonMessage message, MultiMap... requestHeaders) {
+	default <T> Future<Message<T>> request(String address, JsonRecord message, MultiMap... requestHeaders) {
 		return request(address, message.toJsonObject(), requestHeaders);
 	}
 
@@ -342,7 +342,7 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <T> Future<Message<T>> request(String address, JsonMessage message, HeaderInformation... requestHeaders) {
+	default <T> Future<Message<T>> request(String address, JsonRecord message, HeaderInformation... requestHeaders) {
 		return request(address, message.toJsonObject(), requestHeaders);
 	}
 
@@ -350,7 +350,7 @@ public interface WithEventBus extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType) {
@@ -361,7 +361,7 @@ public interface WithEventBus extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
@@ -374,7 +374,7 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
@@ -388,7 +388,7 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
@@ -402,7 +402,7 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
@@ -415,7 +415,7 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
@@ -427,9 +427,9 @@ public interface WithEventBus extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
-			JsonMessage request,
+			JsonRecord request,
 			Class<V> responseType) {
 		return request(address, request.toJsonObject(), responseType);
 	}
@@ -438,9 +438,9 @@ public interface WithEventBus extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
-			JsonMessage request,
+			JsonRecord request,
 			Class<V> responseType,
 			DeliveryOptions options) {
 		return request(address, request.toJsonObject(), responseType, options);
@@ -451,9 +451,9 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
-			JsonMessage request,
+			JsonRecord request,
 			Class<V> responseType,
 			DeliveryOptions options,
 			MultiMap... requestHeaders) {
@@ -465,9 +465,9 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
-			JsonMessage request,
+			JsonRecord request,
 			Class<V> responseType,
 			DeliveryOptions options,
 			HeaderInformation... requestHeaders) {
@@ -479,9 +479,9 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
-			JsonMessage request,
+			JsonRecord request,
 			Class<V> responseType,
 			MultiMap... requestHeaders) {
 		return request(address, request.toJsonObject(), responseType, requestHeaders);
@@ -492,9 +492,9 @@ public interface WithEventBus extends Verticle {
 	 * @param requestHeaders the headers that should be sent with the request message
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonMessage, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
 			String address,
-			JsonMessage request,
+			JsonRecord request,
 			Class<V> responseType,
 			HeaderInformation... requestHeaders) {
 		return request(address, request.toJsonObject(), responseType, requestHeaders);
@@ -515,18 +515,18 @@ public interface WithEventBus extends Verticle {
 	 * @param type the type of received message to map to
 	 * @see io.vertx.core.eventbus.EventBus#consumer(String, Handler)
 	 */
-	default <V extends JsonMessage> void register(String address, MessageHandler<V> handler, Class<V> type) {
-		register(address, message -> JsonMessage.on(type, message, handler::handle));
+	default <V extends JsonRecord> void register(String address, MessageHandler<V> handler, Class<V> type) {
+		register(address, message -> JsonRecord.on(type, message, handler::handle));
 	}
 
 	/**
 	 * @param type the type of received message to map to
 	 * @see io.vertx.core.eventbus.EventBus#consumer(String, Handler)
 	 */
-	default <V extends JsonMessage, T> void register(
+	default <V extends JsonRecord, T> void register(
 			String address,
 			ExtendedMessageHandler<V, T> handler,
 			Class<V> type) {
-		this.<T>register(address, message -> JsonMessage.on(type, message, body -> handler.handle(body, message)));
+		this.<T>register(address, message -> JsonRecord.on(type, message, body -> handler.handle(body, message)));
 	}
 }

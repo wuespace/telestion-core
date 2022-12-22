@@ -1,6 +1,6 @@
 package de.wuespace.telestion.api.verticle.trait;
 
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import io.vertx.core.eventbus.Message;
 
 /**
@@ -11,6 +11,6 @@ import io.vertx.core.eventbus.Message;
  * @see WithEventBus#register(String, ExtendedMessageHandler, Class)
  */
 @FunctionalInterface
-public interface ExtendedMessageHandler<V extends JsonMessage, T> {
+public interface ExtendedMessageHandler<V extends JsonRecord, T> {
 	void handle(V body, Message<T> message);
 }

@@ -1,6 +1,6 @@
 package de.wuespace.telestion.api.verticle.trait;
 
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 
 /**
  * An event handler which accepts the decoded body of the message
@@ -10,6 +10,6 @@ import de.wuespace.telestion.api.message.JsonMessage;
  * @see WithEventBus#register(String, MessageHandler, Class)
  */
 @FunctionalInterface
-public interface MessageHandler<T extends JsonMessage> {
+public interface MessageHandler<T extends JsonRecord> {
 	void handle(T body);
 }

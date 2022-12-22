@@ -27,10 +27,10 @@ public class JsonMessageTest {
 			void shouldCallExtendedHandlerOnValidBuffer() {
 				var buffer = VALID_JSON_OBJECT.toBuffer();
 
-				var result = JsonMessage.on(TestMessage.class, buffer,
+				var result = JsonRecord.on(TestMessage.class, buffer,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)),
 						err -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, buffer,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, buffer,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)),
 						err -> fail());
 
@@ -42,10 +42,10 @@ public class JsonMessageTest {
 			void shouldCallExtendedExceptionHandlerOnInvalidBuffer() {
 				var buffer = INVALID_JSON_OBJECT.toBuffer();
 
-				var result = JsonMessage.on(TestMessage.class, buffer,
+				var result = JsonRecord.on(TestMessage.class, buffer,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, buffer,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, buffer,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
 
@@ -57,9 +57,9 @@ public class JsonMessageTest {
 			void shouldCallBasicHandlerOnValidBuffer() {
 				var buffer = VALID_JSON_OBJECT.toBuffer();
 
-				var result = JsonMessage.on(TestMessage.class, buffer,
+				var result = JsonRecord.on(TestMessage.class, buffer,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, buffer,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, buffer,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)));
 
 				assertThat(result, is(true));
@@ -70,8 +70,8 @@ public class JsonMessageTest {
 			void shouldReturnFalseOnInvalidBufferInBasicMethod() {
 				var buffer = INVALID_JSON_OBJECT.toBuffer();
 
-				var result = JsonMessage.on(TestMessage.class, buffer, message -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, buffer, message -> fail());
+				var result = JsonRecord.on(TestMessage.class, buffer, message -> fail());
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, buffer, message -> fail());
 
 				assertThat(result, is(false));
 				assertThat(anotherResult, is(false));
@@ -81,10 +81,10 @@ public class JsonMessageTest {
 			void shouldCallExtendedHandlerOnValidJsonString() {
 				var jsonString = VALID_JSON_OBJECT.toString();
 
-				var result = JsonMessage.on(TestMessage.class, jsonString,
+				var result = JsonRecord.on(TestMessage.class, jsonString,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)),
 						err -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, jsonString,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, jsonString,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)),
 						err -> fail());
 
@@ -96,10 +96,10 @@ public class JsonMessageTest {
 			void shouldCallExtendedExceptionHandlerOnInvalidJsonString() {
 				var jsonString = INVALID_JSON_OBJECT.toString();
 
-				var result = JsonMessage.on(TestMessage.class, jsonString,
+				var result = JsonRecord.on(TestMessage.class, jsonString,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, jsonString,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, jsonString,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
 
@@ -111,9 +111,9 @@ public class JsonMessageTest {
 			void shouldCallBasicHandlerOnValidJsonString() {
 				var jsonString = VALID_JSON_OBJECT.toString();
 
-				var result = JsonMessage.on(TestMessage.class, jsonString,
+				var result = JsonRecord.on(TestMessage.class, jsonString,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, jsonString,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, jsonString,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)));
 
 				assertThat(result, is(true));
@@ -124,8 +124,8 @@ public class JsonMessageTest {
 			void shouldReturnFalseOnInvalidJsonStringInBasicMethod() {
 				var jsonString = INVALID_JSON_OBJECT.toString();
 
-				var result = JsonMessage.on(TestMessage.class, jsonString, message -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, jsonString, message -> fail());
+				var result = JsonRecord.on(TestMessage.class, jsonString, message -> fail());
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, jsonString, message -> fail());
 
 				assertThat(result, is(false));
 				assertThat(anotherResult, is(false));
@@ -133,10 +133,10 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallExtendedHandlerOnValidPOJO() {
-				var result = JsonMessage.on(TestMessage.class, VALID_POJO,
+				var result = JsonRecord.on(TestMessage.class, VALID_POJO,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)),
 						err -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, VALID_POJO,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, VALID_POJO,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)),
 						err -> fail());
 
@@ -146,10 +146,10 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallExtendedExceptionHandlerOnInvalidPOJO() {
-				var result = JsonMessage.on(TestMessage.class, INVALID_POJO,
+				var result = JsonRecord.on(TestMessage.class, INVALID_POJO,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, INVALID_POJO,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, INVALID_POJO,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
 
@@ -159,9 +159,9 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallBasicHandlerOnValidPOJO() {
-				var result = JsonMessage.on(TestMessage.class, VALID_POJO,
+				var result = JsonRecord.on(TestMessage.class, VALID_POJO,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, VALID_POJO,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, VALID_POJO,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)));
 
 				assertThat(result, is(true));
@@ -170,8 +170,8 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldReturnFalseOnInvalidPOJOInBasicMethod() {
-				var result = JsonMessage.on(TestMessage.class, INVALID_POJO, message -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, INVALID_POJO, message -> fail());
+				var result = JsonRecord.on(TestMessage.class, INVALID_POJO, message -> fail());
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, INVALID_POJO, message -> fail());
 
 				assertThat(result, is(false));
 				assertThat(anotherResult, is(false));
@@ -179,10 +179,10 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallExtendedHandlerOnValidJsonObject() {
-				var result = JsonMessage.on(TestMessage.class, VALID_JSON_OBJECT,
+				var result = JsonRecord.on(TestMessage.class, VALID_JSON_OBJECT,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)),
 						err -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, VALID_JSON_OBJECT,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, VALID_JSON_OBJECT,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)),
 						err -> fail());
 
@@ -192,10 +192,10 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallExtendedExceptionHandlerOnInvalidJsonObject() {
-				var result = JsonMessage.on(TestMessage.class, INVALID_JSON_OBJECT,
+				var result = JsonRecord.on(TestMessage.class, INVALID_JSON_OBJECT,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, INVALID_JSON_OBJECT,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, INVALID_JSON_OBJECT,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
 
@@ -205,9 +205,9 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallBasicHandlerOnValidJsonObject() {
-				var result = JsonMessage.on(TestMessage.class, VALID_JSON_OBJECT,
+				var result = JsonRecord.on(TestMessage.class, VALID_JSON_OBJECT,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, VALID_JSON_OBJECT,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, VALID_JSON_OBJECT,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)));
 
 				assertThat(result, is(true));
@@ -216,8 +216,8 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldReturnFalseOnInvalidJsonObjectInBasicMethod() {
-				var result = JsonMessage.on(TestMessage.class, INVALID_JSON_OBJECT, message -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, INVALID_JSON_OBJECT,
+				var result = JsonRecord.on(TestMessage.class, INVALID_JSON_OBJECT, message -> fail());
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, INVALID_JSON_OBJECT,
 						message -> fail());
 
 				assertThat(result, is(false));
@@ -226,10 +226,10 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallExtendedHandlerOnValidEventBusMessage() {
-				var result = JsonMessage.on(TestMessage.class, VALID_EVENTBUS_MESSAGE,
+				var result = JsonRecord.on(TestMessage.class, VALID_EVENTBUS_MESSAGE,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)),
 						err -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, VALID_EVENTBUS_MESSAGE,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, VALID_EVENTBUS_MESSAGE,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)),
 						err -> fail());
 
@@ -239,10 +239,10 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallExtendedExceptionHandlerOnInvalidEventBusMessage() {
-				var result = JsonMessage.on(TestMessage.class, INVALID_EVENTBUS_MESSAGE,
+				var result = JsonRecord.on(TestMessage.class, INVALID_EVENTBUS_MESSAGE,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, INVALID_EVENTBUS_MESSAGE,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, INVALID_EVENTBUS_MESSAGE,
 						message -> fail(),
 						err -> assertThat(err, isA(RuntimeException.class)));
 
@@ -252,9 +252,9 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldCallBasicHandlerOnValidEventBusMessage() {
-				var result = JsonMessage.on(TestMessage.class, VALID_EVENTBUS_MESSAGE,
+				var result = JsonRecord.on(TestMessage.class, VALID_EVENTBUS_MESSAGE,
 						message -> assertThat(message, is(VALID_TEST_MESSAGE)));
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, VALID_EVENTBUS_MESSAGE,
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, VALID_EVENTBUS_MESSAGE,
 						message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)));
 
 				assertThat(result, is(true));
@@ -263,8 +263,8 @@ public class JsonMessageTest {
 
 			@Test
 			void shouldReturnFalseOnInvalidEventBusMessageInBasicMethod() {
-				var result = JsonMessage.on(TestMessage.class, INVALID_EVENTBUS_MESSAGE, message -> fail());
-				var anotherResult = JsonMessage.on(AnotherTestMessage.class, INVALID_EVENTBUS_MESSAGE,
+				var result = JsonRecord.on(TestMessage.class, INVALID_EVENTBUS_MESSAGE, message -> fail());
+				var anotherResult = JsonRecord.on(AnotherTestMessage.class, INVALID_EVENTBUS_MESSAGE,
 						message -> fail());
 
 				assertThat(result, is(false));
@@ -279,10 +279,10 @@ public class JsonMessageTest {
 			void shouldSucceedOnValidBuffer() {
 				var buffer = VALID_JSON_OBJECT.toBuffer();
 
-				JsonMessage.on(TestMessage.class, buffer)
+				JsonRecord.on(TestMessage.class, buffer)
 						.onSuccess(message -> assertThat(message, is(VALID_TEST_MESSAGE)))
 						.onFailure(err -> fail());
-				JsonMessage.on(AnotherTestMessage.class, buffer)
+				JsonRecord.on(AnotherTestMessage.class, buffer)
 						.onSuccess(message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)))
 						.onFailure(err -> fail());
 			}
@@ -291,10 +291,10 @@ public class JsonMessageTest {
 			void shouldFailOnInvalidBuffer() {
 				var buffer = INVALID_JSON_OBJECT.toBuffer();
 
-				JsonMessage.on(TestMessage.class, buffer)
+				JsonRecord.on(TestMessage.class, buffer)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
-				JsonMessage.on(AnotherTestMessage.class, buffer)
+				JsonRecord.on(AnotherTestMessage.class, buffer)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
 			}
@@ -303,10 +303,10 @@ public class JsonMessageTest {
 			void shouldSucceedOnValidJsonString() {
 				var jsonString = VALID_JSON_OBJECT.toString();
 
-				JsonMessage.on(TestMessage.class, jsonString)
+				JsonRecord.on(TestMessage.class, jsonString)
 						.onSuccess(message -> assertThat(message, is(VALID_TEST_MESSAGE)))
 						.onFailure(err -> fail());
-				JsonMessage.on(AnotherTestMessage.class, jsonString)
+				JsonRecord.on(AnotherTestMessage.class, jsonString)
 						.onSuccess(message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)))
 						.onFailure(err -> fail());
 			}
@@ -315,70 +315,70 @@ public class JsonMessageTest {
 			void shouldFailOnInvalidJsonString() {
 				var jsonString = INVALID_JSON_OBJECT.toString();
 
-				JsonMessage.on(TestMessage.class, jsonString)
+				JsonRecord.on(TestMessage.class, jsonString)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
-				JsonMessage.on(AnotherTestMessage.class, jsonString)
+				JsonRecord.on(AnotherTestMessage.class, jsonString)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
 			}
 
 			@Test
 			void shouldSucceedOnValidPOJO() {
-				JsonMessage.on(TestMessage.class, VALID_POJO)
+				JsonRecord.on(TestMessage.class, VALID_POJO)
 						.onSuccess(message -> assertThat(message, is(VALID_TEST_MESSAGE)))
 						.onFailure(err -> fail());
-				JsonMessage.on(AnotherTestMessage.class, VALID_POJO)
+				JsonRecord.on(AnotherTestMessage.class, VALID_POJO)
 						.onSuccess(message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)))
 						.onFailure(err -> fail());
 			}
 
 			@Test
 			void shouldFailOnInvalidPOJO() {
-				JsonMessage.on(TestMessage.class, INVALID_POJO)
+				JsonRecord.on(TestMessage.class, INVALID_POJO)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
-				JsonMessage.on(AnotherTestMessage.class, INVALID_POJO)
+				JsonRecord.on(AnotherTestMessage.class, INVALID_POJO)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
 			}
 
 			@Test
 			void shouldSucceedOnValidJsonObject() {
-				JsonMessage.on(TestMessage.class, VALID_JSON_OBJECT)
+				JsonRecord.on(TestMessage.class, VALID_JSON_OBJECT)
 						.onSuccess(message -> assertThat(message, is(VALID_TEST_MESSAGE)))
 						.onFailure(err -> fail());
-				JsonMessage.on(AnotherTestMessage.class, VALID_JSON_OBJECT)
+				JsonRecord.on(AnotherTestMessage.class, VALID_JSON_OBJECT)
 						.onSuccess(message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)))
 						.onFailure(err -> fail());
 			}
 
 			@Test
 			void shouldFailOnInvalidJsonObject() {
-				JsonMessage.on(TestMessage.class, INVALID_JSON_OBJECT)
+				JsonRecord.on(TestMessage.class, INVALID_JSON_OBJECT)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
-				JsonMessage.on(AnotherTestMessage.class, INVALID_JSON_OBJECT)
+				JsonRecord.on(AnotherTestMessage.class, INVALID_JSON_OBJECT)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
 			}
 
 			@Test
 			void shouldSucceedOnValidEventBusMessage() {
-				JsonMessage.on(TestMessage.class, VALID_EVENTBUS_MESSAGE)
+				JsonRecord.on(TestMessage.class, VALID_EVENTBUS_MESSAGE)
 						.onSuccess(message -> assertThat(message, is(VALID_TEST_MESSAGE)))
 						.onFailure(err -> fail());
-				JsonMessage.on(AnotherTestMessage.class, VALID_EVENTBUS_MESSAGE)
+				JsonRecord.on(AnotherTestMessage.class, VALID_EVENTBUS_MESSAGE)
 						.onSuccess(message -> assertThat(message, is(VALID_ANOTHER_TEST_MESSAGE)))
 						.onFailure(err -> fail());
 			}
 
 			@Test
 			void shouldFailOnInvalidEventBusMessage() {
-				JsonMessage.on(TestMessage.class, INVALID_EVENTBUS_MESSAGE)
+				JsonRecord.on(TestMessage.class, INVALID_EVENTBUS_MESSAGE)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
-				JsonMessage.on(AnotherTestMessage.class, INVALID_EVENTBUS_MESSAGE)
+				JsonRecord.on(AnotherTestMessage.class, INVALID_EVENTBUS_MESSAGE)
 						.onSuccess(message -> fail())
 						.onFailure(err -> assertThat(err, isA(RuntimeException.class)));
 			}
@@ -392,8 +392,8 @@ public class JsonMessageTest {
 		void shouldDecodeAValidBuffer() {
 			var buffer = VALID_JSON_OBJECT.toBuffer();
 
-			var testMessage = JsonMessage.from(buffer, TestMessage.class);
-			var anotherTestMessage = JsonMessage.from(buffer, AnotherTestMessage.class);
+			var testMessage = JsonRecord.from(buffer, TestMessage.class);
+			var anotherTestMessage = JsonRecord.from(buffer, AnotherTestMessage.class);
 
 			assertThat(testMessage, is(VALID_TEST_MESSAGE));
 			assertThat(anotherTestMessage, is(VALID_ANOTHER_TEST_MESSAGE));
@@ -405,8 +405,8 @@ public class JsonMessageTest {
 
 			// capture both DecodeException and IllegalArgumentException
 			assertThrows(RuntimeException.class, () -> {
-				var testMessage = JsonMessage.from(buffer, TestMessage.class);
-				var anotherTestMessage = JsonMessage.from(buffer, AnotherTestMessage.class);
+				var testMessage = JsonRecord.from(buffer, TestMessage.class);
+				var anotherTestMessage = JsonRecord.from(buffer, AnotherTestMessage.class);
 
 				assertThat(testMessage, not(VALID_TEST_MESSAGE));
 				assertThat(anotherTestMessage, not(VALID_ANOTHER_TEST_MESSAGE));
@@ -417,8 +417,8 @@ public class JsonMessageTest {
 		void shouldDecodeAValidJsonString() {
 			var jsonString = VALID_JSON_OBJECT.toString();
 
-			var testMessage = JsonMessage.from(jsonString, TestMessage.class);
-			var anotherTestMessage = JsonMessage.from(jsonString, AnotherTestMessage.class);
+			var testMessage = JsonRecord.from(jsonString, TestMessage.class);
+			var anotherTestMessage = JsonRecord.from(jsonString, AnotherTestMessage.class);
 
 			assertThat(testMessage, is(VALID_TEST_MESSAGE));
 			assertThat(anotherTestMessage, is(VALID_ANOTHER_TEST_MESSAGE));
@@ -430,8 +430,8 @@ public class JsonMessageTest {
 
 			// capture both DecodeException and IllegalArgumentException
 			assertThrows(RuntimeException.class, () -> {
-				var testMessage = JsonMessage.from(jsonString, TestMessage.class);
-				var anotherTestMessage = JsonMessage.from(jsonString, AnotherTestMessage.class);
+				var testMessage = JsonRecord.from(jsonString, TestMessage.class);
+				var anotherTestMessage = JsonRecord.from(jsonString, AnotherTestMessage.class);
 
 				assertThat(testMessage, not(VALID_TEST_MESSAGE));
 				assertThat(anotherTestMessage, not(VALID_ANOTHER_TEST_MESSAGE));
@@ -440,8 +440,8 @@ public class JsonMessageTest {
 
 		@Test
 		void shouldDecodeAValidPOJO() {
-			var testMessage = JsonMessage.from(VALID_POJO, TestMessage.class);
-			var anotherTestMessage = JsonMessage.from(VALID_POJO, AnotherTestMessage.class);
+			var testMessage = JsonRecord.from(VALID_POJO, TestMessage.class);
+			var anotherTestMessage = JsonRecord.from(VALID_POJO, AnotherTestMessage.class);
 
 			assertThat(testMessage, is(VALID_TEST_MESSAGE));
 			assertThat(anotherTestMessage, is(VALID_ANOTHER_TEST_MESSAGE));
@@ -451,8 +451,8 @@ public class JsonMessageTest {
 		void shouldNotDecodeAnInvalidPOJO() {
 			// capture both DecodeException and IllegalArgumentException
 			assertThrows(RuntimeException.class, () -> {
-				var testMessage = JsonMessage.from(INVALID_POJO, TestMessage.class);
-				var anotherTestMessage = JsonMessage.from(INVALID_POJO, AnotherTestMessage.class);
+				var testMessage = JsonRecord.from(INVALID_POJO, TestMessage.class);
+				var anotherTestMessage = JsonRecord.from(INVALID_POJO, AnotherTestMessage.class);
 
 				assertThat(testMessage, not(VALID_TEST_MESSAGE));
 				assertThat(anotherTestMessage, not(VALID_ANOTHER_TEST_MESSAGE));
@@ -461,8 +461,8 @@ public class JsonMessageTest {
 
 		@Test
 		void shouldDecodeAValidJsonObject() {
-			var testMessage = JsonMessage.from(VALID_JSON_OBJECT, TestMessage.class);
-			var anotherTestMessage = JsonMessage.from(VALID_JSON_OBJECT, AnotherTestMessage.class);
+			var testMessage = JsonRecord.from(VALID_JSON_OBJECT, TestMessage.class);
+			var anotherTestMessage = JsonRecord.from(VALID_JSON_OBJECT, AnotherTestMessage.class);
 
 			assertThat(testMessage, is(VALID_TEST_MESSAGE));
 			assertThat(anotherTestMessage, is(VALID_ANOTHER_TEST_MESSAGE));
@@ -472,8 +472,8 @@ public class JsonMessageTest {
 		void shouldNotDecodeAnInvalidJsonObject() {
 			// capture both DecodeException and IllegalArgumentException
 			assertThrows(RuntimeException.class, () -> {
-				var testMessage = JsonMessage.from(INVALID_JSON_OBJECT, TestMessage.class);
-				var anotherTestMessage = JsonMessage.from(INVALID_JSON_OBJECT, AnotherTestMessage.class);
+				var testMessage = JsonRecord.from(INVALID_JSON_OBJECT, TestMessage.class);
+				var anotherTestMessage = JsonRecord.from(INVALID_JSON_OBJECT, AnotherTestMessage.class);
 
 				assertThat(testMessage, not(VALID_TEST_MESSAGE));
 				assertThat(anotherTestMessage, not(VALID_ANOTHER_TEST_MESSAGE));
@@ -482,8 +482,8 @@ public class JsonMessageTest {
 
 		@Test
 		void shouldDecodeAValidEventBusMessage() {
-			var testMessage = JsonMessage.from(VALID_EVENTBUS_MESSAGE, TestMessage.class);
-			var anotherTestMessage = JsonMessage.from(VALID_EVENTBUS_MESSAGE, AnotherTestMessage.class);
+			var testMessage = JsonRecord.from(VALID_EVENTBUS_MESSAGE, TestMessage.class);
+			var anotherTestMessage = JsonRecord.from(VALID_EVENTBUS_MESSAGE, AnotherTestMessage.class);
 
 			assertThat(testMessage, is(VALID_TEST_MESSAGE));
 			assertThat(anotherTestMessage, is(VALID_ANOTHER_TEST_MESSAGE));
@@ -493,8 +493,8 @@ public class JsonMessageTest {
 		void shouldNotDecodeAnInvalidEventBusMessage() {
 			// capture both DecodeException and IllegalArgumentException
 			assertThrows(RuntimeException.class, () -> {
-				var testMessage = JsonMessage.from(INVALID_EVENTBUS_MESSAGE, TestMessage.class);
-				var anotherTestMessage = JsonMessage.from(INVALID_EVENTBUS_MESSAGE, AnotherTestMessage.class);
+				var testMessage = JsonRecord.from(INVALID_EVENTBUS_MESSAGE, TestMessage.class);
+				var anotherTestMessage = JsonRecord.from(INVALID_EVENTBUS_MESSAGE, AnotherTestMessage.class);
 
 				assertThat(testMessage, not(VALID_TEST_MESSAGE));
 				assertThat(anotherTestMessage, not(VALID_ANOTHER_TEST_MESSAGE));
@@ -622,25 +622,25 @@ public class JsonMessageTest {
 	@Test
 	void shouldEncodeAndDecodeAMessageViaAJsonObject() {
 		var encoded = VALID_TEST_MESSAGE.toJsonObject();
-		assertThat(JsonMessage.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
+		assertThat(JsonRecord.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
 		// should also decode to another test message type with the same parameters
-		assertThat(JsonMessage.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
+		assertThat(JsonRecord.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
 	}
 
 	@Test
 	void shouldEncodeAndDecodeAMessageViaAJsonString() {
 		var encoded = VALID_TEST_MESSAGE.toJsonString();
-		assertThat(JsonMessage.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
+		assertThat(JsonRecord.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
 		// should also decode to another test message type with the same parameters
-		assertThat(JsonMessage.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
+		assertThat(JsonRecord.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
 	}
 
 	@Test
 	void shouldEncodeAndDecodeAMessageViaABuffer() {
 		var encoded = VALID_TEST_MESSAGE.toJsonBuffer();
-		assertThat(JsonMessage.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
+		assertThat(JsonRecord.from(encoded, TestMessage.class), is(VALID_TEST_MESSAGE));
 		// should also decode to another test message type with the same parameters
-		assertThat(JsonMessage.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
+		assertThat(JsonRecord.from(encoded, AnotherTestMessage.class), is(VALID_ANOTHER_TEST_MESSAGE));
 	}
 
 	// "Invalid" means the parsing should fail due to incompatible parameters types
@@ -685,10 +685,10 @@ public class JsonMessageTest {
 		}
 	}
 
-	public record TestMessage(@JsonProperty float param) implements JsonMessage {
+	public record TestMessage(@JsonProperty float param) implements JsonRecord {
 	}
 
-	public record AnotherTestMessage(@JsonProperty float param) implements JsonMessage {
+	public record AnotherTestMessage(@JsonProperty float param) implements JsonRecord {
 	}
 
 	public final float VALID_PARAM = 0.0f;

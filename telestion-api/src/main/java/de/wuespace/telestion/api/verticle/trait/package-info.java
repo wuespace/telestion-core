@@ -8,9 +8,7 @@
  * <p>
  * To use them, a {@link de.wuespace.telestion.api.verticle.TelestionVerticle} must simply implement one of the traits.
  * <p>
- * Refer to the examples in {@code de.wuespace.telestion.example}.
- * <p>
- * (c) WueSpace e.V.
+ * (c) WueSpace e. V.
  *
  * @see de.wuespace.telestion.api.verticle
  */

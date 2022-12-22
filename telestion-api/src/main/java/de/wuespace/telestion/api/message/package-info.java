@@ -8,7 +8,7 @@
  * Vert.x. JSON (Jackson Codec) is used to encode and decode messages for the event bus.
  * <p>
  * {@link de.wuespace.telestion.api.message.HeaderInformation} add support for message headers. They can be
- * used to include data unrelated to the data itself of a message.
+ * used to include metadata unrelated to the payload of a message.
  * <p>
  * It is heavily recommended to use Telestion traits like {@link de.wuespace.telestion.api.verticle.trait.WithEventBus}, it contains different
  * helper methods for message serialization.
