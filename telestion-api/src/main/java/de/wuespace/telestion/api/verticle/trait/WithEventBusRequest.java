@@ -91,23 +91,23 @@ public interface WithEventBusRequest extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType) {
-		return DecodedMessage.compose(responseType, request(address, request));
+		return ResponseMessageWrapper.compose(responseType, request(address, request));
 	}
 
 	/**
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
 			DeliveryOptions options) {
-		return DecodedMessage.compose(responseType, request(address, request, options));
+		return ResponseMessageWrapper.compose(responseType, request(address, request, options));
 	}
 
 	/**
@@ -116,13 +116,13 @@ public interface WithEventBusRequest extends Verticle {
 	 *                       (will usually be a {@link HeaderInformation} object)
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
 			DeliveryOptions options,
 			MultiMap... requestHeaders) {
-		return DecodedMessage.compose(responseType, request(address, request, options, requestHeaders));
+		return ResponseMessageWrapper.compose(responseType, request(address, request, options, requestHeaders));
 	}
 
 	/**
@@ -131,19 +131,19 @@ public interface WithEventBusRequest extends Verticle {
 	 *                       (will usually be a {@link HeaderInformation} object)
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			Object request,
 			Class<V> responseType,
 			MultiMap... requestHeaders) {
-		return DecodedMessage.compose(responseType, request(address, request, requestHeaders));
+		return ResponseMessageWrapper.compose(responseType, request(address, request, requestHeaders));
 	}
 
 	/**
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			JsonRecord request,
 			Class<V> responseType) {
@@ -154,7 +154,7 @@ public interface WithEventBusRequest extends Verticle {
 	 * @param responseType the type of the response to map to
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			JsonRecord request,
 			Class<V> responseType,
@@ -168,7 +168,7 @@ public interface WithEventBusRequest extends Verticle {
 	 *                       (will usually be a {@link HeaderInformation} object)
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object, DeliveryOptions)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			JsonRecord request,
 			Class<V> responseType,
@@ -183,7 +183,7 @@ public interface WithEventBusRequest extends Verticle {
 	 *                       (will usually be a {@link HeaderInformation} object)
 	 * @see io.vertx.core.eventbus.EventBus#request(String, Object)
 	 */
-	default <V extends JsonRecord, T extends JsonObject> Future<DecodedMessage<V, T>> request(
+	default <V extends JsonRecord, T extends JsonObject> Future<ResponseMessageWrapper<V, T>> request(
 			String address,
 			JsonRecord request,
 			Class<V> responseType,
