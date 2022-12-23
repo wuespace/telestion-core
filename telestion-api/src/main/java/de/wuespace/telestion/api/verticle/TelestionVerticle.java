@@ -5,9 +5,6 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
 /**
@@ -22,87 +19,15 @@ import java.util.Objects;
  */
 public abstract class TelestionVerticle<T extends TelestionConfiguration> extends AbstractVerticle {
 	/**
-	 * The default verticle configuration in a generic format.
-	 */
-	private JsonObject defaultGenericConfig = new JsonObject();
-	/**
-	 * The default verticle configuration in the Configuration type format.<p>
-	 * Is <code>null</code> when no type via {@link #getConfigType()} is given.
-	 */
-	private T defaultConfig;
-
-	/**
-	 * The verticle configuration in a generic format.
-	 */
-	private JsonObject genericConfig = new JsonObject();
-	/**
-	 * The verticle configuration in the Configuration type format.<p>
-	 * Is <code>null</code> when no type via {@link #getConfigType()} is given.
-	 */
-	private T config;
-
-	/**
 	 * The default logger instance.
 	 */
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
-
-	/**
-	 * Get the Configuration Class type from the inheriting class.
-	 *
-	 * @return the Configuration Class type
-	 */
-	@SuppressWarnings("unchecked")
-	protected Class<T> getConfigType() {
-		try {
-			String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-			Class<?> clazz = Class.forName(className);
-			//noinspection unchecked
-			return (Class<T>) clazz;
-		} catch (Exception e) {
-			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
-			return null;
-		}
-	}
-
-	/**
-	 * Creates a new Telestion verticle and tries to load the default configuration
-	 * from the specified configuration class.
-	 *
-	 * @param skipDefaultConfigLoading when {@code true} the loading of the default configuration is skipped
-	 */
-	public TelestionVerticle(boolean skipDefaultConfigLoading) {
-		if (skipDefaultConfigLoading) {
-			return;
-		}
-		var configType = getConfigType();
-		if (Objects.isNull(configType)) {
-			return;
-		}
-
-		try {
-			var defaultConfig = configType.getConstructor().newInstance();
-			this.defaultConfig = defaultConfig;
-			this.defaultGenericConfig = defaultConfig.toJsonObject();
-		} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-			// no default configuration on configuration class found, ignoring
-			logger.info("No default configuration found for {}. " +
-							"Expected constructor with no arguments to exist on {}. " +
-							"Continuing without default configuration.",
-					getClass().getSimpleName(), getConfigType().getSimpleName());
-		}
-	}
-
-	/**
-	 * Same as {@link TelestionVerticle#TelestionVerticle(boolean)}
-	 * but enables loading of default configuration if possible.
-	 */
-	public TelestionVerticle() {
-		this(false);
-	}
+	private VerticleConfigStrategy<T> config;
 
 	@Override
 	public final void start(Promise<Void> startPromise) throws Exception {
-		updateConfigs();
+		//noinspection unchecked
+		this.config = new VerticleConfigStrategy<T>(super.config(), VerticleConfigStrategy.getConfigType(getClass()));
 		// put general startup steps here
 		onStart(startPromise);
 	}
@@ -178,7 +103,16 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * <p>
 	 * This is the synchronous part to the {@link #onStop(Promise)} method.
 	 */
+	@SuppressWarnings("RedundantThrows")
 	public void onStop() throws Exception {
+	}
+
+	/**
+	 * @see VerticleConfigStrategy#getDefaultConfig()
+	 */
+	public T getDefaultConfig() {
+		assertConfigStrategyObjectAvailable();
+		return config.getDefaultConfig();
 	}
 
 	/**
@@ -187,9 +121,8 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * @param defaultConfig the new default verticle configuration
 	 */
 	public void setDefaultConfig(JsonObject defaultConfig) {
-		this.defaultGenericConfig = defaultConfig;
-		this.defaultConfig = mapToConfiguration(defaultConfig);
-		updateConfigs();
+		//noinspection unchecked
+		this.config = new VerticleConfigStrategy<T>(super.config(), defaultConfig, VerticleConfigStrategy.getConfigType(getClass()));
 	}
 
 	/**
@@ -198,76 +131,56 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * @param defaultConfig the new default verticle configuration
 	 */
 	public void setDefaultConfig(T defaultConfig) {
-		this.defaultConfig = defaultConfig;
-		this.defaultGenericConfig = defaultConfig.toJsonObject();
-		updateConfigs();
+		setDefaultConfig(defaultConfig.toJsonObject());
 	}
 
+
 	/**
-	 * Get the default verticle configuration in the Configuration type format.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @return the default verticle configuration
+	 * @see VerticleConfigStrategy#getUntypedDefaultConfig()
 	 */
-	public T getDefaultConfig() {
-		return defaultConfig;
+	public JsonObject getUntypedDefaultConfig() {
+		assertConfigStrategyObjectAvailable();
+		return config.getUntypedDefaultConfig();
 	}
 
 	/**
-	 * Get the default verticle configuration in a generic format.
-	 *
-	 * @return the default verticle configuration
-	 */
-	public JsonObject getGenericDefaultConfig() {
-		return defaultGenericConfig;
-	}
-
-	/**
-	 * Get the verticle configuration in the Configuration type format.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @return the verticle configuration
+	 * @see VerticleConfigStrategy#getConfig()
 	 */
 	public T getConfig() {
-		return config;
+		assertConfigStrategyObjectAvailable();
+		return config.getConfig();
 	}
 
 	/**
-	 * Get the verticle configuration in a generic format.
-	 *
-	 * @return the verticle configuration
+	 * @see VerticleConfigStrategy#getUntypedConfig()
 	 */
-	public JsonObject getGenericConfig() {
-		return genericConfig;
+	public JsonObject getUntypedConfig() {
+		assertConfigStrategyObjectAvailable();
+		return config.getUntypedConfig();
 	}
 
 	/**
 	 * Block the usage of <code>config()</code> in inheriting classes.
 	 *
-	 * @return the verticle configuration from vertx merged with the default configuration
+	 * @deprecated The config() method is deprecated when extending {@link TelestionVerticle}.
+	 * Please use {@link #getConfig()} instead.
 	 */
 	@Override
 	public final JsonObject config() {
-		return defaultGenericConfig.mergeIn(super.config());
+		logger.warn("The config() method is deprecated. Please use getConfig() instead.");
+		return super.config();
 	}
 
 	/**
-	 * Update the config representations based on the default verticle configuration.
-	 */
-	private void updateConfigs() {
-		genericConfig = config();
-		config = mapToConfiguration(genericConfig);
-	}
-
-	/**
-	 * Map a generic JSON object to the Configuration type.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
+	 * Throws an error if the config strategy object is not available. This is the case if developers try to access the
+	 * configuration before the verticle is started.
 	 *
-	 * @param object the generic JSON object to map
-	 * @return the JSON object in the Configuration type format
+	 * @throws IllegalStateException if the config strategy object is not available
 	 */
-	private T mapToConfiguration(JsonObject object) {
-		var type = getConfigType();
-		return type != null ? object.mapTo(type) : null;
+	private void assertConfigStrategyObjectAvailable() {
+		if (Objects.isNull(config)) {
+			throw new IllegalStateException("Trying to access config before it was initialized." +
+					" You can only access the config in onStart() or later.");
+		}
 	}
 }
