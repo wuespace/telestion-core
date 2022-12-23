@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection.rework;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ public final class Sender extends AbstractVerticle {
 
 		vertx.eventBus().consumer(config.inputAddress,
 				raw -> {
-					JsonMessage.on(SenderData.class, raw, this::handleMessage);
-					JsonMessage.on(ConnectionData.class, raw, msg -> handleMessage(SenderData.fromConnectionData(msg)));
+					JsonRecord.on(SenderData.class, raw, this::handleMessage);
+					JsonRecord.on(ConnectionData.class, raw, msg -> handleMessage(SenderData.fromConnectionData(msg)));
 				});
 		startPromise.complete();
 	}
@@ -33,7 +33,7 @@ public final class Sender extends AbstractVerticle {
 	 */
 	public record Configuration(
 			@JsonProperty String inputAddress,
-			@JsonProperty String... connectionAddresses) implements JsonMessage {
+			@JsonProperty String... connectionAddresses) implements JsonRecord {
 
 		@SuppressWarnings("unused")
 		private Configuration() {

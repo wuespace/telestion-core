@@ -31,15 +31,15 @@ public class Publisher extends TelestionVerticle<Publisher.Configuration> implem
 
 	@Override
 	public void onStart() {
-		var delay = Duration.ofSeconds(getConfig().delay());
+		var delay = Duration.ofSeconds(verticleConfigStrategy.getConfig().delay());
 		var counter = new AtomicInteger();
 
 		interval(delay, id -> {
 			var infos = new HeaderInformation()
-					.add("delay", getConfig().delay())
+					.add("delay", verticleConfigStrategy.getConfig().delay())
 					.add("counter", counter.getAndIncrement());
 
-			publish(getConfig().outAddress(), "Hello from Publisher", infos);
+			publish(verticleConfigStrategy.getConfig().outAddress(), "Hello from Publisher", infos);
 		});
 	}
 }

@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -115,7 +115,7 @@ public final class TcpConn extends AbstractVerticle {
 		socket.handler(buffer -> out(new Data(participant, buffer.getBytes()).json()));
 		socket.closeHandler(handler -> logger.info("Connection closed ({})", socket.remoteAddress()));
 
-		consume(msg -> JsonMessage.on(Data.class, msg, data -> {
+		consume(msg -> JsonRecord.on(Data.class, msg, data -> {
 			if (!participant.equals(data.participant())) {
 				return;
 			}
@@ -163,7 +163,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param participant the participant of the tcp connection which has send this chunk of data or should receive it
 	 * @param data the     actual data
 	 */
-		public static record Data(@JsonProperty Participant participant, @JsonProperty byte[] data) implements JsonMessage {
+		public static record Data(@JsonProperty Participant participant, @JsonProperty byte[] data) implements JsonRecord {
 
 		@SuppressWarnings("unused")
 		private Data() {
@@ -177,7 +177,7 @@ public final class TcpConn extends AbstractVerticle {
 	 * @param host its host address
 	 * @param port its port
 	 */
-		public static record Participant(@JsonProperty String host, @JsonProperty int port) implements JsonMessage {
+		public static record Participant(@JsonProperty String host, @JsonProperty int port) implements JsonRecord {
 
 		@SuppressWarnings("unused")
 		private Participant() {

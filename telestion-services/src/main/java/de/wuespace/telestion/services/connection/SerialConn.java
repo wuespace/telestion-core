@@ -12,7 +12,7 @@ import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import com.fazecast.jSerialComm.*;
 
 @Deprecated(since = "v0.1.3", forRemoval = true)
@@ -54,7 +54,7 @@ public final class SerialConn extends AbstractVerticle {
 			}
 		});
 		vertx.eventBus().consumer(config.consumeAddress, event -> {
-			JsonMessage.on(SerialData.class, event, data -> {
+			JsonRecord.on(SerialData.class, event, data -> {
 				serialPort.writeBytes(data.data(), data.data().length);
 			});
 		});

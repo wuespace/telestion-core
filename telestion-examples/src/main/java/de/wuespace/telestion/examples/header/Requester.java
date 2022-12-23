@@ -30,17 +30,17 @@ public class Requester extends TelestionVerticle<Requester.Configuration> implem
 
 	@Override
 	public void onStart() {
-		var delay = Duration.ofSeconds(getConfig().delay());
+		var delay = Duration.ofSeconds(verticleConfigStrategy.getConfig().delay());
 		var requestCounter = new AtomicInteger();
 
 		// Send a "Ping" message with custom headers periodically and request pong signal with custom headers
 		interval(delay, id -> {
 			var requestTime = System.currentTimeMillis();
 
-			var requestInfos = new DelayCounterInformation(getConfig().delay(), requestCounter.getAndIncrement());
+			var requestInfos = new DelayCounterInformation(verticleConfigStrategy.getConfig().delay(), requestCounter.getAndIncrement());
 			var requestTimes = new TimeInformation(requestTime, requestTime);
 
-			request(getConfig().requestAddress(), "Ping", requestInfos, requestTimes).onSuccess(message -> {
+			request(verticleConfigStrategy.getConfig().requestAddress(), "Ping", requestInfos, requestTimes).onSuccess(message -> {
 				var responseInfos = DelayCounterInformation.from(message);
 				var responseTimes = TimeInformation.from(message);
 

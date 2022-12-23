@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection.rework.tcp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
 import de.wuespace.telestion.services.connection.rework.Tuple;
 import io.vertx.core.AbstractVerticle;
@@ -58,8 +58,8 @@ public final class TcpServer extends AbstractVerticle {
 				r -> logger.info("Successfully started. Running on {}:{}", config.hostAddress(), r.actualPort())));
 
 		vertx.eventBus().consumer(config.inAddress, raw -> {
-			if (!JsonMessage.on(TcpData.class, raw, this::handleDispatchedMsg)) {
-				JsonMessage.on(ConnectionData.class, raw, this::handleMsg);
+			if (!JsonRecord.on(TcpData.class, raw, this::handleDispatchedMsg)) {
+				JsonRecord.on(ConnectionData.class, raw, this::handleMsg);
 			}
 		});
 
@@ -96,7 +96,7 @@ public final class TcpServer extends AbstractVerticle {
 								@JsonProperty String outAddress,
 								@JsonProperty String hostAddress,
 								@JsonProperty int port,
-								@JsonProperty long clientTimeout) implements JsonMessage {
+								@JsonProperty long clientTimeout) implements JsonRecord {
 
 		/**
 		 * Used for reflection.
@@ -116,11 +116,15 @@ public final class TcpServer extends AbstractVerticle {
 	}
 
 	public TcpServer(Configuration config) {
-		if (config != null && (config.hostAddress() == null || config.hostAddress().equals(""))) {
+		if (config != null && isHostAddressEmpty(config)) {
 			config = new Configuration(config.inAddress(), config.outAddress(), "localhost", config.port(),
 					config.clientTimeout());
 		}
 		this.config = config;
+	}
+
+	private static boolean isHostAddressEmpty(Configuration config) {
+		return config.hostAddress() == null || config.hostAddress().equals("");
 	}
 
 	public Configuration getConfig() {

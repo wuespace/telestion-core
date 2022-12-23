@@ -16,10 +16,10 @@ public class GenericSimpleCommandHandler extends TelestionVerticle<UntypedConfig
 	@Override
 	public void onStart() {
 		// with "controller":
-		register(getGenericConfig().getString("inAddress"), this::handleCommand, SimpleCommand.class);
+		register(verticleConfigStrategy.getUntypedConfig().getString("inAddress"), this::handleCommand, SimpleCommand.class);
 
 		// inline:
-		register(getGenericConfig().getString("pingAddress"),
+		register(verticleConfigStrategy.getUntypedConfig().getString("pingAddress"),
 				(SimpleCommand body, Message<Object> message) -> message.reply(
 						new SimpleCommand("pong", new String[]{ /* Pure nothingness */ })
 				),

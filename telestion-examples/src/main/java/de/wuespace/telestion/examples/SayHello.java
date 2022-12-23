@@ -31,12 +31,12 @@ public final class SayHello extends TelestionVerticle<SayHello.Configuration> im
 
 	@Override
 	public void onStart(Promise<Void> startPromise) {
-		var delay = Duration.ofSeconds(getConfig().period());
-		var duration = Duration.ofSeconds(getConfig().duration());
+		var delay = Duration.ofSeconds(verticleConfigStrategy.getConfig().period());
+		var duration = Duration.ofSeconds(verticleConfigStrategy.getConfig().duration());
 		// setup interval
 		var timing = interval(delay, id -> logger.info(
 				"{} from {}",
-				getConfig().message(),
+                verticleConfigStrategy.getConfig().message(),
 				deploymentID()
 		));
 
@@ -44,6 +44,6 @@ public final class SayHello extends TelestionVerticle<SayHello.Configuration> im
 		timeout(duration, id -> timing.cancel());
 
 		startPromise.complete();
-		logger.info("Started {} with config {}", SayHello.class.getSimpleName(), getConfig());
+		logger.info("Started {} with config {}", SayHello.class.getSimpleName(), verticleConfigStrategy.getConfig());
 	}
 }

@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection.rework.tcp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
 import de.wuespace.telestion.services.connection.rework.SenderData;
 import de.wuespace.telestion.services.connection.rework.Tuple;
@@ -18,11 +18,11 @@ public class TcpDispatcher extends AbstractVerticle {
 		config = Config.get(config, config(), Configuration.class);
 
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
-			if (!JsonMessage.on(SenderData.class, raw, msg -> Arrays.stream(msg.conDetails())
+			if (!JsonRecord.on(SenderData.class, raw, msg -> Arrays.stream(msg.conDetails())
 					.filter(det -> det instanceof TcpDetails)
 					.map(det -> (TcpDetails) det)
 					.forEach(det -> handle(msg.rawData(), det)))) {
-				JsonMessage.on(ConnectionData.class, raw, msg -> {
+				JsonRecord.on(ConnectionData.class, raw, msg -> {
 					if (msg.conDetails() instanceof TcpDetails det) {
 						handle(msg.rawData(), det);
 					}
@@ -38,7 +38,7 @@ public class TcpDispatcher extends AbstractVerticle {
 	}
 
 	public record Configuration(@JsonProperty String inAddress,
-								@JsonProperty String outAddress) implements JsonMessage {
+								@JsonProperty String outAddress) implements JsonRecord {
 		/**
 		 * For config
 		 */

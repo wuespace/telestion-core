@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection.rework;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ public class StaticSender extends AbstractVerticle {
 		config = Config.get(config, config(), Configuration.class);
 
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
-			JsonMessage.on(RawMessage.class, raw, msg -> {
+			JsonRecord.on(RawMessage.class, raw, msg -> {
 				logger.debug("Sending static message");
 				vertx.eventBus().publish(config.outAddress(), new ConnectionData(msg.data(),
 						config.staticDetails()).json());
@@ -32,7 +32,7 @@ public class StaticSender extends AbstractVerticle {
 
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
-								@JsonProperty ConnectionDetails staticDetails) implements JsonMessage {
+								@JsonProperty ConnectionDetails staticDetails) implements JsonRecord {
 
 		@SuppressWarnings("unused")
 		private Configuration() {

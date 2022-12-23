@@ -24,7 +24,7 @@ public class Responder extends TelestionVerticle<Responder.Configuration> implem
 	public void onStart() {
 		var responseCounter = new AtomicInteger();
 
-		register(getConfig().respondAddress(), message -> {
+		register(verticleConfigStrategy.getConfig().respondAddress(), message -> {
 			var requestInfos = DelayCounterInformation.from(message);
 			var requestTimes = TimeInformation.from(message);
 

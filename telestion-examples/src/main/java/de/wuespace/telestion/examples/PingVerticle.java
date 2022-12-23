@@ -30,12 +30,12 @@ public class PingVerticle extends TelestionVerticle<PingVerticle.Configuration> 
 
 	@Override
 	public void onStart() {
-		vertx.setPeriodic(Duration.ofSeconds(getConfig().interval).toMillis(), this::sendPing);
+		vertx.setPeriodic(Duration.ofSeconds(verticleConfigStrategy.getConfig().interval).toMillis(), this::sendPing);
 	}
 
 	private void sendPing(Long intervalId) {
 		logger.info("Send ping");
-		request(getConfig().address, new SimpleMessage("ping", "A simple ping message"),
+		request(verticleConfigStrategy.getConfig().address, new SimpleMessage("ping", "A simple ping message"),
 				SimpleMessage.class).onSuccess(container -> logger.info("Received pong"));
 	}
 }

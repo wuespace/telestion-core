@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 
 @Deprecated(since = "v0.1.3", forRemoval = true)
 @ExtendWith(VertxExtension.class)
@@ -31,18 +31,18 @@ public class TcpConnTest {
 		var clientIncoming = "clientIncoming";
 
 		vertx.eventBus().consumer(clientOutgoing, msg -> {
-			JsonMessage.on(TcpConn.Data.class, msg, data -> {
+			JsonRecord.on(TcpConn.Data.class, msg, data -> {
 				// send message back
 				vertx.eventBus().publish(clientIncoming, data.json());
 			});
 		});
 		vertx.eventBus().consumer(serverOutgoing, msg -> {
 			var bytes = new byte[] { 2, 4, 5, 3 };
-			JsonMessage.on(TcpConn.Participant.class, msg, participant -> {
+			JsonRecord.on(TcpConn.Participant.class, msg, participant -> {
 				// send message on connection
 				vertx.eventBus().publish(serverIncoming, new TcpConn.Data(participant, bytes).json());
 			});
-			JsonMessage.on(TcpConn.Data.class, msg, data -> {
+			JsonRecord.on(TcpConn.Data.class, msg, data -> {
 				// test message
 				assertThat(data.data(), is(bytes));
 				testContext.completeNow();

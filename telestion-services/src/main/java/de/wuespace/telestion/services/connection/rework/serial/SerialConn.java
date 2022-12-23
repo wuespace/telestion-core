@@ -3,7 +3,7 @@ package de.wuespace.telestion.services.connection.rework.serial;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fazecast.jSerialComm.SerialPort;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
 import de.wuespace.telestion.services.connection.rework.SenderData;
 import io.vertx.core.AbstractVerticle;
@@ -50,7 +50,7 @@ public final class SerialConn extends AbstractVerticle {
 		});
 
 		// Out
-		vertx.eventBus().consumer(config.inAddress(), raw -> JsonMessage.on(SenderData.class, raw,
+		vertx.eventBus().consumer(config.inAddress(), raw -> JsonRecord.on(SenderData.class, raw,
 				msg -> Arrays.stream(msg.conDetails())
 						.filter(det -> det instanceof SerialDetails)
 						.map(det -> (SerialDetails) det)
@@ -80,7 +80,7 @@ public final class SerialConn extends AbstractVerticle {
 								@JsonProperty String outAddress,
 								@JsonProperty String serialPort,
 								@JsonProperty int baudRate,
-								@JsonProperty long sampleTime) implements JsonMessage {
+								@JsonProperty long sampleTime) implements JsonRecord {
 		@SuppressWarnings("unused")
 		private Configuration() {
 			this(null, null, null, 9600, 0L);

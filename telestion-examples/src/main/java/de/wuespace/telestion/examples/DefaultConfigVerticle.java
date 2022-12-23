@@ -45,6 +45,6 @@ public class DefaultConfigVerticle extends TelestionVerticle<DefaultConfigVertic
 	@Override
 	public void onStart() {
 		var delay = Duration.ofSeconds(1).toMillis();
-		vertx.setPeriodic(delay, id -> logger.info(getConfig().message()));
+		vertx.setPeriodic(delay, id -> logger.info(verticleConfigStrategy.getConfig().message()));
 	}
 }

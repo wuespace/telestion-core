@@ -24,33 +24,33 @@ public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration>
 	@Override
 	public void onStart() {
 		// set default config
-		setDefaultConfig(new Configuration(null, "out-here", 42));
+        verticleConfigStrategy.setDefaultConfig(new Configuration(null, "out-here", 42), type);
 
 		// normal type-safe config usage
-		int test = getConfig().a + 10;
-		logger.debug(getConfig().inAddress);
+		int test = verticleConfigStrategy.getConfig().a + 10;
+		logger.debug(verticleConfigStrategy.getConfig().inAddress);
 
 		// dynamic typed config usage
-		int test2 = getGenericConfig().getInteger("a");
-		logger.debug(getGenericConfig().getString("inAddress"));
+		int test2 = verticleConfigStrategy.getUntypedConfig().getInteger("a");
+		logger.debug(verticleConfigStrategy.getUntypedConfig().getString("inAddress"));
 
 		// want to use default config instead? No problem
-		int test3 = getDefaultConfig().a;
-		logger.debug(getDefaultConfig().inAddress);
+		int test3 = verticleConfigStrategy.getDefaultConfig().a;
+		logger.debug(verticleConfigStrategy.getDefaultConfig().inAddress);
 
 		// or in a generic format?
-		int test4 = getGenericDefaultConfig().getInteger("a");
-		logger.debug(getGenericDefaultConfig().getString("inAddress"));
+		int test4 = verticleConfigStrategy.getUntypedDefaultConfig().getInteger("a");
+		logger.debug(verticleConfigStrategy.getUntypedDefaultConfig().getString("inAddress"));
 
 		// the default config can be updated at any time
-		setDefaultConfig(new Configuration("hey", "out-here", 84));
+        verticleConfigStrategy.setDefaultConfig(new Configuration("hey", "out-here", 84), type);
 
-		register(getConfig().inAddress, body -> {
+		register(verticleConfigStrategy.getConfig().inAddress, body -> {
 			logger.info("Received message: {}", body);
-			publish(getConfig().outAddress, body);
+			publish(verticleConfigStrategy.getConfig().outAddress, body);
 		}, SimpleMessage.class);
 
-		register(getConfig().inAddress, this::handleStuff, SimpleMessage.class);
+		register(verticleConfigStrategy.getConfig().inAddress, this::handleStuff, SimpleMessage.class);
 
 		localMap("bla").put("piep", "piep");
 
@@ -62,7 +62,7 @@ public class TestVerticle extends TelestionVerticle<TestVerticle.Configuration>
 	}
 
 	private void handleStuff(SimpleMessage body, Message<Object> raw) {
-		logger.info("Received message: {}", body.title() + getConfig().a);
+		logger.info("Received message: {}", body.title() + verticleConfigStrategy.getConfig().a);
 
 		setData("hello world");
 	}

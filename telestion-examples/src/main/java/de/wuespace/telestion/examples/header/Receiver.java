@@ -20,7 +20,7 @@ public class Receiver extends TelestionVerticle<Receiver.Configuration> implemen
 
 	@Override
 	public void onStart() {
-		register(getConfig().inAddress(), message -> {
+		register(verticleConfigStrategy.getConfig().inAddress(), message -> {
 			var infos = HeaderInformation.from(message);
 			var delay = infos.getInt("delay", -1);
 			var counter = infos.getInt("counter", -1);

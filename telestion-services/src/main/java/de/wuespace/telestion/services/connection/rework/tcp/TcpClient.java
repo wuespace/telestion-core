@@ -2,7 +2,7 @@ package de.wuespace.telestion.services.connection.rework.tcp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import de.wuespace.telestion.services.connection.rework.ConnectionData;
 import de.wuespace.telestion.services.connection.rework.Tuple;
 import io.vertx.core.AbstractVerticle;
@@ -31,8 +31,8 @@ public final class TcpClient extends AbstractVerticle {
 		activeClients = new HashMap<>();
 
 		vertx.eventBus().consumer(config.inAddress(), raw -> {
-			if (!JsonMessage.on(TcpData.class, raw, this::handleDispatchedMsg)) {
-				JsonMessage.on(ConnectionData.class, raw, this::handleMsg);
+			if (!JsonRecord.on(TcpData.class, raw, this::handleDispatchedMsg)) {
+				JsonRecord.on(ConnectionData.class, raw, this::handleMsg);
 			}
 		});
 
@@ -46,7 +46,7 @@ public final class TcpClient extends AbstractVerticle {
 
 	public record Configuration(@JsonProperty String inAddress,
 								@JsonProperty String outAddress,
-								@JsonProperty long timeout) implements JsonMessage {
+								@JsonProperty long timeout) implements JsonRecord {
 		/**
 		 * For json
 		 */

@@ -6,7 +6,7 @@ import io.vertx.core.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import de.wuespace.telestion.api.config.Config;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 
 public final class Receiver extends AbstractVerticle {
 
@@ -16,7 +16,7 @@ public final class Receiver extends AbstractVerticle {
 
 		for (var con : config.connectionAddresses()) {
 			vertx.eventBus().consumer(con,
-					raw -> JsonMessage.on(ConnectionData.class, raw,
+					raw -> JsonRecord.on(ConnectionData.class, raw,
 							msg -> {
 								logger.debug("Connection-Message received on {}", con);
 								vertx.eventBus().publish(config.outputAddr(), msg.json());

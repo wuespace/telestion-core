@@ -28,7 +28,7 @@ public class PongVerticle extends TelestionVerticle<PongVerticle.Configuration> 
 
 	@Override
 	public void onStart() {
-		register(getConfig().address, this::handlePing, SimpleMessage.class);
+		register(verticleConfigStrategy.getConfig().address, this::handlePing, SimpleMessage.class);
 	}
 
 	private void handlePing(SimpleMessage body, Message<Object> message) {

@@ -1,10 +1,10 @@
 package de.wuespace.telestion.services.connection.rework.tcp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 
 public record TcpData(@JsonProperty byte[] data,
-					  @JsonProperty TcpDetails details) implements JsonMessage {
+					  @JsonProperty TcpDetails details) implements JsonRecord {
 
 	/**
 	 * For reflection

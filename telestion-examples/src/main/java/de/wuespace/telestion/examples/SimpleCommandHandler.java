@@ -25,10 +25,10 @@ public class SimpleCommandHandler extends TelestionVerticle<SimpleCommandHandler
 	@Override
 	public void onStart() {
 		// with "controller":
-		register(getConfig().inAddress(), this::handleCommand, SimpleCommand.class);
+		register(verticleConfigStrategy.getConfig().inAddress(), this::handleCommand, SimpleCommand.class);
 
 		// inline:
-		register(getConfig().pingAddress(),
+		register(verticleConfigStrategy.getConfig().pingAddress(),
 				(SimpleCommand body, Message<Object> message) ->
 						message.reply(
 								new SimpleCommand("pong", new String[]{ /* Empty feeling */})

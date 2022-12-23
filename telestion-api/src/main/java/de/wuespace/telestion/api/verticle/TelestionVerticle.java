@@ -21,88 +21,19 @@ import java.util.Objects;
  * Ludwig Richter (@fussel178)
  */
 public abstract class TelestionVerticle<T extends TelestionConfiguration> extends AbstractVerticle {
-	/**
-	 * The default verticle configuration in a generic format.
-	 */
-	private JsonObject defaultGenericConfig = new JsonObject();
-	/**
-	 * The default verticle configuration in the Configuration type format.<p>
-	 * Is <code>null</code> when no type via {@link #getConfigType()} is given.
-	 */
-	private T defaultConfig;
-
-	/**
-	 * The verticle configuration in a generic format.
-	 */
-	private JsonObject genericConfig = new JsonObject();
-	/**
-	 * The verticle configuration in the Configuration type format.<p>
-	 * Is <code>null</code> when no type via {@link #getConfigType()} is given.
-	 */
-	private T config;
+	private VerticleConfigStrategy<T> config;
 
 	/**
 	 * The default logger instance.
 	 */
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * Get the Configuration Class type from the inheriting class.
-	 *
-	 * @return the Configuration Class type
-	 */
-	@SuppressWarnings("unchecked")
-	protected Class<T> getConfigType() {
-		try {
-			String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-			Class<?> clazz = Class.forName(className);
-			//noinspection unchecked
-			return (Class<T>) clazz;
-		} catch (Exception e) {
-			logger.warn("Cannot get Class type from generic: {}", e.getMessage());
-			return null;
-		}
-	}
-
-	/**
-	 * Creates a new Telestion verticle and tries to load the default configuration
-	 * from the specified configuration class.
-	 *
-	 * @param skipDefaultConfigLoading when {@code true} the loading of the default configuration is skipped
-	 */
-	public TelestionVerticle(boolean skipDefaultConfigLoading) {
-		if (skipDefaultConfigLoading) {
-			return;
-		}
-		var configType = getConfigType();
-		if (Objects.isNull(configType)) {
-			return;
-		}
-
-		try {
-			var defaultConfig = configType.getConstructor().newInstance();
-			this.defaultConfig = defaultConfig;
-			this.defaultGenericConfig = defaultConfig.toJsonObject();
-		} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-			// no default configuration on configuration class found, ignoring
-			logger.info("No default configuration found for {}. " +
-							"Expected constructor with no arguments to exist on {}. " +
-							"Continuing without default configuration.",
-					getClass().getSimpleName(), getConfigType().getSimpleName());
-		}
-	}
-
-	/**
-	 * Same as {@link TelestionVerticle#TelestionVerticle(boolean)}
-	 * but enables loading of default configuration if possible.
-	 */
-	public TelestionVerticle() {
-		this(false);
-	}
-
 	@Override
 	public final void start(Promise<Void> startPromise) throws Exception {
-		updateConfigs();
+		var verticleClazz = this.getClass();
+
+		this.config = new VerticleConfigStrategy<T>(config(), getClass());
+
 		// put general startup steps here
 		onStart(startPromise);
 	}
@@ -187,9 +118,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * @param defaultConfig the new default verticle configuration
 	 */
 	public void setDefaultConfig(JsonObject defaultConfig) {
-		this.defaultGenericConfig = defaultConfig;
-		this.defaultConfig = mapToConfiguration(defaultConfig);
-		updateConfigs();
+		this.config = new VerticleConfigStrategy<T>(config(), defaultConfig, getClass());
 	}
 
 	/**
@@ -198,47 +127,35 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * @param defaultConfig the new default verticle configuration
 	 */
 	public void setDefaultConfig(T defaultConfig) {
-		this.defaultConfig = defaultConfig;
-		this.defaultGenericConfig = defaultConfig.toJsonObject();
-		updateConfigs();
+		this.config = new VerticleConfigStrategy<T>(config(), defaultConfig, getClass());
 	}
 
 	/**
-	 * Get the default verticle configuration in the Configuration type format.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @return the default verticle configuration
+	 * @see VerticleConfigStrategy#getDefaultConfig()
 	 */
 	public T getDefaultConfig() {
-		return defaultConfig;
+		return config.getDefaultConfig();
 	}
 
 	/**
-	 * Get the default verticle configuration in a generic format.
-	 *
-	 * @return the default verticle configuration
+	 * @see VerticleConfigStrategy#getUntypedDefaultConfig()
 	 */
-	public JsonObject getGenericDefaultConfig() {
-		return defaultGenericConfig;
+	public JsonObject getUntypedDefaultConfig() {
+		return config.getUntypedDefaultConfig();
 	}
 
 	/**
-	 * Get the verticle configuration in the Configuration type format.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @return the verticle configuration
+	 * @see VerticleConfigStrategy#getConfig()
 	 */
 	public T getConfig() {
-		return config;
+		return config.getConfig();
 	}
 
 	/**
-	 * Get the verticle configuration in a generic format.
-	 *
-	 * @return the verticle configuration
+	 * @see VerticleConfigStrategy#getUntypedConfig()
 	 */
-	public JsonObject getGenericConfig() {
-		return genericConfig;
+	public JsonObject getUntypedConfig() {
+		return config.getUntypedConfig();
 	}
 
 	/**
@@ -248,26 +165,6 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 */
 	@Override
 	public final JsonObject config() {
-		return defaultGenericConfig.mergeIn(super.config());
-	}
-
-	/**
-	 * Update the config representations based on the default verticle configuration.
-	 */
-	private void updateConfigs() {
-		genericConfig = config();
-		config = mapToConfiguration(genericConfig);
-	}
-
-	/**
-	 * Map a generic JSON object to the Configuration type.<p>
-	 * Returns <code>null</code> when no type via {@link #getConfigType()} is given.
-	 *
-	 * @param object the generic JSON object to map
-	 * @return the JSON object in the Configuration type format
-	 */
-	private T mapToConfiguration(JsonObject object) {
-		var type = getConfigType();
-		return type != null ? object.mapTo(type) : null;
+		return super.config();
 	}
 }

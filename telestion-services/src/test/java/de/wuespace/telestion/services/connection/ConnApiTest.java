@@ -1,7 +1,7 @@
 package de.wuespace.telestion.services.connection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.message.JsonMessage;
+import de.wuespace.telestion.api.message.JsonRecord;
 import de.wuespace.telestion.services.connection.rework.*;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
@@ -40,7 +40,7 @@ public class ConnApiTest {
 
 		// Create listener for Api
 		var queue = new ConcurrentLinkedQueue<Integer>();
-		vertx.eventBus().consumer(outputAddress, raw -> JsonMessage.on(ConnectionData.class, raw, msg -> {
+		vertx.eventBus().consumer(outputAddress, raw -> JsonRecord.on(ConnectionData.class, raw, msg -> {
 			if (msg.conDetails() instanceof TestConnDetails testDetails) {
 				logger.info("Received data from {}", testDetails.receiverNumber());
 				assertThat(msg.rawData(), is(bytes));
@@ -96,7 +96,7 @@ public class ConnApiTest {
 		// Create Listeners
 		var queue = new ConcurrentLinkedQueue<Integer>();
 		Arrays.stream(addresses).forEach(addr -> vertx.eventBus().consumer(addr,
-				raw -> JsonMessage.on(SenderData.class, raw, msg -> {
+				raw -> JsonRecord.on(SenderData.class, raw, msg -> {
 					for (var detail : msg.conDetails()) {
 						if (detail instanceof TestConnDetails testDetails) {
 							// Not the most beautiful implementation :(
@@ -162,7 +162,7 @@ public class ConnApiTest {
 		// Create dummy-connection and test-evaluator
 		var counter = new AtomicInteger(0);
 		vertx.eventBus().consumer("StaticSenderPublish", raw -> {
-			JsonMessage.on(ConnectionData.class, raw, msg -> {
+			JsonRecord.on(ConnectionData.class, raw, msg -> {
 				try {
 					assertThat(msg.rawData(), is(bytes));
 					assertThat(msg.conDetails(), is(staticDetails));
