@@ -16,6 +16,14 @@ import static org.hamcrest.Matchers.*;
 public class HeaderInformationTest {
 
 	@Nested
+	public class MultiMapContractTest {
+		@Test
+		void shouldImplementMultiMap() {
+			assertThat(MultiMap.class.isAssignableFrom(HeaderInformation.class), is(true));
+		}
+	}
+
+	@Nested
 	public class UtilityTest {
 
 		@Test
@@ -155,9 +163,9 @@ public class HeaderInformationTest {
 		@Test
 		void shouldReturnAStringAsOptional() {
 			var filled = new HeaderInformation(STRING_VALUE.filledMap())
-					.get(STRING_VALUE.key());
+					.getString(STRING_VALUE.key());
 			var empty = new HeaderInformation(STRING_VALUE.emptyMap())
-					.get(STRING_VALUE.key());
+					.getString(STRING_VALUE.key());
 
 			assertThat(filled.isPresent(), is(true));
 			assertThat(filled.get(), is(STRING_VALUE.value()));
@@ -167,9 +175,9 @@ public class HeaderInformationTest {
 		@Test
 		void shouldReturnADefaultStringIfNotDefined() {
 			var filled = new HeaderInformation(STRING_VALUE.filledMap())
-					.get(STRING_VALUE.key(), STRING_VALUE.defaultValue());
+					.getString(STRING_VALUE.key(), STRING_VALUE.defaultValue());
 			var empty = new HeaderInformation(STRING_VALUE.emptyMap())
-					.get(STRING_VALUE.key(), STRING_VALUE.defaultValue());
+					.getString(STRING_VALUE.key(), STRING_VALUE.defaultValue());
 
 			assertThat(filled, is(STRING_VALUE.value()));
 			assertThat(filled, not(STRING_VALUE.defaultValue()));
