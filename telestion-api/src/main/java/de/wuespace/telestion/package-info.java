@@ -9,7 +9,6 @@
  * (c) WueSpace e.V.
  *
  * @see de.wuespace.telestion.api
- * @see de.wuespace.telestion.examples
  * @see de.wuespace.telestion.services
  */
 package de.wuespace.telestion;

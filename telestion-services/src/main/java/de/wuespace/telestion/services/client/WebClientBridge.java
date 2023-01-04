@@ -1,23 +1,20 @@
-package de.wuespace.telestion.services.connection;
+package de.wuespace.telestion.services.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.wuespace.telestion.api.config.Config;
-import io.vertx.core.AbstractVerticle;
+import de.wuespace.telestion.api.verticle.TelestionConfiguration;
+import de.wuespace.telestion.api.verticle.TelestionVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * EventbusTcpBridge is a verticle which uses SockJS-WebSockets to extend the vertx.eventBus() to an HTTP-Server.
+ * The WebClient bridge is a verticle which uses SockJS-WebSockets to extend the vertx.eventBus() to an HTTP-Server.
  * <p>
  * It creates <code>Router</code> using vertx, which handles HTTP-Requests coming to the HTTP-Server.
  * The EventBusBridge by default works after the deny-any-principle, which means that any message
@@ -57,47 +54,46 @@ import java.util.List;
  * 	.addOutboundPermitted(new PermittedOptions().setAddressRegex("(<Address>)(\/(\S+))?"));}</pre>
  * Which results in permission granted to all messages to the given address optionally suffixed with e.g. "/className.
  *
+ * @author Jan Tischhoefer (@jantischhoefer), Jan von Pichovski (@jvpichovski), Ludwig Richter (@fussel178)
  * @see <a href="../../../../../../../README.md">README.md</a> for more information
  */
-public final class EventbusTcpBridge extends AbstractVerticle {
-
-	private final Logger logger = LoggerFactory.getLogger(EventbusTcpBridge.class);
-	private final Configuration forcedConfig;
+public class WebClientBridge extends TelestionVerticle<WebClientBridge.Configuration> {
 
 	/**
-	 * This constructor supplies default options and uses the defaultSockJSBridgeOptions for the applied rules.
+	 * The bridge configuration.
 	 *
-	 * @param host              the ip address of the host on which the HTTP-Server should run
-	 * @param port              the port on which the HTTP-Server should listen
-	 * @param inboundPermitted  the permitted eventbus addresses for inbound connections
-	 * @param outboundPermitted the permitted eventbus addresses for outbound connections
+	 * @param host              of the host on which the HTTP-Server should run
+	 * @param port              on which the HTTP-Server should listen
+	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
+	 * @param outboundPermitted permitted eventbus addresses for outbound connections
 	 */
-	public EventbusTcpBridge(String host, int port, List<String> inboundPermitted, List<String> outboundPermitted) {
-		this.forcedConfig = new Configuration(host, port, inboundPermitted, outboundPermitted);
-	}
-
-	/**
-	 * If this constructor is used all, settings have to be specified in the config file.
-	 */
-	public EventbusTcpBridge() {
-		this.forcedConfig = null;
+	public record Configuration(
+			@JsonProperty String host,
+			@JsonProperty int port,
+			@JsonProperty List<String> inboundPermitted,
+			@JsonProperty List<String> outboundPermitted
+	) implements TelestionConfiguration {
+		public Configuration() {
+			this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
+		}
 	}
 
 	@Override
-	public void start(Promise<Void> startPromise) {
-		var config = Config.get(forcedConfig, config(), Configuration.class);
-
-		HttpServerOptions httpOptions = new HttpServerOptions().setHost(config.host).setPort(config.port);
-
-		Router router = Router.router(vertx);
-
-		router.mountSubRouter("/bridge", bridgeHandler(config.inboundPermitted, config.outboundPermitted));
+	public void onStart(Promise<Void> startPromise) throws Exception {
+		var router = Router.router(vertx);
+		// handle "/bridge" route via SockJS bridge handler
+		router.route("/bridge")
+				.subRouter(bridgeHandler(getConfig().inboundPermitted(), getConfig().outboundPermitted()));
+		// handle remaining via static handler
 		router.route().handler(staticHandler());
 
-		vertx.createHttpServer(httpOptions).requestHandler(router).listen();
-
-		logger.info("Server listening on {}:{}/bridge", httpOptions.getHost(), httpOptions.getPort());
-		startPromise.complete();
+		var server = vertx.createHttpServer().requestHandler(router);
+		server.listen(getConfig().port(), getConfig().host())
+				.onSuccess(s -> {
+					logger.info("Eventbus TCP Bridge listening on {}:{}", getConfig().host(), getConfig().port());
+				})
+				.onSuccess(s -> startPromise.complete())
+				.onFailure(startPromise::fail);
 	}
 
 	/**
@@ -129,22 +125,5 @@ public final class EventbusTcpBridge extends AbstractVerticle {
 	 */
 	private StaticHandler staticHandler() {
 		return StaticHandler.create().setCachingEnabled(false);
-	}
-
-	/**
-	 * The bridge configuration.
-	 *
-	 * @param host              of the host on which the HTTP-Server should run
-	 * @param port              on which the HTTP-Server should listen
-	 * @param inboundPermitted  permitted eventbus addresses for inbound connections
-	 * @param outboundPermitted permitted eventbus addresses for outbound connections
-	 */
-	@SuppressWarnings({"unused"})
-	private static record Configuration(@JsonProperty String host, @JsonProperty int port,
-										@JsonProperty List<String> inboundPermitted,
-										@JsonProperty List<String> outboundPermitted) {
-		private Configuration() {
-			this("127.0.0.1", 9870, Collections.emptyList(), Collections.emptyList());
-		}
 	}
 }

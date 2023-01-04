@@ -5,10 +5,9 @@ import org.slf4j.MDC;
 import de.wuespace.telestion.services.util.SafeCloseable;
 
 /**
- * A MDC implementation for the {@link Message} object.
+ * An MDC implementation for the {@link Message} object.
  *
  * @author Jan von Pichowski, Cedric Boes
- * @version 1.0
  * @see MDC
  * @see Message
  */

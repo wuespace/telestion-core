@@ -2,6 +2,8 @@ package de.wuespace.telestion.services.util;
 
 import java.io.Closeable;
 import java.io.IOException;
+
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -9,7 +11,6 @@ import org.slf4j.LoggerFactory;
  * catching of exceptions.
  *
  * @author Jan von Pichowski, Cedric Boes
- * @version 1.0
  * @see Closeable
  */
 public interface SafeCloseable extends Closeable {
@@ -26,7 +27,7 @@ public interface SafeCloseable extends Closeable {
 			try {
 				closeable.close();
 			} catch (IOException ex) {
-				LoggerFactory.getLogger(SafeCloseable.class).error(ex.getLocalizedMessage(), ex);
+				logger.error(ex.getLocalizedMessage(), ex);
 				ex.printStackTrace();
 			}
 		};
@@ -36,4 +37,6 @@ public interface SafeCloseable extends Closeable {
 	 * Same as {@link Closeable#close()} but it is not allowed to throw an {@link IOException}.
 	 */
 	void close();
+
+	Logger logger = LoggerFactory.getLogger(SafeCloseable.class);
 }

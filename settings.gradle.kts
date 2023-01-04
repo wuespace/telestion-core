@@ -8,4 +8,3 @@ rootProject.name = "telestion-core"
 include("telestion-api")
 include("telestion-application")
 include("telestion-services")
-include("telestion-examples")
