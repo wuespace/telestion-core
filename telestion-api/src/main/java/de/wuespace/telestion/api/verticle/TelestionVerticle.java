@@ -166,6 +166,7 @@ public abstract class TelestionVerticle<T extends TelestionConfiguration> extend
 	 * Please use {@link #getConfig()} instead.
 	 */
 	@Override
+	@Deprecated
 	public final JsonObject config() {
 		logger.warn("The config() method is deprecated. Please use getConfig() instead.");
 		return super.config();
