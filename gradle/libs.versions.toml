@@ -16,7 +16,7 @@
 ## https://docs.gradle.org/current/userguide/platforms.html#sec:sharing-catalogs
 
 [versions]
-vertx = "4.3.4"
+vertx = "4.3.7"
 jackson = "2.14.1"
 junit-jupiter = "5.8.2"
 hamcrest = "2.2"
