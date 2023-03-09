@@ -52,7 +52,7 @@ jobs:
 
       - name: Upload Test Report 📠
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: scacap/action-surefire-report@v1.5.0
+        uses: scacap/action-surefire-report@v1.6.1
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
