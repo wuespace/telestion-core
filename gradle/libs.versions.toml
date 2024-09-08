@@ -24,7 +24,7 @@ hamcrest = "2.2"
 [libraries]
 # production dependencies
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "1.7.36" }
-logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.5.7" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version = "1.5.8" }
 logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version = "7.4" }
 jackson-core = { group = "com.fasterxml.jackson.core", name = "jackson-core", version.ref = "jackson" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
