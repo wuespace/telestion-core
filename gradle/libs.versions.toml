@@ -18,7 +18,7 @@
 [versions]
 vertx = "4.5.14"
 jackson = "2.19.0"
-junit-jupiter = "5.11.4"
+junit-jupiter = "5.12.2"
 hamcrest = "2.2"
 
 [libraries]
