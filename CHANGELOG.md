@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.0.0](https://github.com/wuespace/telestion-core/compare/v0.9.0...v1.0.0) (2025-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** `DecodedMessage` was renamed to `ResponseMessageWrapper`
+* **api:** Remove the second constructor from `TelestionVerticle` that allowed to skip loading loading the default config (`public TelestionVerticle(boolean skipDefaultConfigLoading)`)
+* **api:** Improve the method naming: In the `TelestionVerticle`, `getGenericConfig()` is now called `getUntypedConfig()`
+* **api:** Improve the method naming In the `TelestionVerticle`, `getGenericDefaultConfig()` is now called `getUntypedDefaultConfig()`
+* **api:** Move `Class<T> getConfigType()` in `TelestionVerticle` to `Class<T> VerticleConfigStrategy.getConfigType(Class<X extends TelestionVerticle<T>> clazz)`
+* **api:** Remove `defaultStorageKey` method in `WithSharedData` interface.
+* **api:** Rename method `get` to `getString` in `HeaderInformation` class.
+* **api:** Rename `JsonMessage` interface to `JsonRecord`.
+* **api:** Remove `GenericConfiguration` class. Use `UntypedConfiguration` to indicate generic, untyped configuration or `NoConfiguration` to indicate no configuration options instead. To build your own typed configuration options, implement `TelestionConfiguration`.
+* **api:** Remove `Config` class in favor of `TelestionVerticle`
+* Remove `Configuration` and `VerticleConfig` from services module and add them to the application module.
+* **services:** Remove `ConfigurableApplication` because it implements the same behaviour as the `Telestion` class in the application module, and is not used at the moment.
+* **application:** Remove the `Application` class from the application module because it is empty
+* **config:** The deprecated `config.json` is no longer available
+
+### Features
+
+* **api:** Improve the method naming In the `TelestionVerticle`, `getGenericDefaultConfig()` is now called `getUntypedDefaultConfig()` ([b78e9a0](https://github.com/wuespace/telestion-core/commit/b78e9a05a4e041394eb683a2555dcfde8c4b1d33))
+* **api:** Improve the method naming: In the `TelestionVerticle`, `getGenericConfig()` is now called `getUntypedConfig()` ([b78e9a0](https://github.com/wuespace/telestion-core/commit/b78e9a05a4e041394eb683a2555dcfde8c4b1d33))
+* **api:** Make `HeaderInformation` `MultiMap` complete and rename method `get` to `getString`. ([1a6a51c](https://github.com/wuespace/telestion-core/commit/1a6a51c029a7d719e99271ea10e3121dfb923dc2))
+* **api:** Move `Class&lt;T&gt; getConfigType()` in `TelestionVerticle` to `Class<T> VerticleConfigStrategy.getConfigType(Class<X extends TelestionVerticle<T>> clazz)` ([b78e9a0](https://github.com/wuespace/telestion-core/commit/b78e9a05a4e041394eb683a2555dcfde8c4b1d33))
+* **api:** Move `TelestionVerticle` configuration logic into a dedicated strategy class and improve overall stability ([b78e9a0](https://github.com/wuespace/telestion-core/commit/b78e9a05a4e041394eb683a2555dcfde8c4b1d33))
+* **api:** Remove `Config` class ([9ea9374](https://github.com/wuespace/telestion-core/commit/9ea9374bb8536b133a6816258e1b7b3b850b4e9d))
+* **api:** Remove `defaultStorageKey` method in `WithSharedData` interface ([b6c5e59](https://github.com/wuespace/telestion-core/commit/b6c5e59476e62253a56dc0fa599571a293642ebd))
+* **api:** Remove `GenericConfiguration` class ([ba64cfb](https://github.com/wuespace/telestion-core/commit/ba64cfb8a1c2b661558d2ce8b5d6cefb93058a3d))
+* **api:** Remove the second constructor from `TelestionVerticle` that allowed to skip loading loading the default config (`public TelestionVerticle(boolean skipDefaultConfigLoading)`) ([b78e9a0](https://github.com/wuespace/telestion-core/commit/b78e9a05a4e041394eb683a2555dcfde8c4b1d33))
+* **api:** Rename `DecodedMessage` to `ResponseMessageWrapper` to be more specific ([1462dc1](https://github.com/wuespace/telestion-core/commit/1462dc100b5427c7ad8c02e155f165226761fcd7)), closes [#485](https://github.com/wuespace/telestion-core/issues/485)
+* **api:** Rename `JsonMessage` interface to `JsonRecord` ([80cb961](https://github.com/wuespace/telestion-core/commit/80cb961e3229a58e2a3cb3cfe87cbe4ab7e3623b))
+* **application:** Remove empty `Application` class ([6885c58](https://github.com/wuespace/telestion-core/commit/6885c58b31567217f8498ac43fa0a73cf274de9e))
+* **config:** Remove unneeded global `config.json` ([439aa8a](https://github.com/wuespace/telestion-core/commit/439aa8a336ca7248b56c1b007ae01deb466df94a))
+* Move `Configuration` and `VerticleConfig` data types to application module ([93bae37](https://github.com/wuespace/telestion-core/commit/93bae37626bdefab7ce5dc1d9b6e45dd8161ce22))
+* **services:** Remove `ConfigurableApplication` ([a40cdb2](https://github.com/wuespace/telestion-core/commit/a40cdb21387191810443914c88bd46e47f0bf1fe))
+
 ## [0.9.0](https://github.com/wuespace/telestion-core/compare/v0.8.1...v0.9.0) (2022-03-23)
 
 
