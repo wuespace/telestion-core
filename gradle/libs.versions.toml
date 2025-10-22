@@ -17,7 +17,7 @@
 
 [versions]
 vertx = "4.5.22"
-jackson = "2.19.2"
+jackson = "2.20.0"
 junit-jupiter = "5.11.4"
 hamcrest = "2.2"
 
